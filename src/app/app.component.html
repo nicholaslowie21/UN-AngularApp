@@ -1,1 +1,63 @@
-<h1> Welcome here! </h1>
+<div id="app">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top py-3" id="mainNav">
+    <div class="container">
+        <a class="navbar-brand" href="#">KoCoSD</a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto my-2 my-lg-0">
+                <li class="nav-item"><a class="nav-link" href="/home" routerLink="home">Home</a></li>
+                <li class="nav-item" *ngIf="showProfile"><a class="nav-link" href="/profile" routerLink="profile">Services</a></li>
+                <ul class="navbar-nav ml-auto" *ngIf="!isLoggedIn">
+                  <li class="nav-item"><a class="nav-link" href="/signup" routerLink="signup">Sign Up</a></li>
+                  <li class="nav-item"><a class="nav-link" href="/login" routerLink="login">Login</a></li>
+                </ul>
+                <ul class="navbar-nav ml-auto" *ngIf="isLoggedIn">
+                  <li class="nav-item">
+                    <a href class="nav-link" (click)="logout()">LogOut</a>
+                  </li>
+                </ul>
+            </ul>
+        </div>
+    </div>
+  </nav>
+
+
+    <!-- <nav class="navbar navbar-expand navbar-dark bg-dark">
+      <a href="#" class="navbar-brand">bezKoder</a>
+      <ul class="navbar-nav mr-auto" routerLinkActive="active">
+        <li class="nav-item">
+          <a href="/home" class="nav-link" routerLink="home">Home </a>
+        </li>
+        <li class="nav-item">
+          <a href="/user" class="nav-link" *ngIf="isLoggedIn" routerLink="user">User</a>
+        </li>
+      </ul>
+  
+      <ul class="navbar-nav ml-auto" *ngIf="!isLoggedIn">
+        <li class="nav-item">
+          <a href="/signup" class="nav-link" routerLink="signup">Sign Up</a>
+        </li>
+        <li class="nav-item">
+          <a href="/login" class="nav-link" routerLink="login">Login</a>
+        </li>
+      </ul>
+  
+      <ul class="navbar-nav ml-auto" *ngIf="isLoggedIn">
+        <li class="nav-item">
+          <a href="/profile" class="nav-link" routerLink="profile">{{ username }}</a>
+        </li>
+        <li class="nav-item">
+          <a href class="nav-link" (click)="logout()">LogOut</a>
+        </li>
+      </ul>
+    </nav> -->
+  
+    <div class="container" style="margin-top: 100px;">
+      <router-outlet></router-outlet>
+    </div>
+
+    <!-- Footer-->
+    <footer class="bg-light py-5">
+      <div class="container"><div class="small text-center text-muted">Copyright © 2020 - Start Bootstrap</div></div>
+    </footer>
+</div>
