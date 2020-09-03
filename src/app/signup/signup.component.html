@@ -40,7 +40,7 @@
             required
             #country="ngModel"
           />
-          <div class="alert-danger" *ngIf="f.submitted">
+          <div class="alert-danger" *ngIf="f.submitted && country.invalid">
             <div *ngIf="country.errors.required">Country is required</div>
           </div>
         </div>
