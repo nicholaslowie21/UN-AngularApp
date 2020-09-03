@@ -9,6 +9,8 @@ import { TokenStorageService } from '../services/token-storage.service';
 })
 export class ProfileComponent implements OnInit {
 
+  isLoggedIn = false;
+  user: any;
   form: any = {};
   isUpdateSuccessful = false;
   errorMessage = '';
@@ -16,9 +18,20 @@ export class ProfileComponent implements OnInit {
   constructor(private userService: UserService, private tokenStorage: TokenStorageService) { }
 
   ngOnInit(): void {
+    if(this.tokenStorage.getToken()) {
+      this.isLoggedIn = true;
+      this.user = this.tokenStorage.getUser();
+    }
   }
 
   onSubmit(): void {
+    this.form = {
+      name: this.user.name,
+      email: this.user.email,
+      occupation: this.user.occupation,
+      bio: this.user.bio,
+      country: this.user.country
+    }
     this.userService.updateProfile(this.form).subscribe(
       response => {
         this.tokenStorage.saveUser(response.data.user);
