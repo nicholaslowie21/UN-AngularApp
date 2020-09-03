@@ -10,7 +10,7 @@ export class AppComponent implements OnInit {
   private role: string;
   isLoggedIn = false;
   username: string;
-  showProfile = false;
+  showAdmin = false;
 
   constructor(private tokenStorageService: TokenStorageService) { }
 
@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
       this.role = user.role;
       console.log(this.role);
       if(this.role === 'admin') {
-        this.showProfile = true;
+        this.showAdmin = true;
       }
 
       this.username = user.username;
