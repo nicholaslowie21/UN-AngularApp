@@ -16,6 +16,8 @@ import { AdminComponent } from './admin/admin.component';
 import { LandingComponent } from './landing/landing.component';
 import { SignupInstitutionComponent } from './signup-institution/signup-institution.component';
 import { AboutComponent } from './about/about.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { SettingsComponent } from './settings/settings.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import { AboutComponent } from './about/about.component';
     AdminComponent,
     LandingComponent,
     SignupInstitutionComponent,
-    AboutComponent
+    AboutComponent,
+    ForgotPasswordComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,

@@ -10,12 +10,14 @@ import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './profile/profile.component';
 import { AdminComponent } from './admin/admin.component';
 import { AboutComponent } from './about/about.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 const routes: Routes = [
   { path: 'landing', component: LandingComponent},
   { path: 'home', component: HomeComponent, canActivate: [AuthGuardService] },
   { path: 'about', component: AboutComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'login/forgotPassword', component: ForgotPasswordComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'signup/institution', component: SignupInstitutionComponent },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuardService] },
