@@ -1,1 +1,163 @@
-<p>settings works!</p>
+<h1>Profile Settings</h1>
+
+<div id="accordion">
+    <div class="card">
+      <div class="card-header" id="headingOne">
+        <h5 class="mb-0">
+            <label for="username">Username</label>
+            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                Edit
+            </button>
+        </h5>
+      </div>
+  
+      <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+        <div class="card-body">
+            <form name="formUsername"
+            (ngSubmit)="f.form.valid && updateUsername()"
+            #f="ngForm"
+            novalidate>
+            <input
+            type="text"
+            class="form-control"
+            name="username"
+            [(ngModel)]="user.username"
+            required
+            #username="ngModel"
+            />
+            <div class="alert-danger" *ngIf="f.submitted && username.invalid">
+                <div *ngIf="username.errors.required">Username is required</div>
+            </div>
+            <button class="btn btn-primary">Save</button>
+            </form>
+            <div class="alert alert-warning" *ngIf="f.submitted && !isUsernameSuccessful">
+                Update failed!<br />{{ errMsgUsername }}
+            </div>
+            <div class="alert alert-success" *ngIf="isUsernameSuccessful">
+                Username update is successful!
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header" id="headingTwo">
+        <h5 class="mb-0">
+            <label for="email">Email address</label>
+            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                Edit
+            </button>
+        </h5>
+      </div>
+      <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+        <div class="card-body">
+            <form name="formEmail"
+            (ngSubmit)="fe.form.valid && updateEmail()"
+            #fe="ngForm"
+            novalidate>
+            <input
+                type="text"
+                class="form-control"
+                name="email"
+                [(ngModel)]="user.email"
+                required
+                #email="ngModel"
+            />
+            <div class="alert-danger" *ngIf="fe.submitted && email.invalid">
+                <div *ngIf="email.errors.required">Email is required</div>
+            </div>
+            <button class="btn btn-primary">Save</button>
+            </form>
+            <div class="alert alert-warning" *ngIf="fe.submitted && !isEmailSuccessful">
+                Update failed!<br />{{ errMsgEmail }}
+            </div>
+            <div class="alert alert-success" *ngIf="isEmailSuccessful">
+                Email update is successful!
+            </div>
+        </div>
+        </div>
+    </div>
+    <div class="card">
+      <div class="card-header" id="headingThree">
+        <h5 class="mb-0">
+            <label for="password">Change Password</label>
+            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                Edit
+            </button>
+        </h5>
+      </div>
+      <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+        <div class="card-body">
+            <form name="formPassword"
+            (ngSubmit)="fp.form.valid && changePassword()"
+            #fp="ngForm"
+            novalidate>
+            <div class="form-group">
+                <label for="currentPass">Current Password</label>
+                <input
+                    type="password"
+                    class="form-control"
+                    name="currentPass"
+                    [(ngModel)]="currPassword"
+                    required
+                    minlength="8"
+                    #currentPass="ngModel"
+                />
+                <div class="alert-danger" *ngIf="fp.submitted && currentPass.invalid">
+                    <div *ngIf="currentPass.errors.required">Password is required</div>
+                    <div *ngIf="currentPass.errors.minlength">
+                    Password must be at least 8 characters
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="newPass">New Password</label>
+                <input
+                    type="password"
+                    class="form-control"
+                    name="newPass"
+                    [(ngModel)]="newPassword"
+                    required
+                    minlength="8"
+                    #newPass="ngModel"
+                />
+                <div class="alert-danger" *ngIf="fp.submitted && newPass.invalid">
+                    <div *ngIf="newPass.errors.required">Password is required</div>
+                    <div *ngIf="newPass.errors.minlength">
+                    Password must be at least 8 characters
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPass">Confirm New Password</label>
+                <input
+                    type="password"
+                    class="form-control"
+                    name="confirmPass"
+                    [(ngModel)]="confirmPassword"
+                    required
+                    minlength="8"
+                    #confirmPass="ngModel"
+                />
+                <div class="alert-danger" *ngIf="fp.submitted && confirmPass.invalid">
+                    <div *ngIf="confirmPass.errors.required">Password is required</div>
+                    <div *ngIf="confirmPass.errors.minlength">
+                    Password must be at least 8 characters
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary">Save</button>
+            </div>
+            </form>
+            <div class="alert alert-warning" *ngIf="fp.submitted && !isPassSuccessful">
+                Update failed!<br />{{ errMsgPass }}
+            </div>
+            <div class="alert alert-success" *ngIf="isPassSuccessful">
+                Password update is successful!
+            </div>
+        </div>
+      </div>
+    </div>
+</div>

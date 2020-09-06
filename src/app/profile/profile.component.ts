@@ -27,7 +27,6 @@ export class ProfileComponent implements OnInit {
   onSubmit(): void {
     this.form = {
       name: this.user.name,
-      email: this.user.email,
       occupation: this.user.occupation,
       bio: this.user.bio,
       country: this.user.country

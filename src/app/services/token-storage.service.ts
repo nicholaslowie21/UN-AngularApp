@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 const TOKEN_KEY = 'auth-token';
 const USER_KEY = 'auth-user';
+const ACCTYPE_KEY = 'auth-acctype';
 
 @Injectable({
   providedIn: 'root'
@@ -30,5 +31,14 @@ export class TokenStorageService {
 
   public getUser(): any {
     return JSON.parse(sessionStorage.getItem(USER_KEY));
+  }
+
+  public saveAccountType(type): void {
+    window.sessionStorage.removeItem(ACCTYPE_KEY);
+    window.sessionStorage.setItem(ACCTYPE_KEY, JSON.stringify(type));
+  }
+
+  public getAccountType(): any {
+    return JSON.parse(sessionStorage.getItem(ACCTYPE_KEY));
   }
 }
