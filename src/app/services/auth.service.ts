@@ -32,9 +32,41 @@ export class AuthService {
     }, httpOptions);
   }
 
+  signupInstitution(institution): Observable<any> {
+    return this.http.post(AUTH_API + '/institution/signup', {
+      name: institution.name,
+      username: institution.username,
+      email: institution.email,
+      password: institution.password
+    }, httpOptions);
+  }
+
+  changePasswordUser(newPass): Observable<any> {
+    return this.http.post(AUTH_API + '/user/changePassword', {
+      password: newPass.password
+    }, httpOptions);
+  }
+
+  changePasswordInstitution(newPass): Observable<any> {
+    return this.http.post(AUTH_API + '/institution/changePassword', {
+      password: newPass.password
+    }, httpOptions);
+  }
+
+  forgetPassword(data): Observable<any> {
+    return this.http.post(AUTH_API + '/reset-password-request', {
+      email: data.email
+    }, httpOptions);
+  }
+
+  requestVerification(): Observable<any> {
+    return this.http.post(AUTH_API + '/user/verifyRequest', {
+    }, httpOptions);
+  }
+
   test(): Observable<any> {
     return this.http.post(AUTH_API + 'testing', {
-    }, httpOptions)
+    }, httpOptions);
   }
 
 }
