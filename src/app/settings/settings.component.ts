@@ -11,7 +11,7 @@ import { UserService } from '../services/user.service';
 export class SettingsComponent implements OnInit {
 
   user: any;
-  accountType: any;
+  isIndividual: any;
   currPassword = '';
   newPassword = '';
   confirmPassword = '';
@@ -21,13 +21,19 @@ export class SettingsComponent implements OnInit {
   errMsgUsername = '';
   errMsgPass = '';
   errMsgEmail = '';
+  verifyRequest: any = {};
+  isRequestSuccessful = false;
+  isSubmitted = false;
+  errMsgVerifyRequest = '';
 
   constructor(private authService: AuthService, private tokenStorage: TokenStorageService, private userService: UserService) { }
 
   ngOnInit(): void {
     if(this.tokenStorage.getToken()) {
       this.user = this.tokenStorage.getUser();
-      this.accountType = this.tokenStorage.getAccountType();
+      if (this.tokenStorage.getAccountType() == "user") {
+        this.isIndividual = true;
+      }
     }
   }
 
@@ -44,7 +50,7 @@ export class SettingsComponent implements OnInit {
       return;
     }
 
-    if (this.accountType == "user") {
+    if (this.isIndividual) {
       this.authService.changePasswordUser({password: this.user.password}).subscribe(
         response => {
           this.tokenStorage.saveUser(response.data.user);
@@ -91,6 +97,21 @@ export class SettingsComponent implements OnInit {
       err => {
         this.errMsgEmail.concat(err.error.msg);
         this.isEmailSuccessful = false;
+      }
+    )
+  }
+
+  requestVerification(): void {
+    this.isSubmitted = true;
+    this.authService.requestVerification().subscribe(
+      response => {
+        this.isRequestSuccessful = true;
+        this.verifyRequest.status = response.data.verifyrequest.status;
+        this.verifyRequest.id = response.data.verifyrequest.id;
+      },
+      err => {
+        this.errMsgVerifyRequest = err.error.msg;
+        this.isRequestSuccessful = false;
       }
     )
   }

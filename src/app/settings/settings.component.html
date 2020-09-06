@@ -160,4 +160,33 @@
         </div>
       </div>
     </div>
+    <div class="card" *ngIf=isIndividual>
+        <div class="card-header" id="headingFour">
+          <h5 class="mb-0">
+              <label for="username">Verification</label>
+              <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                  Edit
+              </button>
+          </h5>
+        </div>
+    
+        <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
+            <div class="card-body">
+                <div *ngIf=!(user.isVerified)>
+                    <button class="btn btn-primary" (click)=requestVerification()>Request for verification</button>
+                    <div class="alert alert-warning" *ngIf="isSubmitted && !isRequestSuccessful">
+                        Request failed!<br />{{ errMsgVerifyRequest }}
+                    </div>
+                    <div class="alert alert-success" *ngIf="isRequestSuccessful">
+                        Your request has been sent! <br/>
+                        Status: {{ verifyRequest.status }} <br/>
+                        Request id: {{ verifyRequest.id }}
+                    </div>
+                </div>
+                <div *ngIf=user.isVerified>
+                    Your account is verified
+                </div>
+          </div>
+        </div>
+    </div>
 </div>
