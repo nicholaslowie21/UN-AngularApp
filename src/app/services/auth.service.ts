@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-const AUTH_API = 'https://localhost:8080/api/authorization/';
+const AUTH_API = 'https://localhost:8080/api/authorization';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -37,7 +37,8 @@ export class AuthService {
       name: institution.name,
       username: institution.username,
       email: institution.email,
-      password: institution.password
+      password: institution.password,
+      country: institution.country
     }, httpOptions);
   }
 

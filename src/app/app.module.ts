@@ -14,6 +14,8 @@ import { ProfileComponent } from './profile/profile.component';
 import { authInterceptorProviders } from './_helpers/auth.interceptor';
 import { AdminComponent } from './admin/admin.component';
 import { LandingComponent } from './landing/landing.component';
+import { SignupInstitutionComponent } from './signup-institution/signup-institution.component';
+import { AboutComponent } from './about/about.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import { LandingComponent } from './landing/landing.component';
     HomeComponent,
     ProfileComponent,
     AdminComponent,
-    LandingComponent
+    LandingComponent,
+    SignupInstitutionComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,

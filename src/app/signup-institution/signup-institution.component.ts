@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 
 @Component({
-  selector: 'app-signup',
-  templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.css']
+  selector: 'app-signup-institution',
+  templateUrl: './signup-institution.component.html',
+  styleUrls: ['./signup-institution.component.css']
 })
-export class SignupComponent implements OnInit {
+export class SignupInstitutionComponent implements OnInit {
 
   form: any = {};
   isSuccessful = false;
@@ -24,8 +24,9 @@ export class SignupComponent implements OnInit {
       this.isSignUpFailed = true;
       return;
     }
-    this.authService.signup(this.form).subscribe(
+    this.authService.signupInstitution(this.form).subscribe(
       response => {
+        console.log(response);
         this.isSuccessful = true;
         this.isSignUpFailed = false;
       },
