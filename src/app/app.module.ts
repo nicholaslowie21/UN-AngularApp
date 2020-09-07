@@ -18,6 +18,8 @@ import { SignupInstitutionComponent } from './signup-institution/signup-institut
 import { AboutComponent } from './about/about.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { SettingsComponent } from './settings/settings.component';
+import { OwnProfileComponent } from './own-profile/own-profile.component';
+import { AffiliationPageComponent } from './affiliation-page/affiliation-page.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,9 @@ import { SettingsComponent } from './settings/settings.component';
     SignupInstitutionComponent,
     AboutComponent,
     ForgotPasswordComponent,
-    SettingsComponent
+    SettingsComponent,
+    OwnProfileComponent,
+    AffiliationPageComponent
   ],
   imports: [
     BrowserModule,
