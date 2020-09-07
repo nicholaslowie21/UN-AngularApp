@@ -38,12 +38,6 @@ export class SettingsComponent implements OnInit {
   }
 
   changePassword(): void {
-    if(this.currPassword != this.user.password) {
-      this.errMsgPass = 'Current password mismatch!'
-      this.isPassSuccessful = false;
-      return;
-    }
-
     if(this.newPassword != this.confirmPassword) {
       this.errMsgPass = 'Your new password and confirm new password do not match!'
       this.isPassSuccessful = false;
@@ -51,24 +45,24 @@ export class SettingsComponent implements OnInit {
     }
 
     if (this.isIndividual) {
-      this.authService.changePasswordUser({password: this.user.password}).subscribe(
+      this.authService.changePasswordUser({oldPassword: this.currPassword, password: this.user.password}).subscribe(
         response => {
           this.tokenStorage.saveUser(response.data.user);
           this.isPassSuccessful = true;
         },
         err => {
-          this.errMsgPass.concat(err.error.msg);
+          this.errMsgPass = err.error.msg;
           this.isPassSuccessful = false;
         }
       )
     } else {
-      this.authService.changePasswordInstitution({password: this.user.password}).subscribe(
+      this.authService.changePasswordInstitution({oldPassword: this.currPassword, password: this.user.password}).subscribe(
         response => {
           this.tokenStorage.saveUser(response.data.user);
           this.isPassSuccessful = true;
         },
         err => {
-          this.errMsgPass.concat(err.error.msg);
+          this.errMsgPass = err.error.msg;
           this.isPassSuccessful = false;
         }
       )
@@ -82,7 +76,7 @@ export class SettingsComponent implements OnInit {
         this.isUsernameSuccessful = true;
       },
       err => {
-        this.errMsgUsername.concat(err.error.msg);
+        this.errMsgUsername = err.error.msg;
         this.isUsernameSuccessful = false;
       }
     )
@@ -95,7 +89,7 @@ export class SettingsComponent implements OnInit {
         this.isEmailSuccessful = true;
       },
       err => {
-        this.errMsgEmail.concat(err.error.msg);
+        this.errMsgEmail = err.error.msg;
         this.isEmailSuccessful = false;
       }
     )

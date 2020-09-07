@@ -11,9 +11,12 @@ export class ProfileComponent implements OnInit {
 
   isLoggedIn = false;
   user: any;
-  form: any = {};
   isUpdateSuccessful = false;
   errorMessage = '';
+
+  image: any;
+  isUploadPicSuccessful = false;
+  errorMsgUploadPic = '';
 
   constructor(private userService: UserService, private tokenStorage: TokenStorageService) { }
 
@@ -24,14 +27,37 @@ export class ProfileComponent implements OnInit {
     }
   }
 
+  selectImage(event) {
+    if (event.target.files.length > 0) {
+      const file = event.target.files[0];
+      this.image = file;
+    }
+  }
+
+  onSubmitImage(): void {
+    const formData = new FormData();
+    formData.append('profilePic', this.image);
+
+    this.userService.uploadProfilePicture(formData).subscribe(
+      response => {
+        this.tokenStorage.saveUser(response.data.user);
+        this.isUploadPicSuccessful = true;
+      },
+      err => {
+        this.errorMsgUploadPic = err.error.msg;
+        this.isUploadPicSuccessful = false;
+      }
+    )
+  }
+
   onSubmit(): void {
-    this.form = {
+    const formUpdateProfile = {
       name: this.user.name,
       occupation: this.user.occupation,
       bio: this.user.bio,
       country: this.user.country
     }
-    this.userService.updateProfile(this.form).subscribe(
+    this.userService.updateProfile(formUpdateProfile).subscribe(
       response => {
         this.tokenStorage.saveUser(response.data.user);
 

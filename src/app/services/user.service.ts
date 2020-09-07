@@ -24,6 +24,11 @@ export class UserService {
     }, httpOptions);
   }
 
+  uploadProfilePicture(formData): Observable<any> {
+    return this.http.post(API_URL + '/uploadProfilePicture',
+      formData);
+  }
+
   updateUsername(data): Observable<any> {
     return this.http.post(API_URL + '/updateUsername', {
       username: data.username
