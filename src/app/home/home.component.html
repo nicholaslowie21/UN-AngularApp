@@ -1,6 +1,24 @@
-<div>
+<!-- <div>
     This is home
     <button class="btn btn-primary" (click)="test()">Test</button>
+</div> -->
+<div class="container">
+    <div class="row">
+      <div class="col-3">
+        <div class="card">
+            <div class="card-body">
+                <img class="card-img-top rounded-circle" src={{user.profilePic}} alt="Profile picture">
+                <h5 class="card-title text-center">{{ user.name }}</h5>
+            </div>
+        </div>
+      </div>
+      <div class="col-7">
+        2 of 3 (wider)
+      </div>
+      <div class="col-2">
+        3 of 3
+      </div>
+    </div>
 </div>
 <div style="margin-top: 700px;">
     Test

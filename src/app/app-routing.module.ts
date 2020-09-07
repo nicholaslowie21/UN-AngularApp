@@ -7,7 +7,7 @@ import { SignupComponent } from './signup/signup.component';
 import { SignupInstitutionComponent } from './signup-institution/signup-institution.component';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
-import { ProfileComponent } from './profile/profile.component';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { AdminComponent } from './admin/admin.component';
 import { AboutComponent } from './about/about.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
@@ -21,7 +21,7 @@ const routes: Routes = [
   { path: 'login/forgotPassword', component: ForgotPasswordComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'signup/institution', component: SignupInstitutionComponent },
-  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuardService] },
+  { path: 'editProfile', component: EditProfileComponent, canActivate: [AuthGuardService] },
   { path: 'admin', component: AdminComponent, canActivate: [AuthGuardService] },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuardService] },
   { path: '', redirectTo: 'home', pathMatch: 'full'}

@@ -11,16 +11,13 @@
         <div class="form-group">
           <img
             id="profile-img"
-            src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
+            src={{user.profilePic}}
             class="profile-img-card"
           />
           <form>
             <input type="file" name="image" (change)="selectImage($event)" />
             <button type="submit" (click)="onSubmitImage()">Upload</button>
           </form>
-          <div class="alert alert-success" *ngIf="isUploadPicSuccessful">
-            Upload picture is successful!
-          </div>
           <div class="alert alert-warning" *ngIf="errorMsgUploadPic && !isUploadPicSuccessful">
             Upload picture failed!<br />{{ errorMsgUploadPic }}
           </div>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
+import { TokenStorageService } from '../services/token-storage.service';
 
 @Component({
   selector: 'app-home',
@@ -8,9 +9,12 @@ import { AuthService } from '../services/auth.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private authService: AuthService) { }
+  user: any;
+
+  constructor(private authService: AuthService, private tokenStorageService: TokenStorageService) { }
 
   ngOnInit(): void {
+    this.user = this.tokenStorageService.getUser();
   }
 
   test(): void {

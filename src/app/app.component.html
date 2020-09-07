@@ -13,7 +13,7 @@
                   <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/login" routerLink="login">Login</a></li>
                 </ul>
                 <ul class="navbar-nav ml-auto" *ngIf="isLoggedIn">
-                  <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/profile" routerLink="profile">Profile</a></li>
+                  <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/editProfile" routerLink="editProfile">Profile</a></li>
                   <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/projects" routerLink="projects">Projects</a></li>
                   <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/resources" routerLink="resources">Resources</a></li>
                   <li class="nav-item">
@@ -23,7 +23,7 @@
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                       <a class="dropdown-item" href="/settings">Settings</a>
-                      <a class="dropdown-item" href="#">Another action</a>
+                      <a class="dropdown-item" href="#">Notifications</a>
                       <div class="dropdown-divider"></div>
                       <a href class="dropdown-item" (click)="logout()">LogOut</a>
                     </div>

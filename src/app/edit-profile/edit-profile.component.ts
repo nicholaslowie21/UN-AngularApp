@@ -3,11 +3,11 @@ import { UserService } from '../services/user.service';
 import { TokenStorageService } from '../services/token-storage.service';
 
 @Component({
-  selector: 'app-profile',
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css']
+  selector: 'app-edit-profile',
+  templateUrl: './edit-profile.component.html',
+  styleUrls: ['./edit-profile.component.css']
 })
-export class ProfileComponent implements OnInit {
+export class EditProfileComponent implements OnInit {
 
   isLoggedIn = false;
   user: any;
@@ -35,6 +35,12 @@ export class ProfileComponent implements OnInit {
   }
 
   onSubmitImage(): void {
+    if (this.image == null) {
+      this.errorMsgUploadPic = 'Choose a file!';
+      this.isUploadPicSuccessful = false;
+      return;
+    }
+
     const formData = new FormData();
     formData.append('profilePic', this.image);
 
@@ -42,6 +48,7 @@ export class ProfileComponent implements OnInit {
       response => {
         this.tokenStorage.saveUser(response.data.user);
         this.isUploadPicSuccessful = true;
+        this.reloadPage();
       },
       err => {
         this.errorMsgUploadPic = err.error.msg;
@@ -68,6 +75,10 @@ export class ProfileComponent implements OnInit {
         this.isUpdateSuccessful = false;
       }
     )
+  }
+
+  reloadPage(): void {
+    window.location.reload();
   }
 
 }

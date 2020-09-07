@@ -9,7 +9,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { HomeComponent } from './home/home.component';
-import { ProfileComponent } from './profile/profile.component';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
 
 import { authInterceptorProviders } from './_helpers/auth.interceptor';
 import { AdminComponent } from './admin/admin.component';
@@ -25,7 +25,7 @@ import { SettingsComponent } from './settings/settings.component';
     LoginComponent,
     SignupComponent,
     HomeComponent,
-    ProfileComponent,
+    EditProfileComponent,
     AdminComponent,
     LandingComponent,
     SignupInstitutionComponent,
