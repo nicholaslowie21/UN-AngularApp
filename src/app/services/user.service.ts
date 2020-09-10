@@ -20,7 +20,11 @@ export class UserService {
       name: data.name,
       occupation: data.occupation,
       bio: data.bio,
-      country: data.country
+      country: data.country,
+      website: data.website,
+      gender: data.gender,
+      SDGs: data.SDGs,
+      skills: data.skills
     }, httpOptions);
   }
 
@@ -39,5 +43,9 @@ export class UserService {
     return this.http.post(API_URL + '/updateEmail', {
       email: data.email
     }, httpOptions);
+  }
+
+  getCurrentProjects(): Observable<any> {
+    return this.http.get(API_URL + '/currProjects');
   }
 }

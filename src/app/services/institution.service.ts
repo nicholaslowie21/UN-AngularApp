@@ -21,8 +21,15 @@ export class InstitutionService {
       address: data.address,
       bio: data.bio,
       country: data.country,
-      phone: data.phone
+      phone: data.phone,
+      website: data.website,
+      SDGs: data.SDGs
     }, httpOptions);
+  }
+
+  uploadProfilePicture(formData): Observable<any> {
+    return this.http.post(API_URL + '/uploadProfilePicture',
+      formData);
   }
 
   updateUsername(data): Observable<any> {
@@ -34,6 +41,22 @@ export class InstitutionService {
   updateEmail(data): Observable<any> {
     return this.http.post(API_URL + '/updateEmail', {
       email: data.email
+    }, httpOptions);
+  }
+
+  getAffiliatedUsers(): Observable<any> {
+    return this.http.get(API_URL + '/getMembers');
+  }
+
+  addAffiliatedUsers(data): Observable<any> {
+    return this.http.post(API_URL + '/addMember', {
+      userId: data.userId
+    }, httpOptions);
+  }
+
+  deleteAffiliatedUser(data): Observable<any> {
+    return this.http.post(API_URL + '/delMember', {
+      userId: data.userId
     }, httpOptions);
   }
 }
