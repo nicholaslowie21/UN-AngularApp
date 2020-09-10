@@ -8,7 +8,7 @@ import { SignupInstitutionComponent } from './signup-institution/signup-institut
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
-import { AdminComponent } from './admin/admin.component';
+import { AdminHomeComponent } from './admin/admin-home/admin-home.component';
 import { AboutComponent } from './about/about.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { SettingsComponent } from './settings/settings.component';
@@ -22,7 +22,7 @@ const routes: Routes = [
   { path: 'signup', component: SignupComponent },
   { path: 'signup/institution', component: SignupInstitutionComponent },
   { path: 'editProfile', component: EditProfileComponent, canActivate: [AuthGuardService] },
-  { path: 'admin', component: AdminComponent, canActivate: [AuthGuardService] },
+  { path: 'admin', component: AdminHomeComponent, canActivate: [AuthGuardService] },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuardService] },
   { path: '', redirectTo: 'home', pathMatch: 'full'}
 ];

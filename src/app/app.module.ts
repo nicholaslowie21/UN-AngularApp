@@ -12,7 +12,7 @@ import { HomeComponent } from './home/home.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 
 import { authInterceptorProviders } from './_helpers/auth.interceptor';
-import { AdminComponent } from './admin/admin.component';
+import { AdminHomeComponent } from './admin/admin-home/admin-home.component';
 import { LandingComponent } from './landing/landing.component';
 import { SignupInstitutionComponent } from './signup-institution/signup-institution.component';
 import { AboutComponent } from './about/about.component';
@@ -20,6 +20,9 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { SettingsComponent } from './settings/settings.component';
 import { OwnProfileComponent } from './own-profile/own-profile.component';
 import { AffiliationPageComponent } from './affiliation-page/affiliation-page.component';
+import { AdminVerificationComponent } from './admin/admin-verification/admin-verification.component';
+import { AdminUserManagementComponent } from './admin/admin-user-management/admin-user-management.component';
+import { AdminManagementComponent } from './admin/admin-management/admin-management.component';
 
 @NgModule({
   declarations: [
@@ -28,14 +31,17 @@ import { AffiliationPageComponent } from './affiliation-page/affiliation-page.co
     SignupComponent,
     HomeComponent,
     EditProfileComponent,
-    AdminComponent,
+    AdminHomeComponent,
     LandingComponent,
     SignupInstitutionComponent,
     AboutComponent,
     ForgotPasswordComponent,
     SettingsComponent,
     OwnProfileComponent,
-    AffiliationPageComponent
+    AffiliationPageComponent,
+    AdminVerificationComponent,
+    AdminUserManagementComponent,
+    AdminManagementComponent
   ],
   imports: [
     BrowserModule,
