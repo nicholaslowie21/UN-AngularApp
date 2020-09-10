@@ -9,11 +9,23 @@
         novalidate
       >
         <div class="form-group">
-          <img
-            id="profile-img"
-            src={{user.profilePic}}
-            class="profile-img-card"
-          />
+          <div *ngIf="user.profilePic.length > 0">
+            <img
+              src={{user.profilePic}}
+              class="rounded-circle img-fluid"
+              style="width: 200px; height: 200px; object-fit: cover;"
+              alt="Profile picture"
+            />
+          </div>
+          <div *ngIf="user.profilePic.length == 0">
+            <img
+              src="../../assets/img/profilePic_Placeholder.png"
+              class="rounded-circle img-fluid"
+              style="width: 200px; height: 200px; object-fit: cover;"
+              alt="Profile picture"
+            />
+          </div>
+          <br/>
           <form>
             <input type="file" name="image" (change)="selectImage($event)" />
             <button type="submit" (click)="onSubmitImage()">Upload</button>
@@ -22,94 +34,200 @@
             Upload picture failed!<br />{{ errorMsgUploadPic }}
           </div>
         </div>
-        <div class="form-group">
-          <label for="name">Name</label>
-          <input
-            type="text"
-            class="form-control"
-            name="name"
-            [(ngModel)]="user.name"
-            required
-            minlength="3"
-            #name="ngModel"
-          />
-          <div class="alert-danger" *ngIf="f.submitted && name.invalid">
-            <div *ngIf="name.errors.required">Name is required</div>
-            <div *ngIf="name.errors.minlength">
-              Name must be at least 3 characters
-            </div>
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="country">Country</label>
-          <input
-            type="text"
-            class="form-control"
-            name="country"
-            [(ngModel)]="user.country"
-            required
-            #country="ngModel"
-          />
-          <div class="alert-danger" *ngIf="f.submitted && country.invalid">
-            <div *ngIf="country.errors.required">Country is required</div>
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="username">Username</label>
-          <input
-            type="text"
-            class="form-control"
-            name="username"
-            [(ngModel)]="user.username"
-            required
-            minlength="3"
-            maxlength="20"
-            #username="ngModel"
-          />
-          <div class="alert-danger" *ngIf="f.submitted && username.invalid">
-            <div *ngIf="username.errors.required">Username is required</div>
-            <div *ngIf="username.errors.minlength">
-              Username must be at least 3 characters
-            </div>
-            <div *ngIf="username.errors.maxlength">
-              Username must be at most 20 characters
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group">
-            <label for="bio">Bio</label>
-            <input
-              type="text"
-              class="form-control"
-              name="bio"
-              [(ngModel)]="user.bio"
-              #bio="ngModel"
-            />
-        </div>
-
-        <div class="form-group">
-            <label for="occupation">Occupation</label>
-            <input
-              type="text"
-              class="form-control"
-              name="occupation"
-              [(ngModel)]="user.occupation"
-              #occupation="ngModel"
-            />
-        </div>
         
-        <div class="form-group">
-          <button class="btn btn-primary btn-block">Update Profile</button>
-        </div>
-  
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input
+              type="text"
+              class="form-control"
+              name="name"
+              [(ngModel)]="user.name"
+              required
+              minlength="3"
+              #name="ngModel"
+            />
+            <div class="alert-danger" *ngIf="f.submitted && name.invalid">
+              <div *ngIf="name.errors.required">Name is required</div>
+              <div *ngIf="name.errors.minlength">
+                Name must be at least 3 characters
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="country">Country</label>
+            <input
+              type="text"
+              class="form-control"
+              name="country"
+              [(ngModel)]="user.country"
+              required
+              #country="ngModel"
+            />
+            <div class="alert-danger" *ngIf="f.submitted && country.invalid">
+              <div *ngIf="country.errors.required">Country is required</div>
+            </div>
+          </div>
+
+          <div class="form-group" *ngIf=!isIndividual>
+            <label for="address">Address</label>
+            <input
+              type="text"
+              class="form-control"
+              name="address"
+              [(ngModel)]="user.address"
+              #address="ngModel"
+            />
+          </div>
+
+          <div class="form-group" *ngIf=!isIndividual>
+            <label for="phone">Contact number</label>
+            <input
+              type="text"
+              class="form-control"
+              name="phone"
+              [(ngModel)]="user.phone"
+              #phone="ngModel"
+            />
+          </div>
+
+          <div class="form-group">
+              <label for="bio">Bio</label>
+              <input
+                type="text"
+                class="form-control"
+                name="bio"
+                [(ngModel)]="user.bio"
+                #bio="ngModel"
+              />
+          </div>
+
+          <div class="form-group" *ngIf=isIndividual>
+              <label for="occupation">Occupation</label>
+              <input
+                type="text"
+                class="form-control"
+                name="occupation"
+                [(ngModel)]="user.occupation"
+                #occupation="ngModel"
+              />
+          </div>
+
+          <div class="form-group">
+            <label for="website">Website</label>
+            <input
+              type="text"
+              class="form-control"
+              name="website"
+              [(ngModel)]="user.website"
+              #website="ngModel"
+            />
+          </div>
+
+          <div class="form-group" *ngIf=isIndividual>
+            <label for="gender">Gender</label>
+            <select class="form-control" name="gender" [(ngModel)]="user.gender" required #gender="ngModel">
+              <option value="" selected hidden>{{user.gender}}</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+            <div class="alert-danger" *ngIf="f.submitted && gender.invalid">
+              <div *ngIf="gender.errors.required">Gender is required</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="SDGs">SDGs</label>
+            <br/>
+            <div *ngFor="let SDG of SDGs; let i = index">
+              <label>
+                <input type="checkbox" name="SDGs"
+                  value="i" [checked]="SDGsMap[i]"
+                  (change)="updateCheckedSDGs(i, $event)"/>
+                {{SDG}}
+              </label>
+            </div>
+            <!-- <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" value="1">
+              <label class="form-check-label">1. No Poverty</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" value="2">
+              <label class="form-check-label">2. Zero Hunger</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" value="3">
+              <label class="form-check-label">3. Good Health and Well-Being</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" value="4">
+              <label class="form-check-label">4. Quality Education</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" value="5">
+              <label class="form-check-label">5. Gender Equality</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" value="6">
+              <label class="form-check-label">6. Clean Water and Sanitation</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" value="7">
+              <label class="form-check-label">7. Affordable and Clean Energy</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" value="8">
+              <label class="form-check-label">8. Decent Work and Economic Growth</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" value="9">
+              <label class="form-check-label">9. Industry, Innovation, and Infrastructure</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" value="10">
+              <label class="form-check-label">10. Reduced Inequalities</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" value="11">
+              <label class="form-check-label">11. Sustainable Cities and Communities</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" value="12">
+              <label class="form-check-label">12. Responsible Consumption and Production</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" value="13">
+              <label class="form-check-label">13. Climate Action</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" value="14">
+              <label class="form-check-label">14. Life Below Water</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" value="15">
+              <label class="form-check-label">15. Life on Land</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" value="16">
+              <label class="form-check-label">16. Peace, Justice, and Strong Institutions</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" value="17">
+              <label class="form-check-label">17. Partnerships</label>
+            </div> -->
+          </div>
+
+          <div class="form-group">
+            <button class="btn btn-primary btn-block">Update Profile</button>
+          </div>
+        
         <div class="alert alert-warning" *ngIf="f.submitted && !isUpdateSuccessful">
           Update failed!<br />{{ errorMessage }}
         </div>
+
+        <div class="alert alert-success" *ngIf="isUpdateSuccessful">
+          Your update is successful!
+        </div>
       </form>
-  
-      <div class="alert alert-success" *ngIf="isUpdateSuccessful">
-        Your update is successful!
-      </div>
     </div>
 </div>

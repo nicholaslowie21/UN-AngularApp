@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { TokenStorageService } from '../services/token-storage.service';
 import { UserService } from '../services/user.service';
+import { InstitutionService } from '../services/institution.service';
 
 @Component({
   selector: 'app-settings',
@@ -34,7 +35,8 @@ export class SettingsComponent implements OnInit {
   isSubmitted = false;
   errMsgVerifyRequest = '';
 
-  constructor(private authService: AuthService, private tokenStorage: TokenStorageService, private userService: UserService) { }
+  constructor(private authService: AuthService, private tokenStorage: TokenStorageService, 
+    private userService: UserService, private institutionService: InstitutionService) { }
 
   ngOnInit(): void {
     if(this.tokenStorage.getToken()) {
@@ -85,29 +87,57 @@ export class SettingsComponent implements OnInit {
   }
 
   updateUsername(): void {
-    this.userService.updateUsername({username: this.user.username}).subscribe(
-      response => {
-        this.tokenStorage.saveUser(response.data.user);
-        this.isUsernameSuccessful = true;
-      },
-      err => {
-        this.errMsgUsername = err.error.msg;
-        this.isUsernameSuccessful = false;
-      }
-    )
+    if (this.isIndividual) {
+      this.userService.updateUsername({username: this.user.username}).subscribe(
+        response => {
+          this.tokenStorage.saveUser(response.data.user);
+          this.isUsernameSuccessful = true;
+        },
+        err => {
+          this.errMsgUsername = err.error.msg;
+          this.isUsernameSuccessful = false;
+        }
+      )
+    } else {
+      this.institutionService.updateUsername({username: this.user.username}).subscribe(
+        response => {
+          this.tokenStorage.saveUser(response.data.institution);
+          this.isUsernameSuccessful = true;
+        },
+        err => {
+          this.errMsgUsername = err.error.msg;
+          this.isUsernameSuccessful = false;
+        }
+      )
+    }
+    
   }
 
   updateEmail(): void {
-    this.userService.updateEmail({email: this.user.email}).subscribe(
-      response => {
-        this.tokenStorage.saveUser(response.data.user);
-        this.isEmailSuccessful = true;
-      },
-      err => {
-        this.errMsgEmail = err.error.msg;
-        this.isEmailSuccessful = false;
-      }
-    )
+    if (this.isIndividual) {
+      this.userService.updateEmail({email: this.user.email}).subscribe(
+        response => {
+          this.tokenStorage.saveUser(response.data.user);
+          this.isEmailSuccessful = true;
+        },
+        err => {
+          this.errMsgEmail = err.error.msg;
+          this.isEmailSuccessful = false;
+        }
+      )
+    } else {
+      this.institutionService.updateEmail({email: this.user.email}).subscribe(
+        response => {
+          this.tokenStorage.saveUser(response.data.institution);
+          this.isEmailSuccessful = true;
+        },
+        err => {
+          this.errMsgEmail = err.error.msg;
+          this.isEmailSuccessful = false;
+        }
+      )
+    }
+    
   }
 
   selectImage(event) {

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service';
+import { InstitutionService } from '../services/institution.service';
 import { TokenStorageService } from '../services/token-storage.service';
 
 @Component({
@@ -11,6 +12,7 @@ export class EditProfileComponent implements OnInit {
 
   isLoggedIn = false;
   user: any;
+  isIndividual = false;
   isUpdateSuccessful = false;
   errorMessage = '';
 
@@ -18,13 +20,45 @@ export class EditProfileComponent implements OnInit {
   isUploadPicSuccessful = false;
   errorMsgUploadPic = '';
 
-  constructor(private userService: UserService, private tokenStorage: TokenStorageService) { }
+  SDGs = ['1.abc', '2.def', '3.ghi'];
+  SDGsMap = [];
+  SDGsChecked = [];
+
+  constructor(private userService: UserService, private institutionService: InstitutionService, private tokenStorage: TokenStorageService) { }
 
   ngOnInit(): void {
     if(this.tokenStorage.getToken()) {
       this.isLoggedIn = true;
       this.user = this.tokenStorage.getUser();
+      if (this.tokenStorage.getAccountType() == "user") {
+        this.isIndividual = true;
+      }
     }
+
+    for (var x=0; x<this.SDGs.length; x++) {
+      if (this.user.SDGs.includes(x+1)) {
+        this.SDGsMap[x] = true;
+      } else {
+        this.SDGsMap[x] = false;
+      }
+    }
+  }
+
+  updateCheckedSDGs(x, event) {
+    console.log("update checked" + x)
+    this.SDGsMap[x] = event.target.checked;
+  }
+
+  updateSDGs() {
+    for (var x in this.SDGsMap) {
+      if(this.SDGsMap[x]) {
+        console.log("X: " + x + typeof x);
+        console.log("X+1: "+(parseInt(x)+1));
+        this.SDGsChecked.push(parseInt(x)+1);
+      }
+    }
+    // this.SDGs = this.SDGsChecked;
+    // this.SDGsChecked = [];
   }
 
   selectImage(event) {
@@ -44,37 +78,80 @@ export class EditProfileComponent implements OnInit {
     const formData = new FormData();
     formData.append('profilePic', this.image);
 
-    this.userService.uploadProfilePicture(formData).subscribe(
-      response => {
-        this.tokenStorage.saveUser(response.data.user);
-        this.isUploadPicSuccessful = true;
-        this.reloadPage();
-      },
-      err => {
-        this.errorMsgUploadPic = err.error.msg;
-        this.isUploadPicSuccessful = false;
-      }
-    )
+    if (this.isIndividual) {
+      this.userService.uploadProfilePicture(formData).subscribe(
+        response => {
+          this.tokenStorage.saveUser(response.data.user);
+          this.isUploadPicSuccessful = true;
+          this.reloadPage();
+        },
+        err => {
+          this.errorMsgUploadPic = err.error.msg;
+          this.isUploadPicSuccessful = false;
+        }
+      )
+    } else {
+      this.institutionService.uploadProfilePicture(formData).subscribe(
+        response => {
+          this.tokenStorage.saveUser(response.data.institution);
+          this.isUploadPicSuccessful = true;
+          this.reloadPage();
+        },
+        err => {
+          this.errorMsgUploadPic = err.error.msg;
+          this.isUploadPicSuccessful = false;
+        }
+      )
+    }
+    
   }
 
   onSubmit(): void {
-    const formUpdateProfile = {
-      name: this.user.name,
-      occupation: this.user.occupation,
-      bio: this.user.bio,
-      country: this.user.country
-    }
-    this.userService.updateProfile(formUpdateProfile).subscribe(
-      response => {
-        this.tokenStorage.saveUser(response.data.user);
-
-        this.isUpdateSuccessful = true;
-      },
-      err => {
-        this.errorMessage = err.error.msg;
-        this.isUpdateSuccessful = false;
+    this.updateSDGs();
+    console.log(this.SDGs);
+    if (this.isIndividual) {
+      const formUpdateProfile = {
+        name: this.user.name,
+        occupation: this.user.occupation,
+        bio: this.user.bio,
+        country: this.user.country,
+        website: this.user.website || "",
+        gender: this.user.gender,
+        SDGs: this.SDGsChecked,
+        skills: this.user.skills
       }
-    )
+      this.userService.updateProfile(formUpdateProfile).subscribe(
+        response => {
+          this.tokenStorage.saveUser(response.data.user);
+          this.isUpdateSuccessful = true;
+        },
+        err => {
+          this.errorMessage = err.error.msg;
+          this.isUpdateSuccessful = false;
+        }
+      )
+    } else {
+      const formUpdateProfile = {
+        name: this.user.name,
+        address: this.user.address,
+        bio: this.user.bio,
+        country: this.user.country,
+        website: this.user.website || "",
+        phone: this.user.phone,
+        SDGs: this.SDGsChecked,
+      }
+      this.institutionService.updateProfile(formUpdateProfile).subscribe(
+        response => {
+          this.tokenStorage.saveUser(response.data.institution);
+          this.isUpdateSuccessful = true;
+        },
+        err => {
+          this.errorMessage = err.error.msg;
+          this.isUpdateSuccessful = false;
+        }
+      )
+    }
+    
   }
 
   reloadPage(): void {
