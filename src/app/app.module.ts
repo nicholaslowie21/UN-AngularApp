@@ -35,7 +35,7 @@ import { AffiliationPageComponent } from './affiliation-page/affiliation-page.co
     ForgotPasswordComponent,
     SettingsComponent,
     OwnProfileComponent,
-    AffiliationPageComponent
+    AffiliationPageComponent,
   ],
   imports: [
     BrowserModule,
