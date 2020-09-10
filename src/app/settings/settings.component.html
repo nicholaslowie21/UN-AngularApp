@@ -172,21 +172,26 @@
     
         <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
             <div class="card-body">
-                <div *ngIf=!(user.isVerified)>
-                    <button class="btn btn-primary" (click)=requestVerification()>Request for verification</button>
+                <div *ngIf=notVerified>
+                    <div *ngIf=!isRequestSuccessful>
+                        <input type="file" name="image" (change)="selectImage($event)" /> <br/>
+                        <button class="btn btn-primary" (click)=requestVerification()>Request for verification</button>
+                    </div>
                     <div class="alert alert-warning" *ngIf="isSubmitted && !isRequestSuccessful">
-                        Request failed!<br />{{ errMsgVerifyRequest }}
+                        Request failed<br />{{ errMsgVerifyRequest }}
                     </div>
                     <div class="alert alert-success" *ngIf="isRequestSuccessful">
                         Your request has been sent! <br/>
-                        Status: {{ verifyRequest.status }} <br/>
-                        Request id: {{ verifyRequest.id }}
+                        Status: {{ verifyRequest.status }}
                     </div>
                 </div>
-                <div *ngIf=user.isVerified>
+                <div *ngIf=pendingVerified>
+                    Your verification is being processed
+                </div>
+                <div *ngIf=verified>
                     Your account is verified
                 </div>
-          </div>
+            </div>
         </div>
     </div>
 </div>

@@ -63,9 +63,9 @@ export class AuthService {
     }, httpOptions);
   }
 
-  requestVerification(): Observable<any> {
-    return this.http.post(AUTH_API + '/user/verifyRequest', {
-    }, httpOptions);
+  requestVerification(formData): Observable<any> {
+    return this.http.post(AUTH_API + '/user/verifyRequest', 
+      formData);
   }
 
   test(): Observable<any> {

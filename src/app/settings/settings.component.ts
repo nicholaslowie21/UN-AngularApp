@@ -12,15 +12,23 @@ export class SettingsComponent implements OnInit {
 
   user: any;
   isIndividual: any;
+  notVerified: any;
+  pendingVerified: any;
+  verified: any;
+
   currPassword = '';
   newPassword = '';
   confirmPassword = '';
-  isUsernameSuccessful = false;
   isPassSuccessful = false;
-  isEmailSuccessful = false;  
-  errMsgUsername = '';
   errMsgPass = '';
+
+  isUsernameSuccessful = false;
+  errMsgUsername = '';
+  
+  isEmailSuccessful = false;  
   errMsgEmail = '';
+
+  image: any;
   verifyRequest: any = {};
   isRequestSuccessful = false;
   isSubmitted = false;
@@ -33,6 +41,13 @@ export class SettingsComponent implements OnInit {
       this.user = this.tokenStorage.getUser();
       if (this.tokenStorage.getAccountType() == "user") {
         this.isIndividual = true;
+        if (this.user.isVerified == "false") {
+          this.notVerified = true;
+        } else if (this.user.isVerified == "pending") {
+          this.pendingVerified = true;
+        } else {
+          this.verified = true;
+        }
       }
     }
   }
@@ -95,13 +110,29 @@ export class SettingsComponent implements OnInit {
     )
   }
 
+  selectImage(event) {
+    if (event.target.files.length > 0) {
+      const file = event.target.files[0];
+      this.image = file;
+    }
+  }
+
   requestVerification(): void {
     this.isSubmitted = true;
-    this.authService.requestVerification().subscribe(
+    if (this.image == null) {
+      this.errMsgVerifyRequest = 'Upload your image!';
+      this.isRequestSuccessful = false;
+      return;
+    }
+    
+    const formData = new FormData();
+    formData.append('verifyPic', this.image);
+
+    this.authService.requestVerification(formData).subscribe(
       response => {
         this.isRequestSuccessful = true;
         this.verifyRequest.status = response.data.verifyrequest.status;
-        this.verifyRequest.id = response.data.verifyrequest.id;
+        this.tokenStorage.saveUser(response.data.user);
       },
       err => {
         this.errMsgVerifyRequest = err.error.msg;
