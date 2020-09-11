@@ -23,6 +23,7 @@ import { AffiliationPageComponent } from './affiliation-page/affiliation-page.co
 import { AdminVerificationComponent } from './admin/admin-verification/admin-verification.component';
 import { AdminUserManagementComponent } from './admin/admin-user-management/admin-user-management.component';
 import { AdminManagementComponent } from './admin/admin-management/admin-management.component';
+import { AdminReportComponent } from './admin/admin-report/admin-report.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { AdminManagementComponent } from './admin/admin-management/admin-managem
     AffiliationPageComponent,
     AdminVerificationComponent,
     AdminUserManagementComponent,
-    AdminManagementComponent
+    AdminManagementComponent,
+    AdminReportComponent
   ],
   imports: [
     BrowserModule,
