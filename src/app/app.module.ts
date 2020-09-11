@@ -24,6 +24,7 @@ import { AdminVerificationComponent } from './admin/admin-verification/admin-ver
 import { AdminUserManagementComponent } from './admin/admin-user-management/admin-user-management.component';
 import { AdminManagementComponent } from './admin/admin-management/admin-management.component';
 import { AdminReportComponent } from './admin/admin-report/admin-report.component';
+import { AdminUserManagementProfileComponent } from './admin/admin-user-management-profile/admin-user-management-profile.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { AdminReportComponent } from './admin/admin-report/admin-report.componen
     AdminVerificationComponent,
     AdminUserManagementComponent,
     AdminManagementComponent,
-    AdminReportComponent
+    AdminReportComponent,
+    AdminUserManagementProfileComponent
   ],
   imports: [
     BrowserModule,
