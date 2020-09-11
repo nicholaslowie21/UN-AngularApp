@@ -101,7 +101,7 @@ export class SettingsComponent implements OnInit {
     } else {
       this.institutionService.updateUsername({username: this.user.username}).subscribe(
         response => {
-          this.tokenStorage.saveUser(response.data.institution);
+          this.tokenStorage.saveUser(response.data.user);
           this.isUsernameSuccessful = true;
         },
         err => {
@@ -128,7 +128,7 @@ export class SettingsComponent implements OnInit {
     } else {
       this.institutionService.updateEmail({email: this.user.email}).subscribe(
         response => {
-          this.tokenStorage.saveUser(response.data.institution);
+          this.tokenStorage.saveUser(response.data.user);
           this.isEmailSuccessful = true;
         },
         err => {

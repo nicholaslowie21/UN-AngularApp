@@ -97,7 +97,7 @@ export class EditProfileComponent implements OnInit {
     } else {
       this.institutionService.uploadProfilePicture(formData).subscribe(
         response => {
-          this.tokenStorage.saveUser(response.data.institution);
+          this.tokenStorage.saveUser(response.data.user);
           this.isUploadPicSuccessful = true;
           this.reloadPage();
         },
@@ -146,7 +146,7 @@ export class EditProfileComponent implements OnInit {
       }
       this.institutionService.updateProfile(formUpdateProfile).subscribe(
         response => {
-          this.tokenStorage.saveUser(response.data.institution);
+          this.tokenStorage.saveUser(response.data.user);
           this.isUpdateSuccessful = true;
         },
         err => {
