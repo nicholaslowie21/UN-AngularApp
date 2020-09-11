@@ -12,6 +12,7 @@ import { AdminHomeComponent } from './admin/admin-home/admin-home.component';
 import { AboutComponent } from './about/about.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { SettingsComponent } from './settings/settings.component';
+import { OwnProfileComponent } from './own-profile/own-profile.component';
 
 const routes: Routes = [
   { path: 'landing', component: LandingComponent},
@@ -22,6 +23,7 @@ const routes: Routes = [
   { path: 'signup', component: SignupComponent },
   { path: 'signup/institution', component: SignupInstitutionComponent },
   { path: 'editProfile', component: EditProfileComponent, canActivate: [AuthGuardService] },
+  { path: 'ownProfile', component: OwnProfileComponent, canActivate: [AuthGuardService] },
   { path: 'admin', component: AdminHomeComponent, canActivate: [AuthGuardService] },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuardService] },
   { path: '', redirectTo: 'home', pathMatch: 'full'}
