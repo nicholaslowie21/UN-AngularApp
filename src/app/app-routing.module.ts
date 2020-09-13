@@ -8,12 +8,17 @@ import { SignupInstitutionComponent } from './signup-institution/signup-institut
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
-import { AdminHomeComponent } from './admin/admin-home/admin-home.component';
 import { AboutComponent } from './about/about.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { SettingsComponent } from './settings/settings.component';
 import { OwnProfileComponent } from './own-profile/own-profile.component';
 import { AffiliationPageComponent } from './affiliation-page/affiliation-page.component';
+import { AdminHomeComponent } from './admin/admin-home/admin-home.component';
+import { AdminManagementComponent } from './admin/admin-management/admin-management.component';
+import { AdminReportComponent } from './admin/admin-report/admin-report.component';
+import { AdminUserManagementComponent } from './admin/admin-user-management/admin-user-management.component';
+import { AdminUserManagementProfileComponent } from './admin/admin-user-management-profile/admin-user-management-profile.component';
+import { AdminVerificationComponent } from './admin/admin-verification/admin-verification.component';
 
 const routes: Routes = [
   { path: 'landing', component: LandingComponent},
@@ -25,9 +30,18 @@ const routes: Routes = [
   { path: 'signup/institution', component: SignupInstitutionComponent },
   { path: 'editProfile', component: EditProfileComponent, canActivate: [AuthGuardService] },
   { path: 'ownProfile', component: OwnProfileComponent, canActivate: [AuthGuardService] },
-  { path: 'admin', component: AdminHomeComponent, canActivate: [AuthGuardService] },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuardService] },
   { path: 'institution/affiliation', component: AffiliationPageComponent, canActivate: [AuthGuardService] },
+  { path: 'admin', canActivate: [AuthGuardService], canActivateChild: [AuthGuardService],
+    children: [
+      { path: 'admin-management', component: AdminManagementComponent },
+      { path: 'report', component: AdminReportComponent },
+      { path: 'user-management', component: AdminUserManagementComponent },
+      { path: 'user-management/profile', component: AdminUserManagementProfileComponent },
+      { path: 'verification', component: AdminVerificationComponent },
+      { path: '', component: AdminHomeComponent, pathMatch: 'full'}
+    ] 
+  },
   { path: '', redirectTo: 'home', pathMatch: 'full'}
 ];
 

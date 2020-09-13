@@ -5,6 +5,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
+import { AuthGuardService } from '../app/services/auth-guard.service';
+
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
@@ -53,7 +55,7 @@ import { AdminUserManagementProfileComponent } from './admin/admin-user-manageme
     FormsModule,
     HttpClientModule
   ],
-  providers: [authInterceptorProviders],
+  providers: [authInterceptorProviders, AuthGuardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
