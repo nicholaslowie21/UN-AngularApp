@@ -32,7 +32,7 @@ export class AuthGuardService implements CanActivate, CanActivateChild {
     if(role == "admin" || role == "regionaladmin" || role == "adminlead") {
       return true;
     } else {
-      this.router.navigate(['/admin']);
+      this.router.navigate(['/home']);
       return false;
     } 
   }

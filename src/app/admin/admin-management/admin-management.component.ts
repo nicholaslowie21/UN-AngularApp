@@ -13,13 +13,30 @@ export class AdminManagementComponent implements OnInit {
   regionalAdmins: any;
   adminLeads: any;
 
+  content: any;
+
   constructor(private adminService: AdminService, private tokenStorageService: TokenStorageService) { }
 
   ngOnInit(): void {
-    console.log("ADMIN MANAGEMENT");
-    this.admins = this.adminService.getAdmins();
-    this.regionalAdmins = this.adminService.getRegionalAdmins();
-    this.adminLeads = this.adminService.getAdminLeads();
+    this.adminService.getAdmins().subscribe(
+      response => {
+        this.admins = response.data.admins;
+      }
+    )
+    this.adminService.getAdminLeads().subscribe(
+      response => {
+        this.adminLeads = response.data.adminLeads;
+      }
+    )
+    this.adminService.getRegionalAdmins().subscribe(
+      response => {
+        this.regionalAdmins = response.data.regionalAdmins;
+      }
+    )
+  }
+
+  showAdminLeads(): void {
+    this.content = this.adminLeads;
   }
 
 }
