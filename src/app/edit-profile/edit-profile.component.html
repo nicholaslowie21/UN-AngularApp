@@ -114,6 +114,17 @@
           </div>
 
           <div class="form-group">
+            <label for="skills">Skills</label>
+            <input
+              type="text"
+              class="form-control"
+              name="skills"
+              [(ngModel)]="userSkills"
+              #skills="ngModel" placeholder="Enter skills separated by comma: Programming,cooking,graphic design"
+            />
+          </div>
+
+          <div class="form-group">
             <label for="website">Website</label>
             <input
               type="text"

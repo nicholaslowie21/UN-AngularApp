@@ -12,6 +12,7 @@ export class EditProfileComponent implements OnInit {
 
   isLoggedIn = false;
   user: any;
+  userSkills: any;
   isIndividual = false;
   isUpdateSuccessful = false;
   errorMessage = '';
@@ -38,6 +39,7 @@ export class EditProfileComponent implements OnInit {
       this.user = this.tokenStorage.getUser();
       if (this.tokenStorage.getAccountType() == "user") {
         this.isIndividual = true;
+        this.userSkills = this.user.skills.toString();
       }
     }
 
@@ -114,6 +116,7 @@ export class EditProfileComponent implements OnInit {
     this.updateSDGs();
     console.log(this.SDGs);
     if (this.isIndividual) {
+      const skillsArr = this.userSkills.split(",");
       const formUpdateProfile = {
         name: this.user.name,
         occupation: this.user.occupation,
@@ -122,7 +125,7 @@ export class EditProfileComponent implements OnInit {
         website: this.user.website || "",
         gender: this.user.gender,
         SDGs: this.SDGsChecked,
-        skills: this.user.skills
+        skills: skillsArr
       }
       this.userService.updateProfile(formUpdateProfile).subscribe(
         response => {
