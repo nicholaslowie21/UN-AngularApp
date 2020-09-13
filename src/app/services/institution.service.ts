@@ -59,4 +59,27 @@ export class InstitutionService {
       userId: data.userId
     }, httpOptions);
   }
+
+  getCurrentProjects(): Observable<any> {
+    return this.http.get(API_URL + '/currProjects');
+  }
+
+  getPastInvolvement(): Observable<any> {
+    return this.http.get(API_URL + '/pastProjects');
+  }
+
+  uploadAffiliationCSV(formData): Observable<any> {
+    return this.http.post(API_URL + '/membersCSV', 
+      formData);
+  }
+
+  viewInstitutionProfile(data): Observable<any> {
+    return this.http.post(API_URL + '/viewInstitution', {
+      institutionId: data.id
+    }, httpOptions);
+  }
+
+  getBadges(): Observable<any> {
+    return this.http.get(API_URL + '/badges');
+  }
 }
