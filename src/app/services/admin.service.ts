@@ -16,9 +16,7 @@ export class AdminService {
   constructor(private http: HttpClient) { }
 
   searchUser(data): Observable<any> {
-    return this.http.post(API_URL + '/searchUsers', {
-      username: data.username
-    }, httpOptions);
+    return this.http.get(API_URL + '/searchUsers?username=' + data.username);
   }
 
   assignRegionalAdmin(data): Observable<any> {

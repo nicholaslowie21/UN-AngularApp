@@ -44,11 +44,11 @@ export class InstitutionService {
     }, httpOptions);
   }
 
-  getAffiliatedUsers(): Observable<any> {
-    return this.http.get(API_URL + '/getMembers');
+  getAffiliatedUsers(data): Observable<any> {
+    return this.http.get(API_URL + '/getMembers?institutionId=' + data.id);
   }
 
-  addAffiliatedUsers(data): Observable<any> {
+  addAffiliatedUser(data): Observable<any> {
     return this.http.post(API_URL + '/addMember', {
       userId: data.userId
     }, httpOptions);
@@ -60,12 +60,12 @@ export class InstitutionService {
     }, httpOptions);
   }
 
-  getCurrentProjects(): Observable<any> {
-    return this.http.get(API_URL + '/currProjects');
+  getCurrentProjects(data): Observable<any> {
+    return this.http.get(API_URL + '/currProjects?institutionId=' + data.id);
   }
 
-  getPastInvolvement(): Observable<any> {
-    return this.http.get(API_URL + '/pastProjects');
+  getPastInvolvement(data): Observable<any> {
+    return this.http.get(API_URL + '/pastProjects?institutionId=' + data.id);
   }
 
   uploadAffiliationCSV(formData): Observable<any> {
@@ -74,12 +74,14 @@ export class InstitutionService {
   }
 
   viewInstitutionProfile(data): Observable<any> {
-    return this.http.post(API_URL + '/viewInstitution', {
-      institutionId: data.id
-    }, httpOptions);
+    return this.http.get(API_URL + '/viewInstitution?institutionId=' + data.id);
   }
 
-  getBadges(): Observable<any> {
-    return this.http.get(API_URL + '/badges');
+  getBadges(data): Observable<any> {
+    return this.http.get(API_URL + '/badges?institutionId=' + data.id);
+  }
+
+  searchUsers(data): Observable<any> {
+    return this.http.get(API_URL + '/searchUsers?username=' + data.username);
   }
 }

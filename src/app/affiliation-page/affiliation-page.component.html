@@ -1,1 +1,87 @@
-<p>affiliation-page works!</p>
+<div *ngIf=isInstitution>
+    <h1>Affiliated users</h1>
+
+    <a href="https://localhost:8080/file/memberCSVtemplate.csv">Download template</a>
+
+    <form>
+        <input type="file" name="CSV" (change)="selectFile($event)" />
+        <button type="submit" (click)="uploadCSV()">Upload CSV</button>
+    </form>
+
+    <div *ngFor="let member of members">
+        <div class="card">
+            <div class="card-body">
+                <div *ngIf="member.profilePic.length > 0">
+                    <img
+                      src={{member.profilePic}}
+                      class="rounded-circle img-fluid"
+                      style="width: 80px; height: 80px; object-fit: cover;"
+                      alt="Profile picture"
+                    />
+                </div>
+                <div *ngIf="member.profilePic.length == 0">
+                    <img
+                      src="../../assets/img/profilePic_Placeholder.png"
+                      class="rounded-circle img-fluid"
+                      style="width: 80px; height: 80px; object-fit: cover;"
+                      alt="Profile picture"
+                    />
+                </div>
+                {{member.name}} <br/>
+                {{member.username}}
+                <button class="float-right" (click)=deleteAffiliatedUser(member)>Delete</button>
+            </div>
+        </div>
+    </div>
+    
+    <form
+        name="form"
+        (ngSubmit)="f.form.valid && searchUsers()"
+        #f="ngForm"
+        novalidate
+    >
+        <div class="form-group">
+            <input
+                type="text"
+                class="form-control"
+                name="search"
+                [(ngModel)]="keyword"
+                #search="ngModel"
+                placeholder="Search"
+            />
+            <button class="btn btn-primary" (click)=searchUsers()>Search</button>
+        </div>
+    </form>
+
+    <div class="alert alert-warning" *ngIf="f.submitted && !isSearchSuccessful">
+        {{ errorMsgSearch }}
+    </div>
+    <div *ngIf=isSearchSuccessful>
+        <div *ngFor="let user of searchResults">
+            <div class="card">
+                <div class="card-body">
+                    <div *ngIf="user.profilePic.length > 0">
+                        <img
+                          src={{user.profilePic}}
+                          class="rounded-circle img-fluid"
+                          style="width: 80px; height: 80px; object-fit: cover;"
+                          alt="Profile picture"
+                        />
+                    </div>
+                    <div *ngIf="user.profilePic.length == 0">
+                        <img
+                          src="../../assets/img/profilePic_Placeholder.png"
+                          class="rounded-circle img-fluid"
+                          style="width: 90px; height: 90px; object-fit: cover;"
+                          alt="Profile picture"
+                        />
+                    </div>
+                    {{user.name}} <br/>
+                    {{user.username}}
+                    <button class="float-right" (click)=addAffiliatedUser(user)>Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>

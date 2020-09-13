@@ -45,7 +45,19 @@ export class UserService {
     }, httpOptions);
   }
 
-  getCurrentProjects(): Observable<any> {
-    return this.http.get(API_URL + '/currProjects');
+  getCurrentProjects(data): Observable<any> {
+    return this.http.get(API_URL + '/currProjects?userId=' + data.id);
+  }
+
+  getPastProjects(data): Observable<any> {
+    return this.http.get(API_URL + '/pastProjects?userId=' + data.id);
+  }
+
+  viewProfile(data): Observable<any> {
+    return this.http.get(API_URL + '/viewUser?userId=' + data.id);
+  }
+
+  getBadges(data): Observable<any> {
+    return this.http.get(API_URL + '/badges?userId=' + data.id);
   }
 }

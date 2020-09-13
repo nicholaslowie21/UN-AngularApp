@@ -53,15 +53,12 @@ export class EditProfileComponent implements OnInit {
   }
 
   updateCheckedSDGs(x, event) {
-    console.log("update checked" + x)
     this.SDGsMap[x] = event.target.checked;
   }
 
   updateSDGs() {
     for (var x in this.SDGsMap) {
       if(this.SDGsMap[x]) {
-        console.log("X: " + x + typeof x);
-        console.log("X+1: "+(parseInt(x)+1));
         this.SDGsChecked.push(parseInt(x)+1);
       }
     }
@@ -114,7 +111,6 @@ export class EditProfileComponent implements OnInit {
 
   onSubmit(): void {
     this.updateSDGs();
-    console.log(this.SDGs);
     if (this.isIndividual) {
       const skillsArr = this.userSkills.split(",");
       const formUpdateProfile = {
