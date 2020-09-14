@@ -1,89 +1,220 @@
-<div class="row">
-    <div class="col-3">
-        <div class="card">
-            <div class="card-body">
-                <img class="card-img-top rounded-circle img-fluid mx-auto d-block" style="width: 150px; height: 150px; object-fit: cover;"
-                    src={{user.profilePic}} alt="Profile picture">
+<div class="container p-3 my-3 bg-dark text-white">
+    <div class="row">
+        <div class="col-3">
+            <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src={{user.profilePic}} style="margin: 10px; width: 150px; height: 150px; object-fit: cover;"
+                alt="Profile picture">
+            <img src="../../assets/img/verified.jpg" style="width: 30px; height: 30px;" class="center">
+        </div>
+        <div class="col-7">
+            <h5 class="card-title text-left mt-md-3">{{ user.name }}</h5>
+            <h5 class="card-title text-left mt-md-3">{{ user.country }}</h5>
+            <h5 class="card-title text-left mt-md-3">{{ user.occupation }}</h5>
+            <h5 class="card-title text-left mt-md-3">{{ user.address }}</h5>
+            <h5 class="card-title text-left mt-md-3">{{ user.phone }}</h5>
+            <h5 class="card-title text-left mt-md-3">{{ user.bio }}</h5>
+            <h5 class="card-title text-left mt-md-3">{{ user.website }}</h5>
+        </div>
+        <div class="col-2">
+            <div class="btn-group">
+                <a href="/editProfile" class="btn btn-primary">Edit Profile</a>
             </div>
         </div>
     </div>
-    <div class="col-7">
-        <h5 class="card-title text-left mt-md-3">{{ user.name }}</h5>
-        <h5 class="card-title text-left mt-md-3">{{ user.country }}</h5>
-        <h5 class="card-title text-center mt-md-3">{{ user.occupation }}</h5>
-        <h5 class="card-title text-center mt-md-3">{{ user.bio }}</h5>
-    </div>
-    <div class="col-2">
-        <h6 class="card-title text-left mt-md-3">{{ user.badgePath }}</h6>
-        <h6 class="card-title text-left mt-md-3">My Points: {{ user.points }}</h6>
-        <h6 class="card-title text-left mt-md-3">My Wallet: {{ user.wallet }}</h6>
-        <div class="btn-group">
-            <a href="/editProfile" class="btn btn-primary">Edit Profile</a>
+</div>
+
+<div class="container p-3 my-3 bg-primary text-white">
+    <div class="row">
+        <div class="col-6 bg-primary text-white border-0" *ngIf=isIndividual>
+            <h6 class="card-title text-left mt-md-3" style="margin: 15px">My Badges:
+                <img src="../../assets/img/badge.png" style="height: 30px; width: 30px;">
+                <img src="../../assets/img/badge.png" style="height: 30px; width: 30px;">
+                <img src="../../assets/img/badge.png" style="height: 30px; width: 30px;">
+            </h6>
+        </div>
+        <div class="col-3 bg-primary text-white border-0" *ngIf=isIndividual>
+            <h6 class="card-title text-left mt-md-3 center" style="margin: 15px">My Points: {{ user.points }}</h6>
+        </div>
+        <div class="col-3 bg-primary text-white border-0" *ngIf=isIndividual>
+            <h6 class="card-title text-left mt-md-3" style="margin: 15px">My Wallet: {{ user.wallet }}</h6>
+        </div>
+        <div class="col-3 bg-primary text-white border-0">
+            <h6 class="card-title text-left mt-md-3 center" style="margin: 15px">SDGs: {{ user.SDGs }}</h6>
         </div>
     </div>
 </div>
-<div class="row" style="margin: 10px;">
-    <div class="card" style="width: 40%;">
-        <div class="card-body">
-            <h5 class="card-title">My Current Projects</h5>
-            <ul class="list-group">
-                <li class="list-group-item">
-                    <img class="card-img-top rounded-circle img-fluid mx-auto d-block" style="float: left; margin:15px; width: 50px; height: 50px; object-fit: cover;"
-                        src={{user.profilePic}} alt="Profile picture">
-                    <h6 class="card-title text-left mt-md-3"> Project title 1</h6>
-                    <h6 class="card-title text-left mt-md-3"> Project Owner</h6>
-                </li>
-                <li class="list-group-item">
-                    <img class="card-img-top rounded-circle img-fluid mx-auto d-block" style="float: left; margin:15px; width: 50px; height: 50px; object-fit: cover;"
-                        src={{user.profilePic}} alt="Profile picture">
-                    <h6 class="card-title text-left mt-md-3"> Project title 2</h6>
-                    <h6 class="card-title text-left mt-md-3"> Manpower Contributor</h6>
-                </li>
-            </ul>
-        </div>
-        <div class="card-body">
-            <h5 class="card-title">My Past Projects</h5>
-            <ul class="list-group">
-                <li class="list-group-item">
-                    <img class="card-img-top rounded-circle img-fluid mx-auto d-block" style="float: left; margin:15px; width: 50px; height: 50px; object-fit: cover;"
-                        src={{user.profilePic}} alt="Profile picture">
-                    <h6 class="card-title text-left mt-md-3"> Project title 3</h6>
-                    <h6 class="card-title text-left mt-md-3"> Manpower Contributor</h6>
-                    <h6 class="card-title text-left mt-md-3"> Great team member</h6>
-                </li>
-                <li class="list-group-item">
-                    <img class="card-img-top rounded-circle img-fluid mx-auto d-block" style="float: left; margin:15px; width: 50px; height: 50px; object-fit: cover;"
-                        src={{user.profilePic}} alt="Profile picture">
-                    <h6 class="card-title text-left mt-md-3"> Project title 4</h6>
-                    <h6 class="card-title text-left mt-md-3"> Item Contributor</h6>
-                    <h6 class="card-title text-left mt-md-3"> Good quality items, delivered on time</h6>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <div class="ml-auto card w-50" style="width: 40%;">
-        <div class="card-body">
-            <h5 class="card-title">My Resources</h5>
-            <ul class="nav">
-                <li class="nav-item">
-                    <a href="#tab-01" aria-controls="tab-01" role="tab" data-toggle="tab" style="margin: 10px;">Personal Feed</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#tab-02" aria-controls="tab-02" role="tab" data-toggle="tab" style="margin: 10px;">Knowledge Resource</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#tab-03" aria-controls="tab-03" role="tab" data-toggle="tab" style="margin: 10px;">Resource Offers</a>
-                </li>
-            </ul>
-            <div class="tab-content">
-                <div role="tabpanel" class="tab-pane active" id="tab-01">
-                    personal feed
+
+<div class="container" style="height: 100%;">
+    <div class="row">
+        <div class="card" style="width: 50%; float: left;">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">My Current Projects</h5>
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="card border-0" style="width:20%">
+                                    <img class="card-img-top rounded-circle img-fluid mx-auto d-block" style="float: left; margin:15px; width: 50px; height: 50px; object-fit: cover;"
+                                        src="../../assets/img/profilePic_Placeholder.png" alt="badge">
+                                </div>
+                                <div class="card border-0" style="width:80%">
+                                    <h6 class="card-title text-left mt-md-3" style="margin: 10px;"> Project title 1</h6>
+                                    <h6 class="card-title text-left mt-md-3" style="margin: 10px;"> Project Owner</h6>
+                                    <h6 class="card-title text-left mt-md-3" style="margin: 10px;"> SDGs: 1</h6>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="card border-0" style="width:20%">
+                                    <img class="card-img-top rounded-circle img-fluid mx-auto d-block" style="float: left; margin:15px; width: 50px; height: 50px; object-fit: cover;"
+                                        src="../../assets/img/profilePic_Placeholder.png" alt="Profile picture">
+                                </div>
+                                <div class="card border-0" style="width:80%">
+                                    <h6 class="card-title text-left mt-md-3" style="margin: 10px;"> Project title 2</h6>
+                                    <h6 class="card-title text-left mt-md-3" style="margin: 10px;"> Manpower Contributor</h6>
+                                    <h6 class="card-title text-left mt-md-3" style="margin: 10px;"> SDGs: 4</h6>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
-                <div role="tabpanel" class="tab-pane" id="tab-02">
-                    knowledge resource
+                <div class="card-body">
+                    <h5 class="card-title">My Past Projects</h5>
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="card border-0" style="width:20%">
+                                    <img class="card-img-top rounded-circle img-fluid mx-auto d-block" style="float: left; margin:15px; width: 50px; height: 50px; object-fit: cover;"
+                                        src="../../assets/img/profilePic_Placeholder.png" alt="Profile picture">
+                                </div>
+                                <div class="card border-0" style="width:80%">
+                                    <h6 class="card-title text-left mt-md-3" style="margin: 10px;"> Project title 3</h6>
+                                    <h6 class="card-title text-left mt-md-3" style="margin: 10px;"> Manpower Contributor</h6>
+                                    <h6 class="card-title text-left mt-md-3" style="margin: 10px;"> Great team member</h6>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="card border-0" style="width:20%">
+                                    <img class="card-img-top rounded-circle img-fluid mx-auto d-block" style="float: left; margin:15px; width: 50px; height: 50px; object-fit: cover;"
+                                        src="../../assets/img/profilePic_Placeholder.png" alt="Profile picture">
+                                </div>
+                                <div class="card border-0" style="width:80%">
+                                    <h6 class="card-title text-left mt-md-3" style="margin: 10px;"> Project title 4</h6>
+                                    <h6 class="card-title text-left mt-md-3" style="margin: 10px;"> Item Contributor</h6>
+                                    <h6 class="card-title text-left mt-md-3" style="margin: 10px;"> Good quality items, delivered on time</h6>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
-                <div role="tabpanel" class="tab-pane" id="tab-03">
-                    resource offers
+            </div>
+        </div>
+
+        <div class="card" style="width: 50%; float: right;">
+            <div class="ml-auto card" style="width: 100%">
+                <div class="card-body">
+                    <h5 class="card-title">My Resources</h5>
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <a href="#tab-01" aria-controls="tab-01" role="tab" data-toggle="tab" style="margin: 10px;">Personal Feed</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#tab-02" aria-controls="tab-02" role="tab" data-toggle="tab" style="margin: 10px;">Knowledge Resource</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#tab-03" aria-controls="tab-03" role="tab" data-toggle="tab" style="margin: 10px;" *ngIf=isIndividual>Resource Offers</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="tab-01">
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        <div class="card border-0" style="width:20%">
+                                            <img class="card-img-top rounded-circle img-fluid mx-auto d-block" style="float: left; margin:15px; width: 50px; height: 50px; object-fit: cover;"
+                                                src="../../assets/img/profilePic_Placeholder.png" alt="Profile picture">
+                                        </div>
+                                        <div class="card border-0" style="width:80%">
+                                            <h6 class="card-title text-left mt-md-3" style="margin: 10px;"> Created Project 1</h6>
+                                            <h6 class="card-title text-left mt-md-3" style="margin: 10px;"> Project Owner</h6>
+                                            <h6 class="card-title text-left mt-md-3" style="margin: 10px;"> Created 10/9/2020</h6>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        <div class="card border-0" style="width:20%">
+                                            <img class="card-img-top rounded-circle img-fluid mx-auto d-block" style="float: left; margin:15px; width: 50px; height: 50px; object-fit: cover;"
+                                                src="../../assets/img/profilePic_Placeholder.png" alt="Profile picture">
+                                        </div>
+                                        <div class="card border-0" style="width:80%">
+                                            <h6 class="card-title text-left mt-md-3" style="margin: 10px;"> Joined Project 2</h6>
+                                            <h6 class="card-title text-left mt-md-3" style="margin: 10px;"> Manpower Contributor</h6>
+                                            <h6 class="card-title text-left mt-md-3" style="margin: 10px;"> Joined 12/9/2020</h6>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="tab-02">
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        <div class="card border-0" style="width:20%">
+                                            <img class="card-img-top rounded-circle img-fluid mx-auto d-block" style="float: left; margin:15px; width: 50px; height: 50px; object-fit: cover;"
+                                                src="../../assets/img/lightbulb.jpg" alt="Knowledge Icon">
+                                        </div>
+                                        <div class="card border-0" style="width:80%">
+                                            <h6 class="card-title text-left mt-md-3" style="margin: 10px;"> Technology stuff</h6>
+                                            <h6 class="card-title text-left mt-md-3" style="margin: 10px;"> Link</h6>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        <div class="card border-0" style="width:20%">
+                                            <img class="card-img-top rounded-circle img-fluid mx-auto d-block" style="float: left; margin:15px; width: 50px; height: 50px; object-fit: cover;"
+                                                src="../../assets/img/lightbulb.jpg" alt="Knowledge Icon">
+                                        </div>
+                                        <div class="card border-0" style="width:80%">
+                                            <h6 class="card-title text-left mt-md-3" style="margin: 10px;"> Creating Device</h6>
+                                            <h6 class="card-title text-left mt-md-3" style="margin: 10px;"> Link 2</h6>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="tab-03">
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        <div class="card border-0" style="width:20%">
+                                            <img class="card-img-top rounded-circle img-fluid mx-auto d-block" style="float: left; margin:15px; width: 50px; height: 50px; object-fit: cover;"
+                                                src="../../assets/img/green_exclamation.jpg" alt="Offer Icon">
+                                        </div>
+                                        <div class="card border-0" style="width:80%">
+                                            <h6 class="card-title text-left mt-md-3" style="margin: 10px;"> Project Title 5</h6>
+                                            <h6 class="card-title text-left mt-md-3" style="margin: 10px;"> Manpower Offered</h6>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        <div class="card border-0" style="width:20%">
+                                            <img class="card-img-top rounded-circle img-fluid mx-auto d-block" style="float: left; margin:15px; width: 50px; height: 50px; object-fit: cover;"
+                                                src="../../assets/img/green_exclamation.jpg" alt="Offer Icon">
+                                        </div>
+                                        <div class="card border-0" style="width:80%">
+                                            <h6 class="card-title text-left mt-md-3" style="margin: 10px;"> Project Title 6</h6>
+                                            <h6 class="card-title text-left mt-md-3" style="margin: 10px;"> Venue Offered</h6>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
