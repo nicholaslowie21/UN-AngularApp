@@ -65,6 +65,8 @@ export class SettingsComponent implements OnInit {
       this.authService.changePasswordUser({oldPassword: this.currPassword, password: this.user.password}).subscribe(
         response => {
           this.tokenStorage.saveUser(response.data.user);
+          console.log(response.data.user.password);
+          console.log(response.data.user.salt);
           this.isPassSuccessful = true;
         },
         err => {

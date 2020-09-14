@@ -24,6 +24,7 @@
             [(ngModel)]="user.username"
             required
             #username="ngModel"
+            (click)="isUsernameSuccessful=false; f.submitted=false"
             />
             <div class="alert-danger" *ngIf="f.submitted && username.invalid">
                 <div *ngIf="username.errors.required">Username is required</div>
@@ -61,6 +62,7 @@
                 [(ngModel)]="user.email"
                 required
                 #email="ngModel"
+                (click)="isEmailSuccessful=false; fe.submitted=false"
             />
             <div class="alert-danger" *ngIf="fe.submitted && email.invalid">
                 <div *ngIf="email.errors.required">Email is required</div>
@@ -101,6 +103,7 @@
                     required
                     minlength="8"
                     #currentPass="ngModel"
+                    (click)="isPassSuccessful=false; fp.submitted=false"
                 />
                 <div class="alert-danger" *ngIf="fp.submitted && currentPass.invalid">
                     <div *ngIf="currentPass.errors.required">Password is required</div>
