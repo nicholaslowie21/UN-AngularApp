@@ -47,4 +47,12 @@ export class VerificationService {
     }, httpOptions);
   }
 
+  getRegionalUserRequest(): Observable<any> {
+    return this.http.get(API_URL + '/regional/userRequest');
+  }
+
+  getRegionalInstitutionRequest(): Observable<any> {
+    return this.http.get(API_URL + '/regional/institutionRequest');
+  }
+
 }

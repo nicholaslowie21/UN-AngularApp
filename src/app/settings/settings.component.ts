@@ -62,7 +62,7 @@ export class SettingsComponent implements OnInit {
     }
 
     if (this.isIndividual) {
-      this.authService.changePasswordUser({oldPassword: this.currPassword, password: this.user.password}).subscribe(
+      this.authService.changePasswordUser({oldPassword: this.currPassword, password: this.newPassword}).subscribe(
         response => {
           this.tokenStorage.saveUser(response.data.user);
           console.log(response.data.user.password);
@@ -75,7 +75,7 @@ export class SettingsComponent implements OnInit {
         }
       )
     } else {
-      this.authService.changePasswordInstitution({oldPassword: this.currPassword, password: this.user.password}).subscribe(
+      this.authService.changePasswordInstitution({oldPassword: this.currPassword, password: this.newPassword}).subscribe(
         response => {
           this.tokenStorage.saveUser(response.data.user);
           this.isPassSuccessful = true;
