@@ -104,14 +104,9 @@
         </div>
         <div class="form-group">
           <label for="country">Country</label>
-          <input
-            type="text"
-            class="form-control"
-            name="country"
-            [(ngModel)]="form.country"
-            required
-            #country="ngModel"
-          />
+          <select class="form-control" name="country" [(ngModel)]="form.country" required #country="ngModel">
+            <option *ngFor="let c of countries" value={{c}}>{{c}}</option>
+          </select>
           <div class="alert-danger" *ngIf="f.submitted && country.invalid">
             <div *ngIf="country.errors.required">Country is required</div>
           </div>
