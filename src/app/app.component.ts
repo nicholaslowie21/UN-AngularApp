@@ -25,6 +25,10 @@ export class AppComponent implements OnInit {
       console.log(this.role);
       if(this.role === 'admin') {
         this.showAdmin = true;
+      } else if(this.role === 'regionaladmin') {
+        this.showAdmin = true;
+      } else if(this.role === 'adminlead') {
+        this.showAdmin = true;
       }
 
       this.username = user.username;
