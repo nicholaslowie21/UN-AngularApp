@@ -9,6 +9,8 @@ import { TokenStorageService } from '../../services/token-storage.service';
 })
 export class AdminManagementComponent implements OnInit {
 
+  thisUser: any;
+
   admins: any;
   regionalAdmins: any;
   adminLeads: any;
@@ -21,6 +23,7 @@ export class AdminManagementComponent implements OnInit {
   constructor(private adminService: AdminService, private tokenStorageService: TokenStorageService) { }
 
   ngOnInit(): void {
+    this.thisUser = this.tokenStorageService.getUser();
     this.loadAdmins();
     this.loadAdminLeads();
     this.loadRegionalAdmins();
@@ -50,6 +53,7 @@ export class AdminManagementComponent implements OnInit {
         this.loadAdmins();
         this.loadAdminLeads();
         this.loadRegionalAdmins();
+        this.searchUsers();
       },
       err => {
         alert(err.error.msg);
@@ -64,6 +68,7 @@ export class AdminManagementComponent implements OnInit {
         this.loadAdmins();
         this.loadAdminLeads();
         this.loadRegionalAdmins();
+        this.searchUsers();
       },
       err => {
         alert(err.error.msg);
@@ -78,6 +83,7 @@ export class AdminManagementComponent implements OnInit {
         this.loadAdmins();
         this.loadAdminLeads();
         this.loadRegionalAdmins();
+        this.searchUsers();
       },
       err => {
         alert(err.error.msg);
@@ -92,6 +98,7 @@ export class AdminManagementComponent implements OnInit {
         this.loadAdmins();
         this.loadAdminLeads();
         this.loadRegionalAdmins();
+        this.searchUsers();
       },
       err => {
         alert(err.error.msg);

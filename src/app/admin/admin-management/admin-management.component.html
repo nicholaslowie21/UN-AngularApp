@@ -60,6 +60,7 @@
                     </div>
                     {{user.name}} <br/>
                     {{user.username}}
+                    <div class="text-secondary">{{user.role}}</div>
                     <div class="dropdown float-right">
                       <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Assign role
@@ -98,7 +99,8 @@
                     </div>
                     {{c.name}} <br/>
                     {{c.username}}
-                    <div class="dropdown float-right">
+                    <div class="text-secondary">{{c.role}}</div>
+                    <div class="dropdown float-right" *ngIf="c.username != thisUser.username">
                       <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Assign role
                       </button>
@@ -134,6 +136,7 @@
                     </div>
                     {{a.name}} <br/>
                     {{a.username}}
+                    <div class="text-secondary">{{a.role}}</div>
                     <div class="dropdown float-right">
                       <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Assign role
@@ -170,6 +173,7 @@
                     </div>
                     {{r.name}} <br/>
                     {{r.username}}
+                    <div class="text-secondary">{{r.role}}</div>
                     <div class="dropdown float-right">
                       <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Assign role
