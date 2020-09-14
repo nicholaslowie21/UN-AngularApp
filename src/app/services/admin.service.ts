@@ -60,4 +60,22 @@ export class AdminService {
       targetId: data.id
     }, httpOptions);
   }
+
+  activateUser(data): Observable<any> {
+    return this.http.post(API_URL + '/activateUser', {
+      targetId: data.id
+    }, httpOptions);
+  }
+
+  suspendProject(data): Observable<any> {
+    return this.http.post(API_URL + '/suspendProject', {
+      targetId: data.id
+    }, httpOptions);
+  }
+
+  activateProject(data): Observable<any> {
+    return this.http.post(API_URL + '/activateProject', {
+      targetId: data.id
+    }, httpOptions);
+  }
 }

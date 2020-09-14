@@ -60,4 +60,8 @@ export class UserService {
   getBadges(data): Observable<any> {
     return this.http.get(API_URL + '/badges?userId=' + data.id);
   }
+
+  generateShareProfilePic(): Observable<any> {
+    return this.http.get(API_URL + '/shareProfile');
+  }
 }
