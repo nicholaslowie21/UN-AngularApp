@@ -15,7 +15,67 @@
   </li>
 </ul>
 <div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade show active" id="search" role="tabpanel" aria-labelledby="search-tab">Test</div>
+    <div class="tab-pane fade show active" id="search" role="tabpanel" aria-labelledby="search-tab">
+      <form
+        name="form"
+        (ngSubmit)="f.form.valid && searchUsers()"
+        #f="ngForm"
+        novalidate
+      >
+        <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              name="search"
+              [(ngModel)]="keyword"
+              #search="ngModel"
+              placeholder="Search"
+            />
+            <button class="btn btn-primary" (click)=searchUsers()>Search</button>
+        </div>
+      </form>
+
+      <div class="alert alert-warning" *ngIf="f.submitted && !isSearchSuccessful">
+          {{ errorMsgSearch }}
+      </div>
+      <div *ngIf=isSearchSuccessful>
+        <div *ngFor="let user of searchResults">
+            <div class="card">
+                <div class="card-body">
+                    <div *ngIf="user.profilePic.length > 0">
+                        <img
+                          src={{user.profilePic}}
+                          class="rounded-circle img-fluid"
+                          style="width: 80px; height: 80px; object-fit: cover;"
+                          alt="Profile picture"
+                        />
+                    </div>
+                    <div *ngIf="user.profilePic.length == 0">
+                        <img
+                          src="../../assets/img/profilePic_Placeholder.png"
+                          class="rounded-circle img-fluid"
+                          style="width: 90px; height: 90px; object-fit: cover;"
+                          alt="Profile picture"
+                        />
+                    </div>
+                    {{user.name}} <br/>
+                    {{user.username}}
+                    <div class="dropdown float-right">
+                      <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Assign role
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item btn" (click)=assignAdminLead(user.id)>Admin Lead</a>
+                        <a class="dropdown-item btn" (click)=assignAdmin(user.id)>Admin</a>
+                        <a class="dropdown-item btn" (click)=assignRegionalAdmin(user.id)>Regional Admin</a>
+                        <a class="dropdown-item btn" (click)=assignUser(user.id)>User</a>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
     <div class="tab-pane fade" id="adminLeads" role="tabpanel" aria-labelledby="adminLeads-tab">
         <div *ngFor="let c of adminLeads">
             <div class="card">
@@ -38,6 +98,16 @@
                     </div>
                     {{c.name}} <br/>
                     {{c.username}}
+                    <div class="dropdown float-right">
+                      <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Assign role
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item btn" (click)=assignAdmin(c.id)>Admin</a>
+                        <a class="dropdown-item btn" (click)=assignRegionalAdmin(c.id)>Regional Admin</a>
+                        <a class="dropdown-item btn" (click)=assignUser(c.id)>User</a>
+                      </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -64,6 +134,16 @@
                     </div>
                     {{a.name}} <br/>
                     {{a.username}}
+                    <div class="dropdown float-right">
+                      <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Assign role
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item btn" (click)=assignAdminLead(a.id)>Admin Lead</a>
+                        <a class="dropdown-item btn" (click)=assignRegionalAdmin(a.id)>Regional Admin</a>
+                        <a class="dropdown-item btn" (click)=assignUser(a.id)>User</a>
+                      </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -90,6 +170,16 @@
                     </div>
                     {{r.name}} <br/>
                     {{r.username}}
+                    <div class="dropdown float-right">
+                      <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Assign role
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item btn" (click)=assignAdminLead(r.id)>Admin Lead</a>
+                        <a class="dropdown-item btn" (click)=assignAdmin(r.id)>Admin</a>
+                        <a class="dropdown-item btn" (click)=assignUser(r.id)>User</a>
+                      </div>
+                    </div>
                 </div>
             </div>
         </div>
