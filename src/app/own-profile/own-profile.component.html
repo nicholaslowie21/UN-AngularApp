@@ -34,21 +34,32 @@
                     </button>
                     </div>
                     <div class="modal-body text-dark">
-                        <button shareButton="facebook" url="http://localhost:4200/profile?userId={{user.id}}">
-                            FB
+                        <button class="btn" shareButton="facebook" url="http://localhost:4200/profile?userId={{user.id}}">
+                            <fa-icon [icon]="faFacebookSquare" size="2x"></fa-icon>
                         </button>
-                        <button shareButton="linkedin" url="http://localhost:4200/profile?userId={{user.id}}">
-                            LinkedIn
+                        <button class="btn" shareButton="twitter" url="http://localhost:4200/profile?userId={{user.id}}">
+                            <fa-icon [icon]="faTwitter" size="2x"></fa-icon>
                         </button>
-                        <button shareButton="whatsapp" url="http://localhost:4200/profile?userId={{user.id}}">
-                            Test whatsapp
+                        <button class="btn" shareButton="linkedin" url="http://localhost:4200/profile?userId={{user.id}}">
+                            <fa-icon [icon]="faLinkedin" size="2x"></fa-icon>
                         </button>
-                        <button shareButton="telegram" url="http://localhost:4200/profile?userId={{user.id}}">
-                            Test telegram
+                        <button class="btn" shareButton="whatsapp" url="http://localhost:4200/profile?userId={{user.id}}">
+                            <fa-icon [icon]="faWhatsapp" size="2x" [styles]="{'color':'green'}"></fa-icon>
                         </button>
-                        
-                        http://localhost:4200/profile?userId={{user.id}} <br/>
-                        <code>&lt;iframe src="http://localhost:4200/profile?userId={{user.id}}" title="Profile"&gt;&lt;/iframe&gt;</code>
+                        <button class="btn" shareButton="telegram" url="http://localhost:4200/profile?userId={{user.id}}">
+                            <fa-icon [icon]="faTelegram" size="2x"></fa-icon>
+                        </button>
+                        <br />
+                        <div class="card">
+                            <div class="card-header">
+                                http://localhost:4200/profile?userId={{user.id}}
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <code>&lt;iframe src="http://localhost:4200/profile?userId={{user.id}}" title="User Profile"&gt;&lt;/iframe&gt;</code>
+                            </div>
+                        </div>
                         <div class="embed-responsive embed-responsive-4by3">
                         <iframe class="embed-responsive-item" [src]="shareLink | safe: 'resourceUrl'" title="User Profile">
                         </iframe>

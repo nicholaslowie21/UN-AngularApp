@@ -31,6 +31,7 @@ import { OthersProfileComponent } from './others-profile/others-profile.componen
 
 import { ShareModule } from 'ngx-sharebuttons';
 import { ShareIconsModule } from 'ngx-sharebuttons/icons';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SafePipe } from './safe.pipe';
 
 @NgModule({
@@ -62,7 +63,8 @@ import { SafePipe } from './safe.pipe';
     FormsModule,
     HttpClientModule,
     ShareModule,
-    ShareIconsModule
+    ShareIconsModule,
+    FontAwesomeModule
   ],
   providers: [authInterceptorProviders, AuthGuardService],
   bootstrap: [AppComponent]

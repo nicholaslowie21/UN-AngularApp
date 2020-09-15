@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { TokenStorageService } from '../services/token-storage.service';
-
-import { SafePipe } from '../safe.pipe';
+import { faFacebookSquare } from '@fortawesome/free-brands-svg-icons/faFacebookSquare';
+import { faTwitter } from '@fortawesome/free-brands-svg-icons/faTwitter';
+import { faLinkedin } from '@fortawesome/free-brands-svg-icons/faLinkedin';
+import { faWhatsapp } from '@fortawesome/free-brands-svg-icons/faWhatsapp';
+import { faTelegram } from '@fortawesome/free-brands-svg-icons/faTelegram';
 
 @Component({
   selector: 'app-own-profile',
@@ -14,6 +17,11 @@ export class OwnProfileComponent implements OnInit {
   user: any;
   isIndividual = false;
   shareLink = '';
+  faFacebookSquare = faFacebookSquare;
+  faTwitter = faTwitter;
+  faLinkedin = faLinkedin;
+  faWhatsapp = faWhatsapp;
+  faTelegram = faTelegram;
   //projectList = Array;
 
   constructor(private authService: AuthService, private tokenStorageService: TokenStorageService) { }
