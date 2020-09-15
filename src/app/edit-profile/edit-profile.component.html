@@ -51,6 +51,7 @@
             required
             minlength="3"
             #name="ngModel"
+            (click)="isUpdateSuccessful=false; f.submitted=false"
           />
         </div>
         <div class="alert-danger" *ngIf="f.submitted && name.invalid">
@@ -64,7 +65,7 @@
       <div class="form-group row">
         <label for="country" class="col-sm-2 col-form-label">Country</label>
         <div class="col-sm-10">
-          <select class="form-control" name="country" [(ngModel)]="user.country" required #country="ngModel">
+          <select class="form-control" name="country" [(ngModel)]="user.country" required #country="ngModel" (click)="isUpdateSuccessful=false; f.submitted=false">
             <option *ngFor="let c of countries" value={{c}}>{{c}}</option>
           </select>
         </div>
@@ -82,6 +83,7 @@
             name="address"
             [(ngModel)]="user.address"
             #address="ngModel"
+            (click)="isUpdateSuccessful=false; f.submitted=false"
           />
         </div>
       </div>
@@ -95,6 +97,7 @@
             name="phone"
             [(ngModel)]="user.phone"
             #phone="ngModel"
+            (click)="isUpdateSuccessful=false; f.submitted=false"
           />
         </div>
       </div>
@@ -107,6 +110,7 @@
             [(ngModel)]="user.bio"
             #bio="ngModel"
             rows="3"
+            (click)="isUpdateSuccessful=false; f.submitted=false"
           ></textarea>
         </div>
       </div>
@@ -119,6 +123,7 @@
             name="occupation"
             [(ngModel)]="user.occupation"
             #occupation="ngModel"
+            (click)="isUpdateSuccessful=false; f.submitted=false"
           />
         </div>
       </div>
@@ -131,7 +136,9 @@
             class="form-control"
             name="skills"
             [(ngModel)]="userSkills"
-            #skills="ngModel" placeholder="Enter skills separated by comma: Programming,cooking,graphic design"
+            #skills="ngModel"
+            placeholder="Enter skills separated by comma: Programming,cooking,graphic design"
+            (click)="isUpdateSuccessful=false; f.submitted=false"
           />
         </div>
       </div>
@@ -144,13 +151,14 @@
             name="website"
             [(ngModel)]="user.website"
             #website="ngModel"
+            (click)="isUpdateSuccessful=false; f.submitted=false"
           />
         </div>
       </div>
       <div class="form-group row" *ngIf=isIndividual>
         <label for="gender" class="col-sm-2 col-form-label">Gender</label>
         <div class="col-sm-10">
-          <select class="form-control" name="gender" [(ngModel)]="user.gender" required #gender="ngModel">
+          <select class="form-control" name="gender" [(ngModel)]="user.gender" required #gender="ngModel" (click)="isUpdateSuccessful=false; f.submitted=false">
             <option value="" selected hidden>{{user.gender}}</option>
             <option value="male">Male</option>
             <option value="female">Female</option>
@@ -168,7 +176,8 @@
           <label>
             <input type="checkbox" name="SDGs"
               value="i" [checked]="SDGsMap[i]"
-              (change)="updateCheckedSDGs(i, $event)"/>
+              (change)="updateCheckedSDGs(i, $event); isUpdateSuccessful=false; f.submitted=false"
+              />
             {{SDG}}
           </label>
         </div>

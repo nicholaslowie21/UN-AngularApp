@@ -56,6 +56,7 @@ export class EditProfileComponent implements OnInit {
 
   updateCheckedSDGs(x, event) {
     this.SDGsMap[x] = event.target.checked;
+    console.log(x);
   }
 
   updateSDGs() {
@@ -113,6 +114,7 @@ export class EditProfileComponent implements OnInit {
 
   onSubmit(): void {
     this.updateSDGs();
+    console.log(this.SDGsChecked);
     if (this.isIndividual) {
       const skillsArr = this.userSkills.split(",");
       const formUpdateProfile = {
@@ -129,6 +131,7 @@ export class EditProfileComponent implements OnInit {
         response => {
           this.tokenStorage.saveUser(response.data.user);
           this.isUpdateSuccessful = true;
+          this.SDGsChecked = [];
         },
         err => {
           this.errorMessage = err.error.msg;
@@ -149,6 +152,7 @@ export class EditProfileComponent implements OnInit {
         response => {
           this.tokenStorage.saveUser(response.data.user);
           this.isUpdateSuccessful = true;
+          this.SDGsChecked = [];
         },
         err => {
           this.errorMessage = err.error.msg;
