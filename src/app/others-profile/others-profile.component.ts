@@ -17,10 +17,8 @@ export class OthersProfileComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams
       .subscribe(params => {
-        console.log(params);
         this.username = params.username;
       })
-    console.log("USERNAME"+this.username);
     this.userService.viewUserProfile({username: this.username}).subscribe(
       response => {
         this.user = response.data.targetUser;

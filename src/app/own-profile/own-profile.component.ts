@@ -6,6 +6,8 @@ import { faTwitter } from '@fortawesome/free-brands-svg-icons/faTwitter';
 import { faLinkedin } from '@fortawesome/free-brands-svg-icons/faLinkedin';
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons/faWhatsapp';
 import { faTelegram } from '@fortawesome/free-brands-svg-icons/faTelegram';
+import { faShareAlt } from '@fortawesome/free-solid-svg-icons/faShareAlt';
+import { faPencilAlt } from '@fortawesome/free-solid-svg-icons/faPencilAlt';
 
 @Component({
   selector: 'app-own-profile',
@@ -16,6 +18,7 @@ export class OwnProfileComponent implements OnInit {
 
   user: any;
   isIndividual = false;
+  isVerified = false;
   usernameFormatted = '';
   shareLink = '';
   faFacebookSquare = faFacebookSquare;
@@ -23,6 +26,8 @@ export class OwnProfileComponent implements OnInit {
   faLinkedin = faLinkedin;
   faWhatsapp = faWhatsapp;
   faTelegram = faTelegram;
+  faShareAlt = faShareAlt;
+  faPencilAlt = faPencilAlt;
   //projectList = Array;
 
   constructor(private authService: AuthService, private tokenStorageService: TokenStorageService) { }
@@ -39,6 +44,9 @@ export class OwnProfileComponent implements OnInit {
     this.shareLink = "http://localhost:4200/profile?username="+this.usernameFormatted;
     if (this.tokenStorageService.getAccountType() == "user") {
       this.isIndividual = true;
+    }
+    if(this.user.isVerified == "true") {
+      this.isVerified = true;
     }
     //this.projectList = this.user.projects;
   }

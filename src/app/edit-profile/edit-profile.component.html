@@ -101,13 +101,13 @@
       <div class="form-group row">
         <label for="bio" class="col-sm-2 col-form-label">Bio</label>
         <div class="col-sm-10">
-          <input
-            type="text"
+          <textarea
             class="form-control"
             name="bio"
             [(ngModel)]="user.bio"
             #bio="ngModel"
-          />
+            rows="3"
+          ></textarea>
         </div>
       </div>
       <div class="form-group row" *ngIf=isIndividual>
