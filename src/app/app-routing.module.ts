@@ -19,6 +19,7 @@ import { AdminReportComponent } from './admin/admin-report/admin-report.componen
 import { AdminUserManagementComponent } from './admin/admin-user-management/admin-user-management.component';
 import { AdminUserManagementProfileComponent } from './admin/admin-user-management-profile/admin-user-management-profile.component';
 import { AdminVerificationComponent } from './admin/admin-verification/admin-verification.component';
+import { OthersProfileComponent } from './others-profile/others-profile.component';
 
 const routes: Routes = [
   { path: 'landing', component: LandingComponent},
@@ -30,6 +31,7 @@ const routes: Routes = [
   { path: 'signup/institution', component: SignupInstitutionComponent },
   { path: 'editProfile', component: EditProfileComponent, canActivate: [AuthGuardService] },
   { path: 'ownProfile', component: OwnProfileComponent, canActivate: [AuthGuardService] },
+  { path: 'profile', component: OthersProfileComponent },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuardService] },
   { path: 'institution/affiliation', component: AffiliationPageComponent, canActivate: [AuthGuardService] },
   { path: 'admin', canActivate: [AuthGuardService], canActivateChild: [AuthGuardService],

@@ -27,6 +27,11 @@ import { AdminUserManagementComponent } from './admin/admin-user-management/admi
 import { AdminManagementComponent } from './admin/admin-management/admin-management.component';
 import { AdminReportComponent } from './admin/admin-report/admin-report.component';
 import { AdminUserManagementProfileComponent } from './admin/admin-user-management-profile/admin-user-management-profile.component';
+import { OthersProfileComponent } from './others-profile/others-profile.component';
+
+import { ShareModule } from 'ngx-sharebuttons';
+import { ShareIconsModule } from 'ngx-sharebuttons/icons';
+import { SafePipe } from './safe.pipe';
 
 @NgModule({
   declarations: [
@@ -47,13 +52,17 @@ import { AdminUserManagementProfileComponent } from './admin/admin-user-manageme
     AdminUserManagementComponent,
     AdminManagementComponent,
     AdminReportComponent,
-    AdminUserManagementProfileComponent
+    AdminUserManagementProfileComponent,
+    OthersProfileComponent,
+    SafePipe
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    ShareModule,
+    ShareIconsModule
   ],
   providers: [authInterceptorProviders, AuthGuardService],
   bootstrap: [AppComponent]
