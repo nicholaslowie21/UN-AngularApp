@@ -21,7 +21,11 @@ export class AppComponent implements OnInit {
       const user = this.tokenStorageService.getUser();
       this.role = user.role;
       console.log(this.role);
-      if(this.role === 'admin') {
+      if(this.role == 'admin') {
+        this.showAdmin = true;
+      } else if(this.role == 'regionaladmin') {
+        this.showAdmin = true;
+      } else if(this.role == 'adminlead') {
         this.showAdmin = true;
       }
 
