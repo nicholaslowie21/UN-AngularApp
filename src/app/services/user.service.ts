@@ -53,8 +53,8 @@ export class UserService {
     return this.http.get(API_URL + '/pastProjects?userId=' + data.id);
   }
 
-  viewProfile(data): Observable<any> {
-    return this.http.get(API_URL + '/viewUser?userId=' + data.id);
+  viewUserProfile(data): Observable<any> {
+    return this.http.get(API_URL + '/viewUser?username=' + data.username);
   }
 
   getBadges(data): Observable<any> {

@@ -74,7 +74,7 @@ export class InstitutionService {
   }
 
   viewInstitutionProfile(data): Observable<any> {
-    return this.http.get(API_URL + '/viewInstitution?institutionId=' + data.id);
+    return this.http.get(API_URL + '/viewInstitution?username=' + data.username);
   }
 
   getBadges(data): Observable<any> {
@@ -83,5 +83,9 @@ export class InstitutionService {
 
   searchUsers(data): Observable<any> {
     return this.http.get(API_URL + '/searchUsers?username=' + data.username);
+  }
+
+  generateShareProfilePic(): Observable<any> {
+    return this.http.get(API_URL + '/shareProfile');
   }
 }
