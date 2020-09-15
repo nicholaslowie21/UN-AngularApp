@@ -20,9 +20,14 @@ export class AdminVerificationComponent implements OnInit {
   isAdmin = false;
 
   verify: any;
-  userid: any;
+  verifyInstitution: any;
+  reqId: any;
+  rejId: any;
   //btn: any;
 
+  errorMsg = '';
+  isAccepted = false;
+  isRejected = false;
 
   constructor(private userService: UserService, private institutionService: InstitutionService, private tokenStorage: TokenStorageService,
     private verificationService: VerificationService, private adminService: AdminService) { }
@@ -33,7 +38,11 @@ export class AdminVerificationComponent implements OnInit {
       this.user = this.tokenStorage.getUser();
       this.verificationService.getUserRequests().subscribe(response => { console.log(JSON.stringify(response)) });
       this.verificationService.getUserRequests().subscribe(response => { this.verify = response.data.verifyRequests; });
-      
+
+      this.verificationService.getInstitutionRequests().subscribe(response => { console.log(JSON.stringify(response)) });
+      this.verificationService.getInstitutionRequests().subscribe(response => { this.verifyInstitution = response.data.institutions; });
+      //console.log(JSON.stringify(this.verifyInstitution));
+
       if (this.tokenStorage.getUser().role == "admin") {
         this.isAdmin = true;
       } else if (this.tokenStorage.getUser().role == "regionaladmin") {
@@ -47,13 +56,62 @@ export class AdminVerificationComponent implements OnInit {
   }
 
   uVerify(x: any): void {
-    this.userid = x;
-    console.log(JSON.stringify(this.userid));
-    this.verificationService.verifyUser({ id: this.userid }).subscribe(
+    this.reqId = x;
+    console.log(JSON.stringify(this.reqId));
+    this.verificationService.verifyUser({ id: this.reqId }).subscribe(
       response => {
         console.log(JSON.stringify(response))
+        this.isAccepted = true;
+      },
+      err => {
+        this.errorMsg = err.error.msg;
+        this.isAccepted = false;
       }
     );
   }
 
+  uReject(x: any): void {
+    this.rejId = x;
+    console.log(JSON.stringify(this.rejId));
+    this.verificationService.rejectUser({ id: this.rejId }).subscribe(
+      response => {
+        console.log(JSON.stringify(response))
+        this.isRejected = true;
+      },
+      err => {
+        this.errorMsg = err.error.msg;
+        this.isRejected = false;
+      }
+    );
+  }
+
+  iVerify(x: any): void {
+    this.reqId = x;
+    console.log(JSON.stringify(this.reqId));
+    this.verificationService.verifyInstitution({ id: this.reqId }).subscribe(
+      response => {
+        console.log(JSON.stringify(response))
+        this.isAccepted = true;
+      },
+      err => {
+        this.errorMsg = err.error.msg;
+        this.isAccepted = false;
+      }
+    );
+  }
+
+  iReject(x: any): void {
+    this.rejId = x;
+    console.log(JSON.stringify(this.rejId));
+    this.verificationService.rejectInstitution({ id: this.rejId }).subscribe(
+      response => {
+        console.log(JSON.stringify(response))
+        this.isRejected = true;
+      },
+      err => {
+        this.errorMsg = err.error.msg;
+        this.isRejected = false;
+      }
+    );
+  }
 }
