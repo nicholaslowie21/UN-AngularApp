@@ -1,8 +1,14 @@
 <div class="container p-3 my-3 bg-dark text-white">
     <div class="row">
         <div class="col-3">
-            <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src={{user.profilePic}} style="margin: 10px; width: 150px; height: 150px; object-fit: cover;"
+            <div *ngIf="user.profilePic.length == 0">
+                <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src="../../assets/img/profilePic_Placeholder.png" style="margin: 10px; width: 150px; height: 150px; object-fit: cover;"
                 alt="Profile picture">
+            </div>
+            <div *ngIf="user.profilePic.length != 0">
+                <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src={{user.profilePic}} style="margin: 10px; width: 150px; height: 150px; object-fit: cover;"
+                alt="Profile picture">
+            </div>
             <img src="../../assets/img/verified.jpg" style="width: 30px; height: 30px;" class="center">
         </div>
         <div class="col-7">
@@ -34,30 +40,30 @@
                     </button>
                     </div>
                     <div class="modal-body text-dark">
-                        <button class="btn" shareButton="facebook" url="http://localhost:4200/profile?userId={{user.id}}">
+                        <button class="btn" shareButton="facebook" url="{{shareLink}}">
                             <fa-icon [icon]="faFacebookSquare" size="2x"></fa-icon>
                         </button>
-                        <button class="btn" shareButton="twitter" url="http://localhost:4200/profile?userId={{user.id}}">
+                        <button class="btn" shareButton="twitter" url="{{shareLink}}">
                             <fa-icon [icon]="faTwitter" size="2x"></fa-icon>
                         </button>
-                        <button class="btn" shareButton="linkedin" url="http://localhost:4200/profile?userId={{user.id}}">
+                        <button class="btn" shareButton="linkedin" url="{{shareLink}}">
                             <fa-icon [icon]="faLinkedin" size="2x"></fa-icon>
                         </button>
-                        <button class="btn" shareButton="whatsapp" url="http://localhost:4200/profile?userId={{user.id}}">
+                        <button class="btn" shareButton="whatsapp" url="{{shareLink}}">
                             <fa-icon [icon]="faWhatsapp" size="2x" [styles]="{'color':'green'}"></fa-icon>
                         </button>
-                        <button class="btn" shareButton="telegram" url="http://localhost:4200/profile?userId={{user.id}}">
+                        <button class="btn" shareButton="telegram" url="{{shareLink}}">
                             <fa-icon [icon]="faTelegram" size="2x"></fa-icon>
                         </button>
                         <br />
                         <div class="card">
                             <div class="card-header">
-                                http://localhost:4200/profile?userId={{user.id}}
+                                {{shareLink}}
                             </div>
                         </div>
                         <div class="card">
                             <div class="card-header">
-                                <code>&lt;iframe src="http://localhost:4200/profile?userId={{user.id}}" title="User Profile"&gt;&lt;/iframe&gt;</code>
+                                <code>&lt;iframe src="{{shareLink}}" title="User Profile"&gt;&lt;/iframe&gt;</code>
                             </div>
                         </div>
                         <div class="embed-responsive embed-responsive-4by3">

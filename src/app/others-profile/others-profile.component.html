@@ -1,2 +1,27 @@
-<p>others-profile works!</p>
-<p>{{userId}}</p>
+<div class="container p-3 my-3 bg-dark text-white">
+    <div class="row">
+        <div class="col-3">
+            <div *ngIf="user.profilePic.length == 0">
+                <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src="../../assets/img/profilePic_Placeholder.png" style="margin: 10px; width: 150px; height: 150px; object-fit: cover;"
+                alt="Profile picture">
+            </div>
+            <div *ngIf="user.profilePic.length != 0">
+                <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src={{user.profilePic}} style="margin: 10px; width: 150px; height: 150px; object-fit: cover;"
+                alt="Profile picture">
+            </div>
+            <img src="../../assets/img/verified.jpg" style="width: 30px; height: 30px;" class="center">
+        </div>
+        <div class="col-7">
+            <h5 class="card-title text-left mt-md-3">{{ user.name }}</h5>
+            <h5 class="card-title text-left mt-md-3">{{ user.country }}</h5>
+            <h5 class="card-title text-left mt-md-3">{{ user.occupation }}</h5>
+            <h5 class="card-title text-left mt-md-3">{{ user.address }}</h5>
+            <h5 class="card-title text-left mt-md-3">{{ user.phone }}</h5>
+            <h5 class="card-title text-left mt-md-3">{{ user.bio }}</h5>
+            <h5 class="card-title text-left mt-md-3">{{ user.website }}</h5>
+        </div>
+        <div class="col-2">
+            <button class="btn btn-primary">Chat</button>
+        </div>
+    </div>
+</div>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-others-profile',
@@ -8,16 +9,23 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class OthersProfileComponent implements OnInit {
 
-  userId: string;
+  username: string;
+  user: any;
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute, private userService: UserService) { }
 
   ngOnInit(): void {
     this.route.queryParams
       .subscribe(params => {
         console.log(params);
-        this.userId = params.userId;
+        this.username = params.username;
       })
+    console.log("USERNAME"+this.username);
+    this.userService.viewUserProfile({username: this.username}).subscribe(
+      response => {
+        this.user = response.data.targetUser;
+      }
+    )
   }
 
 }

@@ -16,6 +16,7 @@ export class OwnProfileComponent implements OnInit {
 
   user: any;
   isIndividual = false;
+  usernameFormatted = '';
   shareLink = '';
   faFacebookSquare = faFacebookSquare;
   faTwitter = faTwitter;
@@ -28,7 +29,14 @@ export class OwnProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = this.tokenStorageService.getUser();
-    this.shareLink = "http://localhost:4200/profile?userId"+this.user.id;
+    for(var i=0; i<this.user.username.length; i++) {
+      if(this.user.username.charAt(i)==' ') {
+        this.usernameFormatted = this.usernameFormatted.concat('%20');
+      } else {
+        this.usernameFormatted = this.usernameFormatted.concat(this.user.username.charAt(i));
+      }
+    }
+    this.shareLink = "http://localhost:4200/profile?username="+this.usernameFormatted;
     if (this.tokenStorageService.getAccountType() == "user") {
       this.isIndividual = true;
     }
