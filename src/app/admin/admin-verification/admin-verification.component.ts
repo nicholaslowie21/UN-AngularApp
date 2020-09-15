@@ -36,11 +36,9 @@ export class AdminVerificationComponent implements OnInit {
     if (this.tokenStorage.getToken()) {
       this.isLoggedIn = true;
       this.user = this.tokenStorage.getUser();
-      this.verificationService.getUserRequests().subscribe(response => { console.log(JSON.stringify(response)) });
-      this.verificationService.getUserRequests().subscribe(response => { this.verify = response.data.verifyRequests; });
 
-      this.verificationService.getInstitutionRequests().subscribe(response => { console.log(JSON.stringify(response)) });
-      this.verificationService.getInstitutionRequests().subscribe(response => { this.verifyInstitution = response.data.institutions; });
+      this.loadUserRequests();
+      this.loadInstitutionRequests();
       //console.log(JSON.stringify(this.verifyInstitution));
 
       if (this.tokenStorage.getUser().role == "admin") {
@@ -52,7 +50,24 @@ export class AdminVerificationComponent implements OnInit {
         this.isLead = true;
       }
     }
+  }
 
+  loadUserRequests(): void {
+    this.verificationService.getUserRequests().subscribe(
+      response => { 
+        console.log(JSON.stringify(response));
+        this.verify = response.data.verifyRequests; 
+      }
+    );
+  }
+
+  loadInstitutionRequests(): void {
+    this.verificationService.getInstitutionRequests().subscribe(
+      response => { 
+        console.log(JSON.stringify(response));
+        this.verifyInstitution = response.data.institutions; 
+      }
+    );
   }
 
   uVerify(x: any): void {
@@ -62,6 +77,7 @@ export class AdminVerificationComponent implements OnInit {
       response => {
         console.log(JSON.stringify(response))
         this.isAccepted = true;
+        this.loadUserRequests();
       },
       err => {
         this.errorMsg = err.error.msg;
@@ -77,6 +93,7 @@ export class AdminVerificationComponent implements OnInit {
       response => {
         console.log(JSON.stringify(response))
         this.isRejected = true;
+        this.loadUserRequests();
       },
       err => {
         this.errorMsg = err.error.msg;
@@ -92,6 +109,7 @@ export class AdminVerificationComponent implements OnInit {
       response => {
         console.log(JSON.stringify(response))
         this.isAccepted = true;
+        this.loadInstitutionRequests();
       },
       err => {
         this.errorMsg = err.error.msg;
@@ -107,6 +125,7 @@ export class AdminVerificationComponent implements OnInit {
       response => {
         console.log(JSON.stringify(response))
         this.isRejected = true;
+        this.loadInstitutionRequests();
       },
       err => {
         this.errorMsg = err.error.msg;
