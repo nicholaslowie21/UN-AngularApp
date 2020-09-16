@@ -44,10 +44,17 @@ export class OwnProfileComponent implements OnInit {
     this.shareLink = "http://localhost:4200/profile?username="+this.usernameFormatted;
     if (this.tokenStorageService.getAccountType() == "user") {
       this.isIndividual = true;
+      if(this.user.isVerified == "true") {
+        this.isVerified = true;
+      }
+      this.shareLink += "&userType=individual";
+    } else {
+      if(this.user.isVerified) {
+        this.isVerified = true;
+      }
+      this.shareLink += "&userType=institution";
     }
-    if(this.user.isVerified == "true") {
-      this.isVerified = true;
-    }
+    
     //this.projectList = this.user.projects;
   }
 
