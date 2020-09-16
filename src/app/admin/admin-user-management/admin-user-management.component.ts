@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AdminService } from '../../services/admin.service';
 import { ProjectService } from '../../services/project.service';
 import { TokenStorageService } from '../../services/token-storage.service';
+import { faSearch } from '@fortawesome/free-solid-svg-icons/faSearch';
 
 @Component({
   selector: 'app-admin-user-management',
@@ -16,6 +17,7 @@ export class AdminUserManagementComponent implements OnInit {
   regionalAdmins: any;
   adminLeads: any;
 
+  faSearch = faSearch;
   searchType = 'Select';
   keyword = '';
   searchResults: any;
