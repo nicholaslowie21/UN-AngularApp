@@ -85,32 +85,31 @@ export class SettingsComponent implements OnInit {
     }
   }
 
-  updateUsername(): void {
-    if (this.isIndividual) {
-      this.userService.updateUsername({username: this.user.username}).subscribe(
-        response => {
-          this.tokenStorage.saveUser(response.data.user);
-          this.isUsernameSuccessful = true;
-        },
-        err => {
-          this.errMsgUsername = err.error.msg;
-          this.isUsernameSuccessful = false;
-        }
-      )
-    } else {
-      this.institutionService.updateUsername({username: this.user.username}).subscribe(
-        response => {
-          this.tokenStorage.saveUser(response.data.user);
-          this.isUsernameSuccessful = true;
-        },
-        err => {
-          this.errMsgUsername = err.error.msg;
-          this.isUsernameSuccessful = false;
-        }
-      )
-    }
-    
-  }
+  // updateUsername(): void {
+  //   if (this.isIndividual) {
+  //     this.userService.updateUsername({username: this.user.username}).subscribe(
+  //       response => {
+  //         this.tokenStorage.saveUser(response.data.user);
+  //         this.isUsernameSuccessful = true;
+  //       },
+  //       err => {
+  //         this.errMsgUsername = err.error.msg;
+  //         this.isUsernameSuccessful = false;
+  //       }
+  //     )
+  //   } else {
+  //     this.institutionService.updateUsername({username: this.user.username}).subscribe(
+  //       response => {
+  //         this.tokenStorage.saveUser(response.data.user);
+  //         this.isUsernameSuccessful = true;
+  //       },
+  //       err => {
+  //         this.errMsgUsername = err.error.msg;
+  //         this.isUsernameSuccessful = false;
+  //       }
+  //     )
+  //   }
+  // }
 
   updateEmail(): void {
     if (this.isIndividual) {
