@@ -3,6 +3,7 @@ import { AuthService } from '../services/auth.service';
 import { TokenStorageService } from '../services/token-storage.service';
 import { UserService } from '../services/user.service';
 import { InstitutionService } from '../services/institution.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-settings',
@@ -17,9 +18,6 @@ export class SettingsComponent implements OnInit {
   pendingVerified: any;
   verified: any;
 
-  currPassword = '';
-  newPassword = '';
-  confirmPassword = '';
   isPassSuccessful = false;
   errMsgPass = '';
 
@@ -54,20 +52,19 @@ export class SettingsComponent implements OnInit {
     }
   }
 
-  changePassword(): void {
-    if(this.newPassword != this.confirmPassword) {
+  changePassword(form: NgForm): void {
+    if(form.value.newPassword != form.value.confirmPassword) {
       this.errMsgPass = 'Your new password and confirm new password do not match!'
       this.isPassSuccessful = false;
       return;
     }
 
     if (this.isIndividual) {
-      this.authService.changePasswordUser({oldPassword: this.currPassword, password: this.newPassword}).subscribe(
+      this.authService.changePasswordUser(form.value).subscribe(
         response => {
           this.tokenStorage.saveUser(response.data.user);
-          console.log(response.data.user.password);
-          console.log(response.data.user.salt);
           this.isPassSuccessful = true;
+          form.reset();
         },
         err => {
           this.errMsgPass = err.error.msg;
@@ -75,7 +72,7 @@ export class SettingsComponent implements OnInit {
         }
       )
     } else {
-      this.authService.changePasswordInstitution({oldPassword: this.currPassword, password: this.newPassword}).subscribe(
+      this.authService.changePasswordInstitution(form.value).subscribe(
         response => {
           this.tokenStorage.saveUser(response.data.user);
           this.isPassSuccessful = true;

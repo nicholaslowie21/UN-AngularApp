@@ -46,14 +46,14 @@ export class AuthService {
   changePasswordUser(newPass): Observable<any> {
     return this.http.post(AUTH_API + '/user/changePassword', {
       oldpassword: newPass.oldPassword,
-      newpassword: newPass.password
+      newpassword: newPass.newPassword
     }, httpOptions);
   }
 
   changePasswordInstitution(newPass): Observable<any> {
     return this.http.post(AUTH_API + '/institution/changePassword', {
       oldpassword: newPass.oldPassword,
-      newpassword: newPass.password
+      newpassword: newPass.newPassword
     }, httpOptions);
   }
 

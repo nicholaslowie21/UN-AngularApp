@@ -89,25 +89,24 @@
       </div>
       <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
         <div class="card-body">
-            <form name="formPassword"
-            (ngSubmit)="fp.form.valid && changePassword()"
-            #fp="ngForm"
+            <form #formPassword = "ngForm"
+            (ngSubmit)="formPassword.form.valid && changePassword(formPassword)"
             novalidate>
             <div class="form-group">
-                <label for="currentPass">Current Password</label>
+                <label for="oldPassword">Current Password</label>
                 <input
                     type="password"
                     class="form-control"
-                    name="currentPass"
-                    [(ngModel)]="currPassword"
+                    name="oldPassword"
+                    ngModel
                     required
                     minlength="8"
-                    #currentPass="ngModel"
-                    (click)="isPassSuccessful=false; fp.submitted=false"
+                    #oldPassword="ngModel"
+                    (click)="isPassSuccessful=false; formPassword.submitted=false"
                 />
-                <div class="alert-danger" *ngIf="fp.submitted && currentPass.invalid">
-                    <div *ngIf="currentPass.errors.required">Password is required</div>
-                    <div *ngIf="currentPass.errors.minlength">
+                <div class="alert-danger" *ngIf="formPassword.submitted && !isPassSuccessful && oldPassword.invalid">
+                    <div *ngIf="oldPassword.errors.required">Current password is required</div>
+                    <div *ngIf="oldPassword.errors.minlength">
                     Password must be at least 8 characters
                     </div>
                 </div>
@@ -118,34 +117,36 @@
                 <input
                     type="password"
                     class="form-control"
-                    name="newPass"
-                    [(ngModel)]="newPassword"
+                    name="newPassword"
+                    ngModel
                     required
                     minlength="8"
-                    #newPass="ngModel"
+                    #newPassword="ngModel"
+                    (click)="isPassSuccessful=false; formPassword.submitted=false"
                 />
-                <div class="alert-danger" *ngIf="fp.submitted && newPass.invalid">
-                    <div *ngIf="newPass.errors.required">Password is required</div>
-                    <div *ngIf="newPass.errors.minlength">
+                <div class="alert-danger" *ngIf="formPassword.submitted && !isPassSuccessful && newPassword.invalid">
+                    <div *ngIf="newPassword.errors.required">New password is required</div>
+                    <div *ngIf="newPassword.errors.minlength">
                     Password must be at least 8 characters
                     </div>
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="confirmPass">Confirm New Password</label>
+                <label for="confirmPassword">Confirm New Password</label>
                 <input
                     type="password"
                     class="form-control"
-                    name="confirmPass"
-                    [(ngModel)]="confirmPassword"
+                    name="confirmPassword"
+                    ngModel
                     required
                     minlength="8"
-                    #confirmPass="ngModel"
+                    #confirmPassword="ngModel"
+                    (click)="isPassSuccessful=false; formPassword.submitted=false"
                 />
-                <div class="alert-danger" *ngIf="fp.submitted && confirmPass.invalid">
-                    <div *ngIf="confirmPass.errors.required">Password is required</div>
-                    <div *ngIf="confirmPass.errors.minlength">
+                <div class="alert-danger" *ngIf="formPassword.submitted && !isPassSuccessful && confirmPassword.invalid">
+                    <div *ngIf="confirmPassword.errors.required">Confirm password is required</div>
+                    <div *ngIf="confirmPassword.errors.minlength">
                     Password must be at least 8 characters
                     </div>
                 </div>
@@ -154,12 +155,13 @@
                 <button class="btn btn-primary">Save</button>
             </div>
             </form>
-            <div class="alert alert-warning" *ngIf="fp.submitted && !isPassSuccessful">
+            <div class="alert alert-warning" *ngIf="formPassword.submitted && !isPassSuccessful">
                 Update failed!<br />{{ errMsgPass }}
             </div>
             <div class="alert alert-success" *ngIf="isPassSuccessful">
                 Password update is successful!
             </div>
+            
         </div>
       </div>
     </div>
