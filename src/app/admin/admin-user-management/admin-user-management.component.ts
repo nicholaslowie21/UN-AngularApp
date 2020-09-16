@@ -21,36 +21,23 @@ export class AdminUserManagementComponent implements OnInit {
   errorMsgSearch = '';
 
   checkUser: any;
-  user: any;
-  shareLink = '';
-  usernameFormatted = '';
 
   constructor(private adminService: AdminService, private tokenStorageService: TokenStorageService) { }
 
   ngOnInit(): void {
     this.thisUser = this.tokenStorageService.getUser();
-
-    /**for(var i=0; i<this.user.username.length; i++) {
-      if(this.user.username.charAt(i)==' ') {
-        this.usernameFormatted = this.usernameFormatted.concat('%20');
-      } else {
-        this.usernameFormatted = this.usernameFormatted.concat(this.user.username.charAt(i));
-      }
-    }
-    this.shareLink = "http://localhost:4200/profile?username="+this.usernameFormatted; **/
   }
 
-  viewUser(username: string): void {
-    for (var i = 0; i < username.length; i++) {
-      if (username.charAt(i) == ' ') {
-        this.usernameFormatted = this.usernameFormatted.concat('%20');
+  viewUser(username: string): string {
+    let usernameFormatted = '';
+    for(var i=0; i<username.length; i++) {
+      if(username.charAt(i)==' ') {
+        usernameFormatted = usernameFormatted.concat('%20');
       } else {
-        this.usernameFormatted = this.usernameFormatted.concat(username.charAt(i));
+        usernameFormatted = usernameFormatted.concat(username.charAt(i));
       }
     }
-    console.log(this.usernameFormatted);
-    this.shareLink = "http://localhost:4200/profile?username=" + this.usernameFormatted;
-    console.log(this.shareLink);
+    return "http://localhost:4200/admin/user-management/profile?username="+usernameFormatted;
   }
 
   searchUsers(): void {
@@ -76,10 +63,11 @@ export class AdminUserManagementComponent implements OnInit {
     this.adminService.activateUser({ id: this.checkUser }).subscribe(
       response => {
         alert("User has been activated!");
-        console.log(JSON.stringify(response));
+        this.searchUsers();
+        // console.log(JSON.stringify(response));
       }
     )
-    this.reloadPage();
+    // this.reloadPage();
   }
 
   suspendUser(y: any): void {
@@ -88,10 +76,11 @@ export class AdminUserManagementComponent implements OnInit {
     this.adminService.suspendUser({ id: this.checkUser }).subscribe(
       response => {
         alert("User has been suspended!");
-        console.log(JSON.stringify(response));
+        this.searchUsers();
+        // console.log(JSON.stringify(response));
       }
     )
-    this.reloadPage();
+    // this.reloadPage();
   }
 
   reloadPage(): void {
