@@ -37,35 +37,59 @@ export class AdminVerificationComponent implements OnInit {
       this.isLoggedIn = true;
       this.user = this.tokenStorage.getUser();
 
-      this.loadUserRequests();
-      this.loadInstitutionRequests();
+      //this.loadUserRequests();
+      //this.loadInstitutionRequests();
       //console.log(JSON.stringify(this.verifyInstitution));
 
       if (this.tokenStorage.getUser().role == "admin") {
         this.isAdmin = true;
+        this.loadUserRequests();
+        this.loadInstitutionRequests();
       } else if (this.tokenStorage.getUser().role == "regionaladmin") {
         this.isRegional = true;
+        this.loadRegionalUsers();
+        this.loadRegionalInstitutions();
         //only can view regional users, institutions and projects
       } else if (this.tokenStorage.getUser().role == "adminlead") {
         this.isLead = true;
+        this.loadUserRequests();
+        this.loadInstitutionRequests();
       }
     }
   }
 
   loadUserRequests(): void {
     this.verificationService.getUserRequests().subscribe(
-      response => { 
+      response => {
         console.log(JSON.stringify(response));
-        this.verify = response.data.verifyRequests; 
+        this.verify = response.data.verifyRequests;
       }
     );
   }
 
   loadInstitutionRequests(): void {
     this.verificationService.getInstitutionRequests().subscribe(
-      response => { 
+      response => {
         console.log(JSON.stringify(response));
-        this.verifyInstitution = response.data.institutions; 
+        this.verifyInstitution = response.data.institutions;
+      }
+    );
+  }
+
+  loadRegionalUsers(): void {
+    this.verificationService.getRegionalUserRequest().subscribe(
+      response => {
+        console.log(JSON.stringify(response));
+        this.verify = response.data.verifyRequests;
+      }
+    );
+  }
+
+  loadRegionalInstitutions(): void {
+    this.verificationService.getRegionalInstitutionRequest().subscribe(
+      response => {
+        console.log(JSON.stringify(response));
+        this.verifyInstitution = response.data.institutions;
       }
     );
   }

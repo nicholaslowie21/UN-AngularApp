@@ -1,1 +1,42 @@
 <p>admin-user-management works!</p>
+
+<form name="form" (ngSubmit)="f.form.valid && searchUsers()" #f="ngForm" novalidate>
+    <div class="form-group">
+        <input type="text" class="form-control" name="search" [(ngModel)]="keyword" #search="ngModel" placeholder="Search" />
+        <br>
+        <button class="btn btn-primary" (click)=searchUsers()>Search</button>
+    </div>
+</form>
+<div class="alert alert-warning" *ngIf="f.submitted && !isSearchSuccessful">
+    {{ errorMsgSearch }}
+</div>
+<div *ngIf=isSearchSuccessful>
+    <div *ngFor="let user of searchResults">
+        <div class="card">
+            <div class="card-body" *ngIf="user.role.length != 9 ">
+                <div *ngIf="user.profilePic.length > 0">
+                    <img src={{user.profilePic}} class="rounded-circle img-fluid" style="width: 80px; height: 80px; object-fit: cover;" alt="Profile picture"
+                    />
+                </div>
+                <div *ngIf="user.profilePic.length == 0">
+                    <img src="../../assets/img/profilePic_Placeholder.png" class="rounded-circle img-fluid" style="width: 90px; height: 90px; object-fit: cover;"
+                        alt="Profile picture" />
+                </div>
+                {{user.name}}
+                <br/> {{user.username}}
+                <div class="text-secondary">{{user.role}}</div>
+                <div class="text-secondary">{{user.status}}</div>
+                <div class="btn-group float-right">
+                    <a href="/admin/user-management/profile" class="btn btn-primary" (click)=viewUser(user.username)>User Management Profile</a>
+                </div>
+                <br><br>
+                <button class="btn btn-danger float-right ml-2" type="button" aria-haspopup="true" aria-expanded="false" (click)=suspendUser(user.id)>
+                    Suspend
+                </button>
+                <button class="btn btn-success float-right" type="button" aria-haspopup="true" aria-expanded="false" (click)=activateUser(user.id)>
+                    Activate
+                </button>
+                
+            </div>
+        </div>
+    </div>
