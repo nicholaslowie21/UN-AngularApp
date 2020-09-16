@@ -69,6 +69,7 @@ export class AffiliationPageComponent implements OnInit {
 
   searchUsers(): void {
     if(this.keyword.length == 0) {
+      this.isSearchSuccessful = false;
       this.errorMsgSearch = 'Enter a username';
       return;
     }

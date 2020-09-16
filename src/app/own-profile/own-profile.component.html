@@ -88,11 +88,17 @@
     <div class="row">
         <div class="col-6 bg-primary text-white border-0">
             <h6 class="card-title text-left mt-md-3 center" style="margin: 15px">SDGs: 
+                <div *ngIf="user.SDGs.length == 0" style="display:inline-block;">
+                    -
+                </div>
                 <div *ngFor="let sdg of user.SDGs" style="display:inline-block;">
                     <button class="sdg sdg{{sdg}} mr-md-1">{{sdg}}</button>
                 </div>
             </h6>
             <h6 *ngIf=isIndividual class="card-title text-left mt-md-3 center" style="margin: 15px">Skills:
+                <div *ngIf="user.skills.length == 0" style="display:inline-block;">
+                    -
+                </div>
                 <div *ngFor="let s of user.skills" style="display: inline-block;">
                     <button class="btn btn-secondary mr-md-1 rounded-pill">{{s}}</button>
                 </div>
