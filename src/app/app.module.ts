@@ -33,6 +33,7 @@ import { ShareModule } from 'ngx-sharebuttons';
 import { ShareIconsModule } from 'ngx-sharebuttons/icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SafePipe } from './safe.pipe';
+import { ClipboardModule } from 'ngx-clipboard';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import { SafePipe } from './safe.pipe';
     HttpClientModule,
     ShareModule,
     ShareIconsModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    ClipboardModule
   ],
   providers: [authInterceptorProviders, AuthGuardService],
   bootstrap: [AppComponent]

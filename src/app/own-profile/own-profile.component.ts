@@ -8,6 +8,8 @@ import { faWhatsapp } from '@fortawesome/free-brands-svg-icons/faWhatsapp';
 import { faTelegram } from '@fortawesome/free-brands-svg-icons/faTelegram';
 import { faShareAlt } from '@fortawesome/free-solid-svg-icons/faShareAlt';
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons/faPencilAlt';
+import { faCopy } from '@fortawesome/free-solid-svg-icons/faCopy';
+import { faClipboard } from '@fortawesome/free-solid-svg-icons/faClipboard';
 
 @Component({
   selector: 'app-own-profile',
@@ -28,6 +30,9 @@ export class OwnProfileComponent implements OnInit {
   faTelegram = faTelegram;
   faShareAlt = faShareAlt;
   faPencilAlt = faPencilAlt;
+  faCopy = faCopy;
+  faClipboard = faClipboard;
+  // iFrameLink = ""+"<iframe src="this.shareLink" title="User Profile"></iframe>"
   //projectList = Array;
 
   constructor(private authService: AuthService, private tokenStorageService: TokenStorageService) { }
