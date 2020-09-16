@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminService } from '../../services/admin.service';
+import { ProjectService } from '../../services/project.service';
 import { TokenStorageService } from '../../services/token-storage.service';
 
 @Component({
@@ -15,6 +16,7 @@ export class AdminUserManagementComponent implements OnInit {
   regionalAdmins: any;
   adminLeads: any;
 
+  searchType = 'Select';
   keyword = '';
   searchResults: any;
   isSearchSuccessful: any;
@@ -22,7 +24,7 @@ export class AdminUserManagementComponent implements OnInit {
 
   checkUser: any;
 
-  constructor(private adminService: AdminService, private tokenStorageService: TokenStorageService) { }
+  constructor(private adminService: AdminService, private tokenStorageService: TokenStorageService, private projectService: ProjectService) { }
 
   ngOnInit(): void {
     this.thisUser = this.tokenStorageService.getUser();
@@ -40,21 +42,53 @@ export class AdminUserManagementComponent implements OnInit {
     return "http://localhost:4200/admin/user-management/profile?username="+usernameFormatted;
   }
 
-  searchUsers(): void {
-    if (this.keyword.length == 0) {
-      this.errorMsgSearch = 'Enter a username';
+  searchUserProject(): void {
+    if (this.searchType == 'Select') {
+      this.errorMsgSearch = 'Select search type';
+      this.isSearchSuccessful = false;
       return;
     }
-    this.adminService.searchUser({ username: this.keyword }).subscribe(
-      response => {
-        this.searchResults = response.data.users;
-        this.isSearchSuccessful = true;
-      },
-      err => {
-        this.errorMsgSearch = err.error.msg;
-        this.isSearchSuccessful = false;
-      }
-    )
+    if (this.keyword.length == 0) {
+      this.errorMsgSearch = 'Enter a username';
+      this.isSearchSuccessful = false;
+      return;
+    }
+
+    if (this.searchType == 'individual') {
+      this.adminService.searchUser({ username: this.keyword }).subscribe(
+        response => {
+          console.log(response.data.users);
+          this.searchResults = response.data.users;
+          this.isSearchSuccessful = true;
+        },
+        err => {
+          this.errorMsgSearch = err.error.msg;
+          this.isSearchSuccessful = false;
+        }
+      )
+    } else if (this.searchType == 'project') {
+      this.projectService.searchProject({ code: this.keyword }).subscribe(
+        response => {
+          this.searchResults = response.data.projects;
+          this.isSearchSuccessful = true;
+        },
+        err => {
+          this.errorMsgSearch = err.error.msg;
+          this.isSearchSuccessful = false;
+        }
+      )
+    } else {
+      this.adminService.searchInstitution({ username: this.keyword }).subscribe(
+        response => {
+          this.searchResults = response.data.institutions;
+          this.isSearchSuccessful = true;
+        },
+        err => {
+          this.errorMsgSearch = err.error.msg;
+          this.isSearchSuccessful = false;
+        }
+      )
+    }
   }
 
   activateUser(x: any): void {
@@ -63,11 +97,13 @@ export class AdminUserManagementComponent implements OnInit {
     this.adminService.activateUser({ id: this.checkUser }).subscribe(
       response => {
         alert("User has been activated!");
-        this.searchUsers();
+        this.searchUserProject();
         // console.log(JSON.stringify(response));
+      },
+      err => {
+        alert(err.error.msg);
       }
     )
-    // this.reloadPage();
   }
 
   suspendUser(y: any): void {
@@ -76,14 +112,37 @@ export class AdminUserManagementComponent implements OnInit {
     this.adminService.suspendUser({ id: this.checkUser }).subscribe(
       response => {
         alert("User has been suspended!");
-        this.searchUsers();
+        this.searchUserProject();
         // console.log(JSON.stringify(response));
+      },
+      err => {
+        alert(err.error.msg);
       }
     )
-    // this.reloadPage();
+  }
+  
+  activateProject(x: any): void {
+    this.adminService.activateProject({ id: x }).subscribe(
+      response => {
+        alert("Project has been activated!");
+        this.searchUserProject();
+      },
+      err => {
+        alert(err.error.msg);
+      }
+    )
   }
 
-  reloadPage(): void {
-    window.location.reload();
+  suspendProject(x: any): void {
+    this.adminService.suspendProject({ id: x }).subscribe(
+      response => {
+        alert("Project has been suspended!");
+        this.searchUserProject();
+      },
+      err => {
+        alert(err.error.msg);
+      }
+    )
   }
+
 }

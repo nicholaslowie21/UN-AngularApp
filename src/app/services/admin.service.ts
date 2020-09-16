@@ -19,6 +19,10 @@ export class AdminService {
     return this.http.get(API_URL + '/searchUsers?username=' + data.username);
   }
 
+  searchInstitution(data): Observable<any> {
+    return this.http.get(API_URL + '/searchInstitutions?username=' + data.username);
+  }
+
   assignRegionalAdmin(data): Observable<any> {
     return this.http.post(API_URL + '/assignRegionalAdmin', {
       targetId: data.id
