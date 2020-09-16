@@ -26,7 +26,7 @@ export class OthersProfileComponent implements OnInit {
       }
     )
     
-    if(this.userType == "user") {
+    if(this.userType == "individual") {
       this.isIndividual = true;
       this.userService.viewUserProfile({username: this.username}).subscribe(
         response => {
