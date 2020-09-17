@@ -1,70 +1,71 @@
-<div class="col-md-12" style="width: 750px">
-  <h1 class="h1">
+<div class="card mx-auto bg-light" style="width: 50%;">
+  <div class="card-body">
+    <h3 class="text-center mb-md-3">
     User Login
-  </h1>
-  <br/>
-    
-  <form
-    *ngIf="!isLoggedIn"
-    name="form"
-    (ngSubmit)="f.form.valid && onSubmit()"
-    #f="ngForm"
-    novalidate
-  >
-    <div class="form-group">
-      <label for="username">Username or Email</label>
-      <input
-        type="text"
-        class="form-control"
-        name="usernameOrEmail"
-        [(ngModel)]="form.usernameOrEmail"
-        required
-        #usernameOrEmail="ngModel"
-      />
-      <div
-        class="alert alert-danger"
-        role="alert"
-        *ngIf="f.submitted && usernameOrEmail.invalid"
-      >
-        Username or Email is required!
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="password">Password</label>
-      <input
-        type="password"
-        class="form-control"
-        name="password"
-        [(ngModel)]="form.password"
-        required
-        minlength="6"
-        #password="ngModel"
-      />
-      <div
-        class="alert alert-danger"
-        role="alert"
-        *ngIf="f.submitted && password.invalid"
-      >
-        <div *ngIf="password.errors.required">Password is required</div>
-        <div *ngIf="password.errors.minlength">
-          Password must be at least 6 characters
+    </h3>
+    <form
+      *ngIf="!isLoggedIn"
+      name="form"
+      (ngSubmit)="f.form.valid && onSubmit()"
+      #f="ngForm"
+      novalidate
+    >
+      <div class="form-group">
+        <label for="username">Username or Email</label>
+        <input
+          type="text"
+          class="form-control"
+          name="usernameOrEmail"
+          [(ngModel)]="form.usernameOrEmail"
+          required
+          #usernameOrEmail="ngModel"
+        />
+        <div
+          class="alert alert-danger"
+          role="alert"
+          *ngIf="f.submitted && usernameOrEmail.invalid"
+        >
+          Username or Email is required!
         </div>
       </div>
-    </div>
-    <div class="form-group">
-      <button class="btn btn-primary btn-block">
-        Login
-      </button>
-    </div>
-    <a class="nav-link" href="/forgotPassword" routerLink="forgotPassword">Forgot Password</a>
       <div class="form-group">
-      <div
-        class="alert alert-danger"
-        role="alert"
-        *ngIf="f.submitted && isLoginFailed"
-      >
-        Login failed: {{ errorMessage }}
+        <label for="password">Password</label>
+        <input
+          type="password"
+          class="form-control"
+          name="password"
+          [(ngModel)]="form.password"
+          required
+          minlength="6"
+          #password="ngModel"
+        />
+        <div
+          class="alert alert-danger"
+          role="alert"
+          *ngIf="f.submitted && password.invalid"
+        >
+          <div *ngIf="password.errors.required">Password is required</div>
+          <div *ngIf="password.errors.minlength">
+            Password must be at least 6 characters
+          </div>
+        </div>
       </div>
-    </div>
-  </form>
+      <div class="form-group">
+        <button class="btn btn-primary btn-block">
+          Login
+        </button>
+      </div>
+      <a class="nav-link" href="/forgotPassword" routerLink="forgotPassword">Forgot Password</a>
+        <div class="form-group">
+        <div
+          class="alert alert-danger"
+          role="alert"
+          *ngIf="f.submitted && isLoginFailed"
+        >
+          Login failed: {{ errorMessage }}
+        </div>
+      </div>
+    </form>
+  </div>
 </div>
+<br/>
