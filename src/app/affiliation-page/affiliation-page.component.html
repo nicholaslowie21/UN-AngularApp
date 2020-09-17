@@ -1,88 +1,141 @@
 <div *ngIf=isInstitution>
     <h1>Affiliated users</h1>
-    <p>Every upload of a CSV file replaces your current list of affiliated users</p>
-    <a href="https://localhost:8080/file/memberCSVtemplate.csv">Download template</a>
+    <br/>
 
-    <form>
-        <input type="file" name="CSV" (change)="selectFile($event)" />
-        <button type="submit" (click)="uploadCSV()">Upload CSV</button>
-    </form>
-
-    <div *ngFor="let member of members">
-        <div class="card">
-            <div class="card-body">
-                <div *ngIf="member.profilePic.length > 0">
-                    <img
-                      src={{member.profilePic}}
-                      class="rounded-circle img-fluid"
-                      style="width: 80px; height: 80px; object-fit: cover;"
-                      alt="Profile picture"
-                    />
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+                <div *ngIf="members.length == 0">
+                    <p>You currently have no affiliated users.</p>
                 </div>
-                <div *ngIf="member.profilePic.length == 0">
-                    <img
-                      src="../../assets/img/profilePic_Placeholder.png"
-                      class="rounded-circle img-fluid"
-                      style="width: 80px; height: 80px; object-fit: cover;"
-                      alt="Profile picture"
-                    />
-                </div>
-                {{member.name}} <br/>
-                {{member.username}}
-                <button class="float-right" (click)=deleteAffiliatedUser(member)>Delete</button>
-            </div>
-        </div>
-    </div>
-    
-    <form
-        name="form"
-        (ngSubmit)="f.form.valid && searchUsers()"
-        #f="ngForm"
-        novalidate
-    >
-        <div class="form-inline">
-            <input
-                type="text"
-                class="form-control mr-md-2"
-                name="search"
-                [(ngModel)]="keyword"
-                #search="ngModel"
-                placeholder="Search"
-            />
-            <button class="btn btn-primary" (click)=searchUsers()>Search</button>
-        </div>
-    </form>
 
-    <div class="alert alert-warning" *ngIf="f.submitted && !isSearchSuccessful">
-        {{ errorMsgSearch }}
-    </div>
-    <div *ngIf=isSearchSuccessful>
-        <div *ngFor="let user of searchResults">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="card border-0" style="width:20%">
-                            <div *ngIf="user.profilePic.length > 0">
+                <div *ngFor="let member of members">
+                    <div class="card">
+                        <div class="card-body">
+                            <div *ngIf="member.profilePic.length > 0">
                                 <img
-                                src={{user.profilePic}}
+                                src={{member.profilePic}}
                                 class="rounded-circle img-fluid"
                                 style="width: 80px; height: 80px; object-fit: cover;"
                                 alt="Profile picture"
                                 />
                             </div>
-                            <div *ngIf="user.profilePic.length == 0">
+                            <div *ngIf="member.profilePic.length == 0">
                                 <img
                                 src="../../assets/img/profilePic_Placeholder.png"
                                 class="rounded-circle img-fluid"
-                                style="width: 90px; height: 90px; object-fit: cover;"
+                                style="width: 80px; height: 80px; object-fit: cover;"
                                 alt="Profile picture"
                                 />
                             </div>
+                            <br/>
+                            <div class="row">
+                                <div class="col-3">
+                                  Name: 
+                                </div>
+                                <div class="col">
+                                  {{member.name}}
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-3">
+                                  Username: 
+                                </div>
+                                <div class="col">
+                                  {{member.username}}
+                                </div>
+                              </div>
+                            <button class="btn btn-primary float-right" (click)=deleteAffiliatedUser(member)>Delete</button>
                         </div>
-                        <div class="card border-0" style="width:80%">
-                            {{user.name}} <br/>
-                            {{user.username}}
-                            <button class="btn btn-primary float-right" (click)=addAffiliatedUser(user)>Add</button>
+                    </div>
+                </div>
+                <br/>
+            </div>
+            <div class="col">
+                <h4>Update affiliated users using CSV upload</h4>
+                <p>Every upload of a CSV file replaces your current list of affiliated users</p>
+                <a href="https://localhost:8080/file/memberCSVtemplate.csv">Download template</a>
+            
+                <form>
+                    <input type="file" name="CSV" (change)="selectFile($event)" />
+                    <button type="submit" (click)="uploadCSV()">Upload CSV</button>
+                </form>
+                <br/>
+                <br/>
+                <h4>Add affiliated users by search</h4>
+                <form
+                    name="form"
+                    (ngSubmit)="f.form.valid && searchUsers()"
+                    #f="ngForm"
+                    novalidate
+                >
+                    <div class="form-inline">
+                        <input
+                            type="text"
+                            class="form-control mr-md-2"
+                            name="search"
+                            [(ngModel)]="keyword"
+                            #search="ngModel"
+                            placeholder="Enter a username"
+                        />
+                        <button class="btn btn-primary" (click)=searchUsers()>Search</button>
+                    </div>
+                </form>
+                <br/>
+                <div class="alert alert-warning" *ngIf="f.submitted && !isSearchSuccessful">
+                    {{ errorMsgSearch }}
+                </div>
+                <div *ngIf=isSearchSuccessful>
+                    <div *ngFor="let user of searchResults">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="card border-0" style="width:20%">
+                                        <div *ngIf="user.profilePic.length > 0">
+                                            <img
+                                            src={{user.profilePic}}
+                                            class="rounded-circle img-fluid"
+                                            style="width: 80px; height: 80px; object-fit: cover;"
+                                            alt="Profile picture"
+                                            />
+                                        </div>
+                                        <div *ngIf="user.profilePic.length == 0">
+                                            <img
+                                            src="../../assets/img/profilePic_Placeholder.png"
+                                            class="rounded-circle img-fluid"
+                                            style="width: 90px; height: 90px; object-fit: cover;"
+                                            alt="Profile picture"
+                                            />
+                                        </div>
+                                    </div>
+                                    <br/>
+                                    <div class="card border-0" style="width:80%">
+                                        <div class="row">
+                                            <div class="col-4">
+                                              Name: 
+                                            </div>
+                                            <div class="col">
+                                              {{user.name}}
+                                            </div>
+                                          </div>
+                                          <div class="row">
+                                            <div class="col-4">
+                                              Username: 
+                                            </div>
+                                            <div class="col">
+                                              {{user.username}}
+                                            </div>
+                                          </div>
+                                        <div *ngIf="alreadyMember(user)">
+                                            <p>Already affiliated</p>
+                                            <!-- <button class="btn btn-primary float-right">Already affiliated</button> -->
+                                        </div>
+                                        <div *ngIf="!alreadyMember(user)">
+                                            <button class="btn btn-primary float-right" (click)=addAffiliatedUser(user)>Add</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

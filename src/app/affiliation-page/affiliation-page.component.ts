@@ -70,13 +70,18 @@ export class AffiliationPageComponent implements OnInit {
   searchUsers(): void {
     if(this.keyword.length == 0) {
       this.isSearchSuccessful = false;
-      this.errorMsgSearch = 'Enter a username';
+      this.errorMsgSearch = 'Please enter a username';
       return;
     }
     this.institutionService.searchUsers({username: this.keyword}).subscribe(
       response => {
         this.searchResults = response.data.users;
-        this.isSearchSuccessful = true;
+        if (this.searchResults.length == 0) {
+          this.isSearchSuccessful = false;
+          this.errorMsgSearch = 'No users found';
+        } else {
+          this.isSearchSuccessful = true;
+        }
       },
       err => {
         this.errorMsgSearch = err.error.msg;
@@ -109,6 +114,14 @@ export class AffiliationPageComponent implements OnInit {
         this.isDelSuccessful = false;
       }
     )
+  }
+
+  alreadyMember(user): boolean {
+    if (this.members.includes(user)) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   reloadPage(): void {

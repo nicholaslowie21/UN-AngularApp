@@ -31,13 +31,19 @@ export class AdminManagementComponent implements OnInit {
 
   searchUsers(): void {
     if(this.keyword.length == 0) {
-      this.errorMsgSearch = 'Enter a username';
+      this.isSearchSuccessful = false;
+      this.errorMsgSearch = 'Please enter a username';
       return;
     }
     this.adminService.searchUser({username: this.keyword}).subscribe(
       response => {
         this.searchResults = response.data.users;
-        this.isSearchSuccessful = true;
+        if (this.searchResults.length == 0) {
+          this.isSearchSuccessful = false;
+          this.errorMsgSearch = 'No users found';
+        } else {
+          this.isSearchSuccessful = true;
+        }
       },
       err => {
         this.errorMsgSearch = err.error.msg;

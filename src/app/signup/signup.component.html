@@ -1,7 +1,7 @@
 <div class="card mx-auto bg-light" style="width: 50%;">
   <div class="card-body">
     <h3 class="text-center mb-md-3">
-      Sign Up
+      Sign Up as Individual
     </h3>
     <form
       *ngIf="!isSuccessful"
@@ -153,13 +153,13 @@
       Your registration is successful! Welcome to KoCoSD! <a href="/login">Login here</a>
     </div>
     <div *ngIf=!isSuccessful>
-    <div class="strike">
-      <span>or</span>
-    </div>
-    <a href="/signup/institution" class="mt-md-2 btn btn-primary btn-block">Sign up as Institution</a>
-    <div class="text-center">
-      <label class="col-form-label mt-md-2">Already a member? <a href="/login">Login here</a> </label>
-    </div>
+      <div class="strike">
+        <span>or</span>
+      </div>
+      <a href="/signup/institution" class="mt-md-2 btn btn-primary btn-block">Sign up as Institution</a>
+      <div class="text-center">
+        <label class="col-form-label mt-md-2">Already a member? <a href="/login">Login here</a> </label>
+      </div>
     </div>
   </div>
 </div>
