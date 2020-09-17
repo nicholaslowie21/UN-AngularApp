@@ -117,11 +117,12 @@ export class AffiliationPageComponent implements OnInit {
   }
 
   alreadyMember(user): boolean {
-    if (this.members.includes(user)) {
-      return true;
-    } else {
-      return false;
+    for(var i=0; i<this.members.length; i++) {
+      if(this.members[i].username == user.username) {
+        return true;
+      }
     }
+    return false;
   }
 
   reloadPage(): void {
