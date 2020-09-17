@@ -1,6 +1,6 @@
 <div class="row">
     <div class="card" style="width: 60%">
-        <div class="ml-auto card" style="width: 100%">
+        <div class="ml-auto" style="width: 100%">
             <div class="card-body">
                 <h5 *ngIf=isAdmin class="card-title">Admin Verification</h5>
                 <h5 *ngIf=isRegional class="card-title">Regional Admin Verification</h5>
@@ -24,6 +24,10 @@
 
                 <div class="tab-content">
                     <div class="tab-pane fade show active" id="search" role="tabpanel" aria-labelledby="search-tab">
+                        <div class="alert alert-warning mt-md-2" *ngIf="verify.length == 0">
+                            No request found.
+                        </div>
+                        
                         <div *ngFor="let v of verify">
                             <ul class="list-group">
                                 <li class="list-group-item">
@@ -38,20 +42,59 @@
 
                                         <div class="card border-0" style="width:50%; float: right">
                                             <div class="card-body">
-                                                <button type="submit" class="btn btn-danger " style="float: right; margin-right: 2%;" id="rejectButton" data-toggle="modal"
-                                                    data-target="#checkModal" (click)="uReject(v.requestId)">
+                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#rejectModal" 
+                                                    style="float: right; margin-right: 2%;" id="rejectButton">
                                                     Reject
                                                 </button>
-                                                <button type="submit" class="btn btn-success " style="float: right; margin-right: 2%;" id="verifyButton" data-toggle="modal"
-                                                    data-target="#checkModal" (click)="uVerify(v.requestId)">
+                                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal" 
+                                                    style="float: right; margin-right: 2%;" id="verifyButton">
                                                     Verify
                                                 </button>
-
                                             </div>
-
                                         </div>
-
                                     </div>
+  
+                                <!-- Modal verify -->
+                                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Confirm verification</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Are you sure you want to verify this user?
+                                        </div>
+                                        <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary" (click)="uVerify(v.requestId)">OK</button>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+
+                                <!-- Modal reject -->
+                                <div class="modal fade" id="rejectModal" tabindex="-1" role="dialog" aria-labelledby="rejectModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                        <h5 class="modal-title" id="rejectModalLabel">Confirm rejection</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Are you sure you want to reject this user?
+                                        </div>
+                                        <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary" (click)="uReject(v.requestId)">OK</button>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
 
                                     <p>
                                         <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false"
@@ -71,6 +114,10 @@
                     </div>
 
                     <div class="tab-pane fade" id="adminLeads" role="tabpanel" aria-labelledby="adminLeads-tab">
+                        <div class="alert alert-warning mt-md-2" *ngIf="verifyInstitution.length == 0">
+                            No request found.
+                        </div>
+                        
                         <div *ngFor="let i of verifyInstitution">
                             <ul class="list-group">
                                 <li class="list-group-item">
@@ -84,14 +131,58 @@
 
                                         <div class="card border-0" style="width:50%; float: right">
                                             <div class="card-body">
-                                                <button type="submit" class="btn btn-danger" style="float: right; margin-right: 2%" id="rejectButton" (click)="iReject(i.id)">
+                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#iRejectModal" 
+                                                    style="float: right; margin-right: 2%;" id="iRejectButton">
                                                     Reject
                                                 </button>
-                                                <button type="submit" class="btn btn-success" style="float: right; margin-right: 2%" id="verifyButton" (click)="iVerify(i.id)">
+                                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#iVerifyModal" 
+                                                    style="float: right; margin-right: 2%;" id="iVerifyButton">
                                                     Verify
                                                 </button>
 
                                             </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Modal verify -->
+                                    <div class="modal fade" id="iVerifyModal" tabindex="-1" role="dialog" aria-labelledby="iVerifyModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h5 class="modal-title" id="iVerifyModalLabel">Confirm verification</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you sure you want to verify this institution?
+                                            </div>
+                                            <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary" (click)="iVerify(i.id)">OK</button>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Modal reject -->
+                                    <div class="modal fade" id="iRejectModal" tabindex="-1" role="dialog" aria-labelledby="iRejectModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h5 class="modal-title" id="iRejectModalLabel">Confirm rejection</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you sure you want to reject this institution?
+                                            </div>
+                                            <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary" (click)="iReject(i.id)">OK</button>
+                                            </div>
+                                        </div>
                                         </div>
                                     </div>
 

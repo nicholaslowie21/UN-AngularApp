@@ -101,7 +101,8 @@ export class AdminVerificationComponent implements OnInit {
       response => {
         console.log(JSON.stringify(response))
         this.isAccepted = true;
-        this.loadUserRequests();
+        // this.loadUserRequests();
+        this.reloadPage();
       },
       err => {
         this.errorMsg = err.error.msg;
@@ -117,7 +118,8 @@ export class AdminVerificationComponent implements OnInit {
       response => {
         console.log(JSON.stringify(response))
         this.isRejected = true;
-        this.loadUserRequests();
+        // this.loadUserRequests();
+        this.reloadPage();
       },
       err => {
         this.errorMsg = err.error.msg;
@@ -133,7 +135,8 @@ export class AdminVerificationComponent implements OnInit {
       response => {
         console.log(JSON.stringify(response))
         this.isAccepted = true;
-        this.loadInstitutionRequests();
+        // this.loadInstitutionRequests();
+        this.reloadPage();
       },
       err => {
         this.errorMsg = err.error.msg;
@@ -149,12 +152,17 @@ export class AdminVerificationComponent implements OnInit {
       response => {
         console.log(JSON.stringify(response))
         this.isRejected = true;
-        this.loadInstitutionRequests();
+        // this.loadInstitutionRequests();
+        this.reloadPage();
       },
       err => {
         this.errorMsg = err.error.msg;
         this.isRejected = false;
       }
     );
+  }
+
+  reloadPage(): void {
+    window.location.reload();
   }
 }
