@@ -13,9 +13,10 @@ export class AdminUserManagementComponent implements OnInit {
 
   thisUser: any;
 
-  admins: any;
-  regionalAdmins: any;
-  adminLeads: any;
+  isAdminLead: any;
+  isAdmin: any;
+  isRegionalAdmin: any;
+  regAdminCountry: any;
 
   faSearch = faSearch;
   searchType = 'Select';
@@ -30,6 +31,15 @@ export class AdminUserManagementComponent implements OnInit {
 
   ngOnInit(): void {
     this.thisUser = this.tokenStorageService.getUser();
+    if(this.thisUser.role == 'regionaladmin') {
+      this.isRegionalAdmin = true;
+      this.regAdminCountry = this.thisUser.country;
+      console.log(this.regAdminCountry);
+    } else if (this.thisUser.role == 'adminlead') {
+      this.isAdminLead = true;
+    } else if (this.thisUser.role == 'admin') {
+      this.isAdmin = true;
+    }
   }
 
   viewUser(username: string): string {
@@ -139,6 +149,30 @@ export class AdminUserManagementComponent implements OnInit {
     this.adminService.suspendProject({ id: x }).subscribe(
       response => {
         alert("Project has been suspended!");
+        this.searchUserProject();
+      },
+      err => {
+        alert(err.error.msg);
+      }
+    )
+  }
+
+  activateInstitution(x: any): void {
+    this.adminService.activateInstitution({ id: x }).subscribe(
+      response => {
+        alert("Institution has been activated!");
+        this.searchUserProject();
+      },
+      err => {
+        alert(err.error.msg);
+      }
+    )
+  }
+
+  suspendInstitution(x: any): void {
+    this.adminService.suspendInstitution({ id: x }).subscribe(
+      response => {
+        alert("Institution has been suspended!");
         this.searchUserProject();
       },
       err => {

@@ -82,4 +82,16 @@ export class AdminService {
       targetId: data.id
     }, httpOptions);
   }
+
+  suspendInstitution(data): Observable<any> {
+    return this.http.post(API_URL + '/suspendInstitution', {
+      targetId: data.id
+    }, httpOptions);
+  }
+
+  activateInstitution(data): Observable<any> {
+    return this.http.post(API_URL + '/activateInstitution', {
+      targetId: data.id
+    }, httpOptions);
+  }
 }

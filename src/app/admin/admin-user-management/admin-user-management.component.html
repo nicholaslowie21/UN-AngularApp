@@ -44,17 +44,29 @@
                             <div class="text-secondary">{{user.status}}</div>
                         </div>
                         <div class="col-3">
-                            <div *ngIf="user.role == 'user' || user.members || thisUser.role == 'adminlead' && user.username != thisUser.username">
-                                <div class="btn-group float-right">
-                                    <a [href]="viewUser(user.username)" class="btn btn-primary">User Management Profile</a>
+                            <div *ngIf="user.role == 'user' || user.members || isAdminLead && user.username != thisUser.username">
+                                <div *ngIf="(isRegionalAdmin && regAdminCountry == user.country) || isAdmin">
+                                    <div class="btn-group float-right">
+                                        <a [href]="viewUser(user.username)" class="btn btn-primary">User Management Profile</a>
+                                    </div>
+                                    <br><br>
+                                    <div *ngIf="user.role">
+                                        <button class="btn btn-danger float-right ml-2" type="button" aria-haspopup="true" aria-expanded="false" (click)=suspendUser(user.id)>
+                                            Suspend
+                                        </button>
+                                        <button class="btn btn-success float-right" type="button" aria-haspopup="true" aria-expanded="false" (click)=activateUser(user.id)>
+                                            Activate
+                                        </button>
+                                    </div>
+                                    <div *ngIf="user.members">
+                                        <button class="btn btn-danger float-right ml-2" type="button" aria-haspopup="true" aria-expanded="false" (click)=suspendInstitution(user.id)>
+                                            Suspend
+                                        </button>
+                                        <button class="btn btn-success float-right" type="button" aria-haspopup="true" aria-expanded="false" (click)=activateInstitution(user.id)>
+                                            Activate
+                                        </button>
+                                    </div>
                                 </div>
-                                <br><br>
-                                <button class="btn btn-danger float-right ml-2" type="button" aria-haspopup="true" aria-expanded="false" (click)=suspendUser(user.id)>
-                                    Suspend
-                                </button>
-                                <button class="btn btn-success float-right" type="button" aria-haspopup="true" aria-expanded="false" (click)=activateUser(user.id)>
-                                    Activate
-                                </button>
                             </div>
                         </div>
                     </div>

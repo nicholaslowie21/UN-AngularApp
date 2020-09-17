@@ -1,10 +1,6 @@
-<p>admin-user-management-profile works!</p>
+<p>{{user.id}}</p>
 
-<p>{{user.username}} </p>
-
-<!--p>{{user.id}}</p-->
-
-<!--div class="row">
+<div class="row">
     <div class="card border-0">
         <div class="card-body">
             <div *ngIf="user.profilePic.length == 0">
@@ -20,19 +16,18 @@
     </div>
     <div class="card border-0" style="width: 40%">
         <div class="card-body">
-            <h4 class="card-title text-left mt-md-3">{{ user.name }}
-            </h4>
-            <h4 class="card-title text-left md-3">{{user.id}} </h4>
+            <h4 class="card-title text-left mt-md-3">{{ user.name }}</h4>
+            <h4 class="card-title text-left md-3">{{user.id}}</h4>
         </div>
     </div>
     <div class="card">
         <div class="card-body">
-            <button class="btn btn-danger float-right ml-2 mt-3" type="button" aria-haspopup="true" aria-expanded="false" (click)=suspendUser(user.id)>
+            <button class="btn btn-danger float-right ml-2 mt-3" type="button" aria-haspopup="true" aria-expanded="false" (click)="suspendUser(user.id)">
                 Suspend
             </button>
-            <button class="btn btn-success float-right mt-3" type="button" aria-haspopup="true" aria-expanded="false" (click)=activateUser(user.id)>
+            <button class="btn btn-success float-right mt-3" type="button" aria-haspopup="true" aria-expanded="false" (click)="activateUser(user.id)">
                 Activate
             </button>
         </div>
     </div>
-</div-->
+</div>
