@@ -47,7 +47,7 @@
                             <div *ngIf="user.role == 'user' || user.members || isAdminLead && user.username != thisUser.username">
                                 <div *ngIf="(isRegionalAdmin && regAdminCountry == user.country) || isAdmin">
                                     <div class="btn-group float-right">
-                                        <a [href]="viewUser(user.username)" class="btn btn-primary">User Management Profile</a>
+                                        <a [href]="viewUser(user)" class="btn btn-primary">User Management Profile</a>
                                     </div>
                                     <br><br>
                                     <div *ngIf="user.role">

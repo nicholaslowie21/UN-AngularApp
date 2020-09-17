@@ -42,16 +42,24 @@ export class AdminUserManagementComponent implements OnInit {
     }
   }
 
-  viewUser(username: string): string {
+  viewUser(user): string {
     let usernameFormatted = '';
-    for(var i=0; i<username.length; i++) {
-      if(username.charAt(i)==' ') {
+    for(var i=0; i<user.username.length; i++) {
+      if(user.username.charAt(i)==' ') {
         usernameFormatted = usernameFormatted.concat('%20');
       } else {
-        usernameFormatted = usernameFormatted.concat(username.charAt(i));
+        usernameFormatted = usernameFormatted.concat(user.username.charAt(i));
       }
     }
-    return "http://localhost:4200/admin/user-management/profile?username="+usernameFormatted;
+
+    let userType = '';
+    if(user.role) {
+      userType = 'individual';
+    } else {
+      userType = 'institution';
+    }
+    return "http://localhost:4200/admin/user-management/profile?username="+usernameFormatted+'&userType='+userType;
+
   }
 
   searchUserProject(): void {
