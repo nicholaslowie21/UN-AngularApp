@@ -179,8 +179,11 @@
             <div class="card-body">
                 <div *ngIf=notVerified>
                     <div *ngIf=!isRequestSuccessful>
-                        <input type="file" name="image" (change)="selectImage($event)" /> <br/>
-                        <button class="btn btn-primary" (click)=requestVerification()>Request for verification</button>
+                        Verification allows you to create projects. <br/>
+                        To request for verification, upload a <u>picture</u> of yourself holding your identification card. <br/>
+                        Your identity will be verified by KoCoSD's admin. <br/>
+                        <input class="mt-md-2" type="file" name="image" (change)="selectImage($event)" /> <br/>
+                        <button class="btn btn-primary mt-md-2" (click)=requestVerification()>Request for verification</button>
                     </div>
                     <div class="alert alert-warning" *ngIf="isSubmitted && !isRequestSuccessful">
                         Request failed<br />{{ errMsgVerifyRequest }}
@@ -191,10 +194,11 @@
                     </div>
                 </div>
                 <div *ngIf=pendingVerified>
-                    Your verification is being processed.
+                    Your verification is being processed. For enquiries, contact kocosdofficial@gmail.com.
                 </div>
                 <div *ngIf=verified>
-                    Your account is verified.
+                    Your account is verified. <br/>
+                    You are now able to create projects.
                 </div>
             </div>
         </div>
