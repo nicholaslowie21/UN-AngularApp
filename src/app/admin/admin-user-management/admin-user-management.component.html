@@ -80,12 +80,14 @@
                         Title: {{project.title}} <br/>
                         Code: {{project.code}} <br/>
                         Status: {{project.status}}
-                        <button class="btn btn-danger float-right ml-2" type="button" aria-haspopup="true" aria-expanded="false" (click)=suspendProject(project.id)>
-                            Suspend
-                        </button>
-                        <button class="btn btn-success float-right" type="button" aria-haspopup="true" aria-expanded="false" (click)=activateProject(project.id)>
-                            Activate
-                        </button>
+                        <div *ngIf="(isRegionalAdmin && regAdminCountry == project.region) || isAdmin || isAdminLead">
+                            <button class="btn btn-danger float-right ml-2" type="button" aria-haspopup="true" aria-expanded="false" (click)=suspendProject(project.id)>
+                                Suspend
+                            </button>
+                            <button class="btn btn-success float-right" type="button" aria-haspopup="true" aria-expanded="false" (click)=activateProject(project.id)>
+                                Activate
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
