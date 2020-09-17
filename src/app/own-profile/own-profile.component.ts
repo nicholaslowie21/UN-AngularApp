@@ -12,6 +12,7 @@ import { faCopy } from '@fortawesome/free-solid-svg-icons/faCopy';
 import { faClipboard } from '@fortawesome/free-solid-svg-icons/faClipboard';
 import { UserService } from '../services/user.service';
 import { ResourceService } from '../services/resource.service';
+import { InstitutionService } from '../services/institution.service';
 
 @Component({
   selector: 'app-own-profile',
@@ -48,7 +49,7 @@ export class OwnProfileComponent implements OnInit {
   //projectList = Array;
 
   constructor(private authService: AuthService, private tokenStorageService: TokenStorageService, private userService: UserService,
-  private resourceService: ResourceService) { }
+    private resourceService: ResourceService, private institutionService: InstitutionService) { }
 
   ngOnInit(): void {
     this.user = this.tokenStorageService.getUser();
@@ -77,60 +78,104 @@ export class OwnProfileComponent implements OnInit {
     this.userId = this.user.id;
     console.log(JSON.stringify(this.userId));
     console.log(JSON.stringify(this.user.badges));
-    this.userService.getBadges({ id: this.userId }).subscribe(
-      response => {
-        console.log(JSON.stringify(response));
-        this.badges = response.data.badges;
-      }
-    );
 
-    this.userService.getCurrentProjects({ id: this.userId }).subscribe(
-      response => {
-        console.log(JSON.stringify(response));
-        this.currentProj = response.data.currProjects;
-        console.log(JSON.stringify(this.currentProj));
-      }
-    );
+    if (this.isIndividual == true) {
+      this.userService.getBadges({ id: this.userId }).subscribe(
+        response => {
+          console.log(JSON.stringify(response));
+          this.badges = response.data.badges;
+        }
+      );
 
-    this.userService.getPastProjects({ id: this.userId }).subscribe(
-      response => {
-        console.log(JSON.stringify(response));
-        this.pastProj = response.data.pastProjects;
-        console.log(JSON.stringify(this.pastProj));
-      }
-    );
+      this.userService.getCurrentProjects({ id: this.userId }).subscribe(
+        response => {
+          console.log(JSON.stringify(response));
+          this.currentProj = response.data.currProjects;
+          console.log(JSON.stringify(this.currentProj));
+        }
+      );
 
-    this.resourceService.getUserKnowledge({ id: this.userId }).subscribe(
-      response => {
-        console.log(JSON.stringify(response));
-        this.knowledge = response.data.knowledges;
-        console.log(JSON.stringify(this.knowledge));
-      }
-    );
+      this.userService.getPastProjects({ id: this.userId }).subscribe(
+        response => {
+          console.log(JSON.stringify(response));
+          this.pastProj = response.data.pastProjects;
+          console.log(JSON.stringify(this.pastProj));
+        }
+      );
 
-    this.resourceService.getUserItem({ id: this.userId }).subscribe(
-      response => {
-        console.log(JSON.stringify(response));
-        this.item = response.data.items;
-        console.log(JSON.stringify(this.item));
-      }
-    );
+      this.resourceService.getUserKnowledge({ id: this.userId }).subscribe(
+        response => {
+          console.log(JSON.stringify(response));
+          this.knowledge = response.data.knowledges;
+          console.log(JSON.stringify(this.knowledge));
+        }
+      );
 
-    this.resourceService.getUserManpower({ id: this.userId }).subscribe(
-      response => {
-        console.log(JSON.stringify(response));
-        this.manpower = response.data.manpowers;
-        console.log(JSON.stringify(this.manpower));
-      }
-    );
+      this.resourceService.getUserItem({ id: this.userId }).subscribe(
+        response => {
+          console.log(JSON.stringify(response));
+          this.item = response.data.items;
+          console.log(JSON.stringify(this.item));
+        }
+      );
 
-    this.resourceService.getUserVenue({ id: this.userId }).subscribe(
-      response => {
-        console.log(JSON.stringify(response));
-        this.venue = response.data.venues;
-        console.log(JSON.stringify(this.venue));
-      }
-    );
+      this.resourceService.getUserManpower({ id: this.userId }).subscribe(
+        response => {
+          console.log(JSON.stringify(response));
+          this.manpower = response.data.manpowers;
+          console.log(JSON.stringify(this.manpower));
+        }
+      );
+
+      this.resourceService.getUserVenue({ id: this.userId }).subscribe(
+        response => {
+          console.log(JSON.stringify(response));
+          this.venue = response.data.venues;
+          console.log(JSON.stringify(this.venue));
+        }
+      );
+
+    } else if (this.isIndividual == false) {
+      this.institutionService.getCurrentProjects({ id: this.userId }).subscribe(
+        response => {
+          console.log(JSON.stringify(response));
+          this.currentProj = response.data.currProjects;
+          console.log(JSON.stringify(this.currentProj));
+        }
+      );
+
+      this.institutionService.getPastInvolvement({ id: this.userId }).subscribe(
+        response => {
+          console.log(JSON.stringify(response));
+          this.pastProj = response.data.pastProjects;
+          console.log(JSON.stringify(this.pastProj));
+        }
+      );
+
+      this.resourceService.getInstitutionKnowledge({ id: this.userId }).subscribe(
+        response => {
+          console.log(JSON.stringify(response));
+          this.knowledge = response.data.knowledges;
+          console.log(JSON.stringify(this.knowledge));
+        }
+      );
+
+      this.resourceService.getInstitutionItem({ id: this.userId }).subscribe(
+        response => {
+          console.log(JSON.stringify(response));
+          this.item = response.data.items;
+          console.log(JSON.stringify(this.item));
+        }
+      );
+
+      this.resourceService.getInstitutionVenue({ id: this.userId }).subscribe(
+        response => {
+          console.log(JSON.stringify(response));
+          this.venue = response.data.venues;
+          console.log(JSON.stringify(this.venue));
+        }
+      );
+    }
   }
 
 }
