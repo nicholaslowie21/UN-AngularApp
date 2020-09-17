@@ -1,1 +1,96 @@
-<p>admin-user-management works!</p>
+<h3>User Management</h3>
+<div class="mb-md-2">
+    <form class="form-inline" name="form" (ngSubmit)="f.form.valid && searchUserProject()" #f="ngForm" novalidate>
+        <select class="form-control" name="searchType" [(ngModel)]="searchType">
+            <option hidden>Select</option>
+            <option value="individual">Individual</option>
+            <option value="institution">Institution</option>
+            <option value="project">Project</option>
+        </select>
+    
+        <input type="text" class="form-control mr-md-1" style="width: 30%;"
+            name="search" [(ngModel)]="keyword" #search="ngModel" placeholder="Enter username..." />
+        <button class="btn btn-primary" (click)=searchUserProject()>
+            <fa-icon [icon]="faSearch" size="1x"></fa-icon>
+        </button>
+    </form>
+</div>
+
+<div class="alert alert-warning" *ngIf="f.submitted && !isSearchSuccessful">
+    {{ errorMsgSearch }}
+</div>
+<div *ngIf=isSearchSuccessful>
+    <div class="alert alert-warning" *ngIf="searchResults.length == 0">
+        No result found
+    </div>
+    <div *ngIf="searchResults.length > 0">
+        <div *ngIf="searchResults[0].username">
+            <div *ngFor="let user of searchResults">
+                <div class="card">
+                    <div class="card-body row">
+                        <div class="col-2">
+                            <div *ngIf="user.profilePic.length > 0">
+                                <img src={{user.profilePic}} class="rounded-circle img-fluid" style="width: 80px; height: 80px; object-fit: cover;" alt="Profile picture"
+                                />
+                            </div>
+                            <div *ngIf="user.profilePic.length == 0">
+                                <img src="../../assets/img/profilePic_Placeholder.png" class="rounded-circle img-fluid" style="width: 90px; height: 90px; object-fit: cover;"
+                                    alt="Profile picture" />
+                            </div>
+                        </div>
+                        <div class="col-7">
+                            {{user.name}} ({{user.username}})
+                            <div *ngIf="user.role" class="text-secondary">{{user.role}}</div>
+                            <div class="text-secondary">{{user.status}}</div>
+                        </div>
+                        <div class="col-3">
+                            <div *ngIf="user.role == 'user' || user.members || isAdminLead && user.username != thisUser.username">
+                                <div *ngIf="(isRegionalAdmin && regAdminCountry == user.country) || isAdmin">
+                                    <div class="btn-group float-right">
+                                        <a [href]="viewUser(user)" class="btn btn-primary">User Management Profile</a>
+                                    </div>
+                                    <br><br>
+                                    <div *ngIf="user.role">
+                                        <button class="btn btn-danger float-right ml-2" type="button" aria-haspopup="true" aria-expanded="false" (click)=suspendUser(user.id)>
+                                            Suspend
+                                        </button>
+                                        <button class="btn btn-success float-right" type="button" aria-haspopup="true" aria-expanded="false" (click)=activateUser(user.id)>
+                                            Activate
+                                        </button>
+                                    </div>
+                                    <div *ngIf="user.members">
+                                        <button class="btn btn-danger float-right ml-2" type="button" aria-haspopup="true" aria-expanded="false" (click)=suspendInstitution(user.id)>
+                                            Suspend
+                                        </button>
+                                        <button class="btn btn-success float-right" type="button" aria-haspopup="true" aria-expanded="false" (click)=activateInstitution(user.id)>
+                                            Activate
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="searchResults[0].title">
+            <div *ngFor="let project of searchResults">
+                <div class="card">
+                    <div class="card-body">
+                        Title: {{project.title}} <br/>
+                        Code: {{project.code}} <br/>
+                        Status: {{project.status}}
+                        <div *ngIf="(isRegionalAdmin && regAdminCountry == project.region) || isAdmin || isAdminLead">
+                            <button class="btn btn-danger float-right ml-2" type="button" aria-haspopup="true" aria-expanded="false" (click)=suspendProject(project.id)>
+                                Suspend
+                            </button>
+                            <button class="btn btn-success float-right" type="button" aria-haspopup="true" aria-expanded="false" (click)=activateProject(project.id)>
+                                Activate
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

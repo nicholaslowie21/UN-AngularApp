@@ -37,35 +37,59 @@ export class AdminVerificationComponent implements OnInit {
       this.isLoggedIn = true;
       this.user = this.tokenStorage.getUser();
 
-      this.loadUserRequests();
-      this.loadInstitutionRequests();
+      //this.loadUserRequests();
+      //this.loadInstitutionRequests();
       //console.log(JSON.stringify(this.verifyInstitution));
 
       if (this.tokenStorage.getUser().role == "admin") {
         this.isAdmin = true;
+        this.loadUserRequests();
+        this.loadInstitutionRequests();
       } else if (this.tokenStorage.getUser().role == "regionaladmin") {
         this.isRegional = true;
+        this.loadRegionalUsers();
+        this.loadRegionalInstitutions();
         //only can view regional users, institutions and projects
       } else if (this.tokenStorage.getUser().role == "adminlead") {
         this.isLead = true;
+        this.loadUserRequests();
+        this.loadInstitutionRequests();
       }
     }
   }
 
   loadUserRequests(): void {
     this.verificationService.getUserRequests().subscribe(
-      response => { 
+      response => {
         console.log(JSON.stringify(response));
-        this.verify = response.data.verifyRequests; 
+        this.verify = response.data.verifyRequests;
       }
     );
   }
 
   loadInstitutionRequests(): void {
     this.verificationService.getInstitutionRequests().subscribe(
-      response => { 
+      response => {
         console.log(JSON.stringify(response));
-        this.verifyInstitution = response.data.institutions; 
+        this.verifyInstitution = response.data.institutions;
+      }
+    );
+  }
+
+  loadRegionalUsers(): void {
+    this.verificationService.getRegionalUserRequest().subscribe(
+      response => {
+        console.log(JSON.stringify(response));
+        this.verify = response.data.verifyRequests;
+      }
+    );
+  }
+
+  loadRegionalInstitutions(): void {
+    this.verificationService.getRegionalInstitutionRequest().subscribe(
+      response => {
+        console.log(JSON.stringify(response));
+        this.verifyInstitution = response.data.institutions;
       }
     );
   }
@@ -77,7 +101,8 @@ export class AdminVerificationComponent implements OnInit {
       response => {
         console.log(JSON.stringify(response))
         this.isAccepted = true;
-        this.loadUserRequests();
+        // this.loadUserRequests();
+        this.reloadPage();
       },
       err => {
         this.errorMsg = err.error.msg;
@@ -93,7 +118,8 @@ export class AdminVerificationComponent implements OnInit {
       response => {
         console.log(JSON.stringify(response))
         this.isRejected = true;
-        this.loadUserRequests();
+        // this.loadUserRequests();
+        this.reloadPage();
       },
       err => {
         this.errorMsg = err.error.msg;
@@ -109,7 +135,8 @@ export class AdminVerificationComponent implements OnInit {
       response => {
         console.log(JSON.stringify(response))
         this.isAccepted = true;
-        this.loadInstitutionRequests();
+        // this.loadInstitutionRequests();
+        this.reloadPage();
       },
       err => {
         this.errorMsg = err.error.msg;
@@ -125,12 +152,17 @@ export class AdminVerificationComponent implements OnInit {
       response => {
         console.log(JSON.stringify(response))
         this.isRejected = true;
-        this.loadInstitutionRequests();
+        // this.loadInstitutionRequests();
+        this.reloadPage();
       },
       err => {
         this.errorMsg = err.error.msg;
         this.isRejected = false;
       }
     );
+  }
+
+  reloadPage(): void {
+    window.location.reload();
   }
 }
