@@ -15,7 +15,7 @@
     <div class="card border-0" style="width: 40%">
         <div class="card-body">
             <h4 class="card-title text-left mt-md-3 mb-md-0">
-                <a href="/profile?username={{user.username}}" class="text-dark">{{ user.name }}</a>
+                <a [href]="viewUser(user)" class="text-dark">{{ user.name }}</a>
             </h4>
             <div style="font-size:medium;">{{ user.username }}</div>
             <div *ngIf="user.role" class="text-secondary">{{user.role}}</div>

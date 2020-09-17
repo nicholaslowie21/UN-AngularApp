@@ -65,6 +65,26 @@ export class AdminUserManagementProfileComponent implements OnInit {
     )
   }
 
+  viewUser(user): string {
+    let usernameFormatted = '';
+    for(var i=0; i<user.username.length; i++) {
+      if(user.username.charAt(i)==' ') {
+        usernameFormatted = usernameFormatted.concat('%20');
+      } else {
+        usernameFormatted = usernameFormatted.concat(user.username.charAt(i));
+      }
+    }
+
+    let userType = '';
+    if(user.role) {
+      userType = 'individual';
+    } else {
+      userType = 'institution';
+    }
+    return "http://localhost:4200/profile?username="+usernameFormatted+'&userType='+userType;
+
+  }
+
   activateUser(): void {
     console.log(this.user.id);
     this.adminService.activateUser({ id: this.user.id }).subscribe(
