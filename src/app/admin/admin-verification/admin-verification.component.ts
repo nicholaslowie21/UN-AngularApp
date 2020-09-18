@@ -94,15 +94,14 @@ export class AdminVerificationComponent implements OnInit {
     );
   }
 
-  uVerify(x: any): void {
-    this.reqId = x;
-    console.log(JSON.stringify(this.reqId));
-    this.verificationService.verifyUser({ id: this.reqId }).subscribe(
+  uVerify(x): void {
+    this.verificationService.verifyUser({ id: x.requestId }).subscribe(
       response => {
         console.log(JSON.stringify(response))
         this.isAccepted = true;
-        // this.loadUserRequests();
-        this.reloadPage();
+        this.loadUserRequests();
+        alert("User "+ x.username +" verification is accepted");
+        // this.reloadPage();
       },
       err => {
         this.errorMsg = err.error.msg;
@@ -111,15 +110,14 @@ export class AdminVerificationComponent implements OnInit {
     );
   }
 
-  uReject(x: any): void {
-    this.rejId = x;
-    console.log(JSON.stringify(this.rejId));
-    this.verificationService.rejectUser({ id: this.rejId }).subscribe(
+  uReject(x): void {
+    this.verificationService.rejectUser({ id: x.requestId }).subscribe(
       response => {
         console.log(JSON.stringify(response))
         this.isRejected = true;
-        // this.loadUserRequests();
-        this.reloadPage();
+        this.loadUserRequests();
+        alert("User "+ x.username +" verification is rejected")
+        // this.reloadPage();
       },
       err => {
         this.errorMsg = err.error.msg;
@@ -128,15 +126,14 @@ export class AdminVerificationComponent implements OnInit {
     );
   }
 
-  iVerify(x: any): void {
-    this.reqId = x;
-    console.log(JSON.stringify(this.reqId));
-    this.verificationService.verifyInstitution({ id: this.reqId }).subscribe(
+  iVerify(x): void {
+    this.verificationService.verifyInstitution({ id: x.id }).subscribe(
       response => {
         console.log(JSON.stringify(response))
         this.isAccepted = true;
-        // this.loadInstitutionRequests();
-        this.reloadPage();
+        this.loadInstitutionRequests();
+        alert("Institution "+ x.username +" verification is accepted");
+        // this.reloadPage();
       },
       err => {
         this.errorMsg = err.error.msg;
@@ -145,15 +142,14 @@ export class AdminVerificationComponent implements OnInit {
     );
   }
 
-  iReject(x: any): void {
-    this.rejId = x;
-    console.log(JSON.stringify(this.rejId));
-    this.verificationService.rejectInstitution({ id: this.rejId }).subscribe(
+  iReject(x): void {
+    this.verificationService.rejectInstitution({ id: x.id }).subscribe(
       response => {
         console.log(JSON.stringify(response))
         this.isRejected = true;
-        // this.loadInstitutionRequests();
-        this.reloadPage();
+        this.loadInstitutionRequests();
+        alert("Institution " + x.username +  " verification is rejected");
+        // this.reloadPage();
       },
       err => {
         this.errorMsg = err.error.msg;
