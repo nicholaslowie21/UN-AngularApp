@@ -78,7 +78,7 @@ export class OwnProfileComponent implements OnInit {
       this.iFrameLink += "&userType=individual";
     }
 
-    this.copyIFrameLink = "<iframe src="+ this.iFrameLink +" title=\"User Profile\"></iframe>";
+    this.copyIFrameLink = "<iframe src="+ this.iFrameLink +" title=\"User Profile\" width=\"500\" height=\"500\"></iframe>";
     //this.projectList = this.user.projects;
 
     this.userId = this.user.id;
