@@ -22,10 +22,36 @@
             <h6 class="card-title text-left mt-md-1">{{ user.address }}</h6>
             <h6 class="card-title text-left mt-md-1">{{ user.phone }}</h6>
             <h6 class="card-title text-left mt-md-1">{{ user.bio }}</h6>
-            <h6 class="card-title text-left mt-md-1">{{ user.website }}</h6>
+            <h6 class="card-title text-left mt-md-1"><a [href]="user.website">{{ user.website }}</a></h6>
         </div>
         <div class="col-2">
             <button class="btn btn-primary">Chat</button>
+        </div>
+    </div>
+</div>
+
+<div class="container p-3 my-3 bg-primary text-white">
+    <div class="row">
+        <div class="col-6 bg-primary text-white border-0">
+            <h6 class="card-title text-left mt-md-3 center" style="margin: 15px">SDGs: 
+                <div *ngIf="user.SDGs.length == 0" style="display:inline-block;">
+                    -
+                </div>
+                <div *ngFor="let sdg of user.SDGs" style="display:inline-block;">
+                    <button class="sdg sdg{{sdg}} mr-md-1">{{sdg}}</button>
+                </div>
+            </h6>
+            <h6 *ngIf=isIndividual class="card-title text-left mt-md-3 center" style="margin: 15px">Skills:
+                <div *ngIf="user.skills.length == 0" style="display:inline-block;">
+                    -
+                </div>
+                <div *ngFor="let s of user.skills" style="display: inline-block;">
+                    <button class="btn btn-secondary mr-md-1 rounded-pill">{{s}}</button>
+                </div>
+            </h6>
+        </div>
+        <div class="col-3 bg-primary text-white border-0" *ngIf=isIndividual>
+            <h6 class="card-title text-left mt-md-3 center" style="margin: 15px">Gender: {{ user.gender }}</h6>
         </div>
     </div>
 </div>

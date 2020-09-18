@@ -95,6 +95,7 @@ export class AffiliationPageComponent implements OnInit {
       response => {
         this.tokenStorageService.saveUser(response.data.user);
         this.isAddSuccessful = true;
+        alert("User " + user.username + " is added to your affiliation");
         this.reloadPage();
       }, err => {
         this.errorMsgAdd = err.error.msg;
@@ -108,6 +109,7 @@ export class AffiliationPageComponent implements OnInit {
       response => {
         this.tokenStorageService.saveUser(response.data.user);
         this.isDelSuccessful = true;
+        alert("User " + user.username + " is removed from your affiliation");
         this.reloadPage();
       }, err => {
         this.errorMsgDel = err.error.msg;

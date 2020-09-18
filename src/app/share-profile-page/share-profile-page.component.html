@@ -22,7 +22,7 @@
             <h6 class="card-title text-left mt-md-1">{{ user.address }}</h6>
             <h6 class="card-title text-left mt-md-1">{{ user.phone }}</h6>
             <h6 class="card-title text-left mt-md-1">{{ user.bio }}</h6>
-            <h6 class="card-title text-left mt-md-1">{{ user.website }}</h6>
+            <h6 class="card-title text-left mt-md-1"><a [href]="user.website">{{ user.website }}</a></h6>
         </div>
     </div>
 </div>

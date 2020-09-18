@@ -47,19 +47,19 @@
                             </button>
                         </div>
                         <div class="modal-body text-dark">
-                            <button class="btn" shareButton="facebook" url="{{shareLink}}">
+                            <button class="btn fb" shareButton="facebook" url="{{shareLink}}">
                                 <fa-icon [icon]="faFacebookSquare" size="2x"></fa-icon>
                             </button>
-                            <button class="btn" shareButton="twitter" url="{{shareLink}}">
+                            <button class="btn twitter" shareButton="twitter" url="{{shareLink}}">
                                 <fa-icon [icon]="faTwitter" size="2x"></fa-icon>
                             </button>
-                            <button class="btn" shareButton="linkedin" url="{{shareLink}}">
+                            <button class="btn linkedin" shareButton="linkedin" url="{{shareLink}}">
                                 <fa-icon [icon]="faLinkedin" size="2x"></fa-icon>
                             </button>
-                            <button class="btn" shareButton="whatsapp" url="{{shareLink}}">
-                                <fa-icon [icon]="faWhatsapp" size="2x" [styles]="{'color':'green'}"></fa-icon>
+                            <button class="btn whatsapp" shareButton="whatsapp" url="{{shareLink}}">
+                                <fa-icon [icon]="faWhatsapp" size="2x"></fa-icon>
                             </button>
-                            <button class="btn" shareButton="telegram" url="{{shareLink}}">
+                            <button class="btn telegram" shareButton="telegram" url="{{shareLink}}">
                                 <fa-icon [icon]="faTelegram" size="2x"></fa-icon>
                             </button>
                             <br />
@@ -67,7 +67,7 @@
                                 <div class="card-header" #container>
                                     <div class="row">
                                         <div class="col-11 mt-md-2"><a href={{shareLink}}>{{shareLink}}</a></div>
-                                        <div class="col-1"><button class="btn float-right" ngxClipboard [cbContent]="shareLink" [container]="container">
+                                        <div class="col-1"><button class="btn float-right" (click)="copied()" ngxClipboard [cbContent]="shareLink" [container]="container">
                                             <fa-icon style="color: grey;" [icon]="faCopy" size="lg"></fa-icon>
                                         </button></div>
                                     </div>
@@ -77,15 +77,17 @@
                                 <div class="card-header" #container2>
                                     <div class="row">
                                         <div class="col-11"><code>&lt;iframe src="{{iFrameLink}}" title="User Profile" width="500" height="500"&gt;&lt;/iframe&gt;</code></div>
-                                        <div class="col-1"><button class="btn float-right" ngxClipboard [cbContent]="copyIFrameLink" [container]="container2">
+                                        <div class="col-1"><button class="btn float-right" (click)="copied()" ngxClipboard [cbContent]="copyIFrameLink" [container]="container2">
                                             <fa-icon style="color: grey;" [icon]="faCopy" size="lg"></fa-icon>
                                         </button></div>
                                     </div>
                                 </div>
                             </div>
                             <!-- <div class="embed-responsive embed-responsive-4by3"> -->
+                            <div class="text-center">
                                 <iframe class="embed-responsive-item" [src]="iFrameLink | safe: 'resourceUrl'" title="User Profile" width="500" height="500">
                                 </iframe>
+                            </div>
                             <!-- </div> -->
                         </div>
                         <div class="modal-footer">

@@ -3,4 +3,24 @@
     margin-left: auto;
     margin-right: auto;
     width: 50%;
-  }
+}
+
+.fb {
+  color : #3b5998;
+}
+
+.twitter {
+  color: #00acee;
+}
+
+.telegram {
+  color: #0088cc;
+}
+
+.whatsapp {
+  color: #25d366;
+}
+
+.linkedin {
+  color: #0e76a8;
+}

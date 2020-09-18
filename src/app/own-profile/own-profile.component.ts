@@ -75,7 +75,7 @@ export class OwnProfileComponent implements OnInit {
         this.isVerified = true;
       }
       this.shareLink += "&userType=institution";
-      this.iFrameLink += "&userType=individual";
+      this.iFrameLink += "&userType=institution";
     }
 
     this.copyIFrameLink = "<iframe src="+ this.iFrameLink +" title=\"User Profile\" width=\"500\" height=\"500\"></iframe>";
@@ -182,6 +182,10 @@ export class OwnProfileComponent implements OnInit {
         }
       );
     }
+  }
+
+  copied(): void {
+    alert("Copied!");
   }
 
 }

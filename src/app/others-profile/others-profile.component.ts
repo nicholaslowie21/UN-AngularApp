@@ -47,6 +47,7 @@ export class OthersProfileComponent implements OnInit {
         }
       )
     }
+    console.log("others profile: "+this.user);
   }
 
 }

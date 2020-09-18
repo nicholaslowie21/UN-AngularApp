@@ -66,6 +66,12 @@
         </div>
       </div>
     </form>
+    <div *ngIf="!isLoggedIn">
+      <div class="strike">
+        <span>or</span>
+      </div>
+      <a href="/signup" class="mt-md-3 btn btn-primary btn-block">Create an account</a>
+    </div>
   </div>
 </div>
 <br/>
