@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminService } from '../../services/admin.service';
 import { TokenStorageService } from '../../services/token-storage.service';
+import { faSearch } from '@fortawesome/free-solid-svg-icons/faSearch';
 
 @Component({
   selector: 'app-admin-management',
@@ -19,6 +20,8 @@ export class AdminManagementComponent implements OnInit {
   searchResults: any;
   isSearchSuccessful: any;
   errorMsgSearch = '';
+
+  faSearch = faSearch;
 
   constructor(private adminService: AdminService, private tokenStorageService: TokenStorageService) { }
 

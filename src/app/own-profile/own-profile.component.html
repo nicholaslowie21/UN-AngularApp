@@ -143,19 +143,19 @@
                     <ul class="list-group">
                         <li class="list-group-item">
                             <div class="row">
-                                <!--div class="card border-0" style="width:20%">
-                                    <div *ngIf="b.imgPath == '' ">
-                                        <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src="../../assets/img/profilePic_Placeholder.png" style="margin:15px; width: 50px; height: 50px; object-fit: cover;"
+                                <div class="card border-0" style="width:20%">
+                                    <!--<div *ngIf="b.imgPath == '' "> -->
+                                        <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src="../../assets/img/hydrocar.jpeg" style="margin:15px; width: 80px; height: 80px; object-fit: cover;"
                                             alt="Badge picture">
-                                    </div>
+                                    <!-- </div>
                                     <div *ngIf="b.imgPath.length != 0">
                                         <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src={{b.imgPath}} style="margin:15px; width: 50px; height: 50px; object-fit: cover;"
                                             alt="Badge picture">
-                                    </div>
-                                </div-->
+                                    </div>-->
+                                </div>
                                 <div class="card border-0" style="width:80%">
-                                    <h6 class="card-title text-left mt-md-3" style="margin-left: 5%;"> Title: {{proj.title}} </h6>
-                                    <h6 class="card-title text-left mt-md-3" style="margin-left: 5%;"> Description: {{proj.desc}} </h6>
+                                    <h5 class="card-title text-left mt-md-3" style="margin-left: 5%;"><a href="/viewProject?projectCode={{proj.code}}" target="_blank">{{proj.title}}</a></h5>
+                                    <h6 class="card-title text-left text-secondary mt-md-1" style="margin-left: 5%;">{{proj.desc}} </h6>
                                 </div>
                             </div>
 
@@ -173,19 +173,19 @@
                     <ul class="list-group">
                         <li class="list-group-item">
                             <div class="row">
-                                <!--div class="card border-0" style="width:20%">
-                                        <div *ngIf="b.imgPath == '' ">
+                                <div class="card border-0" style="width:20%">
+                                        <!-- <div *ngIf="b.imgPath == '' "> -->
                                             <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src="../../assets/img/profilePic_Placeholder.png" style="margin:15px; width: 50px; height: 50px; object-fit: cover;"
                                                 alt="Badge picture">
-                                        </div>
+                                        <!-- </div>
                                         <div *ngIf="b.imgPath.length != 0">
                                             <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src={{b.imgPath}} style="margin:15px; width: 50px; height: 50px; object-fit: cover;"
                                                 alt="Badge picture">
-                                        </div>
-                                    </div-->
+                                        </div> -->
+                                    </div>
                                 <div class="card border-0" style="width:80%">
-                                    <h6 class="card-title text-left mt-md-3" style="margin-left: 5%;"> Title: {{project.title}} </h6>
-                                    <h6 class="card-title text-left mt-md-3" style="margin-left: 5%;"> Description: {{project.desc}} </h6>
+                                    <h5 class="card-title text-left mt-md-3" style="margin-left: 5%;"><a href="/viewProject?projectCode={{project.code}}" target="_blank">{{project.title}}</a></h5>
+                                    <h6 class="card-title text-left text-secondary mt-md-1" style="margin-left: 5%;">{{project.desc}} </h6>
                                 </div>
                             </div>
 
@@ -218,8 +218,8 @@
                                         </div>
                                     </div>
                                     <div class="card border-0" style="width:80%">
-                                        <h6 class="card-title text-left mt-md-3" style="margin-left: 5%;"> Title: {{b.title}} </h6>
-                                        <h6 class="card-title text-left mt-md-3" style="margin-left: 5%;"> Description: {{b.description}} </h6>
+                                        <h5 class="card-title text-left mt-md-3" style="margin-left: 5%;">{{b.title}} </h5>
+                                        <h6 class="card-title text-left text-secondary mt-md-1" style="margin-left: 5%;">{{b.description}} </h6>
                                     </div>
                                 </div>
                             </li>
@@ -253,7 +253,7 @@
                                     <div class="row">
                                         <div class="card border-0" style="width:20%">
                                             <img class="card-img-top rounded-circle img-fluid mx-auto d-block" style="float: left; margin:15px; width: 50px; height: 50px; object-fit: cover;"
-                                                src="../../assets/img/profilePic_Placeholder.png" alt="Profile picture">
+                                                src="../../assets/img/green_exclamation.jpg" alt="Profile picture">
                                         </div>
                                         <div class="card border-0" style="width:80%">
                                             <h6 class="card-title text-left mt-md-3" style="margin: 10px;"> Created Project 1</h6>
@@ -266,7 +266,7 @@
                                     <div class="row">
                                         <div class="card border-0" style="width:20%">
                                             <img class="card-img-top rounded-circle img-fluid mx-auto d-block" style="float: left; margin:15px; width: 50px; height: 50px; object-fit: cover;"
-                                                src="../../assets/img/profilePic_Placeholder.png" alt="Profile picture">
+                                                src="../../assets/img/green_exclamation.jpg" alt="Profile picture">
                                         </div>
                                         <div class="card border-0" style="width:80%">
                                             <h6 class="card-title text-left mt-md-3" style="margin: 10px;"> Joined Project 2</h6>
@@ -296,8 +296,8 @@
                                                 </div>
                                             </div-->
                                             <div class="card border-0" style="width:80%">
-                                                <h6 class="card-title text-left mt-md-3" style="margin-left: 5%;"> Title: {{k.title}} </h6>
-                                                <h6 class="card-title text-left mt-md-3" style="margin-left: 5%;"> Description: {{k.desc}} </h6>
+                                                <h5 class="card-title text-left mt-md-3" style="margin-left: 5%;">{{k.title}} </h5>
+                                                <h6 class="card-title text-left text-secondary mt-md-1" style="margin-left: 5%;">{{k.desc}} </h6>
                                             </div>
                                         </div>
 
@@ -314,22 +314,21 @@
                                 <ul class="list-group">
                                     <li class="list-group-item">
                                         <div class="row">
-                                            <!--div class="card border-0" style="width:20%">
-                                                        <div *ngIf="b.imgPath == '' ">
-                                                            <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src="../../assets/img/profilePic_Placeholder.png" style="margin:15px; width: 50px; height: 50px; object-fit: cover;"
-                                                                alt="Badge picture">
-                                                        </div>
-                                                        <div *ngIf="b.imgPath.length != 0">
-                                                            <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src={{b.imgPath}} style="margin:15px; width: 50px; height: 50px; object-fit: cover;"
-                                                                alt="Badge picture">
-                                                        </div>
-                                                    </div-->
+                                            <div class="card border-0" style="width:20%">
+                                                <!-- <div *ngIf="b.imgPath == '' "> -->
+                                                    <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src="../../assets/img/lightbulb.jpg" style="margin:15px; width: 50px; height: 50px; object-fit: cover;"
+                                                        alt="Badge picture">
+                                                <!-- </div>
+                                                <div *ngIf="b.imgPath.length != 0">
+                                                    <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src={{b.imgPath}} style="margin:15px; width: 50px; height: 50px; object-fit: cover;"
+                                                        alt="Badge picture">
+                                                </div> -->
+                                            </div>
                                             <div class="card border-0" style="width:80%">
-                                                <h6 class="card-title text-left mt-md-3" style="margin-left: 5%;"> Title: {{i.title}} </h6>
-                                                <h6 class="card-title text-left mt-md-3" style="margin-left: 5%;"> Description: {{i.desc}} </h6>
+                                                <h5 class="card-title text-left mt-md-3" style="margin-left: 5%;">{{i.title}} </h5>
+                                                <h6 class="card-title text-left text-secondary mt-md-1" style="margin-left: 5%;">{{i.desc}} </h6>
                                             </div>
                                         </div>
-
                                     </li>
                                 </ul>
                             </div>
@@ -338,22 +337,21 @@
                                 <ul class="list-group">
                                     <li class="list-group-item">
                                         <div class="row">
-                                            <!--div class="card border-0" style="width:20%">
-                                                    <div *ngIf="b.imgPath == '' ">
-                                                        <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src="../../assets/img/profilePic_Placeholder.png" style="margin:15px; width: 50px; height: 50px; object-fit: cover;"
+                                            <div class="card border-0" style="width:20%">
+                                                    <!-- <div *ngIf="b.imgPath == '' "> -->
+                                                        <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src="../../assets/img/lightbulb.jpg" style="margin:15px; width: 50px; height: 50px; object-fit: cover;"
                                                             alt="Badge picture">
-                                                    </div>
+                                                    <!-- </div>
                                                     <div *ngIf="b.imgPath.length != 0">
                                                         <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src={{b.imgPath}} style="margin:15px; width: 50px; height: 50px; object-fit: cover;"
                                                             alt="Badge picture">
-                                                    </div>
-                                                </div-->
+                                                    </div> -->
+                                                </div>
                                             <div class="card border-0" style="width:80%">
-                                                <h6 class="card-title text-left mt-md-3" style="margin-left: 5%;"> Title: {{m.title}} </h6>
-                                                <h6 class="card-title text-left mt-md-3" style="margin-left: 5%;"> Description: {{m.desc}} </h6>
+                                                <h5 class="card-title text-left mt-md-3" style="margin-left: 5%;">{{m.title}} </h5>
+                                                <h6 class="card-title text-left text-secondary mt-md-1" style="margin-left: 5%;">{{m.desc}} </h6>
                                             </div>
                                         </div>
-
                                     </li>
                                 </ul>
                             </div>
@@ -362,22 +360,21 @@
                                 <ul class="list-group">
                                     <li class="list-group-item">
                                         <div class="row">
-                                            <!--div class="card border-0" style="width:20%">
-                                                        <div *ngIf="b.imgPath == '' ">
-                                                            <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src="../../assets/img/profilePic_Placeholder.png" style="margin:15px; width: 50px; height: 50px; object-fit: cover;"
+                                            <div class="card border-0" style="width:20%">
+                                                        <!-- <div *ngIf="b.imgPath == '' "> -->
+                                                            <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src="../../assets/img/lightbulb.jpg" style="margin:15px; width: 50px; height: 50px; object-fit: cover;"
                                                                 alt="Badge picture">
-                                                        </div>
+                                                        <!-- </div>
                                                         <div *ngIf="b.imgPath.length != 0">
                                                             <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src={{b.imgPath}} style="margin:15px; width: 50px; height: 50px; object-fit: cover;"
                                                                 alt="Badge picture">
-                                                        </div>
-                                                    </div-->
+                                                        </div> -->
+                                                    </div>
                                             <div class="card border-0" style="width:80%">
-                                                <h6 class="card-title text-left mt-md-3" style="margin-left: 5%;"> Title: {{v.title}} </h6>
-                                                <h6 class="card-title text-left mt-md-3" style="margin-left: 5%;"> Description: {{v.desc}} </h6>
+                                                <h5 class="card-title text-left mt-md-3" style="margin-left: 5%;">{{v.title}} </h5>
+                                                <h6 class="card-title text-left text-secondary mt-md-1" style="margin-left: 5%;">{{v.desc}} </h6>
                                             </div>
                                         </div>
-
                                     </li>
                                 </ul>
                             </div>

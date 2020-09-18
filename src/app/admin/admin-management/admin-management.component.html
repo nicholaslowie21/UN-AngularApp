@@ -34,7 +34,9 @@
             />
           </div>
           <div class="col">
-            <button class="btn btn-primary btn-block" (click)=searchUsers()>Search</button>
+            <button class="btn btn-primary" (click)=searchUsers()>
+              <fa-icon [icon]="faSearch" size="1x"></fa-icon>
+            </button>
           </div>
         </div>
       </form>
@@ -65,7 +67,8 @@
                     </div>
                   </div>
                   <div class="col-5">
-                    Name: {{user.name}} <br/>
+                    Name: <a *ngIf="user.username != thisUser.username" href="/profile?username={{user.username}}&userType=individual" target="_blank">{{user.name}}<br/></a> 
+                    <a *ngIf="user.username == thisUser.username" href="/ownProfile" target="_blank">{{user.name}}<br/></a> 
                     Username: {{user.username}} <br/>
                     Role: {{user.role}}
                   </div>
@@ -110,7 +113,8 @@
                     </div>
                   </div>
                   <div class="col-5">
-                    {{c.name}} <br/>
+                    <a *ngIf="c.username != thisUser.username" href="/profile?username={{c.username}}&userType=individual" target="_blank">{{c.name}}<br/></a> 
+                    <a *ngIf="c.username == thisUser.username" href="/ownProfile" target="_blank">{{c.name}}<br/></a> 
                     {{c.username}} <br/>
                     <div class="text-secondary">{{c.role}}</div>
                   </div>
@@ -153,7 +157,7 @@
                     </div>
                   </div>
                   <div class="col-5">
-                    {{a.name}} <br/>
+                    <a href="/profile?username={{a.username}}&userType=individual" target="_blank">{{a.name}}</a> <br/>
                     {{a.username}} <br/>
                     <div class="text-secondary">{{a.role}}</div>
                   </div>
@@ -196,7 +200,7 @@
                     </div>
                   </div>
                   <div class="col-5">
-                    {{r.name}} <br/>
+                    <a href="/profile?username={{r.username}}&userType=individual" target="_blank">{{r.name}}</a> <br/>
                     {{r.username}} <br/>
                     <div class="text-secondary">{{r.role}}</div>
                   </div>

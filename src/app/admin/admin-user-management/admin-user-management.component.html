@@ -48,7 +48,7 @@
                             <div *ngIf="user.role == 'user' || user.members || isAdminLead && user.username != thisUser.username">
                                 <div *ngIf="(isRegionalAdmin && regAdminCountry == user.country) || isAdmin || isAdminLead">
                                     <div class="btn-group float-right">
-                                        <a [href]="viewUser(user)" class="btn btn-primary">View</a>
+                                        <button type="button" (click)="viewUser(user)" class="btn btn-primary">View</button>
                                     </div>
                                     <br><br>
                                     <div *ngIf="user.role">
@@ -84,7 +84,7 @@
                         Country: {{project.region}}
                         <div *ngIf="(isRegionalAdmin && regAdminCountry == project.region) || isAdmin || isAdminLead">
                             <div class="btn-group float-right">
-                                <a [href]="viewProject(project)" class="btn btn-primary">View</a>
+                                <button type="button" (click)="viewProject(project)" class="btn btn-primary">View</button>
                             </div>
                             <br/><br/>
                             <button class="btn btn-danger float-right ml-2" type="button" aria-haspopup="true" aria-expanded="false" (click)=suspendProject(project.id)>

@@ -2,6 +2,7 @@
   <div>
     <h1 class="h1">
       Edit Profile
+      <a class="btn btn-primary float-right" href="/ownProfile">Back to Profile</a>
     </h1>
   </div>
   <br/>
@@ -173,7 +174,7 @@
       <div class="form-group">
         <label for="SDGs">SDGs</label>
         <br/>
-        <div class="form-check form-check-inline" *ngFor="let SDG of SDGs; let i = index">
+        <div class="form-check" *ngFor="let SDG of SDGs; let i = index">
           <label>
             <input type="checkbox" name="SDGs"
               value="i" [checked]="SDGsMap[i]"

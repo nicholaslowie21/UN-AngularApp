@@ -22,10 +22,10 @@ export class ShareProfilePageComponent implements OnInit {
   pastProj: any;
   badges: any;
 
-  knowledge: any;
-  manpower: any;
-  item: any;
-  venue: any;
+  knowledge: any = [];
+  manpower: any = [];
+  item: any = [];
+  venue: any = [];
 
   constructor(private route: ActivatedRoute, private userService: UserService, private institutionService: InstitutionService, private resourceService: ResourceService) { }
 
@@ -42,7 +42,7 @@ export class ShareProfilePageComponent implements OnInit {
       this.userService.viewUserProfile({username: this.username}).subscribe(
         response => {
           this.user = response.data.targetUser;
-          this.loadData(this.user);
+          this.loadUserData(this.user);
           if(this.user.isVerified == "true") {
             this.isVerified = true;
           }
@@ -53,6 +53,7 @@ export class ShareProfilePageComponent implements OnInit {
       this.institutionService.viewInstitutionProfile({username: this.username}).subscribe(
         response => {
           this.user = response.data.targetInstitution;
+          this.loadInstitutionData(this.user);
           if(this.user.isVerified) {
             this.isVerified = true;
           }
@@ -61,7 +62,7 @@ export class ShareProfilePageComponent implements OnInit {
     }
   }
 
-  loadData(user): void {
+  loadUserData(user): void {
     this.userService.getCurrentProjects({ id: user.id }).subscribe(
       response => {
         console.log(JSON.stringify(response));
@@ -109,9 +110,8 @@ export class ShareProfilePageComponent implements OnInit {
     );
   }
 
-  initialize(): void {
-    if (this.isIndividual == false) {
-      this.institutionService.getCurrentProjects({ id: this.user.id }).subscribe(
+  loadInstitutionData(institution): void {
+      this.institutionService.getCurrentProjects({ id: institution.id }).subscribe(
         response => {
           console.log(JSON.stringify(response));
           this.currentProj = response.data.currProjects;
@@ -119,7 +119,7 @@ export class ShareProfilePageComponent implements OnInit {
         }
       );
 
-      this.institutionService.getPastInvolvement({ id: this.user.id }).subscribe(
+      this.institutionService.getPastInvolvement({ id: institution.id }).subscribe(
         response => {
           console.log(JSON.stringify(response));
           this.pastProj = response.data.pastProjects;
@@ -127,7 +127,7 @@ export class ShareProfilePageComponent implements OnInit {
         }
       );
 
-      this.resourceService.getInstitutionKnowledge({ id: this.user.id }).subscribe(
+      this.resourceService.getInstitutionKnowledge({ id: institution.id }).subscribe(
         response => {
           console.log(JSON.stringify(response));
           this.knowledge = response.data.knowledges;
@@ -135,7 +135,7 @@ export class ShareProfilePageComponent implements OnInit {
         }
       );
 
-      this.resourceService.getInstitutionItem({ id: this.user.id }).subscribe(
+      this.resourceService.getInstitutionItem({ id: institution.id }).subscribe(
         response => {
           console.log(JSON.stringify(response));
           this.item = response.data.items;
@@ -143,14 +143,13 @@ export class ShareProfilePageComponent implements OnInit {
         }
       );
 
-      this.resourceService.getInstitutionVenue({ id: this.user.id }).subscribe(
+      this.resourceService.getInstitutionVenue({ id: institution.id }).subscribe(
         response => {
           console.log(JSON.stringify(response));
           this.venue = response.data.venues;
           console.log(JSON.stringify(this.venue));
         }
       );
-    }
   }
 
 }

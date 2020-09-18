@@ -43,10 +43,10 @@ export class OwnProfileComponent implements OnInit {
   currentProj: any;
   pastProj: any;
 
-  knowledge: any;
-  manpower: any;
-  item: any;
-  venue: any;
+  knowledge: any = [];
+  manpower: any = [];
+  item: any = [];
+  venue: any = [];
   //projectList = Array;
 
   constructor(private authService: AuthService, private tokenStorageService: TokenStorageService, private userService: UserService,
@@ -54,6 +54,7 @@ export class OwnProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = this.tokenStorageService.getUser();
+    console.log("USER: " + this.user.profilePic);
     for (var i = 0; i < this.user.username.length; i++) {
       if (this.user.username.charAt(i) == ' ') {
         this.usernameFormatted = this.usernameFormatted.concat('%20');
@@ -63,6 +64,7 @@ export class OwnProfileComponent implements OnInit {
     }
     this.shareLink = "http://localhost:4200/profile?username=" + this.usernameFormatted;
     this.iFrameLink = "http://localhost:4200/shareProfile?username=" + this.usernameFormatted;
+    
     if (this.tokenStorageService.getAccountType() == "user") {
       this.isIndividual = true;
       if(this.user.isVerified == "true") {

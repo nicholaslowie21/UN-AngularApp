@@ -3,6 +3,7 @@ import { AdminService } from '../../services/admin.service';
 import { ProjectService } from '../../services/project.service';
 import { TokenStorageService } from '../../services/token-storage.service';
 import { faSearch } from '@fortawesome/free-solid-svg-icons/faSearch';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-user-management',
@@ -27,7 +28,8 @@ export class AdminUserManagementComponent implements OnInit {
 
   checkUser: any;
 
-  constructor(private adminService: AdminService, private tokenStorageService: TokenStorageService, private projectService: ProjectService) { }
+  constructor(private adminService: AdminService, private tokenStorageService: TokenStorageService, 
+    private projectService: ProjectService, private router: Router) { }
 
   ngOnInit(): void {
     this.thisUser = this.tokenStorageService.getUser();
@@ -42,27 +44,30 @@ export class AdminUserManagementComponent implements OnInit {
     }
   }
 
-  viewUser(user): string {
-    let usernameFormatted = '';
-    for(var i=0; i<user.username.length; i++) {
-      if(user.username.charAt(i)==' ') {
-        usernameFormatted = usernameFormatted.concat('%20');
-      } else {
-        usernameFormatted = usernameFormatted.concat(user.username.charAt(i));
-      }
-    }
-
+  viewUser(user): void {
+    // let usernameFormatted = '';
+    // for(var i=0; i<user.username.length; i++) {
+    //   if(user.username.charAt(i)==' ') {
+    //     usernameFormatted = usernameFormatted.concat('%20');
+    //   } else {
+    //     usernameFormatted = usernameFormatted.concat(user.username.charAt(i));
+    //   }
+    // }
     let userType = '';
     if(user.role) {
       userType = 'individual';
     } else {
       userType = 'institution';
     }
-    return "http://localhost:4200/admin/user-management/profile?username="+usernameFormatted+'&userType='+userType;
+    this.router.navigate(['/admin/user-management/profile'], {queryParams: {username: user.username, userType: userType}});
+    this.searchType = 'Select';
+    this.keyword = '';
   }
 
-  viewProject(project): string {
-    return "http://localhost:4200/viewProject?projectCode="+project.code;
+  viewProject(project): void {
+    this.router.navigate(['/viewProject'], {queryParams: {projectCode: project.code}});
+    this.searchType = 'Select';
+    this.keyword = '';
   }
 
   searchUserProject(): void {
