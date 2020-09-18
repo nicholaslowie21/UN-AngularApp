@@ -35,7 +35,8 @@ export class OwnProfileComponent implements OnInit {
   faPencilAlt = faPencilAlt;
   faCopy = faCopy;
   faClipboard = faClipboard;
-  // iFrameLink = ""+"<iframe src="this.shareLink" title="User Profile"></iframe>"
+  iFrameLink = '';
+  copyIFrameLink = '';
   badges: any;
   userId: any;
 
@@ -61,18 +62,23 @@ export class OwnProfileComponent implements OnInit {
       }
     }
     this.shareLink = "http://localhost:4200/profile?username=" + this.usernameFormatted;
+    this.iFrameLink = "http://localhost:4200/shareProfile?username=" + this.usernameFormatted;
     if (this.tokenStorageService.getAccountType() == "user") {
       this.isIndividual = true;
       if(this.user.isVerified == "true") {
         this.isVerified = true;
       }
       this.shareLink += "&userType=individual";
+      this.iFrameLink += "&userType=individual";
     } else {
       if(this.user.isVerified) {
         this.isVerified = true;
       }
       this.shareLink += "&userType=institution";
+      this.iFrameLink += "&userType=individual";
     }
+
+    this.copyIFrameLink = "<iframe src="+ this.iFrameLink +" title=\"User Profile\"></iframe>";
     //this.projectList = this.user.projects;
 
     this.userId = this.user.id;

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TokenStorageService } from './services/token-storage.service';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -11,8 +12,10 @@ export class AppComponent implements OnInit {
   isLoggedIn = false;
   username: string;
   showAdmin = false;
+  showNavBar = true;
 
-  constructor(private tokenStorageService: TokenStorageService) { }
+  constructor(private tokenStorageService: TokenStorageService, private route: ActivatedRoute, private router: Router) { 
+  }
 
   ngOnInit(): void {
     this.isLoggedIn = !!this.tokenStorageService.getToken();
@@ -30,6 +33,12 @@ export class AppComponent implements OnInit {
       }
 
       this.username = user.username;
+    }
+  }
+
+  onActivate(event: any): void {
+    if (event.isShareProfile) {
+      this.showNavBar = false;
     }
   }
 

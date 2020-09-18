@@ -33,14 +33,17 @@
                                 <li class="list-group-item">
 
                                     <div class="row">
-                                        <div class="card border-0" style="width:50%; float: left">
-                                            <h6 class="card-title text-left mt-md-3" style="margin-left: 5%;"> Name: {{v.name}} </h6>
+                                        <div class="col-3">
+                                            <img class="card-img-top img-fluid mx-auto d-block"  style="margin: 10px; width: 150px; height: 150px; object-fit: cover;" src="{{v.imgPath}}" alt="Verify picture">
+                                        </div>
+                                        <div class="card border-0 col-4">
+                                            <h6 class="card-title text-left mt-md-3" style="margin-left: 5%;"> Name: <a href="/profile?username={{v.name}}&userType=individual">{{v.name}}</a> </h6>
                                             <h6 class="card-title text-left mt-md-3" style="margin-left: 5%;"> Username: {{v.username}} </h6>
                                             <h6 class="card-title text-left mt-md-3" style="margin-left: 5%;"> Status: {{v.status}} </h6>
                                             <!--h6 class="card-title text-left mt-md-3" style="margin: 5px;" id="vId"> Id: {{v.userId}} </h6-->
                                         </div>
 
-                                        <div class="card border-0" style="width:50%; float: right">
+                                        <div class="card border-0 col-5">
                                             <div class="card-body">
                                                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#rejectModal" 
                                                     style="float: right; margin-right: 2%;" id="rejectButton">
@@ -95,8 +98,34 @@
                                     </div>
                                     </div>
                                 </div>
+                                
+                                <a href="{{v.imgPath}}" target="_blank">View picture</a>
 
-                                    <p>
+<!-- Button trigger modal -->
+<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target=#ee>
+    View picture
+</button>
+  
+  <div class="modal fade" id="ee" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Verification picture</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <img class="card-img-top img-fluid mx-auto d-block" style="float: left; object-fit: cover;" src="{{v.imgPath}}" alt="Verify picture">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+                                    <!-- <p>
                                         <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false"
                                             aria-controls="collapseExample">
                                             View Verification Picture
@@ -106,7 +135,7 @@
                                         <div class="card card-body">
                                             <img class="card-img-top img-fluid mx-auto d-block" style="float: left; object-fit: cover;" src="{{v.imgPath}}" alt="Verify picture">
                                         </div>
-                                    </div>
+                                    </div> -->
 
                                 </li>
                             </ul>
@@ -123,7 +152,7 @@
                                 <li class="list-group-item">
                                     <div class="row">
                                         <div class="card border-0" style="width:50%">
-                                            <h6 class="card-title text-left mt-md-3" style="margin-left: 5%;"> Name: {{i.name}} </h6>
+                                            <h6 class="card-title text-left mt-md-3" style="margin-left: 5%;"> Name: <a href="/profile?username={{i.name}}&userType=institution">{{i.name}}</a></h6>
                                             <h6 class="card-title text-left mt-md-3" style="margin-left: 5%;"> Username: {{i.username}} </h6>
                                             <h6 class="card-title text-left mt-md-3" style="margin-left: 5%;"> Status: {{i.status}} </h6>
                                             <h6 class="card-title text-left mt-md-3" style="margin-left: 5%;"> Verified: {{i.isVerified}} </h6>

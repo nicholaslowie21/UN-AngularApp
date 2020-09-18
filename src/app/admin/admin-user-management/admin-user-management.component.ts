@@ -59,7 +59,10 @@ export class AdminUserManagementComponent implements OnInit {
       userType = 'institution';
     }
     return "http://localhost:4200/admin/user-management/profile?username="+usernameFormatted+'&userType='+userType;
+  }
 
+  viewProject(project): string {
+    return "http://localhost:4200/viewProject?projectCode="+project.code;
   }
 
   searchUserProject(): void {

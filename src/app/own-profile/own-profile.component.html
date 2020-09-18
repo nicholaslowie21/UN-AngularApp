@@ -22,7 +22,7 @@
             <h6 class="card-title text-left mt-md-1">{{ user.address }}</h6>
             <h6 class="card-title text-left mt-md-1">{{ user.phone }}</h6>
             <h6 class="card-title text-left mt-md-1">{{ user.bio }}</h6>
-            <h6 class="card-title text-left mt-md-1">{{ user.website }}</h6>
+            <h6 class="card-title text-left mt-md-1"><a [href]="user.website">{{ user.website }}</a></h6>
         </div>
         <div class="col-2">
             <!-- <div class="btn-group"> -->
@@ -76,17 +76,17 @@
                             <div class="card">
                                 <div class="card-header" #container2>
                                     <div class="row">
-                                        <div class="col-11"><code>&lt;iframe src="{{shareLink}}" title="User Profile"&gt;&lt;/iframe&gt;</code></div>
-                                        <div class="col-1"><button class="btn float-right" ngxClipboard [cbContent]="'iframe'" [container]="container2">
+                                        <div class="col-11"><code>&lt;iframe src="{{iFrameLink}}" title="User Profile"&gt;&lt;/iframe&gt;</code></div>
+                                        <div class="col-1"><button class="btn float-right" ngxClipboard [cbContent]="copyIFrameLink" [container]="container2">
                                             <fa-icon style="color: grey;" [icon]="faCopy" size="lg"></fa-icon>
                                         </button></div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="embed-responsive embed-responsive-4by3">
-                                <iframe class="embed-responsive-item" [src]="shareLink | safe: 'resourceUrl'" title="User Profile">
+                            <!-- <div class="embed-responsive embed-responsive-4by3"> -->
+                                <iframe class="embed-responsive-item" [src]="iFrameLink | safe: 'resourceUrl'" title="User Profile" width="500" height="500">
                                 </iframe>
-                            </div>
+                            <!-- </div> -->
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -134,7 +134,9 @@
             <!-- <div class="card"> -->
             <div class="card-body w-100">
                 <h5 class="card-title">My Current Projects</h5>
-
+                <div *ngIf="currentProj.length == 0">
+                    Start or join a new project now!
+                </div>
                 <div *ngFor="let proj of currentProj">
                     <ul class="list-group">
                         <li class="list-group-item">
@@ -162,7 +164,9 @@
 
             <div class="card-body w-100">
                 <h5 class="card-title">My Past Projects</h5>
-
+                <div *ngIf="pastProj.length == 0">
+                    Start or join a new project now!
+                </div>
                 <div *ngFor="let project of pastProj">
                     <ul class="list-group">
                         <li class="list-group-item">
@@ -194,6 +198,9 @@
             <div class="ml-auto" style="width: 100%">
                 <div class="card-body" *ngIf=isIndividual>
                     <h5 class="card-title">My Badges</h5>
+                    <div *ngIf="badges.length == 0">
+                        Contribute to collect points and unlock badges!
+                    </div>
                     <div *ngFor="let b of badges">
                         <ul class="list-group">
                             <li class="list-group-item">
@@ -220,7 +227,7 @@
 
                 <div class="card-body" *ngIf=!isIndividual>
                     <h5 class="card-title">My Affiliation</h5>
-                    <a href="/institution/affiliation">See more</a>
+                    <a href="/institution/affiliation">See affiliated users</a>
                 </div>
                 <div class="card-body">
                     <h5 class="card-title">My Resources</h5>
@@ -269,7 +276,9 @@
                             </ul>
                         </div>
                         <div class="tab-pane fade" id="knowledge" role="tabpanel" aria-labelledby="knowledge-tab">
-
+                            <div *ngIf="knowledge.length == 0" class="mt-md-3">
+                                Start sharing your knowledge resource!
+                            </div>
                             <div *ngFor="let k of knowledge">
                                 <ul class="list-group">
                                     <li class="list-group-item">
@@ -296,7 +305,9 @@
 
                         </div>
                         <div class="tab-pane fade" id="offer" role="tabpanel" aria-labelledby="offer-tab">
-
+                            <div *ngIf="item.length == 0" class="mt-md-3">
+                                Start offering your item/venue/manpower resources!
+                            </div>
                             <div *ngFor="let i of item">
                                 <ul class="list-group">
                                     <li class="list-group-item">

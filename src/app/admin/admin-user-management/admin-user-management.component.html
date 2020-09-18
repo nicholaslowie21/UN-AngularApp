@@ -8,8 +8,8 @@
             <option value="project">Project</option>
         </select>
     
-        <input type="text" class="form-control mr-md-1" style="width: 30%;"
-            name="search" [(ngModel)]="keyword" #search="ngModel" placeholder="Enter username..." />
+        <input type="text" class="form-control mr-md-1" style="width: 40%;"
+            name="search" [(ngModel)]="keyword" #search="ngModel" placeholder="Enter username or project code..." />
         <button class="btn btn-primary" (click)=searchUserProject()>
             <fa-icon [icon]="faSearch" size="1x"></fa-icon>
         </button>
@@ -42,12 +42,13 @@
                             {{user.name}} ({{user.username}})
                             <div *ngIf="user.role" class="text-secondary">{{user.role}}</div>
                             <div class="text-secondary">{{user.status}}</div>
+                            <div class="text-secondary">{{user.country}}</div>
                         </div>
                         <div class="col-3">
                             <div *ngIf="user.role == 'user' || user.members || isAdminLead && user.username != thisUser.username">
                                 <div *ngIf="(isRegionalAdmin && regAdminCountry == user.country) || isAdmin || isAdminLead">
                                     <div class="btn-group float-right">
-                                        <a [href]="viewUser(user)" class="btn btn-primary">User Management Profile</a>
+                                        <a [href]="viewUser(user)" class="btn btn-primary">View</a>
                                     </div>
                                     <br><br>
                                     <div *ngIf="user.role">
@@ -79,8 +80,13 @@
                     <div class="card-body">
                         Title: {{project.title}} <br/>
                         Code: {{project.code}} <br/>
-                        Status: {{project.status}}
+                        Status: {{project.status}} <br/>
+                        Country: {{project.region}}
                         <div *ngIf="(isRegionalAdmin && regAdminCountry == project.region) || isAdmin || isAdminLead">
+                            <div class="btn-group float-right">
+                                <a [href]="viewProject(project)" class="btn btn-primary">View</a>
+                            </div>
+                            <br/><br/>
                             <button class="btn btn-danger float-right ml-2" type="button" aria-haspopup="true" aria-expanded="false" (click)=suspendProject(project.id)>
                                 Suspend
                             </button>

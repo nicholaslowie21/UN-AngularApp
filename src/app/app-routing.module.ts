@@ -20,6 +20,8 @@ import { AdminUserManagementComponent } from './admin/admin-user-management/admi
 import { AdminUserManagementProfileComponent } from './admin/admin-user-management-profile/admin-user-management-profile.component';
 import { AdminVerificationComponent } from './admin/admin-verification/admin-verification.component';
 import { OthersProfileComponent } from './others-profile/others-profile.component';
+import { ShareProfilePageComponent } from './share-profile-page/share-profile-page.component';
+import { ProjectPageComponent } from './project-page/project-page.component';
 
 const routes: Routes = [
   { path: 'landing', component: LandingComponent},
@@ -44,6 +46,8 @@ const routes: Routes = [
       { path: '', component: AdminHomeComponent, pathMatch: 'full'}
     ] 
   },
+  { path: 'shareProfile', component: ShareProfilePageComponent},
+  { path: 'viewProject', component: ProjectPageComponent},
   { path: '', redirectTo: 'home', pathMatch: 'full'}
 ];
 

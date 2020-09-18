@@ -34,6 +34,8 @@ import { ShareIconsModule } from 'ngx-sharebuttons/icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SafePipe } from './safe.pipe';
 import { ClipboardModule } from 'ngx-clipboard';
+import { ShareProfilePageComponent } from './share-profile-page/share-profile-page.component';
+import { ProjectPageComponent } from './project-page/project-page.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +58,9 @@ import { ClipboardModule } from 'ngx-clipboard';
     AdminReportComponent,
     AdminUserManagementProfileComponent,
     OthersProfileComponent,
-    SafePipe
+    SafePipe,
+    ShareProfilePageComponent,
+    ProjectPageComponent
   ],
   imports: [
     BrowserModule,

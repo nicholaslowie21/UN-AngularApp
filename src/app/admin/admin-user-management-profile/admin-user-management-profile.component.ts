@@ -14,6 +14,7 @@ export class AdminUserManagementProfileComponent implements OnInit {
 
   username: string;
   userType: string;
+  projectCode: string;
   user: any;
   userList: any;
   errMsg: "";
@@ -29,6 +30,7 @@ export class AdminUserManagementProfileComponent implements OnInit {
       .subscribe(params => {
         this.username = params.username;
         this.userType = params.userType;
+        this.projectCode = params.projectCode;
       },
         response => { console.log(JSON.stringify(response)) }
       );
@@ -37,7 +39,7 @@ export class AdminUserManagementProfileComponent implements OnInit {
 
     if (this.userType == 'individual') {
       this.loadUser();
-    } else {
+    } else if (this.userType == 'institution') {
       this.loadInstitution();
     }
   }
