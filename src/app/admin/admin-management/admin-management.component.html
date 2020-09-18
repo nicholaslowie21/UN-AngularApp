@@ -45,7 +45,8 @@
       <div *ngIf=isSearchSuccessful>
         <div *ngFor="let user of searchResults">
             <div class="card" style="width: 70%">
-                <div class="card-body">
+                <div class="card-body row">
+                  <div class="col-3">
                     <div *ngIf="user.profilePic.length > 0">
                         <img
                           src={{user.profilePic}}
@@ -62,31 +63,13 @@
                           alt="Profile picture"
                         />
                     </div>
-                    <br/>
-                    <div class="row">
-                      <div class="col-2">
-                        Name: 
-                      </div>
-                      <div class="col">
-                        {{user.name}}
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-2">
-                        Username: 
-                      </div>
-                      <div class="col">
-                        {{user.username}}
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-2">
-                        Role: 
-                      </div>
-                      <div class="col">
-                        {{user.role}}
-                      </div>
-                    </div>
+                  </div>
+                  <div class="col-5">
+                    Name: {{user.name}} <br/>
+                    Username: {{user.username}} <br/>
+                    Role: {{user.role}}
+                  </div>
+                  <div class="col-4">
                     <div class="dropdown float-right">
                       <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Assign role
@@ -98,6 +81,7 @@
                         <a class="dropdown-item btn" (click)=assignUser(user.id)>User</a>
                       </div>
                     </div>
+                  </div>
                 </div>
             </div>
         </div>
@@ -105,8 +89,9 @@
     </div>
     <div class="tab-pane fade" id="adminLeads" role="tabpanel" aria-labelledby="adminLeads-tab">
         <div *ngFor="let c of adminLeads">
-            <div class="card">
-                <div class="card-body">
+            <div class="card" style="width: 70%">
+                <div class="card-body row">
+                  <div class="col-3">
                     <div *ngIf="c.profilePic.length > 0">
                         <img
                           src={{c.profilePic}}
@@ -123,9 +108,13 @@
                           alt="Profile picture"
                         />
                     </div>
+                  </div>
+                  <div class="col-5">
                     {{c.name}} <br/>
-                    {{c.username}}
+                    {{c.username}} <br/>
                     <div class="text-secondary">{{c.role}}</div>
+                  </div>
+                  <div class="col-4">
                     <div class="dropdown float-right" *ngIf="c.username != thisUser.username">
                       <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Assign role
@@ -136,14 +125,16 @@
                         <a class="dropdown-item btn" (click)=assignUser(c.id)>User</a>
                       </div>
                     </div>
+                  </div>
                 </div>
             </div>
         </div>
     </div>
     <div class="tab-pane fade" id="admins" role="tabpanel" aria-labelledby="admins-tab">
         <div *ngFor="let a of admins">
-            <div class="card">
-                <div class="card-body">
+            <div class="card" style="width: 70%">
+                <div class="card-body row">
+                  <div class="col-3">
                     <div *ngIf="a.profilePic.length > 0">
                         <img
                           src={{a.profilePic}}
@@ -160,9 +151,13 @@
                           alt="Profile picture"
                         />
                     </div>
+                  </div>
+                  <div class="col-5">
                     {{a.name}} <br/>
-                    {{a.username}}
+                    {{a.username}} <br/>
                     <div class="text-secondary">{{a.role}}</div>
+                  </div>
+                  <div class="col-4">
                     <div class="dropdown float-right">
                       <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Assign role
@@ -173,14 +168,16 @@
                         <a class="dropdown-item btn" (click)=assignUser(a.id)>User</a>
                       </div>
                     </div>
+                  </div>
                 </div>
             </div>
         </div>
     </div>
     <div class="tab-pane fade" id="regionalAdmins" role="tabpanel" aria-labelledby="regionalAdmins-tab">
         <div *ngFor="let r of regionalAdmins">
-            <div class="card">
-                <div class="card-body">
+            <div class="card" style="width: 70%">
+                <div class="card-body row">
+                  <div class="col-3">
                     <div *ngIf="r.profilePic.length > 0">
                         <img
                           src={{r.profilePic}}
@@ -197,9 +194,13 @@
                           alt="Profile picture"
                         />
                     </div>
+                  </div>
+                  <div class="col-5">
                     {{r.name}} <br/>
-                    {{r.username}}
+                    {{r.username}} <br/>
                     <div class="text-secondary">{{r.role}}</div>
+                  </div>
+                  <div class="col-4">
                     <div class="dropdown float-right">
                       <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Assign role
@@ -210,6 +211,7 @@
                         <a class="dropdown-item btn" (click)=assignUser(r.id)>User</a>
                       </div>
                     </div>
+                  </div>
                 </div>
             </div>
         </div>

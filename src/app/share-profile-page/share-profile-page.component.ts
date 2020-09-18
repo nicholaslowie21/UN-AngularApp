@@ -42,12 +42,12 @@ export class ShareProfilePageComponent implements OnInit {
       this.userService.viewUserProfile({username: this.username}).subscribe(
         response => {
           this.user = response.data.targetUser;
+          this.loadData(this.user);
           if(this.user.isVerified == "true") {
             this.isVerified = true;
           }
         }
       )
-      console.log(this.user);
     } else if(this.userType == "institution") {
       this.isIndividual = false;
       this.institutionService.viewInstitutionProfile({username: this.username}).subscribe(
@@ -59,69 +59,58 @@ export class ShareProfilePageComponent implements OnInit {
         }
       )
     }
-    console.log("INIT"+this.user);
-    this.initialize();
+  }
+
+  loadData(user): void {
+    this.userService.getCurrentProjects({ id: user.id }).subscribe(
+      response => {
+        console.log(JSON.stringify(response));
+        this.currentProj = response.data.currProjects;
+        console.log(JSON.stringify(this.currentProj));
+      }
+    );
+    this.userService.getPastProjects({ id: user.id }).subscribe(
+      response => {
+        console.log(JSON.stringify(response));
+        this.pastProj = response.data.pastProjects;
+        console.log(JSON.stringify(this.pastProj));
+      }
+    );
+    this.resourceService.getUserKnowledge({ id: user.id }).subscribe(
+      response => {
+        console.log(JSON.stringify(response));
+        this.knowledge = response.data.knowledges;
+        console.log(JSON.stringify(this.knowledge));
+      }
+    );
+
+    this.resourceService.getUserItem({ id: user.id }).subscribe(
+      response => {
+        console.log(JSON.stringify(response));
+        this.item = response.data.items;
+        console.log(JSON.stringify(this.item));
+      }
+    );
+
+    this.resourceService.getUserManpower({ id: user.id }).subscribe(
+      response => {
+        console.log(JSON.stringify(response));
+        this.manpower = response.data.manpowers;
+        console.log(JSON.stringify(this.manpower));
+      }
+    );
+
+    this.resourceService.getUserVenue({ id: user.id }).subscribe(
+      response => {
+        console.log(JSON.stringify(response));
+        this.venue = response.data.venues;
+        console.log(JSON.stringify(this.venue));
+      }
+    );
   }
 
   initialize(): void {
-    console.log(this.user);
-    if (this.isIndividual == true) {
-      this.userService.getBadges({ id: this.user.id }).subscribe(
-        response => {
-          console.log(JSON.stringify(response));
-          this.badges = response.data.badges;
-        }
-      );
-
-      this.userService.getCurrentProjects({ id: this.user.id }).subscribe(
-        response => {
-          console.log(JSON.stringify(response));
-          this.currentProj = response.data.currProjects;
-          console.log(JSON.stringify(this.currentProj));
-        }
-      );
-
-      this.userService.getPastProjects({ id: this.user.id }).subscribe(
-        response => {
-          console.log(JSON.stringify(response));
-          this.pastProj = response.data.pastProjects;
-          console.log(JSON.stringify(this.pastProj));
-        }
-      );
-
-      this.resourceService.getUserKnowledge({ id: this.user.id }).subscribe(
-        response => {
-          console.log(JSON.stringify(response));
-          this.knowledge = response.data.knowledges;
-          console.log(JSON.stringify(this.knowledge));
-        }
-      );
-
-      this.resourceService.getUserItem({ id: this.user.id }).subscribe(
-        response => {
-          console.log(JSON.stringify(response));
-          this.item = response.data.items;
-          console.log(JSON.stringify(this.item));
-        }
-      );
-
-      this.resourceService.getUserManpower({ id: this.user.id }).subscribe(
-        response => {
-          console.log(JSON.stringify(response));
-          this.manpower = response.data.manpowers;
-          console.log(JSON.stringify(this.manpower));
-        }
-      );
-
-      this.resourceService.getUserVenue({ id: this.user.id }).subscribe(
-        response => {
-          console.log(JSON.stringify(response));
-          this.venue = response.data.venues;
-          console.log(JSON.stringify(this.venue));
-        }
-      );
-
-    } else if (this.isIndividual == false) {
+    if (this.isIndividual == false) {
       this.institutionService.getCurrentProjects({ id: this.user.id }).subscribe(
         response => {
           console.log(JSON.stringify(response));

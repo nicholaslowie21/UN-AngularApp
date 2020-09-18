@@ -201,7 +201,7 @@
                 <div class="card-body" *ngIf=isIndividual>
                     <h5 class="card-title">My Badges</h5>
                     <div *ngIf="badges.length == 0">
-                        Contribute to collect points and unlock badges!
+                        Start contributing to collect points and unlock badges!
                     </div>
                     <div *ngFor="let b of badges">
                         <ul class="list-group">
@@ -307,7 +307,7 @@
 
                         </div>
                         <div class="tab-pane fade" id="offer" role="tabpanel" aria-labelledby="offer-tab">
-                            <div *ngIf="item.length == 0" class="mt-md-3">
+                            <div *ngIf="item.length == 0 && manpower.length == 0 && venue.length == 0" class="mt-md-3">
                                 Start offering your item/venue/manpower resources!
                             </div>
                             <div *ngFor="let i of item">
