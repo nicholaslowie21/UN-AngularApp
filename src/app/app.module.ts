@@ -35,7 +35,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SafePipe } from './safe.pipe';
 import { ClipboardModule } from 'ngx-clipboard';
 import { ShareProfilePageComponent } from './share-profile-page/share-profile-page.component';
-import { ProjectPageComponent } from './project-page/project-page.component';
+import { ProjectDetailsComponent } from './project/project-details/project-details.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +60,7 @@ import { ProjectPageComponent } from './project-page/project-page.component';
     OthersProfileComponent,
     SafePipe,
     ShareProfilePageComponent,
-    ProjectPageComponent
+    ProjectDetailsComponent
   ],
   imports: [
     BrowserModule,
