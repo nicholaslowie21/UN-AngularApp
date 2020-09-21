@@ -17,7 +17,7 @@ export class ProjectDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams
       .subscribe(params => {
-        this.projectCode = params.projectCode;
+        this.projectCode = params.code;
       }
     );
     this.loadProject();
