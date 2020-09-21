@@ -55,15 +55,8 @@ export class OwnProfileComponent implements OnInit {
   ngOnInit(): void {
     this.user = this.tokenStorageService.getUser();
     console.log("USER: " + this.user.profilePic);
-    for (var i = 0; i < this.user.username.length; i++) {
-      if (this.user.username.charAt(i) == ' ') {
-        this.usernameFormatted = this.usernameFormatted.concat('%20');
-      } else {
-        this.usernameFormatted = this.usernameFormatted.concat(this.user.username.charAt(i));
-      }
-    }
-    this.shareLink = "http://localhost:4200/profile?username=" + this.usernameFormatted;
-    this.iFrameLink = "http://localhost:4200/shareProfile?username=" + this.usernameFormatted;
+    this.shareLink = "http://localhost:4200/profile?username=" + this.user.username;
+    this.iFrameLink = "http://localhost:4200/shareProfile?username=" + this.user.username;
     
     if (this.tokenStorageService.getAccountType() == "user") {
       this.isIndividual = true;
@@ -85,7 +78,6 @@ export class OwnProfileComponent implements OnInit {
 
     this.userId = this.user.id;
     console.log(JSON.stringify(this.userId));
-    console.log(JSON.stringify(this.user.badges));
 
     if (this.isIndividual == true) {
       this.userService.getBadges({ id: this.userId }).subscribe(

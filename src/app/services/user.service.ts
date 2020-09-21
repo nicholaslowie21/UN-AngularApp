@@ -64,4 +64,8 @@ export class UserService {
   generateShareProfilePic(): Observable<any> {
     return this.http.get(API_URL + '/shareProfile');
   }
+
+  getUserAffiliations(data): Observable<any> {
+    return this.http.get(API_URL + '/affiliations?userId=' + data.id);
+  }
 }

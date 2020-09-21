@@ -45,14 +45,6 @@ export class AdminUserManagementComponent implements OnInit {
   }
 
   viewUser(user): void {
-    // let usernameFormatted = '';
-    // for(var i=0; i<user.username.length; i++) {
-    //   if(user.username.charAt(i)==' ') {
-    //     usernameFormatted = usernameFormatted.concat('%20');
-    //   } else {
-    //     usernameFormatted = usernameFormatted.concat(user.username.charAt(i));
-    //   }
-    // }
     let userType = '';
     if(user.role) {
       userType = 'individual';
