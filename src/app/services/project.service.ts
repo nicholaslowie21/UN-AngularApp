@@ -55,4 +55,53 @@ export class ProjectService {
       admins: data.adminIDs
     }, httpOptions)
   }
+
+  searchUsers(data): Observable<any> {
+    return this.http.get(API_URL + '/searchUsers?username=' + data.username);
+  }
+
+  getAdmins(data): Observable<any> {
+    return this.http.get(API_URL + '/projectAdmins?projectId=' + data.id);
+  }
+
+  getProjectHost(data): Observable<any> {
+    return this.http.get(API_URL + '/projectHost?projectId=' + data.id);
+  }
+
+  uploadProjectPic(formData): Observable<any> {
+    return this.http.post(API_URL + '/uploadProjectPic', formData);
+  }
+
+  createKPI(data): Observable<any> {
+    return this.http.post(API_URL + '/createKPI', {
+      projectId: data.id,
+      title: data.title,
+      desc: data.desc
+    }, httpOptions);
+  }
+
+  updateKPI(data): Observable<any> {
+    return this.http.post(API_URL + '/updateKPI', {
+      kpiId: data.id,
+      title: data.title,
+      desc: data.desc,
+      completion: data.completion
+    }, httpOptions);
+  }
+
+  deleteKPI(data): Observable<any> {
+    return this.http.post(API_URL + '/deleteKPI', {
+      kpiId: data.id
+    }, httpOptions);
+  }
+
+  getProjectKPIs(data): Observable<any> {
+    return this.http.get(API_URL + '/projectKPI?projectId=' + data.id);
+  }
+
+  completeProject(data): Observable<any> {
+    return this.http.post(API_URL + '/completeProject', {
+      projectId: data.id
+    }, httpOptions);
+  }
 }

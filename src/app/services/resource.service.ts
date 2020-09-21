@@ -42,4 +42,11 @@ export class ResourceService {
   getInstitutionVenue(data): Observable<any> {
     return this.http.get(API_URL + '/institution/venue?institutionId=' + data.id);
   }
+
+  createItem(data): Observable<any> {
+    return this.http.post(API_URL + '/createItem', {
+      title: data.title,
+      desc: data.desc
+    }, httpOptions);
+  }
 }

@@ -22,7 +22,7 @@ export class UserService {
       bio: data.bio,
       country: data.country,
       website: data.website,
-      gender: data.gender,
+      salutation: data.salutation,
       SDGs: data.SDGs,
       skills: data.skills
     }, httpOptions);
