@@ -36,6 +36,11 @@ import { SafePipe } from './safe.pipe';
 import { ClipboardModule } from 'ngx-clipboard';
 import { ShareProfilePageComponent } from './share-profile-page/share-profile-page.component';
 import { ProjectDetailsComponent } from './project/project-details/project-details.component';
+import { MyProjectsComponent } from './project/my-projects/my-projects.component';
+import { CreateProjectComponent } from './project/create-project/create-project.component';
+import { EditProjectDetailsComponent } from './project/edit-project-details/edit-project-details.component';
+import { EditProjectAdminComponent } from './project/edit-project-admin/edit-project-admin.component';
+import { RateContributorComponent } from './project/rate-contributor/rate-contributor.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +65,12 @@ import { ProjectDetailsComponent } from './project/project-details/project-detai
     OthersProfileComponent,
     SafePipe,
     ShareProfilePageComponent,
-    ProjectDetailsComponent
+    ProjectDetailsComponent,
+    MyProjectsComponent,
+    CreateProjectComponent,
+    EditProjectDetailsComponent,
+    EditProjectAdminComponent,
+    RateContributorComponent
   ],
   imports: [
     BrowserModule,
