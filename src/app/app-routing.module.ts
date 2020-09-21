@@ -21,7 +21,16 @@ import { AdminUserManagementProfileComponent } from './admin/admin-user-manageme
 import { AdminVerificationComponent } from './admin/admin-verification/admin-verification.component';
 import { OthersProfileComponent } from './others-profile/others-profile.component';
 import { ShareProfilePageComponent } from './share-profile-page/share-profile-page.component';
+import { CreateProjectComponent } from './project/create-project/create-project.component';
+import { EditProjectAdminComponent } from './project/edit-project-admin/edit-project-admin.component';
+import { EditProjectDetailsComponent } from './project/edit-project-details/edit-project-details.component';
 import { ProjectDetailsComponent } from './project/project-details/project-details.component';
+import { MyProjectsComponent } from './project/my-projects/my-projects.component';
+import { RateContributorComponent } from './project/rate-contributor/rate-contributor.component';
+import { CreateItemResourceComponent } from './resource/create-item-resource/create-item-resource.component';
+import { EditResourceDetailsComponent } from './resource/edit-resource-details/edit-resource-details.component';
+import { MyResourcesComponent } from './resource/my-resources/my-resources.component';
+import { ResourceDetailsComponent } from './resource/resource-details/resource-details.component';
 
 const routes: Routes = [
   { path: 'landing', component: LandingComponent},
@@ -46,8 +55,25 @@ const routes: Routes = [
       { path: '', component: AdminHomeComponent, pathMatch: 'full'}
     ] 
   },
+  { path: 'project', canActivate: [AuthGuardService],
+    children: [
+      { path: 'create', component: CreateProjectComponent },
+      { path: 'editAdmin', component: EditProjectAdminComponent},
+      { path: 'editDetails', component: EditProjectDetailsComponent},
+      { path: 'projectDetails', component: ProjectDetailsComponent},
+      { path: 'myProjects', component: MyProjectsComponent},
+      { path: 'rateContributor', component: RateContributorComponent}
+    ]
+  },
+  { path: 'resource', canActivate: [AuthGuardService],
+    children: [
+      { path: 'createItem', component: CreateItemResourceComponent },
+      { path: 'editDetails', component: EditResourceDetailsComponent},
+      { path: 'myResources', component: MyResourcesComponent},
+      { path: 'resourceDetails', component: ResourceDetailsComponent}
+    ]
+  },
   { path: 'shareProfile', component: ShareProfilePageComponent},
-  { path: 'viewProject', component: ProjectDetailsComponent},
   { path: '', redirectTo: 'home', pathMatch: 'full'}
 ];
 

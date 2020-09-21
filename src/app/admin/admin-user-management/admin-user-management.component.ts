@@ -65,7 +65,7 @@ export class AdminUserManagementComponent implements OnInit {
   }
 
   viewProject(project): void {
-    this.router.navigate(['/viewProject'], {queryParams: {projectCode: project.code}});
+    this.router.navigate(['/project/projectDetails'], {queryParams: {projectCode: project.code}});
     this.searchType = 'Select';
     this.keyword = '';
   }
