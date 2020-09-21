@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -49,6 +50,12 @@ import { CreateVenueResourceComponent } from './resource/create-venue-resource/c
 import { CreateManpowerResourceComponent } from './resource/create-manpower-resource/create-manpower-resource.component';
 import { EditResourceDetailsComponent } from './resource/edit-resource-details/edit-resource-details.component';
 
+import { DataViewModule } from 'primeng/dataview';
+import { ButtonModule } from 'primeng/button';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputTextModule } from 'primeng/inputtext';
+import { RatingModule } from 'primeng/rating';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -88,13 +95,19 @@ import { EditResourceDetailsComponent } from './resource/edit-resource-details/e
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
     ShareModule,
     ShareIconsModule,
     FontAwesomeModule,
-    ClipboardModule
+    ClipboardModule,
+    DataViewModule,
+    ButtonModule,
+    DropdownModule,
+    InputTextModule,
+    RatingModule
   ],
   providers: [authInterceptorProviders, AuthGuardService],
   bootstrap: [AppComponent]
