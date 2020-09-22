@@ -49,4 +49,26 @@ export class ResourceService {
       desc: data.desc
     }, httpOptions);
   }
+
+  createKnowledge(data): Observable<any> {
+    return this.http.post(API_URL + '/createKnowledge', {
+      title: data.title,
+      desc: data.desc
+    }, httpOptions);
+  }
+
+  createManpower(data): Observable<any> {
+    return this.http.post(API_URL + '/createManpower', {
+      title: data.title,
+      desc: data.desc
+    }, httpOptions);
+  }
+
+  createVenue(data): Observable<any> {
+    return this.http.post(API_URL + '/createVenue', {
+      title: data.title,
+      desc: data.desc,
+      address: data.address
+    }, httpOptions);
+  }
 }
