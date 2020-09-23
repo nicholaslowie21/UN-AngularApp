@@ -21,7 +21,8 @@
                 [sortField]="sortField" [sortOrder]="sortOrder" layout="grid">
                 <ng-template pTemplate="header">
                     <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
-                        <p-dropdown [options]="sortOptions" [(ngModel)]="sortKey" placeholder="Sort By Date" (onChange)="onSortChange($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                        <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyItem" placeholder="Sort By Date" (onChange)="onSortChangeItem($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                        <p-dropdown [options]="filterStatusOptions" [(ngModel)]="filterKeyItem" placeholder="Filter By Status" (onChange)="filterItemStatus($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
                         <span class="p-input-icon-left p-mb-2 p-mb-md-0">
                             <i class="pi pi-search"></i>
                             <input type="search" pInputText placeholder="Search by Title" (input)="dv.filter($event.target.value)">
@@ -61,12 +62,139 @@
         </div>
     </div>
     <div class="tab-pane fade" id="manpower" role="tabpanel" aria-labelledby="manpower-tab">
-        Manpower
+        <div class="card">
+            <p-dataView #mp [value]="manpowers" [paginator]="true" [rows]="9" filterBy="title"
+                [sortField]="sortFieldMpw" [sortOrder]="sortOrderMpw" layout="grid">
+                <ng-template pTemplate="header">
+                    <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                        <p-dropdown [options]="sortOptions" placeholder="Sort By Date" (onChange)="onSortChangeManpower($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                        <p-dropdown [options]="filterStatusOptions" placeholder="Filter By Status" (onChange)="filterManpowerStatus($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                        <span class="p-input-icon-left p-mb-2 p-mb-md-0">
+                            <i class="pi pi-search"></i>
+                            <input type="search" pInputText placeholder="Search by Title" (input)="mp.filter($event.target.value)">
+                        </span>
+                        <!-- <p-dataViewLayoutOptions></p-dataViewLayoutOptions> -->
+                    </div>
+                </ng-template>
+                <ng-template let-manpower pTemplate="gridItem">
+                    <div class="p-col-12 p-md-4">
+                        <div class="product-grid-item card p-3">
+                            <div class="product-grid-item-top">
+                                <div>
+                                    <i class="pi pi-tag product-category-icon"></i>
+                                    <span class="product-category">Manpower</span>
+                                </div>
+                                <span class="float-right">{{formatDate(manpower.updatedAt)}}</span>
+                            </div>
+                            <div class="product-grid-item-content">
+                                <img *ngIf="user.profilePic.length == 0" src="../../../assets/img/profilePic_Placeholder.png" class="img-fluid" height="100" width="100" alt="Profile pic"/>
+                                <img *ngIf="user.profilePic.length != 0" src="{{user.profilePic}}" class="img-fluid" height="100" width="100" alt="Profile pic"/>
+                                <div class="product-name"><a href="/resource/resourceDetails?id={{manpower.id}}">{{manpower.title}}</a></div>
+                                <!-- <div class="product-description">{{item.desc}}</div> -->
+                                <div class="product-description">{{manpower.country}}</div>
+                            </div>
+                            <div class="product-grid-item-bottom">
+                                <span class="product-price">{{manpower.status}}</span>
+                                <button *ngIf="manpower.status == 'active'" pButton type="button" label="Deactivate" (click)="deactivateManpower(manpower)"
+                                    class="p-button-sm p-button-rounded p-button-danger float-right"></button>
+
+                                <button *ngIf="manpower.status == 'inactive'" pButton type="button" label="Activate" (click)="activateManpower(manpower)"
+                                    class="p-button-sm p-button-rounded p-button-success float-right"></button>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-dataView>
+        </div>
     </div>
     <div class="tab-pane fade" id="venue" role="tabpanel" aria-labelledby="venue-tab">
-        Venue
+        <div class="card">
+            <p-dataView #ve [value]="venues" [paginator]="true" [rows]="9" filterBy="title"
+                [sortField]="sortFieldVen" [sortOrder]="sortOrderVen" layout="grid">
+                <ng-template pTemplate="header">
+                    <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                        <p-dropdown [options]="sortOptions" placeholder="Sort By Date" (onChange)="onSortChangeVenue($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                        <p-dropdown [options]="filterStatusOptions" placeholder="Filter By Status" (onChange)="filterVenueStatus($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                        <span class="p-input-icon-left p-mb-2 p-mb-md-0">
+                            <i class="pi pi-search"></i>
+                            <input type="search" pInputText placeholder="Search by Title" (input)="ve.filter($event.target.value)">
+                        </span>
+                        <!-- <p-dataViewLayoutOptions></p-dataViewLayoutOptions> -->
+                    </div>
+                </ng-template>
+                <ng-template let-venue pTemplate="gridItem">
+                    <div class="p-col-12 p-md-4">
+                        <div class="product-grid-item card p-3">
+                            <div class="product-grid-item-top">
+                                <div>
+                                    <i class="pi pi-tag product-category-icon"></i>
+                                    <span class="product-category">Venue</span>
+                                </div>
+                                <span class="float-right">{{formatDate(venue.updatedAt)}}</span>
+                            </div>
+                            <div class="product-grid-item-content">
+                                <img *ngIf="venue.imgPath.length == 0" src="../../../assets/img/venue.png" class="img-fluid" height="100" width="100" [alt]="venue.title"/>
+                                <img *ngIf="venue.imgPath.length != 0" src="https://localhost:8080{{venue.imgPath[0]}}" class="img-fluid" height="100" width="100" [alt]="venue.title"/>
+                                <div class="product-name"><a href="/resource/resourceDetails?id={{venue.id}}">{{venue.title}}</a></div>
+                                <div class="product-description">{{venue.country}}</div>
+                            </div>
+                            <div class="product-grid-item-bottom">
+                                <span class="product-price">{{venue.status}}</span>
+                                <button *ngIf="venue.status == 'active'" pButton type="button" label="Deactivate" (click)="deactivateVenue(venue)"
+                                    class="p-button-sm p-button-rounded p-button-danger float-right"></button>
+
+                                <button *ngIf="venue.status == 'inactive'" pButton type="button" label="Activate" (click)="activateVenue(venue)"
+                                    class="p-button-sm p-button-rounded p-button-success float-right"></button>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-dataView>
+        </div>
     </div>
     <div class="tab-pane fade" id="knowledge" role="tabpanel" aria-labelledby="knowledge-tab">
-        Knowledge
+        <div class="card">
+            <p-dataView #kn [value]="knowledges" [paginator]="true" [rows]="9" filterBy="title"
+                [sortField]="sortFieldKno" [sortOrder]="sortOrderKno" layout="grid">
+                <ng-template pTemplate="header">
+                    <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                        <p-dropdown [options]="sortOptions" placeholder="Sort By Date" (onChange)="onSortChangeKnowledge($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                        <p-dropdown [options]="filterStatusOptions" placeholder="Filter By Status" (onChange)="filterKnowledgeStatus($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                        <span class="p-input-icon-left p-mb-2 p-mb-md-0">
+                            <i class="pi pi-search"></i>
+                            <input type="search" pInputText placeholder="Search by Title" (input)="kn.filter($event.target.value)">
+                        </span>
+                        <!-- <p-dataViewLayoutOptions></p-dataViewLayoutOptions> -->
+                    </div>
+                </ng-template>
+                <ng-template let-knowledge pTemplate="gridItem">
+                    <div class="p-col-12 p-md-4">
+                        <div class="product-grid-item card p-3">
+                            <div class="product-grid-item-top">
+                                <div>
+                                    <i class="pi pi-tag product-category-icon"></i>
+                                    <span class="product-category">Knowledge</span>
+                                </div>
+                                <span class="float-right">{{formatDate(knowledge.updatedAt)}}</span>
+                            </div>
+                            <div class="product-grid-item-content">
+                                <!-- <img *ngIf="venue.imgPath.length == 0" src="../../../assets/img/venue.png" class="img-fluid" height="100" width="100" [alt]="venue.title"/>
+                                <img *ngIf="venue.imgPath.length != 0" src="https://localhost:8080{{venue.imgPath[0]}}" class="img-fluid" height="100" width="100" [alt]="venue.title"/> -->
+                                <div class="product-name"><a href="/resource/resourceDetails?id={{knowledge.id}}">{{knowledge.title}}</a></div>
+                                <div class="product-description">{{knowledge.desc}}</div>
+                            </div>
+                            <div class="product-grid-item-bottom">
+                                <span class="product-price">{{knowledge.status}}</span>
+                                <button *ngIf="knowledge.status == 'active'" pButton type="button" label="Deactivate" (click)="deactivateKnowledge(knowledge)"
+                                    class="p-button-sm p-button-rounded p-button-danger float-right"></button>
+
+                                <button *ngIf="knowledge.status == 'inactive'" pButton type="button" label="Activate" (click)="activateKnowledge(knowledge)"
+                                    class="p-button-sm p-button-rounded p-button-success float-right"></button>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-dataView>
+        </div>
     </div>
 </div>
