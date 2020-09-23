@@ -1,1 +1,85 @@
-<p>resource-details works!</p>
+<h2>Resource details</h2>
+<div *ngIf="!isDeleted && resource.status !== 'deleted'" class="row">
+    <div class="col-8">
+        <div *ngIf="type == 'item' || type == 'venue'">
+            <img *ngIf="resource.imgPath.length == 0" src="../../../assets/img/{{type}}.png" class="img-fluid" height="250" width="250" [alt]="resource.title"/>
+            <img *ngIf="resource.imgPath.length != 0" src="https://localhost:8080{{resource.imgPath}}" class="img-fluid" height="250" width="250" [alt]="resource.title"/>
+        </div>
+        <div *ngIf="type == 'manpower'">
+            <img *ngIf="owner.profilePic.length == 0" src="../../../assets/img/profilePic_Placeholder.png" class="img-fluid" height="250" width="250" [alt]="resource.title"/>
+            <img *ngIf="owner.profilePic.length != 0" src="{{owner.profilePic}}" class="img-fluid" height="250" width="250" [alt]="resource.title"/>
+        </div>
+        <div class="row mt-md-1 p-2 bg-secondary">
+            <div *ngIf="type == 'knowledge'">
+                <div class="col-2">
+                    <img *ngIf="owner[0].profilePic.length == 0" src="../../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle" height="90" width="90" alt="Profile pic"/>
+                    <img *ngIf="owner[0].profilePic.length != 0" src="{{owner[0].profilePic}}" class="img-fluid rounded-circle" style="height: 70px; width: 70px;" alt="Profile pic"/>
+                </div>
+                <div class="col-6 mt-md-1">
+                    {{owner[0].name}} <br/>
+                    {{owner[0].username}}
+                </div>
+            </div>
+            <!-- <div class="col-2">
+                <img *ngIf="owner.profilePic.length == 0" src="../../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle" height="90" width="90" alt="Profile pic"/>
+                <img *ngIf="owner.profilePic.length != 0" src="{{owner.profilePic}}" class="img-fluid rounded-circle" style="height: 70px; width: 70px;" alt="Profile pic"/>
+            </div> -->
+            <div *ngIf="type == 'item' || type == 'manpower' || type == 'venue'">
+                <div class="col-2">
+                    <div *ngIf="owner.profilePic.length == 0">
+                        <img  src="../../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle" height="90" width="90" alt="Profile pic"/>
+                    
+                    </div>
+                    <div *ngIf="owner.profilePic.length != 0">
+                        <img  src="{{owner.profilePic}}" class="img-fluid rounded-circle" style="height: 70px; width: 70px;" alt="Profile pic"/>
+                    </div>
+                    
+                </div>
+                <div class="col-6 mt-md-1">
+                    {{owner.name}} <br/>
+                    {{owner.username}}
+                </div>
+            </div>
+            <div class="col-4 mt-md-1">
+                {{formatDate(resource.updatedAt)}}
+            </div>
+        </div>
+        <div class="row mt-md-1 p-2 bg-light">
+            <div class="col-9">
+                <h5>{{resource.title}}</h5>
+                <div *ngIf="type=='venue'">{{resource.address}}</div>
+                {{resource.desc}} <br/>
+                Country: {{resource.country}} <br/>
+                Status: {{resource.status}} <br/>
+                <button *ngIf="resource.status == 'active' && isOwner" pButton type="button" label="Deactivate" (click)="deactivateResource()"
+                    class="p-button-rounded p-button-danger"></button>
+                <button *ngIf="resource.status == 'inactive' && isOwner" pButton type="button" label="Activate" (click)="activateResource()"
+                    class="p-button-rounded p-button-success"></button>
+            </div>
+            <div class="col-3" *ngIf="isOwner">
+                <a href="/resource/editDetails?id={{resource.id}}&type={{type}}" class="btn btn-primary float-right">Edit</a>
+                <button class="btn btn-danger float-right" (click)="deleteResource()">Delete</button>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="isOwner" class="col-4">
+        <button class="btn btn-primary">Suggest projects</button>
+        <div class="card">
+            <div class="card-header">
+                Suggested projects
+            </div>
+            <div class="card-body">
+                Proj 1
+            </div>
+        </div>
+    </div>
+    <div *ngIf="!isOwner" class="col-4">
+        <button class="btn btn-primary">Request</button>
+    </div>
+</div>
+
+<div *ngIf="isDeleted || resource.status == 'deleted'">
+    <div class="alert alert-info">
+        Resource has been deleted.
+    </div>
+</div>
