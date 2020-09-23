@@ -1,1 +1,72 @@
-<p>my-resources works!</p>
+<h2>My Resources</h2>
+
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" id="item-tab" data-toggle="tab" href="#item" role="tab" aria-controls="item" aria-selected="true">Item</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="manpower-tab" data-toggle="tab" href="#manpower" role="tab" aria-controls="manpower" aria-selected="false">Manpower</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="venue-tab" data-toggle="tab" href="#venue" role="tab" aria-controls="venue" aria-selected="false">Venue</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="knowledge-tab" data-toggle="tab" href="#knowledge" role="tab" aria-controls="knowledge" aria-selected="false">Knowledge</a>
+    </li>
+</ul>
+<div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="item" role="tabpanel" aria-labelledby="item-tab">
+        <div class="card">
+            <p-dataView #dv [value]="items" [paginator]="true" [rows]="9" filterBy="title"
+                [sortField]="sortField" [sortOrder]="sortOrder" layout="grid">
+                <ng-template pTemplate="header">
+                    <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                        <p-dropdown [options]="sortOptions" [(ngModel)]="sortKey" placeholder="Sort By Date" (onChange)="onSortChange($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                        <span class="p-input-icon-left p-mb-2 p-mb-md-0">
+                            <i class="pi pi-search"></i>
+                            <input type="search" pInputText placeholder="Search by Title" (input)="dv.filter($event.target.value)">
+                        </span>
+                        <!-- <p-dataViewLayoutOptions></p-dataViewLayoutOptions> -->
+                    </div>
+                </ng-template>
+                <ng-template let-item pTemplate="gridItem">
+                    <div class="p-col-12 p-md-3">
+                        <div class="product-grid-item card p-3">
+                            <div class="product-grid-item-top">
+                                <div>
+                                    <i class="pi pi-tag product-category-icon"></i>
+                                    <span class="product-category">Item</span>
+                                </div>
+                                <span class="float-right">{{formatDate(item.updatedAt)}}</span>
+                            </div>
+                            <div class="product-grid-item-content">
+                                <img *ngIf="item.imgPath.length == 0" src="../../../assets/img/item.png" class="img-fluid" height="100" width="100" [alt]="item.title"/>
+                                <img *ngIf="item.imgPath.length != 0" src="https://localhost:8080{{item.imgPath}}" class="img-fluid" height="100" width="100" [alt]="item.title"/>
+                                <div class="product-name"><a href="/resource/resourceDetails?id={{item.id}}">{{item.title}}</a></div>
+                                <!-- <div class="product-description">{{item.desc}}</div> -->
+                                <div class="product-description">{{item.country}}</div>
+                            </div>
+                            <div class="product-grid-item-bottom">
+                                <span class="product-price">{{item.status}}</span>
+                                <button *ngIf="item.status == 'active'" pButton type="button" label="Deactivate" (click)="deactivateItem(item)"
+                                    class="p-button-sm p-button-rounded p-button-danger float-right"></button>
+
+                                <button *ngIf="item.status == 'inactive'" pButton type="button" label="Activate" (click)="activateItem(item)"
+                                    class="p-button-sm p-button-rounded p-button-success float-right"></button>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-dataView>
+        </div>
+    </div>
+    <div class="tab-pane fade" id="manpower" role="tabpanel" aria-labelledby="manpower-tab">
+        Manpower
+    </div>
+    <div class="tab-pane fade" id="venue" role="tabpanel" aria-labelledby="venue-tab">
+        Venue
+    </div>
+    <div class="tab-pane fade" id="knowledge" role="tabpanel" aria-labelledby="knowledge-tab">
+        Knowledge
+    </div>
+</div>

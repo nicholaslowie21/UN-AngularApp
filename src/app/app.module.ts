@@ -55,6 +55,7 @@ import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { RatingModule } from 'primeng/rating';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
   declarations: [
@@ -107,7 +108,8 @@ import { RatingModule } from 'primeng/rating';
     ButtonModule,
     DropdownModule,
     InputTextModule,
-    RatingModule
+    RatingModule,
+    ToastModule
   ],
   providers: [authInterceptorProviders, AuthGuardService],
   bootstrap: [AppComponent]
