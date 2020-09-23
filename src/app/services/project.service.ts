@@ -16,7 +16,7 @@ export class ProjectService {
   constructor(private http: HttpClient) { }
 
   viewProject(data): Observable<any> {
-    return this.http.get(API_URL + '/viewProject?code=' + data.code);
+    return this.http.get(API_URL + '/viewProject?projectId=' + data.id);
   }
 
   searchProject(data): Observable<any> {

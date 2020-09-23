@@ -1,1 +1,70 @@
-<p>my-projects works!</p>
+<a *ngIf=isVerified class="btn btn-primary" href="/project/create" role="button">Create a New Project!</a>
+<br><br>
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active" id="personal-tab" data-toggle="tab" href="#personal" role="tab" aria-controls="personal" aria-selected="true">Current Projects</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="knowledge-tab" data-toggle="tab" href="#knowledge" role="tab" aria-controls="knowledge" aria-selected="false">Past Involvements</a>
+    </li>
+</ul>
+<div class="tab-content">
+    <div class="tab-pane fade show active" id="personal" role="tabpanel" aria-labelledby="personal-tab">
+        <div class="card">
+            <p-dataView #dv [value]="currProj" [paginator]="true" [rows]="9" filterBy="title" layout="list">
+                <ng-template pTemplate="header">
+                    <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                        <span class="p-input-icon-left p-mb-2 p-mb-md-0">
+                            <i class="pi pi-search"></i>
+                            <input type="search" pInputText placeholder="Search by Title" (input)="dv.filter($event.target.value)">
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template let-product pTemplate="listItem">
+                    <div class="p-col-12">
+                        <div class="product-list-item">
+                            <img src="../../assets/img/profilePic_Placeholder.png" style="margin:15px; width: 50px; height: 50px; object-fit: cover;"
+                                [alt]="product.name" />
+                            <div class="product-list-detail">
+                                <div class="product-name">{{product.title}}</div>
+                                <div class="product-description">{{product.desc}}</div>
+                            </div>
+                            <div class="product-list-action">
+                                <a class="btn btn-primary" href="/project/projectDetails?id={{product.id}}" target="_blank" role="button">View Project</a>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-dataView>
+        </div>
+    </div>
+    <div class="tab-pane fade" id="knowledge" role="tabpanel" aria-labelledby="knowledge-tab">
+        <div class="card">
+            <p-dataView #dv [value]="pastProj" [paginator]="true" [rows]="9" filterBy="title" layout="list">
+                <!--ng-template pTemplate="header">
+                    <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                        <span class="p-input-icon-left p-mb-2 p-mb-md-0">
+                            <i class="pi pi-search"></i>
+                            <input type="search" pInputText placeholder="Search by Title" (input)="dv.filter($event.target.value)">
+                        </span>
+                    </div>
+                </ng-template-->
+                <ng-template let-product pTemplate="listItem">
+                    <div class="p-col-12">
+                        <div class="product-list-item">
+                            <img src="../../assets/img/profilePic_Placeholder.png" style="margin:15px; width: 50px; height: 50px; object-fit: cover;"
+                                [alt]="product.name" />
+                            <div class="product-list-detail">
+                                <div class="product-name">{{product.title}}</div>
+                                <div class="product-description">{{product.desc}}</div>
+                            </div>
+                            <div class="product-list-action">
+                                <a class="btn btn-primary" href="/project/projectDetails?id={{product.id}}" target="_blank" role="button">View Project</a>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-dataView>
+        </div>
+    </div>
+</div>

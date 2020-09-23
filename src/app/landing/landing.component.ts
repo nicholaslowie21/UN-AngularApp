@@ -9,21 +9,23 @@ export class LandingComponent implements OnInit {
 
   products: any = [];
 
-    sortOptions: any = [];
+  sortOptions: any = [];
 
-    sortOrder: number;
+  sortOrder: number;
 
-    sortField: string;
+  sortField: string;
 
   constructor() { }
 
   ngOnInit(): void {
-    this.products = [{"name":"P1", "description":"Product 1", "category": "Item", "price":"10",
-                      "inventoryStatus":"available", "rating":"5"}];
+    this.products = [{
+      "name": "P1", "description": "Product 1", "category": "Item", "price": "10",
+      "inventoryStatus": "available", "rating": "5"
+    }];
 
     this.sortOptions = [
-      {label: 'Price High to Low', value: '!price'},
-      {label: 'Price Low to High', value: 'price'}
+      { label: 'Price High to Low', value: '!price' },
+      { label: 'Price Low to High', value: 'price' }
     ];
   }
 
@@ -31,12 +33,12 @@ export class LandingComponent implements OnInit {
     let value = event.value;
 
     if (value.indexOf('!') === 0) {
-        this.sortOrder = -1;
-        this.sortField = value.substring(1, value.length);
+      this.sortOrder = -1;
+      this.sortField = value.substring(1, value.length);
     }
     else {
-        this.sortOrder = 1;
-        this.sortField = value;
+      this.sortOrder = 1;
+      this.sortField = value;
     }
   }
 

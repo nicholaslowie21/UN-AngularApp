@@ -28,6 +28,7 @@ export class SignupComponent implements OnInit {
     console.log(this.form);
     this.authService.signup(this.form).subscribe(
       response => {
+        console.log(JSON.stringify(response));
         this.isSuccessful = true;
         this.isSignUpFailed = false;
       },

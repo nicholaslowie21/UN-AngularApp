@@ -1,8 +1,8 @@
 <div class="row">
     <div class="col-3">
-            <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src="../../assets/img/profilePic_Placeholder.png" style="margin: 10px; width: 80px; height: 80px; object-fit: cover;"
-                    alt="Profile picture">
-            <!-- <div *ngIf="user.profilePic.length == 0">
+        <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src="../../assets/img/profilePic_Placeholder.png" style="margin: 10px; width: 80px; height: 80px; object-fit: cover;"
+            alt="Profile picture">
+        <!-- <div *ngIf="user.profilePic.length == 0">
                 <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src="../../assets/img/profilePic_Placeholder.png" style="margin: 10px; width: 80px; height: 80px; object-fit: cover;"
                     alt="Profile picture">
             </div>
@@ -13,14 +13,22 @@
 
     </div>
     <div class="col-7">
-            <h4 class="card-title text-left mt-md-3 mb-md-0">{{ project.title }}</h4>
-            <div style="font-size:medium;">Code: {{ project.code }}</div>
-            <div class="text-secondary text-justify">Description: {{project.desc}}</div>
-            <div class="text-secondary mt-md-2">Status: {{project.status}}</div>
-            <!-- <div class="text-secondary">Rating: {{project.rating}}</div> -->
-            <div class="text-secondary">Region: {{project.region}}</div>
-            <div class="text-secondary">SDGs: {{project.SDGs}}</div>
+        <h4 class="card-title text-left mt-md-3 mb-md-0">{{ project.title }}</h4>
+        <div style="font-size:medium;">Code: {{ project.code }}</div>
+        <div class="text-secondary text-justify">Description: {{project.desc}}</div>
+        <div class="text-secondary mt-md-2">Status: {{project.status}}</div>
+        <!-- <div class="text-secondary">Rating: {{project.rating}}</div> -->
+        <div class="text-secondary">Region: {{project.region}}</div>
+        <div class="text-secondary">SDGs: {{project.SDGs}}</div>
+        <div *ngIf=isCreator>
+            <div class="text-secondary">Creator</div>
+        </div>
+        <div *ngIf=isAdmin>
+            <div class="text-secondary">Admin</div>
+        </div>
     </div>
+
+
     <!-- <div class="card">
         <div class="card-body">
             <button class="btn btn-danger float-right ml-2 mt-3" type="button" aria-haspopup="true" aria-expanded="false" (click)="suspendInstitution()">
