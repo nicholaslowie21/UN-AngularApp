@@ -225,10 +225,14 @@ If your company would like to offer rewards on our platform, do contact our KoCo
     </div>
     <div class="card border-primary mb-3">
         <!-- <div class="card-header"></div> -->
-        <div class="card-body text-primary">
+        <div class="card-body text-primary" *ngIf="!isLoggedIn">
             <h5 class="card-title">Join us now!</h5>
             <a href="/signup" class="btn btn-primary">Sign up as Individual</a> &nbsp;
             <a href="/signup/institution" class="btn btn-primary">Sign up as Institution</a>
+        </div>
+        <div class="card-body text-primary" *ngIf="isLoggedIn">
+            <h5 class="card-title">Start contributing!</h5>
+            <a href="/marketplace" class="btn btn-primary">Go to Marketplace</a>
         </div>
     </div>
 </div>
