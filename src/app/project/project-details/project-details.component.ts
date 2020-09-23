@@ -27,23 +27,23 @@ export class ProjectDetailsComponent implements OnInit {
   constructor(private route: ActivatedRoute, private projectService: ProjectService, private userService: UserService,
     private tokenStorageService: TokenStorageService) { }
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.route.queryParams
       .subscribe(params => {
         //this.projectCode = params.code;
         this.projectId = params.id;
       }
       );
-    //this.loadProject();
-    this.projectService.viewProject({ id: this.projectId }).toPromise().then(
+    // this.loadProject();
+    await this.projectService.viewProject({ id: this.projectId }).toPromise().then(
       response => {
         this.project = response.data.targetProject;
         this.projHost = response.data.targetProject.host;
         this.projAdmins = response.data.targetProject.admins;
-        console.log(this.project);
-        console.log(this.projHost);
+        // console.log("INIT: "+this.project);
+        console.log("INIT INSIDE SERVICE: "+this.projHost);
         //console.log(this.userId);
-        console.log(this.projAdmins);
+        console.log("INIT INSIDE SERVICE: "+this.projAdmins);
       },
       err => {
         alert(err.error.msg);
@@ -54,13 +54,14 @@ export class ProjectDetailsComponent implements OnInit {
     this.userId = this.user.id;
     //this.checkRole();
 
-    console.log(this.projHost);
+    console.log("INIT OUTSIDE SERVICE: "+this.projHost);
+    console.log("INIT OUTSIDE SERVICE: "+this.projAdmins);
     console.log(this.userId);
 
   }
 
-  loadProject(): void {
-    this.projectService.viewProject({ id: this.projectId }).toPromise().then(
+  async loadProject() {
+    await this.projectService.viewProject({ id: this.projectId }).toPromise().then(
       response => {
         this.project = response.data.targetProject;
         this.projHost = response.data.targetProject.host;
@@ -74,7 +75,7 @@ export class ProjectDetailsComponent implements OnInit {
       }
     );
 
-    console.log(this.projHost);
+    console.log("LOAD PROJ OUTSIDE SERVICE: "+this.projHost);
     console.log(this.userId);
 
     if (String(this.userId) === String(this.projHost)) {
