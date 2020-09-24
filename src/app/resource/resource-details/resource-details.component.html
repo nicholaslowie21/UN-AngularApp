@@ -6,11 +6,14 @@
             <img *ngIf="resource.imgPath.length != 0" src="https://localhost:8080{{resource.imgPath}}" class="img-fluid" height="200" width="300" [alt]="resource.title"/>
         </div>
         <div *ngIf="type == 'venue'">
-            <p-carousel [value]="resource.imgPath">
+            <p-carousel *ngIf="resource.imgPath.length > 0" [value]="resource.imgPath">
                 <ng-template let-img pTemplate="item">
                     <img src="https://localhost:8080{{img}}" class="img-fluid" style="width: 500px; height:400px; object-fit: cover;">
                 </ng-template>
             </p-carousel>
+            <div *ngIf="resource.imgPath.length == 0">
+                <img src="../../../assets/img/venue.png" class="img-fluid" style="width: 300px; height:300px; object-fit: cover;">
+            </div>
         </div>
         <div *ngIf="type == 'manpower'">
             <img *ngIf="owner.profilePic.length == 0" src="../../../assets/img/profilePic_Placeholder.png" class="img-fluid" height="250" width="250" [alt]="resource.title"/>
