@@ -30,11 +30,11 @@ export class MyResourcesComponent implements OnInit {
   sortFieldVen: string;
   sortFieldKno: string;
 
-  filterKeyItem: any;
+  filterKeyItem = '';
   filterKeyMpw: any;
   filterKeyVen: any;
   filterKeyKno: any;
-  sortKeyItem: any;
+  sortKeyItem = '';
 
   constructor(private tokenStorageService: TokenStorageService, private resourceService: ResourceService,
     private messageService: MessageService) { }
@@ -226,28 +226,46 @@ export class MyResourcesComponent implements OnInit {
     this.resourceService.deactivateItem({id: item.id}).subscribe(
       response => {
         alert("Item " + item.title + " deactivated!");
+        this.filterItemStatus({"value": this.filterKeyItem});
         // this.messageService.add({key: 'item1', severity:'success', summary: 'Success!', detail: 'Item deactivated'});
         // this.ngOnInit();
       }, err => {
         alert("Error: " + err.error.msg);
       }
     )
-    await this.filterItemStatus({"value": this.filterKeyItem});
-    this.onSortChangeItem({"value": this.sortKeyItem});
+    // if(this.filterKeyItem != '') {
+      // await this.filterItemStatus({"value": this.filterKeyItem});
+    // }
+    // if(this.sortKeyItem != '') {
+    //   this.ngOnInit();
+    //   this.onSortChangeItem({"value": this.sortKeyItem});
+    // }
+    // if (this.filterKeyItem == '' && this.sortKeyItem == '') {
+    //   this.ngOnInit();
+    // }
   }
   
-  activateItem(item): void {
+  async activateItem(item) {
     this.resourceService.activateItem({id: item.id}).subscribe(
       response => {
         alert("Item " + item.title + " activated!");
         this.filterItemStatus({"value": this.filterKeyItem});
         console.log("==activate: " + this.sortKeyItem);
-        this.onSortChangeItem({"value": this.sortKeyItem});
         // this.ngOnInit();
       }, err => {
         alert("Error: " + err.error.msg);
       }
     )
+    // if(this.filterKeyItem != '') {
+      // await this.filterItemStatus({"value": this.filterKeyItem});
+    // }
+    // if(this.sortKeyItem != '') {
+    //   this.onSortChangeItem({"value": this.sortKeyItem});
+    // }
+    // if (this.filterKeyItem == '' && this.sortKeyItem == '') {
+    //   console.log("BOTH NULL");
+    //   this.ngOnInit();
+    // }
   }
 
   deactivateManpower(manpower): void {

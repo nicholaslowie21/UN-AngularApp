@@ -138,6 +138,9 @@
                             </button>
                         </div>
                         <div class="modal-body text-dark">
+                            <div *ngIf="indAffiliations.length == 0">
+                                You have no affiliated institutions.
+                            </div>
                             <div *ngFor="let a of indAffiliations">
                                 <div class="card">
                                     <div class="row p-2">

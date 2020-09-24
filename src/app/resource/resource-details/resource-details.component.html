@@ -1,56 +1,89 @@
 <h2>Resource details</h2>
 <div *ngIf="!isDeleted && resource.status !== 'deleted'" class="row">
     <div class="col-8">
-        <div *ngIf="type == 'item' || type == 'venue'">
-            <img *ngIf="resource.imgPath.length == 0" src="../../../assets/img/{{type}}.png" class="img-fluid" height="250" width="250" [alt]="resource.title"/>
-            <img *ngIf="resource.imgPath.length != 0" src="https://localhost:8080{{resource.imgPath}}" class="img-fluid" height="250" width="250" [alt]="resource.title"/>
+        <div *ngIf="type == 'item'">
+            <img *ngIf="resource.imgPath.length == 0" src="../../../assets/img/{{type}}.png" class="img-fluid" height="200" width="300" [alt]="resource.title"/>
+            <img *ngIf="resource.imgPath.length != 0" src="https://localhost:8080{{resource.imgPath}}" class="img-fluid" height="200" width="300" [alt]="resource.title"/>
+        </div>
+        <div *ngIf="type == 'venue'">
+            <p-carousel [value]="resource.imgPath">
+                <ng-template let-img pTemplate="item">
+                    <img src="https://localhost:8080{{img}}" class="img-fluid" style="width: 500px; height:400px; object-fit: cover;">
+                </ng-template>
+            </p-carousel>
         </div>
         <div *ngIf="type == 'manpower'">
             <img *ngIf="owner.profilePic.length == 0" src="../../../assets/img/profilePic_Placeholder.png" class="img-fluid" height="250" width="250" [alt]="resource.title"/>
             <img *ngIf="owner.profilePic.length != 0" src="{{owner.profilePic}}" class="img-fluid" height="250" width="250" [alt]="resource.title"/>
         </div>
-        <div class="row mt-md-1 p-2 bg-secondary">
-            <div *ngIf="type == 'knowledge'">
-                <div class="col-2">
-                    <img *ngIf="owner[0].profilePic.length == 0" src="../../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle" height="90" width="90" alt="Profile pic"/>
-                    <img *ngIf="owner[0].profilePic.length != 0" src="{{owner[0].profilePic}}" class="img-fluid rounded-circle" style="height: 70px; width: 70px;" alt="Profile pic"/>
-                </div>
-                <div class="col-6 mt-md-1">
-                    {{owner[0].name}} <br/>
-                    {{owner[0].username}}
+        <div *ngIf="type == 'knowledge'" class="row mt-md-1 p-2 bg-secondary">
+            <div class="col-8">
+            <div *ngFor="let o of owner; let i = index" style="display: inline-block; width: 20%;">
+                <div *ngIf="i<3">
+                    <div class="mr-md-2">
+                        <img *ngIf="o.profilePic.length == 0" src="../../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle" style="height: 70px; width: 70px; object-fit: cover;" alt="Profile pic"/>
+                        <img *ngIf="o.profilePic.length != 0" src="{{o.profilePic}}" class="img-fluid rounded-circle" style="height: 70px; width: 70px; object-fit: cover;" alt="Profile pic"/> 
+                    </div>
                 </div>
             </div>
-            <!-- <div class="col-2">
-                <img *ngIf="owner.profilePic.length == 0" src="../../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle" height="90" width="90" alt="Profile pic"/>
-                <img *ngIf="owner.profilePic.length != 0" src="{{owner.profilePic}}" class="img-fluid rounded-circle" style="height: 70px; width: 70px;" alt="Profile pic"/>
+            <!-- <div class="mt-md-1 text-light">
+                Written by {{owner[0].name}} and {{owner.length - 1}} others
             </div> -->
-            <div *ngIf="type == 'item' || type == 'manpower' || type == 'venue'">
-                <div class="col-2">
-                    <div *ngIf="owner.profilePic.length == 0">
-                        <img  src="../../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle" height="90" width="90" alt="Profile pic"/>
-                    
+            </div>
+            <div class="col-4 mt-md-1 text-light">
+                {{formatDate(resource.updatedAt)}}
+            </div>
+            <a class="btn text-light" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                Written by <u>{{owner[0].name}} and {{owner.length - 1}} others</u>
+            </a>
+            <div class="collapse" id="collapseExample" style="width: 100%;">
+                <div class="card card-body">
+                    <div *ngFor="let os of owner">
+                        <img *ngIf="os.profilePic.length == 0" src="../../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle" style="height: 70px; width: 70px; object-fit: cover;" alt="Profile pic"/>
+                        <img *ngIf="os.profilePic.length != 0" src="{{os.profilePic}}" class="img-fluid rounded-circle border" style="height: 70px; width: 70px; object-fit: cover;" alt="Profile pic"/> 
+                        <div *ngIf="os.role" style="display: inline-block;" class="ml-md-2">
+                            <a href="/profile?username={{os.username}}&userType=individual" target="_blank">{{os.name}}</a>
+                            ({{os.username}})
+                        </div>
+                        <div *ngIf="os.members" style="display: inline-block;" class="ml-md-2">
+                            <a href="/profile?username={{os.username}}&userType=institution" target="_blank">{{os.name}}</a>
+                            ({{os.username}})
+                        </div>
                     </div>
-                    <div *ngIf="owner.profilePic.length != 0">
-                        <img  src="{{owner.profilePic}}" class="img-fluid rounded-circle" style="height: 70px; width: 70px;" alt="Profile pic"/>
-                    </div>
-                    
-                </div>
-                <div class="col-6 mt-md-1">
-                    {{owner.name}} <br/>
-                    {{owner.username}}
                 </div>
             </div>
-            <div class="col-4 mt-md-1">
+        </div>
+        <div *ngIf="type == 'item' || type == 'manpower' || type == 'venue'" class="row mt-md-1 p-2 bg-secondary">
+            <div class="col-2">
+                <div *ngIf="owner.profilePic.length == 0">
+                    <img  src="../../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle" style="height: 70px; width: 70px; object-fit: cover;" alt="Profile pic"/>
+                
+                </div>
+                <div *ngIf="owner.profilePic.length != 0">
+                    <img  src="{{owner.profilePic}}" class="img-fluid rounded-circle" style="height: 70px; width: 70px; object-fit: cover;" alt="Profile pic"/>
+                </div>
+                
+            </div>
+            <div class="col-6 mt-md-1 text-light">
+                <div *ngIf="owner.role">
+                    <a href="/profile?username={{owner.username}}&userType=individual" target="_blank">{{owner.name}}</a>
+                </div>
+                <div *ngIf="owner.members">
+                    <a href="/profile?username={{owner.username}}&userType=institution" target="_blank">{{owner.name}}</a>
+                </div>
+                {{owner.username}}
+            </div>
+            <div class="col-4 mt-md-1 text-light">
                 {{formatDate(resource.updatedAt)}}
             </div>
         </div>
         <div class="row mt-md-1 p-2 bg-light">
             <div class="col-9">
                 <h5>{{resource.title}}</h5>
-                <div *ngIf="type=='venue'">{{resource.address}}</div>
-                {{resource.desc}} <br/>
-                Country: {{resource.country}} <br/>
-                Status: {{resource.status}} <br/>
+                <div *ngIf="type=='venue'" class="mb-md-1">{{resource.address}}</div>
+                <h6 class="text-secondary">{{resource.desc}}</h6>
+                <h6 *ngIf="type != 'knowledge'" class="text-secondary">Country: {{resource.country}}</h6>
+                <h6 class="text-secondary">Status: {{resource.status}}</h6>
                 <button *ngIf="resource.status == 'active' && isOwner" pButton type="button" label="Deactivate" (click)="deactivateResource()"
                     class="p-button-rounded p-button-danger"></button>
                 <button *ngIf="resource.status == 'inactive' && isOwner" pButton type="button" label="Activate" (click)="activateResource()"

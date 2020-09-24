@@ -37,7 +37,13 @@ export class ResourceDetailsComponent implements OnInit {
     } else if (this.type == 'venue') {
       await this.resourceService.viewVenueDetails({id: this.id}).toPromise().then(res => {this.resource = res.data.venue; this.owner = res.data.owner});
     } else if (this.type == 'knowledge') {
-      await this.resourceService.viewKnowledgeDetails({id: this.id}).toPromise().then(res => {this.resource = res.data.knowledge; this.owner = res.data.userOwner; this.institutionOwner = res.data.institutionOwner});
+      await this.resourceService.viewKnowledgeDetails({id: this.id}).toPromise().then(
+        res => {
+          this.resource = res.data.knowledge; 
+          this.owner = res.data.userOwner; 
+          this.institutionOwner = res.data.institutionOwner;
+        }
+      );
     }
     console.log(this.resource);
     console.log(this.owner);
@@ -45,16 +51,17 @@ export class ResourceDetailsComponent implements OnInit {
     if (this.type != 'knowledge' && this.owner.username == this.tokenStorageService.getUser().username) {
       this.isOwner = true;
     } else if (this.type == 'knowledge') {
+      this.owner = this.owner.concat(this.institutionOwner);
       for(var i=0; i<this.owner.length; i++) {
         if(this.owner[i].username == this.tokenStorageService.getUser().username) {
           this.isOwner = true;
         }
       }
-      for(var i=0; i<this.institutionOwner.length; i++) {
-        if(this.institutionOwner[i].username == this.tokenStorageService.getUser().username) {
-          this.isOwner = true;
-        }
-      }
+      // for(var i=0; i<this.institutionOwner.length; i++) {
+      //   if(this.institutionOwner[i].username == this.tokenStorageService.getUser().username) {
+      //     this.isOwner = true;
+      //   }
+      // }
     }
   }
 

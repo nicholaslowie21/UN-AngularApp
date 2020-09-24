@@ -56,6 +56,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { RatingModule } from 'primeng/rating';
 import { ToastModule } from 'primeng/toast';
+import {CarouselModule} from 'primeng/carousel';
 
 @NgModule({
   declarations: [
@@ -109,7 +110,8 @@ import { ToastModule } from 'primeng/toast';
     DropdownModule,
     InputTextModule,
     RatingModule,
-    ToastModule
+    ToastModule,
+    CarouselModule
   ],
   providers: [authInterceptorProviders, AuthGuardService],
   bootstrap: [AppComponent]
