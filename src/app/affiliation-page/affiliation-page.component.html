@@ -52,6 +52,9 @@
                     <input type="file" name="CSV" (change)="selectFile($event)" />
                     <button type="submit" (click)="uploadCSV()">Upload CSV</button>
                 </form>
+                <div class="alert alert-warning" *ngIf="!isUploadSuccessful && errorMsgUpload.length > 0">
+                    {{ errorMsgUpload }}
+                </div>
                 <br/>
                 <br/>
                 <h4>Add affiliated users by search</h4>

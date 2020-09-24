@@ -52,6 +52,10 @@ export class AffiliationPageComponent implements OnInit {
   }
 
   uploadCSV(): void {
+    if (this.file == null) {
+      this.errorMsgUpload = 'Choose a file!';
+      return;
+    }
     const formData = new FormData();
     formData.append('CSV', this.file);
 
@@ -59,6 +63,7 @@ export class AffiliationPageComponent implements OnInit {
       response => {
         this.tokenStorageService.saveUser(response.data.user);
         this.isUploadSuccessful = true;
+        this.errorMsgUpload = '';
         this.reloadPage();
       }, 
       err => {
