@@ -1,13 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { TokenStorageService } from '../../services/token-storage.service';
 import { ResourceService } from '../../services/resource.service';
-import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-my-resources',
   templateUrl: './my-resources.component.html',
-  styleUrls: ['./my-resources.component.css'],
-  providers: [MessageService]
+  styleUrls: ['./my-resources.component.css']
 })
 export class MyResourcesComponent implements OnInit {
 
@@ -42,8 +40,7 @@ export class MyResourcesComponent implements OnInit {
 
   checked = false;
 
-  constructor(private tokenStorageService: TokenStorageService, private resourceService: ResourceService,
-    private messageService: MessageService) { }
+  constructor(private tokenStorageService: TokenStorageService, private resourceService: ResourceService) { }
 
   async ngOnInit() {
     this.user = this.tokenStorageService.getUser();
