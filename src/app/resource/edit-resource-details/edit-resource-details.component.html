@@ -1,8 +1,11 @@
 <div class="col-md-12" style="width: 850px">
     <div>
-        <h2>Edit Resource Details</h2>
-        <br/>
+        <h1 class="h1">
+            Edit Resource
+            <a class="btn btn-primary float-right" href="/resource/resourceDetails?id={{id}}&type={{type}}">Back to Resource details</a>
+        </h1>
     </div>
+    <br/>
 
     <form
     name="form"
@@ -10,33 +13,60 @@
     #f="ngForm"
     novalidate
     >
-    <!-- <div class="form-group">
-        <div *ngIf="user.profilePic.length > 0">
-            <img
-            src={{user.profilePic}}
-            class="rounded-circle img-fluid"
-            style="width: 200px; height: 200px; object-fit: cover;"
-            alt="Profile picture"
-            />
+        <!-- display pic for Item Resource -->
+        <div class="form-group" *ngIf="type == 'item'">
+            <div *ngIf="resource.imgPath.length > 0">
+                <img
+                src="https://localhost:8080{{resource.imgPath}}"
+                class="img-thumbnail img-fluid"
+                style="width: 200px; height: 200px; object-fit: cover;"
+                alt="Item Resource picture"
+                />
+            </div>
+            <div *ngIf="resource.imgPath.length == 0">
+                <img
+                src="../../assets/img/item.png"
+                class="rounded-circle img-fluid"
+                style="width: 200px; height: 200px; object-fit: cover;"
+                alt="Item Resource picture"
+                />
+            </div>
+            <br/>
+            <form>
+                <input type="file" name="itemImage" (change)="selectItemImage($event)" />
+                <button type="submit" (click)="onSubmitItemImage()">Upload</button>
+            </form>
+            <div class="alert alert-warning" *ngIf="errorMsgUploadPic && !isUploadItemPicSuccessful">
+                Upload picture failed!<br />{{ errorMsgUploadPic }}
+            </div>
         </div>
-        <div *ngIf="user.profilePic.length == 0">
-            <img
-            src="../../assets/img/profilePic_Placeholder.png"
-            class="rounded-circle img-fluid"
-            style="width: 200px; height: 200px; object-fit: cover;"
-            alt="Profile picture"
-            />
-        </div>
-        <br/>
-        <form>
-            <input type="file" name="image" (change)="selectImage($event)" />
-            <button type="submit" (click)="onSubmitImage()">Upload</button>
-        </form>
-        <div class="alert alert-warning" *ngIf="errorMsgUploadPic && !isUploadPicSuccessful">
-            Upload picture failed!<br />{{ errorMsgUploadPic }}
-        </div>
-    </div> -->
+
+        <!-- display pic for Venue Resource -->
+        <!-- <div class="form-group" *ngIf="type == 'venue'">
+            <div *ngIf="resource.imgPath.length == 0">
+                Currently no images of venue
+            </div>
+            <div *ngIf="resource.imgPath.length > 0">
+                <div *ngFor="let v of resource.imgPath.length">
+                    <img
+                    src="https://localhost:8080{{v}}"
+                    class="rounded-circle img-fluid"
+                    style="width: 200px; height: 200px; object-fit: cover;"
+                    alt="Venue Resource picture"
+                    />
+                </div>
+            </div>
+            <br/>
+            <form>
+                <input type="file" name="venueImage" (change)="selectVenueImage($event)" />
+                <button type="submit" (click)="onSubmitVenueImage()">Upload</button>
+            </form>
+            <div class="alert alert-warning" *ngIf="errorMsgUploadPic && !isUploadVenuePicSuccessful">
+                Upload picture failed!<br />{{ errorMsgUploadPic }}
+            </div>
+        </div> -->
     
+        <!-- edit resource details -->
         <div class="form-group row">
             <label for="title" class="col-sm-2 col-form-label">Title</label>
             <div class="col-sm-10">
