@@ -15,7 +15,7 @@
         </div>
         <div class="col-7">
             <h4 class="card-title text-left mt-md-3">{{ user.name }}
-                <div style="font-size:medium; display: inline-block;">({{ user.salutation }})</div>
+                <div *ngIf="isIndividual" style="font-size:medium; display: inline-block;">({{ user.salutation }})</div>
             </h4>
             <h6 class="card-title text-left mt-md-3">{{ user.username }}</h6>
             <h6 class="card-title text-left mt-md-1">{{ user.country }}</h6>
@@ -121,6 +121,44 @@
         </div>
         <div class="col-3 bg-primary text-white border-0" *ngIf=isIndividual>
             <h6 class="card-title text-left mt-md-3 center" style="margin: 15px">My Points: {{ user.points }}</h6>
+            <!-- <h6 class="card-title text-left mt-md-3 center" style="margin: 15px">My Affiliations:</h6> -->
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-warning ml-md-2 mt-md-4" data-toggle="modal" data-target="#individualAffiliations">
+                See affiliated institutions
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="individualAffiliations" tabindex="-1" role="dialog" aria-labelledby="individualAffiliationsTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-dark" id="exampleModalLongTitle">My Affiliations</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body text-dark">
+                            <div *ngFor="let a of indAffiliations">
+                                <div class="card">
+                                    <div class="row p-2">
+                                        <div class="col-3">
+                                            <img *ngIf="a.profilePic.length == 0" src="../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle" style="height: 90px; width: 90px; object-fit: cover;" alt="Profile pic">
+                                            <img *ngIf="a.profilePic.length > 0" src={{a.profilePic}} class="img-fluid rounded-circle" style="height: 90px; width: 90px; object-fit: cover;" alt="Profile pic">
+                                        </div>
+                                        <div class="col-9 mt-md-2">
+                                            <h5><a href="/profile?username={{a.username}}&userType=individual">{{a.name}}</a></h5>
+                                            {{a.username}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="col-3 bg-primary text-white border-0" *ngIf=isIndividual>
             <h6 class="card-title text-left mt-md-3" style="margin: 15px">My Wallet: {{ user.wallet }}</h6>

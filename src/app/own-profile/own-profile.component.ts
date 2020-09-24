@@ -46,6 +46,7 @@ export class OwnProfileComponent implements OnInit {
   manpower: any = [];
   item: any = [];
   venue: any = [];
+  indAffiliations = [];
   //projectList = Array;
 
   constructor(private authService: AuthService, private tokenStorageService: TokenStorageService, private userService: UserService,
@@ -120,6 +121,12 @@ export class OwnProfileComponent implements OnInit {
           this.venue = response.data.venues;
         }
       );
+
+      await this.userService.getUserAffiliations({id: this.userId}).toPromise().then(
+        response => {
+          this.indAffiliations = response.data.affiliations;
+        }
+      )
 
     } else if (this.isIndividual == false) {
       this.institutionService.getCurrentProjects({ id: this.userId }).subscribe(
