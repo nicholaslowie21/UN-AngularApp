@@ -6,13 +6,13 @@
     <li class="nav-item">
       <a class="nav-link active" id="item-tab" data-toggle="tab" href="#item" role="tab" aria-controls="item" aria-selected="true">Item</a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item" *ngIf="isIndividual">
       <a class="nav-link" id="manpower-tab" data-toggle="tab" href="#manpower" role="tab" aria-controls="manpower" aria-selected="false">Manpower</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" id="venue-tab" data-toggle="tab" href="#venue" role="tab" aria-controls="venue" aria-selected="false">Venue</a>
     </li>
-    <li class="nav-item" *ngIf="isIndividual">
+    <li class="nav-item">
       <a class="nav-link" id="knowledge-tab" data-toggle="tab" href="#knowledge" role="tab" aria-controls="knowledge" aria-selected="false">Knowledge</a>
     </li>
 </ul>
@@ -46,11 +46,11 @@
                                 <img *ngIf="item.imgPath.length == 0" src="../../../assets/img/item.png" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;" [alt]="item.title"/>
                                 <img *ngIf="item.imgPath.length != 0" src="https://localhost:8080{{item.imgPath}}" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;" [alt]="item.title"/>
                                 <div class="product-name"><a href="/resource/resourceDetails?id={{item.id}}&type=item">{{item.title}}</a></div>
-                                <!-- <div class="product-description">{{item.desc}}</div> -->
                                 <div class="product-description">{{item.country}}</div>
                             </div>
                             <div class="product-grid-item-bottom">
                                 <span class="product-price">{{item.status}}</span>
+                                <!-- <p-inputSwitch [(ngModel)]="checked" (onChange)="handleChangeItem($event)"></p-inputSwitch> -->
                                 <button *ngIf="item.status == 'active'" pButton type="button" label="Deactivate" (click)="deactivateItem(item)"
                                     class="p-button-sm p-button-rounded p-button-danger float-right"></button>
 
@@ -180,8 +180,6 @@
                                 <span class="float-right">{{formatDate(knowledge.updatedAt)}}</span>
                             </div>
                             <div class="product-grid-item-content">
-                                <!-- <img *ngIf="venue.imgPath.length == 0" src="../../../assets/img/venue.png" class="img-fluid" height="100" width="100" [alt]="venue.title"/>
-                                <img *ngIf="venue.imgPath.length != 0" src="https://localhost:8080{{venue.imgPath[0]}}" class="img-fluid" height="100" width="100" [alt]="venue.title"/> -->
                                 <div class="product-name"><a href="/resource/resourceDetails?id={{knowledge.id}}&type=knowledge">{{knowledge.title}}</a></div>
                                 <div class="product-description"></div>
                             </div>

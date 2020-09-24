@@ -40,6 +40,8 @@ export class MyResourcesComponent implements OnInit {
   filterKeyVen: any;
   filterKeyKno: any;
 
+  checked = false;
+
   constructor(private tokenStorageService: TokenStorageService, private resourceService: ResourceService,
     private messageService: MessageService) { }
 
@@ -64,9 +66,9 @@ export class MyResourcesComponent implements OnInit {
       await this.resourceService.getUserPrivateKnowledge().toPromise().then(res => this.knowledges = res.data.knowledges);
       await this.resourceService.getUserPrivateVenue().toPromise().then(res => this.venues = res.data.venues);
     } else {
-      this.resourceService.getInstitutionPrivateItem().toPromise().then(res => this.items = res.data.items);
-      this.resourceService.getInstitutionPrivateKnowledge().toPromise().then(res => this.knowledges = res.data.knowledges);
-      this.resourceService.getInstitutionPrivateVenue().toPromise().then(res => this.venues = res.data.venues);
+      await this.resourceService.getInstitutionPrivateItem().toPromise().then(res => this.items = res.data.items);
+      await this.resourceService.getInstitutionPrivateKnowledge().toPromise().then(res => this.knowledges = res.data.knowledges);
+      await this.resourceService.getInstitutionPrivateVenue().toPromise().then(res => this.venues = res.data.venues);
     }
     console.log(this.items);
     console.log(this.manpowers);
@@ -74,18 +76,21 @@ export class MyResourcesComponent implements OnInit {
     console.log(this.venues);
   }
 
+  checkStatus(item): void {
+    if (item.status == 'active') {
+      this.checked = true;
+    } else {
+      this.checked = false;
+    }
+  }
+
   onSortChangeItem(event) {
-    this.sortKeyItem = event.value;
-    console.log("On sort item: " + this.sortKeyItem);
     let value = event.value;
     if (value.indexOf('!') === 0) {
-      console.log("reach !!")
         this.sortOrder = -1;
         this.sortField = value.substring(1, value.length);
-      console.log("ON SORT CHANGE ITEM");
     }
     else {
-      console.log("reach here");
         this.sortOrder = 1;
         this.sortField = value;
     }
@@ -129,7 +134,6 @@ export class MyResourcesComponent implements OnInit {
 
   async filterItemStatus(event) {
     this.filterKeyItem = event.value;
-    console.log(this.filterKeyItem);
     await this.resourceService.getUserPrivateItem().toPromise().then(res => this.items = res.data.items);
     let value = event.value;
     let arr = [];

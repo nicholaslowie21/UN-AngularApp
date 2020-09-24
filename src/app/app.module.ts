@@ -54,6 +54,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { RatingModule } from 'primeng/rating';
 import { ToastModule } from 'primeng/toast';
 import {CarouselModule} from 'primeng/carousel';
+import {InputSwitchModule} from 'primeng/inputswitch';
 
 @NgModule({
   declarations: [
@@ -105,7 +106,8 @@ import {CarouselModule} from 'primeng/carousel';
     InputTextModule,
     RatingModule,
     ToastModule,
-    CarouselModule
+    CarouselModule,
+    InputSwitchModule
   ],
   providers: [authInterceptorProviders, AuthGuardService],
   bootstrap: [AppComponent]
