@@ -41,8 +41,8 @@
                                 <span class="float-right">{{formatDate(item.updatedAt)}}</span>
                             </div>
                             <div class="product-grid-item-content">
-                                <img *ngIf="item.imgPath.length == 0" src="../../../assets/img/item.png" class="img-fluid" height="100" width="100" [alt]="item.title"/>
-                                <img *ngIf="item.imgPath.length != 0" src="https://localhost:8080{{item.imgPath}}" class="img-fluid" height="100" width="100" [alt]="item.title"/>
+                                <img *ngIf="item.imgPath.length == 0" src="../../../assets/img/item.png" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;" [alt]="item.title"/>
+                                <img *ngIf="item.imgPath.length != 0" src="https://localhost:8080{{item.imgPath}}" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;" [alt]="item.title"/>
                                 <div class="product-name"><a href="/resource/resourceDetails?id={{item.id}}&type=item">{{item.title}}</a></div>
                                 <!-- <div class="product-description">{{item.desc}}</div> -->
                                 <div class="product-description">{{item.country}}</div>
@@ -87,8 +87,8 @@
                                 <span class="float-right">{{formatDate(manpower.updatedAt)}}</span>
                             </div>
                             <div class="product-grid-item-content">
-                                <img *ngIf="user.profilePic.length == 0" src="../../../assets/img/profilePic_Placeholder.png" class="img-fluid" height="100" width="100" alt="Profile pic"/>
-                                <img *ngIf="user.profilePic.length != 0" src="{{user.profilePic}}" class="img-fluid" height="100" width="100" alt="Profile pic"/>
+                                <img *ngIf="user.profilePic.length == 0" src="../../../assets/img/profilePic_Placeholder.png" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;" alt="Profile pic"/>
+                                <img *ngIf="user.profilePic.length != 0" src="{{user.profilePic}}" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;" alt="Profile pic"/>
                                 <div class="product-name"><a href="/resource/resourceDetails?id={{manpower.id}}&type=manpower">{{manpower.title}}</a></div>
                                 <!-- <div class="product-description">{{item.desc}}</div> -->
                                 <div class="product-description">{{manpower.country}}</div>
@@ -133,8 +133,8 @@
                                 <span class="float-right">{{formatDate(venue.updatedAt)}}</span>
                             </div>
                             <div class="product-grid-item-content">
-                                <img *ngIf="venue.imgPath.length == 0" src="../../../assets/img/venue.png" class="img-fluid" height="100" width="100" [alt]="venue.title"/>
-                                <img *ngIf="venue.imgPath.length != 0" src="https://localhost:8080{{venue.imgPath[0]}}" class="img-fluid" height="100" width="100" [alt]="venue.title"/>
+                                <img *ngIf="venue.imgPath.length == 0" src="../../../assets/img/venue.png" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;" [alt]="venue.title"/>
+                                <img *ngIf="venue.imgPath.length != 0" src="https://localhost:8080{{venue.imgPath[0]}}" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;" [alt]="venue.title"/>
                                 <div class="product-name"><a href="/resource/resourceDetails?id={{venue.id}}&type=venue">{{venue.title}}</a></div>
                                 <div class="product-description">{{venue.country}}</div>
                             </div>
