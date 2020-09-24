@@ -1,1 +1,110 @@
-<p>create-project works!</p>
+<div class="card mx-auto bg-light" style="width: 50%;">
+    <div class="card-body">
+      <h3 class="text-center mb-md-3">
+        Create New Project
+      </h3>
+      <form
+        *ngIf="!isSuccessful"
+        name="form"
+        (ngSubmit)="f.form.valid && onSubmit()"
+        #f="ngForm"
+        novalidate
+      >
+        <div class="form-group row">
+          <label for="title" class="col-sm-3 col-form-label">Title</label>
+          <div class="col-sm-9">
+            <input
+              type="text"
+              class="form-control"
+              name="title"
+              [(ngModel)]="form.title"
+              required
+              minlength="3"
+              #title="ngModel"
+            />
+          </div>
+          <div class="alert-danger" *ngIf="f.submitted && title.invalid">
+            <div *ngIf="title.errors.required">Title is required</div>
+            <div *ngIf="title.errors.minlength">
+              Title must be at least 3 characters
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="desc" class="col-sm-3 col-form-label">Description</label>
+          <div class="col-sm-9">
+            <textarea
+            class="form-control"
+            name="desc"
+            [(ngModel)]="form.desc"
+            required
+            #desc="ngModel"
+            rows="3"
+            ></textarea>
+                       
+            <!--input
+              type="text"
+              class="form-control"
+              name="desc"
+              [(ngModel)]="form.desc"
+              required
+              minlength="3"
+              maxlength="20"
+              #desc="ngModel"
+            /-->
+          </div>
+          <div class="alert-danger" *ngIf="f.submitted && desc.invalid">
+            <div *ngIf="desc.errors.required">Description is required</div>
+            <!--div *ngIf="desc.errors.minlength">
+              Description must be at least 3 characters
+            </div>
+            <div *ngIf="desc.errors.maxlength">
+              Description must be at most 20 characters
+            </div-->
+          </div>
+        </div>
+        <div class="form-group row">
+            <label for="rating" class="col-sm-3 col-form-label">Rating</label>
+            <div class="col-sm-9">
+              <select class="form-control" name="rating" [(ngModel)]="form.rating" required #rating="ngModel">
+                <option value="" selected hidden>Choose...</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select>
+            </div>
+            <div class="alert-danger" *ngIf="f.submitted && rating.invalid">
+              <div *ngIf="rating.errors.required">Rating is required</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="SDGs">SDGs</label>
+            <br/>
+            <div class="form-check" *ngFor="let SDG of SDGs; let i = index">
+              <label>
+                <input type="checkbox" name="SDGs"
+                  value="i" [checked]="SDGsMap[i]"
+                  (change)="updateCheckedSDGs(i, $event); f.submitted=false"
+                  />
+                {{SDG}}
+              </label>
+            </div>
+          </div>
+      
+        <div class="form-group">
+          <button class="btn btn-primary btn-block">Create Project</button>
+        </div>
+        
+        <div class="alert alert-warning" *ngIf="f.submitted && isCreateFailed">
+          Creation failed!<br />{{ errorMessage }}
+        </div>
+      </form>
+      <div class="alert alert-success" *ngIf="isSuccessful">
+        Your Project has been created! View your Project <a href="/project/projectDetails?id={{projId}}" target="_blank">here</a>
+      </div>
+    </div>
+  </div>
