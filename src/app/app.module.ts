@@ -55,6 +55,7 @@ import { RatingModule } from 'primeng/rating';
 import { ToastModule } from 'primeng/toast';
 import {CarouselModule} from 'primeng/carousel';
 import {InputSwitchModule} from 'primeng/inputswitch';
+import { ProjectResourcesComponent } from './project/project-resources/project-resources.component';
 
 @NgModule({
   declarations: [
@@ -88,7 +89,8 @@ import {InputSwitchModule} from 'primeng/inputswitch';
     MyResourcesComponent,
     ResourceDetailsComponent,
     CreateResourceComponent,
-    EditResourceDetailsComponent
+    EditResourceDetailsComponent,
+    ProjectResourcesComponent
   ],
   imports: [
     BrowserModule,

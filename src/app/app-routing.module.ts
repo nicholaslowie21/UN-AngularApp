@@ -26,6 +26,7 @@ import { EditProjectAdminComponent } from './project/edit-project-admin/edit-pro
 import { EditProjectDetailsComponent } from './project/edit-project-details/edit-project-details.component';
 import { ProjectDetailsComponent } from './project/project-details/project-details.component';
 import { MyProjectsComponent } from './project/my-projects/my-projects.component';
+import { ProjectResourcesComponent } from './project/project-resources/project-resources.component';
 import { RateContributorComponent } from './project/rate-contributor/rate-contributor.component';
 import { CreateResourceComponent } from './resource/create-resource/create-resource.component';
 import { EditResourceDetailsComponent } from './resource/edit-resource-details/edit-resource-details.component';
@@ -62,6 +63,7 @@ const routes: Routes = [
       { path: 'editDetails', component: EditProjectDetailsComponent},
       { path: 'projectDetails', component: ProjectDetailsComponent},
       { path: 'myProjects', component: MyProjectsComponent},
+      { path: 'resources', component: ProjectResourcesComponent},
       { path: 'rateContributor', component: RateContributorComponent}
     ]
   },
