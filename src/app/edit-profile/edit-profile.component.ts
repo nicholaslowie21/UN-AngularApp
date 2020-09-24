@@ -122,8 +122,8 @@ export class EditProfileComponent implements OnInit {
         occupation: this.user.occupation,
         bio: this.user.bio,
         country: this.user.country,
-        website: this.user.website || "",
-        gender: this.user.gender,
+        website: this.user.website,
+        salutation: this.user.salutation,
         SDGs: this.SDGsChecked,
         skills: skillsArr
       }

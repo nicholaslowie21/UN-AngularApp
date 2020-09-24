@@ -15,9 +15,9 @@
         </div>
         <div class="col-8">
             <h4 class="card-title text-left mt-md-3">{{ user.name }}
-                <div style="font-size:medium; display: inline-block;">({{ user.username }})</div>
+                <div style="font-size:medium; display: inline-block;">({{ user.salutation }})</div>
             </h4>
-            <h6 class="card-title text-left mt-md-3">{{ user.country }}</h6>
+            <h6 class="card-title text-left mt-md-3">{{ user.username }}</h6>
             <h6 class="card-title text-left mt-md-1">{{ user.occupation }}</h6>
             <h6 class="card-title text-left mt-md-1">{{ user.address }}</h6>
             <h6 class="card-title text-left mt-md-1">{{ user.phone }}</h6>
@@ -45,7 +45,6 @@
                     <button class="btn btn-secondary mr-md-1 rounded-pill">{{s}}</button>
                 </div>
             </h6>
-            <h6 *ngIf=isIndividual class="card-title text-left mt-md-3">Gender: {{ user.gender }}</h6>
         </div>
 </div>
 
@@ -60,14 +59,14 @@
                 <li class="list-group-item">
                     <div class="row">
                         <div class="card border-0" style="width:20%">
-                            <!-- <div *ngIf="b.imgPath == '' "> -->
-                                <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src="../../assets/img/hydrocar.jpeg" style="margin:15px; width: 50px; height: 50px; object-fit: cover;"
-                                    alt="Badge picture">
-                            <!-- </div>
-                            <div *ngIf="b.imgPath.length != 0">
-                                <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src={{b.imgPath}} style="margin:15px; width: 50px; height: 50px; object-fit: cover;"
-                                    alt="Badge picture">
-                            </div> -->
+                            <div *ngIf="proj.imgPath == '' ">
+                                <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src="../../assets/img/lightbulb.jpg" style="margin:15px; width: 50px; height: 50px; object-fit: cover;"
+                                    alt="Project picture">
+                            </div>
+                            <div *ngIf="proj.imgPath.length != 0">
+                                <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src="https://localhost:8080{{proj.imgPath}}" style="margin:15px; width: 50px; height: 50px; object-fit: cover;"
+                                    alt="Project picture">
+                            </div>
                         </div>
                         <div class="card border-0" style="width:80%">
                             <h5 class="card-title text-left mt-md-3" style="margin-left: 5%;">{{proj.title}} </h5>
@@ -81,24 +80,24 @@
     </div>
 
     <div class="card-body w-100">
-        <h5 class="card-title">Past Projects</h5>
+        <h5 class="card-title">Past Involvements</h5>
         <div *ngIf="pastProj.length == 0">
-            No project found.
+            No past involvements found.
         </div>
         <div *ngFor="let project of pastProj">
             <ul class="list-group">
                 <li class="list-group-item">
                     <div class="row">
                         <div class="card border-0" style="width:20%">
-                                <!-- <div *ngIf="b.imgPath == '' "> -->
-                                    <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src="../../assets/img/profilePic_Placeholder.png" style="margin:15px; width: 50px; height: 50px; object-fit: cover;"
-                                        alt="Badge picture">
-                                <!-- </div>
-                                <div *ngIf="b.imgPath.length != 0">
-                                    <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src={{b.imgPath}} style="margin:15px; width: 50px; height: 50px; object-fit: cover;"
-                                        alt="Badge picture">
-                                </div> -->
+                            <div *ngIf="project.imgPath == '' ">
+                                <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src="../../assets/img/lightbulb.jpg" style="margin:15px; width: 50px; height: 50px; object-fit: cover;"
+                                        alt="Project picture">
                             </div>
+                            <div *ngIf="project.imgPath.length != 0">
+                                <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src="https://localhost:8080{{project.imgPath}}" style="margin:15px; width: 50px; height: 50px; object-fit: cover;"
+                                        alt="Project picture">
+                            </div>
+                        </div>
                         <div class="card border-0" style="width:80%">
                             <h5 class="card-title text-left mt-md-3" style="margin-left: 5%;">{{project.title}} </h5>
                             <h6 class="card-title text-left text-secondary mt-md-1" style="margin-left: 5%;">{{project.desc}} </h6>
@@ -113,35 +112,36 @@
         <div *ngIf="knowledge.length == 0 && item.length == 0 && manpower.length == 0 && venue.length == 0" class="mt-md-3">
             No resource found.
         </div>
-        <!-- <div *ngFor="let k of knowledge">
+        <div *ngFor="let k of knowledge">
             <ul class="list-group">
                 <li class="list-group-item">
-                    <div class="row">
-                        <div class="card border-0" style="width:80%">
-                            <h5 class="card-title text-left mt-md-3" style="margin-left: 5%;">{{k.title}} </h5>
+                        <div class="card border-0">
+                            <h5 class="card-title text-left mt-md-3" style="margin-left: 5%;">{{k.title}} 
+                                <div class="float-right mr-md-2" style="font-size: medium;">Knowledge</div>
+                            </h5>
                             <h6 class="card-title text-left text-secondary mt-md-1" style="margin-left: 5%;">{{k.desc}} </h6>
                         </div>
-                    </div>
-
                 </li>
             </ul>
-        </div> -->
+        </div>
         <div *ngFor="let i of item">
             <ul class="list-group">
                 <li class="list-group-item">
                     <div class="row">
                         <div class="card border-0" style="width:20%">
-                            <!-- <div *ngIf="b.imgPath == '' "> -->
-                                <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src="../../assets/img/lightbulb.jpg" style="margin:15px; width: 50px; height: 50px; object-fit: cover;"
-                                    alt="Badge picture">
-                            <!-- </div>
-                            <div *ngIf="b.imgPath.length != 0">
-                                <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src={{b.imgPath}} style="margin:15px; width: 50px; height: 50px; object-fit: cover;"
-                                    alt="Badge picture">
-                            </div> -->
+                            <div *ngIf="i.imgPath == '' ">
+                                <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src="../../assets/img/item.png" style="margin:15px; width: 50px; height: 50px; object-fit: cover;"
+                                    alt="Item picture">
+                            </div>
+                            <div *ngIf="i.imgPath.length != 0">
+                                <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src="https://localhost:8080{{i.imgPath}}" style="margin:15px; width: 50px; height: 50px; object-fit: cover;"
+                                    alt="Item picture">
+                            </div>
                         </div>
                         <div class="card border-0" style="width:80%">
-                            <h5 class="card-title text-left mt-md-3" style="margin-left: 5%;">{{i.title}} </h5>
+                            <h5 class="card-title text-left mt-md-3" style="margin-left: 5%;">{{i.title}} 
+                                <div class="float-right mr-md-2" style="font-size: medium;">Item</div>
+                            </h5>
                             <h6 class="card-title text-left text-secondary mt-md-1" style="margin-left: 5%;">{{i.desc}} </h6>
                         </div>
                     </div>
@@ -153,17 +153,19 @@
                 <li class="list-group-item">
                     <div class="row">
                         <div class="card border-0" style="width:20%">
-                                <!-- <div *ngIf="b.imgPath == '' "> -->
-                                    <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src="../../assets/img/lightbulb.jpg" style="margin:15px; width: 50px; height: 50px; object-fit: cover;"
-                                        alt="Badge picture">
-                                <!-- </div>
-                                <div *ngIf="b.imgPath.length != 0">
-                                    <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src={{b.imgPath}} style="margin:15px; width: 50px; height: 50px; object-fit: cover;"
-                                        alt="Badge picture">
-                                </div> -->
+                                <div *ngIf="user.profilePic.length == 0 ">
+                                    <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src="../../assets/img/profilePic_Placeholder.png" style="margin:15px; width: 50px; height: 50px; object-fit: cover;"
+                                        alt="Manpower picture">
+                                </div>
+                                <div *ngIf="user.profilePic.length != 0">
+                                    <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src={{user.profilePic}} style="margin:15px; width: 50px; height: 50px; object-fit: cover;"
+                                        alt="Manpower picture">
+                                </div>
                             </div>
                         <div class="card border-0" style="width:80%">
-                            <h5 class="card-title text-left mt-md-3" style="margin-left: 5%;">{{m.title}} </h5>
+                            <h5 class="card-title text-left mt-md-3" style="margin-left: 5%;">{{m.title}} 
+                                <div class="float-right mr-md-2" style="font-size: medium;">Manpower</div>
+                            </h5>
                             <h6 class="card-title text-left text-secondary mt-md-1" style="margin-left: 5%;">{{m.desc}} </h6>
                         </div>
                     </div>
@@ -175,17 +177,19 @@
                 <li class="list-group-item">
                     <div class="row">
                         <div class="card border-0" style="width:20%">
-                                    <!-- <div *ngIf="b.imgPath == '' "> -->
-                                        <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src="../../assets/img/lightbulb.jpg" style="margin:15px; width: 50px; height: 50px; object-fit: cover;"
-                                            alt="Badge picture">
-                                    <!-- </div>
-                                    <div *ngIf="b.imgPath.length != 0">
-                                        <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src={{b.imgPath}} style="margin:15px; width: 50px; height: 50px; object-fit: cover;"
-                                            alt="Badge picture">
-                                    </div> -->
-                                </div>
+                            <div *ngIf="v.imgPath.length == 0 ">
+                                <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src="../../assets/img/venue.png" style="margin:15px; width: 50px; height: 50px; object-fit: cover;"
+                                    alt="Venue picture">
+                            </div>
+                            <div *ngIf="v.imgPath.length != 0">
+                                <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src="https://localhost:8080{{v.imgPath[0]}}" style="margin:15px; width: 50px; height: 50px; object-fit: cover;"
+                                    alt="Venue picture">
+                            </div>
+                        </div>
                         <div class="card border-0" style="width:80%">
-                            <h5 class="card-title text-left mt-md-3" style="margin-left: 5%;">{{v.title}} </h5>
+                            <h5 class="card-title text-left mt-md-3" style="margin-left: 5%;">{{v.title}} 
+                                <div class="float-right mr-md-2" style="font-size: medium;">Venue</div>
+                            </h5>
                             <h6 class="card-title text-left text-secondary mt-md-1" style="margin-left: 5%;">{{v.desc}} </h6>
                         </div>
                     </div>

@@ -37,12 +37,11 @@ export class OwnProfileComponent implements OnInit {
   faClipboard = faClipboard;
   iFrameLink = '';
   copyIFrameLink = '';
-  badges: any;
   userId: any;
 
-  currentProj: any;
-  pastProj: any;
-
+  currentProj: any = [];
+  pastProj: any = [];
+  badges: any = [];
   knowledge: any = [];
   manpower: any = [];
   item: any = [];
@@ -52,7 +51,7 @@ export class OwnProfileComponent implements OnInit {
   constructor(private authService: AuthService, private tokenStorageService: TokenStorageService, private userService: UserService,
     private resourceService: ResourceService, private institutionService: InstitutionService) { }
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.user = this.tokenStorageService.getUser();
     console.log("USER: " + this.user.profilePic);
     this.shareLink = "http://localhost:4200/profile?username=" + this.user.username;
@@ -80,58 +79,45 @@ export class OwnProfileComponent implements OnInit {
     console.log(JSON.stringify(this.userId));
 
     if (this.isIndividual == true) {
-      this.userService.getBadges({ id: this.userId }).subscribe(
+      await this.userService.getBadges({ id: this.userId }).toPromise().then(
         response => {
-          console.log(JSON.stringify(response));
           this.badges = response.data.badges;
         }
       );
 
-      this.userService.getCurrentProjects({ id: this.userId }).subscribe(
+      await this.userService.getCurrentProjects({ id: this.userId }).toPromise().then(
         response => {
-          console.log(JSON.stringify(response));
           this.currentProj = response.data.currProjects;
-          console.log(JSON.stringify(this.currentProj));
         }
       );
 
-      this.userService.getPastProjects({ id: this.userId }).subscribe(
+      await this.userService.getPastProjects({ id: this.userId }).toPromise().then(
         response => {
-          console.log(JSON.stringify(response));
           this.pastProj = response.data.pastProjects;
-          console.log(JSON.stringify(this.pastProj));
         }
       );
 
-      this.resourceService.getUserKnowledge({ id: this.userId }).subscribe(
+      await this.resourceService.getUserKnowledge({ id: this.userId }).toPromise().then(
         response => {
-          console.log(JSON.stringify(response));
           this.knowledge = response.data.knowledges;
-          console.log(JSON.stringify(this.knowledge));
         }
       );
 
-      this.resourceService.getUserItem({ id: this.userId }).subscribe(
+      await this.resourceService.getUserItem({ id: this.userId }).toPromise().then(
         response => {
-          console.log(JSON.stringify(response));
           this.item = response.data.items;
-          console.log(JSON.stringify(this.item));
         }
       );
 
-      this.resourceService.getUserManpower({ id: this.userId }).subscribe(
+      await this.resourceService.getUserManpower({ id: this.userId }).toPromise().then(
         response => {
-          console.log(JSON.stringify(response));
           this.manpower = response.data.manpowers;
-          console.log(JSON.stringify(this.manpower));
         }
       );
 
-      this.resourceService.getUserVenue({ id: this.userId }).subscribe(
+      await this.resourceService.getUserVenue({ id: this.userId }).toPromise().then(
         response => {
-          console.log(JSON.stringify(response));
           this.venue = response.data.venues;
-          console.log(JSON.stringify(this.venue));
         }
       );
 
@@ -176,6 +162,14 @@ export class OwnProfileComponent implements OnInit {
         }
       );
     }
+
+    console.log("BADGES: "+this.badges);
+    console.log("CURR PROJ: "+this.currentProj);
+    console.log("PAST PROJ: " + this.pastProj);
+    console.log("KNO: " + this.knowledge);
+    console.log("MPW: " + this.manpower);
+    console.log("ITEM: " + this.item);
+    console.log("VENUE: " + this.venue);
   }
 
   copied(): void {
