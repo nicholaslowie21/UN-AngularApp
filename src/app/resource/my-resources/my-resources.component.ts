@@ -30,11 +30,15 @@ export class MyResourcesComponent implements OnInit {
   sortFieldVen: string;
   sortFieldKno: string;
 
+  sortKeyItem = '';
+  sortKeyMpw = '';
+  sortKeyVen = '';
+  sortKeyKno = '';
+
   filterKeyItem = '';
   filterKeyMpw: any;
   filterKeyVen: any;
   filterKeyKno: any;
-  sortKeyItem = '';
 
   constructor(private tokenStorageService: TokenStorageService, private resourceService: ResourceService,
     private messageService: MessageService) { }
@@ -227,22 +231,12 @@ export class MyResourcesComponent implements OnInit {
       response => {
         alert("Item " + item.title + " deactivated!");
         this.filterItemStatus({"value": this.filterKeyItem});
-        // this.messageService.add({key: 'item1', severity:'success', summary: 'Success!', detail: 'Item deactivated'});
+        this.sortKeyItem = '';
         // this.ngOnInit();
       }, err => {
         alert("Error: " + err.error.msg);
       }
     )
-    // if(this.filterKeyItem != '') {
-      // await this.filterItemStatus({"value": this.filterKeyItem});
-    // }
-    // if(this.sortKeyItem != '') {
-    //   this.ngOnInit();
-    //   this.onSortChangeItem({"value": this.sortKeyItem});
-    // }
-    // if (this.filterKeyItem == '' && this.sortKeyItem == '') {
-    //   this.ngOnInit();
-    // }
   }
   
   async activateItem(item) {
@@ -250,22 +244,12 @@ export class MyResourcesComponent implements OnInit {
       response => {
         alert("Item " + item.title + " activated!");
         this.filterItemStatus({"value": this.filterKeyItem});
-        console.log("==activate: " + this.sortKeyItem);
+        this.sortKeyItem = '';
         // this.ngOnInit();
       }, err => {
         alert("Error: " + err.error.msg);
       }
     )
-    // if(this.filterKeyItem != '') {
-      // await this.filterItemStatus({"value": this.filterKeyItem});
-    // }
-    // if(this.sortKeyItem != '') {
-    //   this.onSortChangeItem({"value": this.sortKeyItem});
-    // }
-    // if (this.filterKeyItem == '' && this.sortKeyItem == '') {
-    //   console.log("BOTH NULL");
-    //   this.ngOnInit();
-    // }
   }
 
   deactivateManpower(manpower): void {
@@ -273,6 +257,7 @@ export class MyResourcesComponent implements OnInit {
       response => {
         alert("Manpower " + manpower.title + " deactivated!");
         this.filterManpowerStatus({"value": this.filterKeyMpw});
+        this.sortKeyMpw = '';
         // this.ngOnInit();
       }, err => {
         alert("Error: " + err.error.msg);
@@ -285,6 +270,7 @@ export class MyResourcesComponent implements OnInit {
       response => {
         alert("Manpower " + manpower.title + " activated!");
         this.filterManpowerStatus({"value": this.filterKeyMpw});
+        this.sortKeyMpw = '';
         // this.ngOnInit();
       }, err => {
         alert("Error: " + err.error.msg);
@@ -297,6 +283,7 @@ export class MyResourcesComponent implements OnInit {
       response => {
         alert("Venue " + venue.title + " deactivated!");
         this.filterVenueStatus({"value": this.filterKeyVen});
+        this.sortKeyVen = '';
         // this.ngOnInit();
       }, err => {
         alert("Error: " + err.error.msg);
@@ -309,6 +296,7 @@ export class MyResourcesComponent implements OnInit {
       response => {
         alert("Venue " + venue.title + " activated!");
         this.filterVenueStatus({"value": this.filterKeyVen});
+        this.sortKeyVen = '';
         // this.ngOnInit();
       }, err => {
         alert("Error: " + err.error.msg);
@@ -321,6 +309,7 @@ export class MyResourcesComponent implements OnInit {
       response => {
         alert("Knowledge " + knowledge.title + " deactivated!");
         this.filterKnowledgeStatus({"value": this.filterKeyKno});
+        this.sortKeyKno = '';
         // this.ngOnInit();
       }, err => {
         alert("Error: " + err.error.msg);
@@ -333,6 +322,7 @@ export class MyResourcesComponent implements OnInit {
       response => {
         alert("Knowledge " + knowledge.title + " activated!");
         this.filterKnowledgeStatus({"value": this.filterKeyKno});
+        this.sortKeyKno = '';
         // this.ngOnInit();
       }, err => {
         alert("Error: " + err.error.msg);
