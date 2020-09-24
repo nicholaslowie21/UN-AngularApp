@@ -56,6 +56,20 @@ export class ProjectService {
     }, httpOptions)
   }
 
+  addProjectAdmin(data): Observable<any> {
+    return this.http.post(API_URL + '/addAdmin', {
+      projectId: data.id,
+      userId: data.userId
+    }, httpOptions)
+  }
+
+  deleteProjectAdmin(data): Observable<any> {
+    return this.http.post(API_URL + '/deleteAdmin', {
+      projectId: data.id,
+      userId: data.userId
+    }, httpOptions)
+  }
+
   searchUsers(data): Observable<any> {
     return this.http.get(API_URL + '/searchUsers?username=' + data.username);
   }

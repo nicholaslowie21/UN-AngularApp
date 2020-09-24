@@ -21,8 +21,18 @@ export class ProjectDetailsComponent implements OnInit {
   isAdmin = false;
   isContributor = false;
 
+  isCompleted = false;
+  isDeleted = false;
+  isOngoing = false;
+  status: any;
+
   projHost: any;
   projAdmins = [];
+
+  form: any = {};
+  errorMsg = '';
+  KPIs: any;
+  updateForm: any = {};
 
   constructor(private route: ActivatedRoute, private projectService: ProjectService, private userService: UserService,
     private tokenStorageService: TokenStorageService) { }
@@ -40,10 +50,12 @@ export class ProjectDetailsComponent implements OnInit {
         this.project = response.data.targetProject;
         this.projHost = response.data.targetProject.host;
         this.projAdmins = response.data.targetProject.admins;
+        this.status = response.data.targetProject.status;
         // console.log("INIT: "+this.project);
         console.log("INIT INSIDE SERVICE: "+this.projHost);
         //console.log(this.userId);
         console.log("INIT INSIDE SERVICE: "+this.projAdmins);
+        console.log(this.status);
       },
       err => {
         alert(err.error.msg);
@@ -57,6 +69,43 @@ export class ProjectDetailsComponent implements OnInit {
     console.log("INIT OUTSIDE SERVICE: "+this.projHost);
     console.log("INIT OUTSIDE SERVICE: "+this.projAdmins);
     console.log(this.userId);
+    console.log(this.status);
+
+    //check project status
+    if(this.status == "completed") {
+      this.isCompleted = true;
+    } else if(this.status == "closed") {
+      this.isDeleted = true;
+    } else {
+      this.isOngoing = true;
+    }
+
+    //check user role
+    if(this.userId == this.projHost) {
+      this.isCreator = true;
+    } else {
+      for (var x = 0; x < this.projAdmins.length; x++) {
+        if (this.userId == this.projAdmins[x]) {
+          this.isAdmin = true;
+          console.log("count: " + x);
+        }
+      }
+    }
+    console.log("isCreator: " + this.isCreator);
+    console.log("isAdmin: " + this.isAdmin);
+    console.log("isCompleted: " + this.isCompleted);
+    console.log("isDeleted: " + this.isDeleted);
+    console.log("isOngoing: " + this.isOngoing);
+
+    //getKPIs
+    await this.projectService.getProjectKPIs({id: this.projectId}).toPromise().then(
+      response => {
+        console.log(JSON.stringify(response));
+        this.KPIs = response.data.kpis;
+        console.log(this.KPIs);
+      }
+    );
+    console.log(this.KPIs);
 
   }
 
@@ -96,23 +145,104 @@ export class ProjectDetailsComponent implements OnInit {
       this.isCreator = true;
       console.log(this.isCreator);
       console.log(this.isAdmin);
-    } /**else {
-      //check if user is admin
-      for (var x = 0; x < this.projAdmins.length; x++) {
-        console.log(this.projAdmins[x]);
-      }
-    }**/
+    }
 
     console.log(this.isCreator);
     console.log(this.isAdmin);
   }
 
-}
-
-/**for (var x = 0; x < this.projAdmins.length; x++) {
-  if (String(this.userId) == String(this.projAdmins[x])) {
-    this.isAdmin = true;
-  } else {
-    this.isAdmin = false;
+  deleteProj(title: string): void {
+    this.projectService.deleteProject({id: this.projectId}).subscribe(
+      response => {
+        console.log(JSON.stringify(response));
+        alert("Project " + title +  " has been deleted");
+        window.close();
+      },
+      err => {
+        console.log(JSON.stringify(err.error.msg));
+      }
+    );
   }
-} **/
+
+  completeProj(title: string): void {
+    this.projectService.completeProject({id: this.projectId}).subscribe(
+      response => {
+        console.log(JSON.stringify(response));
+        alert("Project " + title +  " has been completed!");
+        window.location.reload();
+      },
+      err => {
+        console.log(JSON.stringify(err.error.msg));
+      }
+    );
+  }
+
+  onSubmit(): void {
+    const formCreateKPI = {
+      id: this.projectId,
+      title: this.form.title,
+      desc: this.form.desc
+    }
+    console.log(formCreateKPI);
+
+    this.projectService.createKPI(formCreateKPI).subscribe(
+      response => {
+        console.log(JSON.stringify(response));
+        alert("KPI Created!");
+        window.location.reload();
+      }, 
+      err => {
+        this.errorMsg = err.error.msg;
+        console.log(this.errorMsg);
+      }
+    );
+  }
+
+  getForm(kid: string, ktitle: string, kdesc: string, kcompletion: number): void {
+    console.log(kid+ " "+ktitle+" "+kdesc+" "+kcompletion);
+    this.updateForm = {
+      id: kid,
+      title: ktitle,
+      desc: kdesc,
+      completion: kcompletion
+    }
+  }
+
+  onUpdate(): void {
+    const formUpdateKPI = {
+      id: this.updateForm.id,
+      title: this.updateForm.title,
+      desc: this.updateForm.desc,
+      completion: this.updateForm.completion
+    }
+    console.log(formUpdateKPI);
+
+    this.projectService.updateKPI(formUpdateKPI).subscribe(
+      response => {
+        console.log(JSON.stringify(response));
+        alert("KPI Updated!");
+        window.location.reload();
+      }, 
+      err => {
+        this.errorMsg = err.error.msg;
+        console.log(this.errorMsg);
+      }
+    );
+  }
+
+  deleteKPI(kid: string): void {
+    console.log(kid);
+    this.projectService.deleteKPI({id: kid}).subscribe(
+      response => {
+        console.log(JSON.stringify(response));
+        alert("KPI deleted!");
+        window.location.reload();
+      },
+      err => {
+        this.errorMsg = err.error.msg;
+        console.log(this.errorMsg);
+      }
+    );
+  }
+
+}

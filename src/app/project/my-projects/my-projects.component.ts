@@ -20,6 +20,8 @@ export class MyProjectsComponent implements OnInit {
   projId: any;
   role: any;
 
+  hostId: any;
+
   constructor(private tokenStorageService: TokenStorageService, private userService: UserService, private projectService: ProjectService) { }
 
   ngOnInit(): void {
@@ -45,5 +47,4 @@ export class MyProjectsComponent implements OnInit {
     );
 
   }
-
 }

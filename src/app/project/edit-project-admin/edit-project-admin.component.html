@@ -1,1 +1,81 @@
-<p>edit-project-admin works!</p>
+<div class="row">
+    <div class="container float-left" style="width: 50%">
+        <h4>Project Admins</h4>
+        <div *ngIf="admins.length == 0">
+            <p>You currently have no project admins.</p>
+        </div>
+        <div *ngFor="let admin of admins">
+            <div class="card">
+                <div class="card-body row">
+                    <div class="col-3">
+                        <div *ngIf="admin.profilePic.length > 0">
+                            <img src={{admin.profilePic}} class="rounded-circle img-fluid" style="width: 80px; height: 80px; object-fit: cover;" alt="Profile picture"
+                            />
+                        </div>
+                        <div *ngIf="admin.profilePic.length == 0">
+                            <img src="../../assets/img/profilePic_Placeholder.png" class="rounded-circle img-fluid" style="width: 80px; height: 80px; object-fit: cover;"
+                                alt="Profile picture" />
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="col-5">
+                        Name:
+                        <a href="/profile?username={{admin.username}}&userType=individual">{{admin.name}}</a>
+                        <br/> Username: {{admin.username}}
+                    </div>
+                    <div class="col-4">
+                        <button class="btn btn-danger float-right" (click)=deleteAdmin(admin)>Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container float-right" style="width: 50%">
+        <h4>Add Project Admins by search</h4>
+        <form name="form" (ngSubmit)="f.form.valid && searchUsers()" #f="ngForm" novalidate>
+            <div class="form-inline">
+                <input type="text" class="form-control mr-md-2" name="search" [(ngModel)]="keyword" #search="ngModel" placeholder="Enter a username"
+                />
+                <button class="btn btn-primary" (click)=searchUsers()>Search</button>
+            </div>
+        </form>
+        <br/>
+        <div class="alert alert-warning" *ngIf="f.submitted && !isSearchSuccessful">
+            {{ errorMsgSearch }}
+        </div>
+        <div *ngIf=isSearchSuccessful>
+            <div *ngFor="let user of searchResults">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="card border-0 col-3" style="width:20%">
+                                <div *ngIf="user.profilePic.length > 0">
+                                    <img src={{user.profilePic}} class="rounded-circle img-fluid" style="width: 80px; height: 80px; object-fit: cover;" alt="Profile picture"
+                                    />
+                                </div>
+                                <div *ngIf="user.profilePic.length == 0">
+                                    <img src="../../assets/img/profilePic_Placeholder.png" class="rounded-circle img-fluid" style="width: 90px; height: 90px; object-fit: cover;"
+                                        alt="Profile picture" />
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="card border-0 col-5" style="width:80%">
+                                Name: {{user.name}}
+                                <br/> Username: {{user.username}}
+                            </div>
+                            <div class="col-4">
+                                <div *ngIf="alreadyAdmin(user)">
+                                    <p class="float-right">Already a Project Admin</p>
+                                    <!-- <button class="btn btn-primary float-right">Already affiliated</button> -->
+                                </div>
+                                <div *ngIf="!alreadyAdmin(user)">
+                                    <button class="btn btn-primary float-right" (click)=addAdmin(user.id,user.name)>Add</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
