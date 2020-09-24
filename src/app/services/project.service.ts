@@ -49,13 +49,6 @@ export class ProjectService {
     }, httpOptions)
   }
 
-  editAdmin(data): Observable<any> {
-    return this.http.post(API_URL + '/editAdmin', {
-      projectId: data.id,
-      admins: data.adminIDs
-    }, httpOptions)
-  }
-
   addProjectAdmin(data): Observable<any> {
     return this.http.post(API_URL + '/addAdmin', {
       projectId: data.id,
@@ -117,5 +110,38 @@ export class ProjectService {
     return this.http.post(API_URL + '/completeProject', {
       projectId: data.id
     }, httpOptions);
+  }
+
+  createResourceNeed(data): Observable<any> {
+    return this.http.post(API_URL + '/createResourceNeed', {
+      projectId: data.id,
+      title: data.title,
+      desc: data.desc,
+      resourceType: data.resourceType
+    }, httpOptions);
+  }
+
+  editResourceNeed(data): Observable<any> {
+    return this.http.post(API_URL + '/editResourceNeed', {
+      needId: data.id,
+      title: data.title,
+      desc: data.desc,
+      total: data.total,
+      completion: data.completion
+    }, httpOptions);
+  }
+
+  deleteResourceNeed(data): Observable<any> {
+    return this.http.post(API_URL + '/deleteResourceNeed', {
+      needId: data.id
+    }, httpOptions);
+  }
+
+  getProjectResourceNeeds(data): Observable<any> {
+    return this.http.get(API_URL + '/resourceNeeds?projectId=' + data.id);
+  }
+
+  getProjectContributions(data): Observable<any> {
+    return this.http.get(API_URL + '/contributions?projectId=' + data.id);
   }
 }
