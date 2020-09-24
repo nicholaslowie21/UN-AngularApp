@@ -219,7 +219,7 @@ export class MyResourcesComponent implements OnInit {
 
   formatDate(date): any {
     let formattedDate = new Date(date).toUTCString();
-    return formattedDate.substring(5, formattedDate.length-7);
+    return formattedDate.substring(5, formattedDate.length-13);
   }
 
   async deactivateItem(item) {
