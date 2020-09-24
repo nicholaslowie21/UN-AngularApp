@@ -26,28 +26,37 @@
                     </div>
                 </div>
             </div>
-            <!-- <div class="mt-md-1 text-light">
-                Written by {{owner[0].name}} and {{owner.length - 1}} others
-            </div> -->
+            <div *ngIf="owner.length == 1" class="mt-md-1 text-light" style="display: inline-block;">
+                Written by <div *ngIf="owner[0].role" style="display: inline-block;">
+                    <a href="/profile?username={{owner[0].username}}&userType=individual" target="_blank">{{owner[0].name}}</a>
+                    ({{owner[0].username}})
+                </div>
+                <div *ngIf="owner[0].members" style="display: inline-block;" class="ml-md-2">
+                    <a href="/profile?username={{owner[0].username}}&userType=institution" target="_blank">{{owner[0].name}}</a>
+                    ({{owner[0].username}})
+                </div>
+            </div>
             </div>
             <div class="col-4 mt-md-1 text-light">
                 {{formatDate(resource.updatedAt)}}
             </div>
-            <a class="btn text-light" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                Written by <u>{{owner[0].name}} and {{owner.length - 1}} others</u>
-            </a>
-            <div class="collapse" id="collapseExample" style="width: 100%;">
-                <div class="card card-body">
-                    <div *ngFor="let os of owner">
-                        <img *ngIf="os.profilePic.length == 0" src="../../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle" style="height: 70px; width: 70px; object-fit: cover;" alt="Profile pic"/>
-                        <img *ngIf="os.profilePic.length != 0" src="{{os.profilePic}}" class="img-fluid rounded-circle border" style="height: 70px; width: 70px; object-fit: cover;" alt="Profile pic"/> 
-                        <div *ngIf="os.role" style="display: inline-block;" class="ml-md-2">
-                            <a href="/profile?username={{os.username}}&userType=individual" target="_blank">{{os.name}}</a>
-                            ({{os.username}})
-                        </div>
-                        <div *ngIf="os.members" style="display: inline-block;" class="ml-md-2">
-                            <a href="/profile?username={{os.username}}&userType=institution" target="_blank">{{os.name}}</a>
-                            ({{os.username}})
+            <div *ngIf="owner.length > 1">
+                <a class="btn text-light" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                    Written by <u>{{owner[0].name}} and {{owner.length - 1}} others</u>
+                </a>
+                <div class="collapse" id="collapseExample" style="width: 100%;">
+                    <div class="card card-body">
+                        <div *ngFor="let os of owner">
+                            <img *ngIf="os.profilePic.length == 0" src="../../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle" style="height: 70px; width: 70px; object-fit: cover;" alt="Profile pic"/>
+                            <img *ngIf="os.profilePic.length != 0" src="{{os.profilePic}}" class="img-fluid rounded-circle border" style="height: 70px; width: 70px; object-fit: cover;" alt="Profile pic"/> 
+                            <div *ngIf="os.role" style="display: inline-block;" class="ml-md-2">
+                                <a href="/profile?username={{os.username}}&userType=individual" target="_blank">{{os.name}}</a>
+                                ({{os.username}})
+                            </div>
+                            <div *ngIf="os.members" style="display: inline-block;" class="ml-md-2">
+                                <a href="/profile?username={{os.username}}&userType=institution" target="_blank">{{os.name}}</a>
+                                ({{os.username}})
+                            </div>
                         </div>
                     </div>
                 </div>

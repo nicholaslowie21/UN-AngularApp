@@ -55,10 +55,10 @@ export class MyResourcesComponent implements OnInit {
 
     if(this.isIndividual) {
       // this.items = await this.resourceService.getUserPrivateItem().toPromise().then(res => this.items=res.data.items);
-      this.resourceService.getUserPrivateItem().toPromise().then(res => this.items = res.data.items);
-      this.resourceService.getUserPrivateManpower().toPromise().then(res => this.manpowers = res.data.manpowers);
-      this.resourceService.getUserPrivateKnowledge().toPromise().then(res => this.knowledges = res.data.knowledges);
-      this.resourceService.getUserPrivateVenue().toPromise().then(res => this.venues = res.data.venues);
+      await this.resourceService.getUserPrivateItem().toPromise().then(res => this.items = res.data.items);
+      await this.resourceService.getUserPrivateManpower().toPromise().then(res => this.manpowers = res.data.manpowers);
+      await this.resourceService.getUserPrivateKnowledge().toPromise().then(res => this.knowledges = res.data.knowledges);
+      await this.resourceService.getUserPrivateVenue().toPromise().then(res => this.venues = res.data.venues);
     } else {
       this.resourceService.getInstitutionPrivateItem().toPromise().then(res => this.items = res.data.items);
       this.resourceService.getInstitutionPrivateKnowledge().toPromise().then(res => this.knowledges = res.data.knowledges);
