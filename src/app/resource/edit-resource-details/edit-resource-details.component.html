@@ -1,1 +1,126 @@
-<p>edit-resource-details works!</p>
+<div class="col-md-12" style="width: 850px">
+    <div>
+        <h2>Edit Resource Details</h2>
+        <br/>
+    </div>
+
+    <form
+    name="form"
+    (ngSubmit)="f.form.valid && onSubmit()"
+    #f="ngForm"
+    novalidate
+    >
+    <!-- <div class="form-group">
+        <div *ngIf="user.profilePic.length > 0">
+            <img
+            src={{user.profilePic}}
+            class="rounded-circle img-fluid"
+            style="width: 200px; height: 200px; object-fit: cover;"
+            alt="Profile picture"
+            />
+        </div>
+        <div *ngIf="user.profilePic.length == 0">
+            <img
+            src="../../assets/img/profilePic_Placeholder.png"
+            class="rounded-circle img-fluid"
+            style="width: 200px; height: 200px; object-fit: cover;"
+            alt="Profile picture"
+            />
+        </div>
+        <br/>
+        <form>
+            <input type="file" name="image" (change)="selectImage($event)" />
+            <button type="submit" (click)="onSubmitImage()">Upload</button>
+        </form>
+        <div class="alert alert-warning" *ngIf="errorMsgUploadPic && !isUploadPicSuccessful">
+            Upload picture failed!<br />{{ errorMsgUploadPic }}
+        </div>
+    </div> -->
+    
+        <div class="form-group row">
+            <label for="title" class="col-sm-2 col-form-label">Title</label>
+            <div class="col-sm-10">
+            <input
+                type="text"
+                class="form-control"
+                name="title"
+                [(ngModel)]="resource.title"
+                required
+                minlength="3"
+                #title="ngModel"
+                (click)="isUpdateSuccessful=false; f.submitted=false"
+            />
+            </div>
+            <div class="alert-danger" *ngIf="f.submitted && title.invalid">
+                <div *ngIf="title.errors.required">Title is required</div>
+                <div *ngIf="title.errors.minlength">
+                    Title must be at least 3 characters
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="desc" class="col-sm-2 col-form-label">Description</label>
+            <div class="col-sm-10">
+            <input
+                type="text"
+                class="form-control"
+                name="desc"
+                [(ngModel)]="resource.desc"
+                required
+                minlength="3"
+                #desc="ngModel"
+            />
+            </div>
+            <div class="alert-danger" *ngIf="f.submitted && desc.invalid">
+                <div *ngIf="desc.errors.required">Description is required</div>
+                <div *ngIf="desc.errors.minlength">
+                    Description must be at least 3 characters
+                </div>
+            </div>
+        </div>
+        <div class="form-group row" *ngIf="type == 'venue'">
+            <label for="address" class="col-sm-2 col-form-label">Address</label>
+            <div class="col-sm-10">
+            <input
+                type="text"
+                class="form-control"
+                name="address"
+                [(ngModel)]="resource.address"
+                required
+                minlength="3"
+                #address="ngModel"
+            />
+            </div>
+            <div class="alert-danger" *ngIf="f.submitted && address.invalid">
+                <div *ngIf="address.errors.required">Address is required</div>
+                <div *ngIf="address.errors.minlength">
+                    Address must be at least 3 characters
+                </div>
+            </div>
+        </div>
+        <div class="form-group row" *ngIf="type != 'knowledge'">
+            <label for="country" class="col-sm-2 col-form-label">Country</label>
+            <div class="col-sm-10">
+                <select class="form-control" name="country" [(ngModel)]="resource.country" required #country="ngModel" (click)="isUpdateSuccessful=false; f.submitted=false">
+                <option *ngFor="let c of countries" value={{c}}>{{c}}</option>
+                </select>
+            </div>
+            <div class="alert-danger" *ngIf="f.submitted && country.invalid">
+                <div *ngIf="country.errors.required">Country is required</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+        <button class="btn btn-primary btn-block">Update Resource</button>
+        </div>
+        
+        <div class="alert alert-warning" *ngIf="f.submitted && !isUpdateSuccessful">
+            Update failed!<br />{{ errorMessage }}
+        </div>
+
+        <div class="alert alert-success" *ngIf="isUpdateSuccessful">
+            Your update is successful!
+        </div>
+    </form>
+</div>
+

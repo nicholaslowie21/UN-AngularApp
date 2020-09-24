@@ -27,10 +27,7 @@ import { EditProjectDetailsComponent } from './project/edit-project-details/edit
 import { ProjectDetailsComponent } from './project/project-details/project-details.component';
 import { MyProjectsComponent } from './project/my-projects/my-projects.component';
 import { RateContributorComponent } from './project/rate-contributor/rate-contributor.component';
-import { CreateItemResourceComponent } from './resource/create-item-resource/create-item-resource.component';
-import { CreateKnowledgeResourceComponent } from './resource/create-knowledge-resource/create-knowledge-resource.component';
-import { CreateManpowerResourceComponent } from './resource/create-manpower-resource/create-manpower-resource.component';
-import { CreateVenueResourceComponent } from './resource/create-venue-resource/create-venue-resource.component';
+import { CreateResourceComponent } from './resource/create-resource/create-resource.component';
 import { EditResourceDetailsComponent } from './resource/edit-resource-details/edit-resource-details.component';
 import { MyResourcesComponent } from './resource/my-resources/my-resources.component';
 import { ResourceDetailsComponent } from './resource/resource-details/resource-details.component';
@@ -70,10 +67,7 @@ const routes: Routes = [
   },
   { path: 'resource', canActivate: [AuthGuardService],
     children: [
-      { path: 'createItem', component: CreateItemResourceComponent },
-      { path: 'createKnowledge', component: CreateKnowledgeResourceComponent },
-      { path: 'createManpower', component: CreateManpowerResourceComponent },
-      { path: 'createVenue', component: CreateVenueResourceComponent },
+      { path: 'createResource', component: CreateResourceComponent },
       { path: 'editDetails', component: EditResourceDetailsComponent},
       { path: 'myResources', component: MyResourcesComponent},
       { path: 'resourceDetails', component: ResourceDetailsComponent}

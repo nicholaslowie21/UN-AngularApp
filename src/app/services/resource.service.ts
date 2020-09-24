@@ -74,7 +74,7 @@ export class ResourceService {
 
   updateVenue(data): Observable<any> {
     return this.http.post(API_URL + '/updateVenue', {
-      venueId: data.venue,
+      venueId: data.id,
       title: data.title,
       desc: data.desc,
       address: data.address,

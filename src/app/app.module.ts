@@ -44,10 +44,7 @@ import { EditProjectAdminComponent } from './project/edit-project-admin/edit-pro
 import { RateContributorComponent } from './project/rate-contributor/rate-contributor.component';
 import { MyResourcesComponent } from './resource/my-resources/my-resources.component';
 import { ResourceDetailsComponent } from './resource/resource-details/resource-details.component';
-import { CreateItemResourceComponent } from './resource/create-item-resource/create-item-resource.component';
-import { CreateKnowledgeResourceComponent } from './resource/create-knowledge-resource/create-knowledge-resource.component';
-import { CreateVenueResourceComponent } from './resource/create-venue-resource/create-venue-resource.component';
-import { CreateManpowerResourceComponent } from './resource/create-manpower-resource/create-manpower-resource.component';
+import { CreateResourceComponent } from './resource/create-resource/create-resource.component';
 import { EditResourceDetailsComponent } from './resource/edit-resource-details/edit-resource-details.component';
 
 import { DataViewModule } from 'primeng/dataview';
@@ -88,10 +85,7 @@ import { ToastModule } from 'primeng/toast';
     RateContributorComponent,
     MyResourcesComponent,
     ResourceDetailsComponent,
-    CreateItemResourceComponent,
-    CreateKnowledgeResourceComponent,
-    CreateVenueResourceComponent,
-    CreateManpowerResourceComponent,
+    CreateResourceComponent,
     EditResourceDetailsComponent
   ],
   imports: [

@@ -1,7 +1,7 @@
 <div class="card mx-auto bg-light" style="width: 50%;">
   <div class="card-body">
     <h3 class="text-center mb-md-3">
-      Create Item Resource
+      Create Resource
     </h3>
     <form
       *ngIf="!isSuccessful"
@@ -10,6 +10,17 @@
       #f="ngForm"
       novalidate
     >
+      <div class="form-group row">
+        <label for="type" class="col-sm-3 col-form-label">Resource Type</label>
+        <div class="col-sm-9">
+          <select class="form-control" name="type" [(ngModel)]="resourceType" required #type="ngModel">
+            <option>Item</option>
+            <option>Knowledge</option>
+            <option>Manpower</option>
+            <option>Venue</option>
+          </select>
+        </div>
+      </div>
       <div class="form-group row">
         <label for="title" class="col-sm-3 col-form-label">Title</label>
         <div class="col-sm-9">
@@ -50,24 +61,37 @@
           </div>
         </div>
       </div>
+      <div class="form-group row" *ngIf="resourceType == 'Venue'">
+        <label for="address" class="col-sm-3 col-form-label">Address</label>
+        <div class="col-sm-9">
+          <input
+            type="text"
+            class="form-control"
+            name="address"
+            [(ngModel)]="form.address"
+            required
+            minlength="3"
+            #address="ngModel"
+          />
+        </div>
+        <div class="alert-danger" *ngIf="f.submitted && address.invalid">
+          <div *ngIf="address.errors.required">Address is required</div>
+          <div *ngIf="address.errors.minlength">
+            Address must be at least 3 characters
+          </div>
+        </div>
+      </div>
       <div class="form-group">
         <button type="submit" class="btn btn-primary btn-block">Create</button>
       </div>
       
       <div class="alert alert-warning" *ngIf="f.submitted && createFailed">
-        Failed to create Item Resource! <br />{{ errorMessage }}
+        Failed to create Resource! <br />{{ errorMessage }}
       </div>
     </form>
     <div class="alert alert-success" *ngIf="isSuccessful">
-      Item Resource successfully created!
-    </div>
-    <div *ngIf=!isSuccessful>
-      <div class="strike">
-        <span>or</span>
-      </div>
-      <a href="/resource/createKnowledge" class="mt-md-2 btn btn-primary btn-block">Create Knowledge Resource</a>
-      <a href="/resource/createManpower" class="mt-md-2 btn btn-primary btn-block">Create Manpower Resource</a>
-      <a href="/resource/createVenue" class="mt-md-2 btn btn-primary btn-block">Create Venue Resource</a>
+      {{ resourceType }} Resource successfully created!<br/>
+      You can view and edit the new {{ resourceType }} Resource <a href="/resource/myResources">here</a>
     </div>
   </div>
 </div>
