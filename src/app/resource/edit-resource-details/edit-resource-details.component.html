@@ -144,7 +144,9 @@
             <div *ngIf="resource.attachment.length > 0">
                 Attachment: {{resource.attachment}}
                 <br/>
-                <a download="https://localhost:8080{{resource.attachment}}" href="https://localhost:8080{{resource.attachment}}">Download current attachment</a>
+                <!-- <a href="https://localhost:8080{{resource.attachment}}" download target="_blank" rel="noopener noreferrer">Download current attachment</a> -->
+                <button type="button" (click)="downloadAttachment(resource.attachment)">Download current attachment</button> 
+            
             </div>
             <br/>
             <form>
