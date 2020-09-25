@@ -13,7 +13,7 @@
     #f="ngForm"
     novalidate
     >
-        <!-- display pic for Item Resource -->
+        <!-- display and update pic for Item Resource -->
         <div class="form-group" *ngIf="type == 'item'">
             <div *ngIf="resource.imgPath.length > 0">
                 <img
@@ -41,30 +41,27 @@
             </div>
         </div>
 
-        <!-- display pic for Venue Resource -->
-        <!-- <div class="form-group" *ngIf="type == 'venue'">
+        <!-- display and update pics for Venue Resource -->
+        <div class="form-group" *ngIf="type == 'venue'">
             <div *ngIf="resource.imgPath.length == 0">
                 Currently no images of venue
             </div>
-            <div *ngIf="resource.imgPath.length > 0">
-                <div *ngFor="let v of resource.imgPath.length">
-                    <img
-                    src="https://localhost:8080{{v}}"
-                    class="rounded-circle img-fluid"
-                    style="width: 200px; height: 200px; object-fit: cover;"
-                    alt="Venue Resource picture"
-                    />
-                </div>
+            <div class="card-deck" *ngIf="resource.imgPath.length > 0">
+                <p-carousel [value]="resource.imgPath">
+                    <ng-template let-img pTemplate="item">
+                        <img src="https://localhost:8080{{img}}" class="img-fluid" style="width: 500px; height:400px; object-fit: cover;">
+                    </ng-template>
+                </p-carousel>
             </div>
             <br/>
-            <form>
-                <input type="file" name="venueImage" (change)="selectVenueImage($event)" />
-                <button type="submit" (click)="onSubmitVenueImage()">Upload</button>
+            <form action="/multiple-upload" method="POST" enctype="multipart/form-data">
+                <input type="file" multiple (change)="selectImages($event)">
+                <button type="submit" (click)="onSubmitVenueImages()">Upload</button>
             </form>
             <div class="alert alert-warning" *ngIf="errorMsgUploadPic && !isUploadVenuePicSuccessful">
                 Upload picture failed!<br />{{ errorMsgUploadPic }}
             </div>
-        </div> -->
+        </div>
     
         <!-- edit resource details -->
         <div class="form-group row">

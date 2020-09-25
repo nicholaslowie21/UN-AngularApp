@@ -17,8 +17,8 @@ export class EditResourceDetailsComponent implements OnInit {
 
   itemImage: any;
   isUploadItemPicSuccessful = false;
-  // currentVenueImage: any;
-  // isUploadVenuePicSuccessful = false;
+  venueImages: FileList;
+  isUploadVenuePicSuccessful = false;
   errorMsgUploadPic = '';
   attachment: any;
   isUploadAttachmentSuccessful = false;
@@ -77,36 +77,34 @@ export class EditResourceDetailsComponent implements OnInit {
     )
   }
 
-  // selectVenueImage(event) {
-  //   if (event.target.files.length > 0) {
-  //     const file = event.target.files[0];
-  //     this.currentVenueImage = file;
-  //   }
-  // }
+  selectImages(event): void {
+    this.venueImages = event.target.files;
+  }
 
-  // onSubmitVenueImage(): void {
-  //   if (this.currentVenueImage == null) {
-  //     this.errorMsgUploadPic = 'Choose a file!';
-  //     this.isUploadVenuePicSuccessful = false;
-  //     return;
-  //   }
+  onSubmitVenueImages(): void {
+    if (this.venueImages.length == 0) {
+      this.errorMsgUploadPic = 'Choose a file!';
+      this.isUploadVenuePicSuccessful = false;
+      return;
+    }
 
-  //   const formData = new FormData();
-  //   formData.append("venueId", this.id);
-  //   this.resource.imgPath.push(this.currentVenueImage);
-  //   formData.append("venuePics", this.resource.imgPath);
+    const formData = new FormData();
+    formData.append("venueId", this.id);
+    for (let i = 0; i < this.venueImages.length; i++) {
+      formData.append("venuePics", this.venueImages[i]);
+    }
 
-  //   this.resourceService.uploadVenuePicture(formData).subscribe(
-  //     response => {
-  //       this.isUploadVenuePicSuccessful = true;
-  //       this.reloadPage();
-  //     },
-  //     err => {
-  //       this.errorMsgUploadPic = err.error.msg;
-  //       this.isUploadVenuePicSuccessful = false;
-  //     }
-  //   )
-  // }
+    this.resourceService.uploadVenuePicture(formData).subscribe(
+      response => {
+        this.isUploadVenuePicSuccessful = true;
+        this.reloadPage();
+      },
+      err => {
+        this.errorMsgUploadPic = err.error.msg;
+        this.isUploadVenuePicSuccessful = false;
+      }
+    )
+  }
 
   selectAttachment(event) {
     if (event.target.files.length > 0) {
