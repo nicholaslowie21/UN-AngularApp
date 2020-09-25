@@ -46,7 +46,8 @@ export class ResourceService {
   createItem(data): Observable<any> {
     return this.http.post(API_URL + '/createItem', {
       title: data.title,
-      desc: data.desc
+      desc: data.desc,
+      country: data.country
     }, httpOptions);
   }
 
@@ -68,7 +69,8 @@ export class ResourceService {
     return this.http.post(API_URL + '/createVenue', {
       title: data.title,
       desc: data.desc,
-      address: data.address
+      address: data.address,
+      country: data.country
     }, httpOptions);
   }
 
