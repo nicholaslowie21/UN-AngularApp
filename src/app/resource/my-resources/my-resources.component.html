@@ -50,12 +50,12 @@
                             </div>
                             <div class="product-grid-item-bottom">
                                 <span class="product-price">{{item.status}}</span>
-                                <!-- <p-inputSwitch [(ngModel)]="checked" (onChange)="handleChangeItem($event)"></p-inputSwitch> -->
-                                <button *ngIf="item.status == 'active'" pButton type="button" label="Deactivate" (click)="deactivateItem(item)"
+                                <p-inputSwitch [ngModel]="checkStatus(item)" (onChange)="handleChangeItem($event, item)"></p-inputSwitch>
+                                <!-- <button *ngIf="item.status == 'active'" pButton type="button" label="Deactivate" (click)="deactivateItem(item)"
                                     class="p-button-sm p-button-rounded p-button-danger float-right"></button>
 
                                 <button *ngIf="item.status == 'inactive'" pButton type="button" label="Activate" (click)="activateItem(item)"
-                                    class="p-button-sm p-button-rounded p-button-success float-right"></button>
+                                    class="p-button-sm p-button-rounded p-button-success float-right"></button> -->
                             </div>
                         </div>
                     </div>

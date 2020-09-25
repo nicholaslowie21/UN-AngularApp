@@ -73,13 +73,21 @@ export class MyResourcesComponent implements OnInit {
     console.log(this.venues);
   }
 
-  checkStatus(item): void {
-    if (item.status == 'active') {
-      this.checked = true;
+  checkStatus(item): boolean {
+    if (item.status === 'active') {
+      return true;
     } else {
-      this.checked = false;
+      return false;
     }
   }
+
+  handleChangeItem(e, item) {
+    let isChecked = e.checked;
+    if(isChecked)
+      this.activateItem(item)
+    else 
+      this.deactivateItem(item)
+}
 
   onSortChangeItem(event) {
     let value = event.value;
