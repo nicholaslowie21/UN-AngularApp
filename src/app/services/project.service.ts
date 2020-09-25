@@ -76,7 +76,7 @@ export class ProjectService {
   }
 
   uploadProjectPic(formData): Observable<any> {
-    return this.http.post(API_URL + '/uploadProjectPic', formData);
+    return this.http.post(API_URL + '/uploadProjectPicture', formData);
   }
 
   createKPI(data): Observable<any> {

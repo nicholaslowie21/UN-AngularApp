@@ -73,8 +73,8 @@ export class MyResourcesComponent implements OnInit {
     console.log(this.venues);
   }
 
-  checkStatus(item): boolean {
-    if (item.status === 'active') {
+  checkStatus(a): boolean {
+    if (a.status === 'active') {
       return true;
     } else {
       return false;
@@ -84,10 +84,34 @@ export class MyResourcesComponent implements OnInit {
   handleChangeItem(e, item) {
     let isChecked = e.checked;
     if(isChecked)
-      this.activateItem(item)
+      this.activateItem(item);
     else 
-      this.deactivateItem(item)
-}
+      this.deactivateItem(item);
+  }
+
+  handleChangeMpw(e, mpw) {
+    let isChecked = e.checked;
+    if(isChecked)
+      this.activateManpower(mpw)
+    else 
+      this.deactivateManpower(mpw)
+  }
+
+  handleChangeVen(e, ven) {
+    let isChecked = e.checked;
+    if(isChecked)
+      this.activateVenue(ven)
+    else 
+      this.deactivateVenue(ven)
+  }
+
+  handleChangeKno(e, kno) {
+    let isChecked = e.checked;
+    if(isChecked)
+      this.activateKnowledge(kno)
+    else 
+      this.deactivateKnowledge(kno)
+  }
 
   onSortChangeItem(event) {
     let value = event.value;
@@ -182,6 +206,7 @@ export class MyResourcesComponent implements OnInit {
       arr = this.manpowers; 
     }
     this.manpowers = arr;
+    console.log("FILTER MANPOWER");
   }
 
   async filterVenueStatus(event) {
@@ -252,22 +277,22 @@ export class MyResourcesComponent implements OnInit {
     this.resourceService.activateItem({id: item.id}).subscribe(
       response => {
         alert("Item " + item.title + " activated!");
+        // this.ngOnInit();
         this.filterItemStatus({"value": this.filterKeyItem});
         this.sortKeyItem = '';
-        // this.ngOnInit();
       }, err => {
         alert("Error: " + err.error.msg);
       }
     )
   }
 
-  deactivateManpower(manpower): void {
+  async deactivateManpower(manpower) {
     this.resourceService.deactivateManpower({id: manpower.id}).subscribe(
       response => {
         alert("Manpower " + manpower.title + " deactivated!");
+        // this.ngOnInit();
         this.filterManpowerStatus({"value": this.filterKeyMpw});
         this.sortKeyMpw = '';
-        // this.ngOnInit();
       }, err => {
         alert("Error: " + err.error.msg);
       }
@@ -278,9 +303,9 @@ export class MyResourcesComponent implements OnInit {
     this.resourceService.activateManpower({id: manpower.id}).subscribe(
       response => {
         alert("Manpower " + manpower.title + " activated!");
+        // this.ngOnInit();
         this.filterManpowerStatus({"value": this.filterKeyMpw});
         this.sortKeyMpw = '';
-        // this.ngOnInit();
       }, err => {
         alert("Error: " + err.error.msg);
       }
@@ -291,9 +316,9 @@ export class MyResourcesComponent implements OnInit {
     this.resourceService.deactivateVenue({id: venue.id}).subscribe(
       response => {
         alert("Venue " + venue.title + " deactivated!");
+        // this.ngOnInit();
         this.filterVenueStatus({"value": this.filterKeyVen});
         this.sortKeyVen = '';
-        // this.ngOnInit();
       }, err => {
         alert("Error: " + err.error.msg);
       }
@@ -304,9 +329,9 @@ export class MyResourcesComponent implements OnInit {
     this.resourceService.activateVenue({id: venue.id}).subscribe(
       response => {
         alert("Venue " + venue.title + " activated!");
+        // this.ngOnInit();
         this.filterVenueStatus({"value": this.filterKeyVen});
         this.sortKeyVen = '';
-        // this.ngOnInit();
       }, err => {
         alert("Error: " + err.error.msg);
       }
@@ -317,9 +342,9 @@ export class MyResourcesComponent implements OnInit {
     this.resourceService.deactivateKnowledge({id: knowledge.id}).subscribe(
       response => {
         alert("Knowledge " + knowledge.title + " deactivated!");
+        // this.ngOnInit();
         this.filterKnowledgeStatus({"value": this.filterKeyKno});
         this.sortKeyKno = '';
-        // this.ngOnInit();
       }, err => {
         alert("Error: " + err.error.msg);
       }
@@ -330,17 +355,12 @@ export class MyResourcesComponent implements OnInit {
     this.resourceService.activateKnowledge({id: knowledge.id}).subscribe(
       response => {
         alert("Knowledge " + knowledge.title + " activated!");
+        // this.ngOnInit();
         this.filterKnowledgeStatus({"value": this.filterKeyKno});
         this.sortKeyKno = '';
-        // this.ngOnInit();
       }, err => {
         alert("Error: " + err.error.msg);
       }
     )
   }
-
-  loadUserItem(): Promise<any> {
-    return this.resourceService.getUserPrivateItem().toPromise();
-  }
-
 }

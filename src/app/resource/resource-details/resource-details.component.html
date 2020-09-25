@@ -96,10 +96,11 @@
                 <h6 class="text-secondary">{{resource.desc}}</h6>
                 <h6 *ngIf="type != 'knowledge'" class="text-secondary">Country: {{resource.country}}</h6>
                 <h6 class="text-secondary">Status: {{resource.status}}</h6>
-                <button *ngIf="resource.status == 'active' && isOwner" pButton type="button" label="Deactivate" (click)="deactivateResource()"
+                <p-inputSwitch [ngModel]="checkStatus()" (onChange)="handleChangeChecked($event)"></p-inputSwitch>
+                <!-- <button *ngIf="resource.status == 'active' && isOwner" pButton type="button" label="Deactivate" (click)="deactivateResource()"
                     class="p-button-rounded p-button-danger"></button>
                 <button *ngIf="resource.status == 'inactive' && isOwner" pButton type="button" label="Activate" (click)="activateResource()"
-                    class="p-button-rounded p-button-success"></button>
+                    class="p-button-rounded p-button-success"></button> -->
             </div>
             <div class="col-3" *ngIf="isOwner">
                 <a href="/resource/editDetails?id={{resource.id}}&type={{type}}" class="btn btn-primary float-right">Edit</a>

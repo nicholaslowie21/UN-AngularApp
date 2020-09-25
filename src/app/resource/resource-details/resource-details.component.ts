@@ -19,6 +19,8 @@ export class ResourceDetailsComponent implements OnInit {
 
   isDeleted = false;
 
+  checked = false;
+
   constructor(private route: ActivatedRoute, private tokenStorageService: TokenStorageService, 
     private resourceService: ResourceService) { }
 
@@ -63,6 +65,22 @@ export class ResourceDetailsComponent implements OnInit {
       //   }
       // }
     }
+  }
+
+  checkStatus(): boolean {
+    if (this.resource.status === 'active') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  handleChangeChecked(e) {
+    let isChecked = e.checked;
+    if(isChecked)
+      this.activateResource();
+    else 
+      this.deactivateResource();
   }
 
   formatDate(date): any {
