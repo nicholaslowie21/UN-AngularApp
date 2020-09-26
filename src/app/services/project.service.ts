@@ -117,7 +117,8 @@ export class ProjectService {
       projectId: data.id,
       title: data.title,
       desc: data.desc,
-      resourceType: data.resourceType
+      resourceType: data.resourceType,
+      total: data.total
     }, httpOptions);
   }
 
