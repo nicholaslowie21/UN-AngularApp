@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProjectService } from '../../services/project.service';
+import { TokenStorageService } from '../../services/token-storage.service';
 
 @Component({
   selector: 'app-edit-project-admin',
@@ -19,7 +20,10 @@ export class EditProjectAdminComponent implements OnInit {
   isDelSuccessful = false;
   errorMessage: any;
 
-  constructor(private route: ActivatedRoute, private projectService: ProjectService) { }
+  user: any;
+  userId: any;
+
+  constructor(private route: ActivatedRoute, private projectService: ProjectService, private tokenStorageService: TokenStorageService) { }
 
   async ngOnInit() {
     this.route.queryParams
@@ -36,6 +40,10 @@ export class EditProjectAdminComponent implements OnInit {
       }
     );
     console.log(this.admins);
+
+    this.user = this.tokenStorageService.getUser();
+    this.userId = this.user.id;
+    console.log(this.userId);
   }
 
   searchUsers(): void {
@@ -70,6 +78,22 @@ export class EditProjectAdminComponent implements OnInit {
     return false;
   }
 
+  alreadyHost(user): boolean {
+    if(this.userId == user.id) {
+      return true;
+    }
+    return false;
+  }
+
+  addAdminAlert(uId: string, name: string): void{
+    let r = confirm("Are you sure you want to add user as project admin?");
+    if (r == true) {
+      this.addAdmin(uId, name);
+    } else {
+      return;
+    }
+  }
+
   addAdmin(uId: string, name: string): void {
     const addAdm = {
       id: this.projectId,
@@ -88,6 +112,15 @@ export class EditProjectAdminComponent implements OnInit {
         this.isAddSuccessful = false;
       }
     )
+  }
+
+  deleteAdminAlert(user): void{
+    let r = confirm("Are you sure you want to remove this project admin?");
+    if (r == true) {
+      this.deleteAdmin(user);
+    } else {
+      return;
+    }
   }
 
   deleteAdmin(user): void {

@@ -1,6 +1,9 @@
-<div class="row">
+<a href="/project/projectDetails?id={{projectId}}"><u><< Back to project</u></a>
+
+<div class="row mt-md-2">
     <div class="container float-left" style="width: 50%">
-        <h4>Project Admins</h4>
+        <h4>Project Admins
+        </h4>
         <div *ngIf="admins.length == 0">
             <p>You currently have no project admins.</p>
         </div>
@@ -20,18 +23,19 @@
                     <br/>
                     <div class="col-5">
                         Name:
-                        <a href="/profile?username={{admin.username}}&userType=individual">{{admin.name}}</a>
+                        <a href="/profile?username={{admin.username}}&userType=individual" target="_blank">{{admin.name}}</a>
                         <br/> Username: {{admin.username}}
                     </div>
                     <div class="col-4">
-                        <button class="btn btn-danger float-right" (click)=deleteAdmin(admin)>Delete</button>
+                        <button class="btn btn-danger float-right" (click)=deleteAdminAlert(admin)>Delete</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <div class="container float-right" style="width: 50%">
-        <h4>Add Project Admins by search</h4>
+        <h4>Add Project Admins by search
+        </h4>
         <form name="form" (ngSubmit)="f.form.valid && searchUsers()" #f="ngForm" novalidate>
             <div class="form-inline">
                 <input type="text" class="form-control mr-md-2" name="search" [(ngModel)]="keyword" #search="ngModel" placeholder="Enter a username"
@@ -60,16 +64,19 @@
                             </div>
                             <br/>
                             <div class="card border-0 col-5" style="width:80%">
-                                Name: {{user.name}}
-                                <br/> Username: {{user.username}}
+                                <div>Name: <a href="/profile?username={{user.username}}&userType=individual" target="_blank">{{user.name}}</a></div>
+                                Username: {{user.username}}
                             </div>
                             <div class="col-4">
+                                <div *ngIf="alreadyHost(user)">
+                                    <p class="float-right">Project Creator</p>
+                                </div>
                                 <div *ngIf="alreadyAdmin(user)">
                                     <p class="float-right">Already a Project Admin</p>
                                     <!-- <button class="btn btn-primary float-right">Already affiliated</button> -->
                                 </div>
-                                <div *ngIf="!alreadyAdmin(user)">
-                                    <button class="btn btn-primary float-right" (click)=addAdmin(user.id,user.name)>Add</button>
+                                <div *ngIf="!alreadyAdmin(user)&&!alreadyHost(user)">
+                                    <button class="btn btn-primary float-right" (click)=addAdminAlert(user.id,user.name)>Add</button>
                                 </div>
                             </div>
                         </div>
