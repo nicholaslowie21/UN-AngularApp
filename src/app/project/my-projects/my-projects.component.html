@@ -1,5 +1,9 @@
 <a *ngIf=isVerified class="btn btn-primary" href="/project/create" role="button">Create a New Project!</a>
-<br><br>
+<div *ngIf=!isVerified class="alert alert-info" role="alert">
+    Your account needs to be verified to create a project. Go to Settings > Verification to request for verification now!
+</div>
+<br>
+<br>
 <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item">
         <a class="nav-link active" id="personal-tab" data-toggle="tab" href="#personal" role="tab" aria-controls="personal" aria-selected="true">Current Projects</a>
@@ -14,7 +18,8 @@
             <p-dataView #dv [value]="currProj" [paginator]="true" [rows]="9" filterBy="title" layout="list">
                 <ng-template pTemplate="header">
                     <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
-                        <p-dropdown [options]="filterOptions" [(ngModel)]="filterKeyRole" placeholder="Filter By Role" (onChange)="filterRoleCurrentProj($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                        <p-dropdown [options]="filterOptions" [(ngModel)]="filterKeyRole" placeholder="Filter By Role" (onChange)="filterRoleCurrentProj($event)"
+                            styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
                         <span class="p-input-icon-left p-mb-2 p-mb-md-0">
                             <i class="pi pi-search"></i>
                             <input type="search" pInputText placeholder="Search by Title" (input)="dv.filter($event.target.value)">
@@ -24,8 +29,14 @@
                 <ng-template let-product pTemplate="listItem">
                     <div class="p-col-12">
                         <div class="product-list-item">
-                            <img src="../../assets/img/profilePic_Placeholder.png" style="margin:15px; width: 50px; height: 50px; object-fit: cover;"
-                                [alt]="product.name" />
+                            <div *ngIf="product.imgPath.length != 0">
+                                <img src="https://localhost:8080{{product.imgPath}}" style="margin: 15px; width: 50px; height: 50px; object-fit: cover;"
+                                    alt="Profile picture">
+                            </div>
+                            <div *ngIf="product.imgPath.length == 0">
+                                <img src="../../../assets/img/team.jpg" style="margin: 15px; width: 50px; height: 50px; object-fit: cover;"
+                                    alt="Project picture">
+                            </div>
                             <div class="product-list-detail">
                                 <div class="product-name">{{product.title}}</div>
                                 <div class="product-description">{{product.desc}}</div>

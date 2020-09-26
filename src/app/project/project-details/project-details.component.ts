@@ -34,6 +34,10 @@ export class ProjectDetailsComponent implements OnInit {
   KPIs: any;
   updateForm: any = {};
 
+  imgString: any;
+
+  admins: any;
+
   constructor(private route: ActivatedRoute, private projectService: ProjectService, private userService: UserService,
     private tokenStorageService: TokenStorageService) { }
 
@@ -51,10 +55,11 @@ export class ProjectDetailsComponent implements OnInit {
         this.projHost = response.data.targetProject.host;
         this.projAdmins = response.data.targetProject.admins;
         this.status = response.data.targetProject.status;
+        this.imgString = "https://localhost:8080" + this.project.imgPath;
         // console.log("INIT: "+this.project);
-        console.log("INIT INSIDE SERVICE: "+this.projHost);
+        console.log("INIT INSIDE SERVICE: " + this.projHost);
         //console.log(this.userId);
-        console.log("INIT INSIDE SERVICE: "+this.projAdmins);
+        console.log("INIT INSIDE SERVICE: " + this.projAdmins);
         console.log(this.status);
       },
       err => {
@@ -66,22 +71,22 @@ export class ProjectDetailsComponent implements OnInit {
     this.userId = this.user.id;
     //this.checkRole();
 
-    console.log("INIT OUTSIDE SERVICE: "+this.projHost);
-    console.log("INIT OUTSIDE SERVICE: "+this.projAdmins);
+    console.log("INIT OUTSIDE SERVICE: " + this.projHost);
+    console.log("INIT OUTSIDE SERVICE: " + this.projAdmins);
     console.log(this.userId);
     console.log(this.status);
 
     //check project status
-    if(this.status == "completed") {
+    if (this.status == "completed") {
       this.isCompleted = true;
-    } else if(this.status == "closed") {
+    } else if (this.status == "closed") {
       this.isDeleted = true;
     } else {
       this.isOngoing = true;
     }
 
     //check user role
-    if(this.userId == this.projHost) {
+    if (this.userId == this.projHost) {
       this.isCreator = true;
     } else {
       for (var x = 0; x < this.projAdmins.length; x++) {
@@ -98,7 +103,7 @@ export class ProjectDetailsComponent implements OnInit {
     console.log("isOngoing: " + this.isOngoing);
 
     //getKPIs
-    await this.projectService.getProjectKPIs({id: this.projectId}).toPromise().then(
+    await this.projectService.getProjectKPIs({ id: this.projectId }).toPromise().then(
       response => {
         console.log(JSON.stringify(response));
         this.KPIs = response.data.kpis;
@@ -106,6 +111,14 @@ export class ProjectDetailsComponent implements OnInit {
       }
     );
     console.log(this.KPIs);
+
+    await this.projectService.getAdmins({ id: this.projectId }).toPromise().then(
+      response => {
+        console.log(JSON.stringify(response));
+        this.admins = response.data.admins;
+      }
+    );
+    console.log(this.admins);
 
   }
 
@@ -124,7 +137,7 @@ export class ProjectDetailsComponent implements OnInit {
       }
     );
 
-    console.log("LOAD PROJ OUTSIDE SERVICE: "+this.projHost);
+    console.log("LOAD PROJ OUTSIDE SERVICE: " + this.projHost);
     console.log(this.userId);
 
     if (String(this.userId) === String(this.projHost)) {
@@ -152,11 +165,12 @@ export class ProjectDetailsComponent implements OnInit {
   }
 
   deleteProj(title: string): void {
-    this.projectService.deleteProject({id: this.projectId}).subscribe(
+    this.projectService.deleteProject({ id: this.projectId }).subscribe(
       response => {
         console.log(JSON.stringify(response));
-        alert("Project " + title +  " has been deleted");
-        window.close();
+        alert("Project " + title + " has been deleted");
+        window.location.reload();
+        //window.close();
       },
       err => {
         console.log(JSON.stringify(err.error.msg));
@@ -165,10 +179,10 @@ export class ProjectDetailsComponent implements OnInit {
   }
 
   completeProj(title: string): void {
-    this.projectService.completeProject({id: this.projectId}).subscribe(
+    this.projectService.completeProject({ id: this.projectId }).subscribe(
       response => {
         console.log(JSON.stringify(response));
-        alert("Project " + title +  " has been completed!");
+        alert("Project " + title + " has been completed!");
         window.location.reload();
       },
       err => {
@@ -190,7 +204,7 @@ export class ProjectDetailsComponent implements OnInit {
         console.log(JSON.stringify(response));
         alert("KPI Created!");
         window.location.reload();
-      }, 
+      },
       err => {
         this.errorMsg = err.error.msg;
         console.log(this.errorMsg);
@@ -199,7 +213,7 @@ export class ProjectDetailsComponent implements OnInit {
   }
 
   getForm(kid: string, ktitle: string, kdesc: string, kcompletion: number): void {
-    console.log(kid+ " "+ktitle+" "+kdesc+" "+kcompletion);
+    console.log(kid + " " + ktitle + " " + kdesc + " " + kcompletion);
     this.updateForm = {
       id: kid,
       title: ktitle,
@@ -222,7 +236,7 @@ export class ProjectDetailsComponent implements OnInit {
         console.log(JSON.stringify(response));
         alert("KPI Updated!");
         window.location.reload();
-      }, 
+      },
       err => {
         this.errorMsg = err.error.msg;
         console.log(this.errorMsg);
@@ -232,7 +246,7 @@ export class ProjectDetailsComponent implements OnInit {
 
   deleteKPI(kid: string): void {
     console.log(kid);
-    this.projectService.deleteKPI({id: kid}).subscribe(
+    this.projectService.deleteKPI({ id: kid }).subscribe(
       response => {
         console.log(JSON.stringify(response));
         alert("KPI deleted!");
@@ -243,6 +257,33 @@ export class ProjectDetailsComponent implements OnInit {
         console.log(this.errorMsg);
       }
     );
+  }
+
+  deleteProject(title: string): void {
+    let r = confirm("Are you sure you want to delete this project?");
+    if (r == true) {
+      this.deleteProj(title);
+    } else {
+      return;
+    }
+  }
+
+  completeProject(title: string): void {
+    let r = confirm("Are you sure you want to mark this project as complete?");
+    if (r == true) {
+      this.completeProj(title);
+    } else {
+      return;
+    }
+  }
+
+  confirmDeleteKPI(id: string): void {
+    let r = confirm("Are you sure you want to delete this KPI?");
+    if (r == true) {
+      this.deleteKPI(id);
+    } else {
+      return;
+    }
   }
 
 }
