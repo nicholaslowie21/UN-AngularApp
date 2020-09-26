@@ -1,4 +1,6 @@
-<div class="row">
+<a href="/project/projectDetails?id={{projectId}}"><u><< Back to project</u></a>
+
+<div class="row mt-md-2">
     <div class="container float-left" style="width: 50%">
         <h4>Project Admins
         </h4>
@@ -62,8 +64,8 @@
                             </div>
                             <br/>
                             <div class="card border-0 col-5" style="width:80%">
-                                <a href="/profile?username={{user.username}}&userType=individual" target="_blank">{{user.name}}</a>
-                                <br/> Username: {{user.username}}
+                                <div>Name: <a href="/profile?username={{user.username}}&userType=individual" target="_blank">{{user.name}}</a></div>
+                                Username: {{user.username}}
                             </div>
                             <div class="col-4">
                                 <div *ngIf="alreadyHost(user)">

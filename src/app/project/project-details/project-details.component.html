@@ -104,11 +104,16 @@
 </div>
 
 <div class="container float-right" style="width: 25%">
-
-    <button *ngIf=isCreator&&isOngoing type="button" class="btn btn-secondary btn-block text-white" data-toggle="modal" data-target="#kpiModal">
-        <i class="pi pi-chart-bar"></i>
-        Add KPI
-    </button>
+    <div class="card-header bg-secondary text-white">
+        <i class="pi pi-chart-bar"></i> <h5 style="display: inline-block;" class="mt-md-1 mb-md-0 ml-md-2">KPIs</h5>
+        <button pButton *ngIf=isCreator&&isOngoing type="button" icon="pi pi-plus" class="p-button-rounded float-right" 
+            data-toggle="modal" data-target="#kpiModal" title="Add KPI">
+        </button>
+    </div>
+    
+    <div *ngIf="KPIs.length == 0" class="alert alert-info mt-md-1">
+        This project has no KPI yet.
+    </div>
 
     <div *ngFor="let kpi of KPIs">
         <ul class="list-group">
