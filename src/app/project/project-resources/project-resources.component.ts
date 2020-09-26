@@ -10,6 +10,7 @@ import { ProjectService } from '../../services/project.service';
 export class ProjectResourcesComponent implements OnInit {
 
   projectId: any;
+  project: any;
   resourceNeeds = [];
   contributions = [];
 
@@ -44,6 +45,10 @@ export class ProjectResourcesComponent implements OnInit {
       {label: 'In progress', value:'progress'},
       {label: 'Completed', value:'completed'}
     ];
+
+    await this.projectService.viewProject({id: this.projectId}).toPromise().then(
+      res => this.project = res.data.targetProject
+    )
     
     await this.projectService.getProjectResourceNeeds({id: this.projectId}).toPromise().then(
       res => this.resourceNeeds = res.data.resourceneeds

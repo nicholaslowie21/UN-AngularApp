@@ -1,6 +1,12 @@
-<button class="btn btn-primary float-right" data-toggle="modal" data-target="#CreateModal">
-    Create Resource Need
-</button>
+<a href="/project/projectDetails?id={{projectId}}"><u><< Back to project</u></a>
+
+<h2 class="mt-md-2">Project Resources
+    <button class="btn btn-primary float-right" data-toggle="modal" data-target="#CreateModal">
+        Create Resource Need
+    </button>
+</h2>
+Project Title: {{project.title}}
+
 <div class="modal fade" id="CreateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
