@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { TokenStorageService } from '../../services/token-storage.service';
 import { ResourceService } from '../../services/resource.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-my-resources',
   templateUrl: './my-resources.component.html',
-  styleUrls: ['./my-resources.component.css']
+  styleUrls: ['./my-resources.component.css'],
+  providers: [MessageService]
 })
 export class MyResourcesComponent implements OnInit {
 
@@ -40,7 +42,8 @@ export class MyResourcesComponent implements OnInit {
 
   checked = false;
 
-  constructor(private tokenStorageService: TokenStorageService, private resourceService: ResourceService) { }
+  constructor(private tokenStorageService: TokenStorageService, private resourceService: ResourceService,
+    private messageService: MessageService) { }
 
   async ngOnInit() {
     this.user = this.tokenStorageService.getUser();
@@ -183,6 +186,7 @@ export class MyResourcesComponent implements OnInit {
     }
     console.log("FILTER ITEM STATUS");
     this.items = arr;
+    this.sortKeyItem = '';
   }
 
   async filterManpowerStatus(event) {
@@ -206,7 +210,7 @@ export class MyResourcesComponent implements OnInit {
       arr = this.manpowers; 
     }
     this.manpowers = arr;
-    console.log("FILTER MANPOWER");
+    this.sortKeyMpw = '';
   }
 
   async filterVenueStatus(event) {
@@ -230,6 +234,7 @@ export class MyResourcesComponent implements OnInit {
       arr = this.venues; 
     }
     this.venues = arr;
+    this.sortKeyVen = '';
   }
 
   async filterKnowledgeStatus(event) {
@@ -253,6 +258,7 @@ export class MyResourcesComponent implements OnInit {
       arr = this.knowledges; 
     }
     this.knowledges = arr;
+    this.sortKeyKno = '';
   }
 
   formatDate(date): any {
@@ -263,12 +269,13 @@ export class MyResourcesComponent implements OnInit {
   async deactivateItem(item) {
     this.resourceService.deactivateItem({id: item.id}).subscribe(
       response => {
-        alert("Item " + item.title + " deactivated!");
+        // alert("Item " + item.title + " deactivated!");
+        this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Item '+ item.title +' deactivated!'});
         this.filterItemStatus({"value": this.filterKeyItem});
-        this.sortKeyItem = '';
         // this.ngOnInit();
       }, err => {
-        alert("Error: " + err.error.msg);
+        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+        // alert("Error: " + err.error.msg);
       }
     )
   }
@@ -276,12 +283,13 @@ export class MyResourcesComponent implements OnInit {
   async activateItem(item) {
     this.resourceService.activateItem({id: item.id}).subscribe(
       response => {
-        alert("Item " + item.title + " activated!");
+        this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Item '+ item.title +' activated!'});
+        // alert("Item " + item.title + " activated!");
         // this.ngOnInit();
         this.filterItemStatus({"value": this.filterKeyItem});
-        this.sortKeyItem = '';
       }, err => {
-        alert("Error: " + err.error.msg);
+        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+        // alert("Error: " + err.error.msg);
       }
     )
   }
@@ -289,12 +297,14 @@ export class MyResourcesComponent implements OnInit {
   async deactivateManpower(manpower) {
     this.resourceService.deactivateManpower({id: manpower.id}).subscribe(
       response => {
-        alert("Manpower " + manpower.title + " deactivated!");
+        // alert("Manpower " + manpower.title + " deactivated!");
+        this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Manpower '+ manpower.title +' deactivated!'});
         // this.ngOnInit();
         this.filterManpowerStatus({"value": this.filterKeyMpw});
         this.sortKeyMpw = '';
       }, err => {
-        alert("Error: " + err.error.msg);
+        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+        // alert("Error: " + err.error.msg);
       }
     )
   }
@@ -302,12 +312,14 @@ export class MyResourcesComponent implements OnInit {
   activateManpower(manpower): void {
     this.resourceService.activateManpower({id: manpower.id}).subscribe(
       response => {
-        alert("Manpower " + manpower.title + " activated!");
+        this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Manpower '+ manpower.title +' activated!'});
+        // alert("Manpower " + manpower.title + " activated!");
         // this.ngOnInit();
         this.filterManpowerStatus({"value": this.filterKeyMpw});
         this.sortKeyMpw = '';
       }, err => {
-        alert("Error: " + err.error.msg);
+        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+        // alert("Error: " + err.error.msg);
       }
     )
   }
@@ -315,12 +327,14 @@ export class MyResourcesComponent implements OnInit {
   deactivateVenue(venue): void {
     this.resourceService.deactivateVenue({id: venue.id}).subscribe(
       response => {
-        alert("Venue " + venue.title + " deactivated!");
+        this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Venue '+ venue.title +' deactivated!'});
+        // alert("Venue " + venue.title + " deactivated!");
         // this.ngOnInit();
         this.filterVenueStatus({"value": this.filterKeyVen});
         this.sortKeyVen = '';
       }, err => {
-        alert("Error: " + err.error.msg);
+        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+        // alert("Error: " + err.error.msg);
       }
     )
   }
@@ -328,12 +342,14 @@ export class MyResourcesComponent implements OnInit {
   activateVenue(venue): void {
     this.resourceService.activateVenue({id: venue.id}).subscribe(
       response => {
-        alert("Venue " + venue.title + " activated!");
+        this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Venue '+ venue.title +' activated!'});
+        // alert("Venue " + venue.title + " activated!");
         // this.ngOnInit();
         this.filterVenueStatus({"value": this.filterKeyVen});
         this.sortKeyVen = '';
       }, err => {
-        alert("Error: " + err.error.msg);
+        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+        // alert("Error: " + err.error.msg);
       }
     )
   }
@@ -341,12 +357,14 @@ export class MyResourcesComponent implements OnInit {
   deactivateKnowledge(knowledge): void {
     this.resourceService.deactivateKnowledge({id: knowledge.id}).subscribe(
       response => {
-        alert("Knowledge " + knowledge.title + " deactivated!");
+        this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Knowledge '+ knowledge.title +' deactivated!'});
+        // alert("Knowledge " + knowledge.title + " deactivated!");
         // this.ngOnInit();
         this.filterKnowledgeStatus({"value": this.filterKeyKno});
         this.sortKeyKno = '';
       }, err => {
-        alert("Error: " + err.error.msg);
+        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+        // alert("Error: " + err.error.msg);
       }
     )
   }
@@ -354,12 +372,14 @@ export class MyResourcesComponent implements OnInit {
   activateKnowledge(knowledge): void {
     this.resourceService.activateKnowledge({id: knowledge.id}).subscribe(
       response => {
-        alert("Knowledge " + knowledge.title + " activated!");
+        this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Knowledge '+ knowledge.title +' activated!'});
+        // alert("Knowledge " + knowledge.title + " activated!");
         // this.ngOnInit();
         this.filterKnowledgeStatus({"value": this.filterKeyKno});
         this.sortKeyKno = '';
       }, err => {
-        alert("Error: " + err.error.msg);
+        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+        // alert("Error: " + err.error.msg);
       }
     )
   }
