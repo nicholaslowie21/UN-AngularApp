@@ -2,8 +2,9 @@
     <a *ngIf=isVerified class="btn btn-primary float-right" href="/project/create" role="button">Create a New Project</a>
 </h2>
 <div *ngIf=!isVerified class="alert alert-info " role="alert">
-    Your account needs to be verified to create a project. <br/>
-    Go to <a href="/settings">Settings</a> > Verification to request for verification now!
+    Your account needs to be verified to create a project.
+    <br/> Go to
+    <a href="/settings">Settings</a> > Verification to request for verification now!
 </div>
 
 <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -58,17 +59,25 @@
                     <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
                         <p-dropdown [options]="filterOptions" [(ngModel)]="filterKeyRole" placeholder="Filter By Role" (onChange)="filterRolePastProj($event)"
                             styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
-                            <span class="p-input-icon-left p-mb-2 p-mb-md-0">
-                                <i class="pi pi-search"></i>
-                                <input type="search" pInputText placeholder="Search by Title" (input)="pi.filter($event.target.value)">
-                            </span>
+                        <span class="p-input-icon-left p-mb-2 p-mb-md-0">
+                            <i class="pi pi-search"></i>
+                            <input type="search" pInputText placeholder="Search by Title" (input)="pi.filter($event.target.value)">
+                        </span>
                     </div>
                 </ng-template>
                 <ng-template let-product pTemplate="listItem">
                     <div class="p-col-12">
                         <div class="product-list-item">
-                            <img src="../../assets/img/profilePic_Placeholder.png" style="margin:15px; width: 50px; height: 50px; object-fit: cover;"
-                                [alt]="product.name" />
+                            <div *ngIf="product.imgPath.length != 0">
+                                <img src="https://localhost:8080{{product.imgPath}}" style="margin: 15px; width: 50px; height: 50px; object-fit: cover;"
+                                    alt="Profile picture">
+                            </div>
+                            <div *ngIf="product.imgPath.length == 0">
+                                <img src="../../../assets/img/team.jpg" style="margin: 15px; width: 50px; height: 50px; object-fit: cover;" alt="Project picture">
+                            </div>
+
+                            <!--img src="../../assets/img/profilePic_Placeholder.png" style="margin:15px; width: 50px; height: 50px; object-fit: cover;"
+                                [alt]="product.name" /-->
                             <div class="product-list-detail">
                                 <div class="product-name">{{product.title}}</div>
                                 <div class="product-description">{{product.desc}}</div>

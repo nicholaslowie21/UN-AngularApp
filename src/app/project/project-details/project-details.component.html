@@ -13,7 +13,7 @@
         </div>
         <div class="col-6">
             <h3 class="card-title text-left mt-md-4 mb-md-0">{{ project.title }}</h3>
-            <h6 class="card-title text-left mt-md-3">Description: {{project.desc}}</h6>
+            <!--h6 class="card-title text-left mt-md-3">Description: {{project.desc}}</h6-->
             <h6 class="card-title text-left mt-md-1">Status: {{project.status}}</h6>
             <h6 class="card-title text-left mt-md-1">Country: {{project.country}}</h6>
             <h6 class="card-title text-left mt-md-1">SDGs:
@@ -66,11 +66,52 @@
 
     </div>
 
+    <div class="row mt-1 bg-info text-white">
+        <h6 class="card-title text-left text-justify" style="margin: 20px">Description: {{project.desc}}</h6>
+    </div>
+
     <div class="row mt-3">
         <div class="col-4">
-            Project Admins:
+            <div class="card">
+                <div class="card-header">
+                    Project Creator:
+                </div>
+                <div class="card-body row">
+                    <div class="col-5">
+                        <div *ngIf="host.profilePic.length > 0">
+                            <img src={{host.profilePic}} class="rounded-circle img-fluid" style="width: 50px; height: 50px; object-fit: cover;" alt="Profile picture"
+                            />
+                        </div>
+                        <div *ngIf="host.profilePic.length == 0">
+                            <img src="../../assets/img/profilePic_Placeholder.png" class="rounded-circle img-fluid" style="width: 50px; height: 50px; object-fit: cover;"
+                                alt="Profile picture" />
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="col-7">
+                        <a href="/profile?username={{host.username}}&userType=individual">{{host.name}}</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card mt-2">
+                <div class="card-header">
+                    Project Admins:
+                    <a *ngIf=isOngoing&&isCreator class="btn btn-light float-right" href="/project/editAdmin?id={{project.id}}" role="button" style="height: 35px; width: 40px">
+                        <i class="pi pi-user-edit"></i>
+                    </a>
+                    <a *ngIf=!isOngoing&&isCreator class="btn btn-light float-right disabled" aria-disabled="true" role="button" style="height: 35px; width: 40px">
+                        <i class="pi pi-user-edit"></i>
+                    </a>
+                </div>
+            </div>
+
             <div *ngIf="admins.length == 0">
-                <p>There are no project admins for now.</p>
+                <div class="card">
+                    <div class="card-body row">
+                        <p style="margin-left: 10px">There are no project admins for now.</p>
+                    </div>
+                </div>
+
             </div>
             <div *ngFor="let admin of admins">
                 <div class="card">
@@ -92,12 +133,19 @@
                     </div>
                 </div>
             </div>
+            <div class="card mt-2">
+                <div class="card-header">
+                    Project Contributors:
+                </div>
+            </div>
         </div>
         <div class="col-8">
-            <div class="card border-dark">
-                <h5 class="card-title text-center mt-md-3">
-                    Project Feed
-                </h5>
+            <div class="container-fluid">
+                <div class="card border-dark">
+                    <h5 class="card-title text-center mt-md-3">
+                        Project Feed
+                    </h5>
+                </div>
             </div>
         </div>
     </div>
@@ -105,18 +153,21 @@
 
 <div class="container float-right" style="width: 25%">
     <div class="card bg-secondary mb-md-1">
-        <div class="card-header"><a href="/project/resources?id={{projectId}}" class="text-white">
-            <u>See project resources</u>
-            <i class="pi pi-arrow-circle-right ml-md-2 float-right" style="font-size: 1.5em;"></i></a>
+        <div class="card-header">
+            <a href="/project/resources?id={{projectId}}" class="text-white">
+                <u>See project resources</u>
+                <i class="pi pi-arrow-circle-right ml-md-2 float-right" style="font-size: 1.5em;"></i>
+            </a>
         </div>
     </div>
     <div class="card-header bg-secondary text-white">
-        <i class="pi pi-chart-bar"></i> <h5 style="display: inline-block;" class="mt-md-1 mb-md-0 ml-md-2">KPIs</h5>
-        <button pButton *ngIf=isCreator&&isOngoing type="button" icon="pi pi-plus" class="p-button-rounded float-right" 
-            data-toggle="modal" data-target="#kpiModal" title="Add KPI">
+        <i class="pi pi-chart-bar"></i>
+        <h5 style="display: inline-block;" class="mt-md-1 mb-md-0 ml-md-2">KPIs</h5>
+        <button pButton *ngIf=isCreator&&isOngoing type="button" icon="pi pi-plus" class="p-button-rounded float-right" data-toggle="modal"
+            data-target="#kpiModal" title="Add KPI">
         </button>
     </div>
-    
+
     <div *ngIf="KPIs.length == 0" class="alert alert-info mt-md-1">
         This project has no KPI yet.
     </div>
