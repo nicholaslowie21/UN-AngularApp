@@ -128,6 +128,21 @@ export class ResourceService {
     }, httpOptions);
   }
 
+  addKnowledgeOwner(data): Observable<any> {
+    return this.http.post(API_URL + '/addKnowledgeOwner', {
+      knowledgeId: data.knowledgeId,
+      userId: data.userId
+    }, httpOptions);
+  }
+
+  deleteKnowledgeOwner(data): Observable<any> {
+    return this.http.post(API_URL + '/deleteKnowledgeOwner', {
+      knowledgeId: data.knowledgeId,
+      targetId: data.userId,
+      targetType: data.userType
+    }, httpOptions);
+  }
+
   uploadKnowledgeAttachment(formData): Observable<any> {
     return this.http.post(API_URL + '/uploadKnowledgeAttachment', 
       formData);

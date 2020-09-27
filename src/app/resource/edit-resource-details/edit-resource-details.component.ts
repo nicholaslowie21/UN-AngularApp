@@ -1,6 +1,10 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
+import { InstitutionService } from '../../services/institution.service';
+import { TokenStorageService } from '../../services/token-storage.service';
 import { ResourceService } from '../../services/resource.service';
+import { UserService } from '../../services/user.service';
+
 import { saveAs } from 'file-saver';
 
 @Component({
@@ -26,9 +30,21 @@ export class EditResourceDetailsComponent implements OnInit {
   errorMsgUploadAttachment = '';
   tempStrings: any;
 
+  tempUser: any;
+  userOwners: any;
+  institutionOwners: any;
+  keyword = '';
+  searchResults: any;
+  isSearchSuccessful: any;
+  errorMsgSearch = '';
+  isAddSuccessful = false;
+  isDelSuccessful = false;
+  errorMsgAdd = '';
+  errorMsgDel = '';
+
   countries = ["Afghanistan","Albania","Algeria","Andorra","Angola","Anguilla","Antigua and Barbuda","Argentina","Armenia","Aruba","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bermuda","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi","Cambodia","Cameroon","Canada","Cape Verde","Cayman Islands","Central African Republic","Chad","Chile","China","Colombia","Congo","Cook Islands","Costa Rica","Côte d'Ivoire","Croatia","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","East Timor","Ecuador","Egypt","El Salvador","Equatorial Guinea","Estonia","Ethiopia","Falkland Islands","Faroe Islands","Fiji","Finland","France","French Polynesia","Gabon","Gambia","Georgia","Germany","Ghana","Gibraltar","Greece","Greenland","Grenada","Guam","Guatemala","Guernsey","Guinea","Guinea Bissau","Guyana","Haiti","Honduras","Hong Kong","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Isle of Man","Israel","Italy","Jamaica","Japan","Jersey","Jordan","Kazakhstan","Kenya","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Macau","Macedonia","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Mauritania","Mauritius","Mexico","Moldova","Monaco","Mongolia","Montenegro","Montserrat","Morocco","Mozambique","Namibia","Nepal","Netherlands","Netherlands Antilles","New Caledonia","New Zealand","Nicaragua","Niger","Nigeria","Norway","Oman","Pakistan","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Puerto Rico","Qatar","Reunion","Romania","Russia","Rwanda","Saint Pierre and Miquelon","Samoa","San Marino","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","South Africa","South Korea","Spain","Sri Lanka","Saint Kitts and Nevis","Saint Lucia","Saint Vincent And The Grenadines","Sudan","Suriname","Swaziland","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Turks and Caicos Islands","Uganda","Ukraine","United Arab Emirates","United Kingdom","Uruguay","Uzbekistan","Venezuela","Vietnam", "Virgin Islands (British)", "Virgin Islands (US)","Yemen","Zambia","Zimbabwe"];
 
-  constructor(private route: ActivatedRoute, private resourceService: ResourceService) { }
+  constructor(private route: ActivatedRoute, private institutionService: InstitutionService, private resourceService: ResourceService, private tokenStorageService: TokenStorageService, private userService: UserService) { }
 
   ngOnInit() {
     this.route.queryParams.subscribe(
@@ -45,8 +61,8 @@ export class EditResourceDetailsComponent implements OnInit {
     } else if (this.type == 'venue') {
       this.resourceService.viewVenueDetails({id: this.id}).toPromise().then(res => {this.resource = res.data.venue});
     } else if (this.type == 'knowledge') {
-      this.resourceService.viewKnowledgeDetails({id: this.id}).toPromise().then(res => {this.resource = res.data.knowledge});
-      console.log(this.resource)
+      this.resourceService.viewKnowledgeDetails({id: this.id}).toPromise().then(res => {this.resource = res.data.knowledge, this.userOwners = res.data.userOwner, this.institutionOwners = res.data.institutionOwner});
+      console.log(this.resource);
     }
   }
 
@@ -150,6 +166,102 @@ export class EditResourceDetailsComponent implements OnInit {
         this.isUploadAttachmentSuccessful = false;
       }
     )
+  }
+
+  searchUsers(): void {
+    if(this.keyword.length == 0) {
+      this.isSearchSuccessful = false;
+      this.errorMsgSearch = 'Please enter a username';
+      return;
+    }
+    this.institutionService.searchUsers({username: this.keyword}).subscribe(
+      response => {
+        this.searchResults = response.data.users;
+        if (this.searchResults.length == 0) {
+          this.isSearchSuccessful = false;
+          this.errorMsgSearch = 'No users found';
+        } else {
+          this.isSearchSuccessful = true;
+        }
+      },
+      err => {
+        this.errorMsgSearch = err.error.msg;
+        this.isSearchSuccessful = false;
+      }
+    )
+    console.log(this.errorMsgSearch);
+  }
+
+  addOwner(user): void {
+    this.resourceService.addKnowledgeOwner({knowledgeId: this.resource.id, userId: user.id}).subscribe(
+      response => {
+        this.isAddSuccessful = true;
+        alert("User " + user.username + " is now a co-owner of this resource");
+        this.reloadPage();
+      }, err => {
+        this.errorMsgAdd = err.error.msg;
+        this.isAddSuccessful = false;
+      }
+    )
+  }
+
+  deleteOwner(user): void {
+    if (this.isUserOwner(user)) {
+      this.resourceService.deleteKnowledgeOwner({knowledgeId: this.resource.id, userId: user.id, userType: "user"}).subscribe(
+        response => {
+          this.isDelSuccessful = true;
+          alert("User " + user.username + " is no longer a co-owner of this resource");
+          this.reloadPage();
+        }, err => {
+          this.errorMsgDel = err.error.msg;
+          this.isDelSuccessful = false;
+        }
+      )
+    } else { // this user is an institution
+      this.resourceService.deleteKnowledgeOwner({knowledgeId: this.resource.id, userId: user.id, userType: "institution"}).subscribe(
+        response => {
+          this.isDelSuccessful = true;
+          alert("User " + user.username + " is no longer a co-owner of this resource");
+          this.reloadPage();
+        }, err => {
+          this.errorMsgDel = err.error.msg;
+          this.isDelSuccessful = false;
+        }
+      )
+    }
+  }
+
+  // checks if current user is still an owner of this knowledge resource
+  stillOwner(): boolean {
+    for(var i = 0; i < this.userOwners.length; i++) {
+      if (this.userOwners[i].username == this.tokenStorageService.getUser().username) {
+        return true;
+      }
+    }
+    for(var i = 0; i < this.institutionOwners.length; i++) {
+      if (this.institutionOwners[i].username == this.tokenStorageService.getUser().username) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  isUserOwner(user): boolean {
+    for(var i = 0; i < this.userOwners.length; i++) {
+      if(this.userOwners[i].username == user.username) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  isInstitutionOwner(user): boolean {
+    for(var i = 0; i < this.institutionOwners.length; i++) {
+      if(this.institutionOwners[i].username == user.username) {
+        return true;
+      }
+    }
+    return false;
   }
 
   onSubmit(): void {

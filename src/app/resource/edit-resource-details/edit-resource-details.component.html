@@ -1,171 +1,284 @@
-<div class="col-md-12" style="width: 850px">
-    <div>
-        <h1 class="h1">
-            Edit Resource
-            <a class="btn btn-primary float-right" href="/resource/resourceDetails?id={{id}}&type={{type}}">Back to Resource details</a>
-        </h1>
-    </div>
-    <br/>
-
-    <form
-    name="form"
-    (ngSubmit)="f.form.valid && onSubmit()"
-    #f="ngForm"
-    novalidate
-    >
-        <!-- display and update pic for Item Resource -->
-        <div class="form-group" *ngIf="type == 'item'">
-            <div *ngIf="resource.imgPath.length > 0">
-                <img
-                src="https://localhost:8080{{resource.imgPath}}"
-                class="img-thumbnail img-fluid"
-                style="width: 200px; height: 200px; object-fit: cover;"
-                alt="Item Resource picture"
-                />
-            </div>
-            <div *ngIf="resource.imgPath.length == 0">
-                <img
-                src="../../assets/img/item.png"
-                class="rounded-circle img-fluid"
-                style="width: 200px; height: 200px; object-fit: cover;"
-                alt="Item Resource picture"
-                />
-            </div>
-            <br/>
-            <form>
-                <input type="file" name="itemImage" (change)="selectItemImage($event)" />
-                <button type="submit" (click)="onSubmitItemImage()">Upload</button>
-            </form>
-            <div class="alert alert-warning" *ngIf="errorMsgUploadPic && !isUploadItemPicSuccessful">
-                Upload picture failed!<br />{{ errorMsgUploadPic }}
-            </div>
-        </div>
-
-        <!-- display and update pics for Venue Resource -->
-        <div class="form-group" *ngIf="type == 'venue'">
-            <div *ngIf="resource.imgPath.length == 0">
-                Currently no images of venue
-            </div>
-            <div class="card-deck" *ngIf="resource.imgPath.length > 0">
-                <p-carousel [value]="resource.imgPath">
-                    <ng-template let-img pTemplate="item">
-                        <img src="https://localhost:8080{{img}}" class="img-fluid" style="width: 500px; height:400px; object-fit: cover;">
-                    </ng-template>
-                </p-carousel>
-            </div>
-            <br/>
-            <form action="/multiple-upload" method="POST" enctype="multipart/form-data">
-                <input type="file" multiple (change)="selectImages($event)">
-                <button type="submit" (click)="onSubmitVenueImages()">Upload</button>
-            </form>
-            <div class="alert alert-warning" *ngIf="errorMsgUploadPic && !isUploadVenuePicSuccessful">
-                Upload picture failed!<br />{{ errorMsgUploadPic }}
-            </div>
-        </div>
-    
-        <!-- edit resource details -->
-        <div class="form-group row">
-            <label for="title" class="col-sm-2 col-form-label">Title</label>
-            <div class="col-sm-10">
-            <input
-                type="text"
-                class="form-control"
-                name="title"
-                [(ngModel)]="resource.title"
-                required
-                minlength="3"
-                #title="ngModel"
-                (click)="isUpdateSuccessful=false; f.submitted=false"
-            />
-            </div>
-            <div class="alert-danger" *ngIf="f.submitted && title.invalid">
-                <div *ngIf="title.errors.required">Title is required</div>
-                <div *ngIf="title.errors.minlength">
-                    Title must be at least 3 characters
-                </div>
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="desc" class="col-sm-2 col-form-label">Description</label>
-            <div class="col-sm-10">
-            <input
-                type="text"
-                class="form-control"
-                name="desc"
-                [(ngModel)]="resource.desc"
-                required
-                minlength="3"
-                #desc="ngModel"
-            />
-            </div>
-            <div class="alert-danger" *ngIf="f.submitted && desc.invalid">
-                <div *ngIf="desc.errors.required">Description is required</div>
-                <div *ngIf="desc.errors.minlength">
-                    Description must be at least 3 characters
-                </div>
-            </div>
-        </div>
-        <div class="form-group row" *ngIf="type == 'venue'">
-            <label for="address" class="col-sm-2 col-form-label">Address</label>
-            <div class="col-sm-10">
-            <input
-                type="text"
-                class="form-control"
-                name="address"
-                [(ngModel)]="resource.address"
-                required
-                minlength="3"
-                #address="ngModel"
-            />
-            </div>
-            <div class="alert-danger" *ngIf="f.submitted && address.invalid">
-                <div *ngIf="address.errors.required">Address is required</div>
-                <div *ngIf="address.errors.minlength">
-                    Address must be at least 3 characters
-                </div>
-            </div>
-        </div>
-        <div class="form-group row" *ngIf="type != 'knowledge'">
-            <label for="country" class="col-sm-2 col-form-label">Country</label>
-            <div class="col-sm-10">
-                <select class="form-control" name="country" [(ngModel)]="resource.country" required #country="ngModel" (click)="isUpdateSuccessful=false; f.submitted=false">
-                    <option *ngFor="let c of countries" value={{c}}>{{c}}</option>
-                </select>
-            </div>
-            <div class="alert-danger" *ngIf="f.submitted && country.invalid">
-                <div *ngIf="country.errors.required">Country is required</div>
-            </div>
-        </div>
-
-        <div class="form-group" *ngIf="type == 'knowledge'">
-            <div *ngIf="resource.attachment.length > 0">
-                Attachment: {{resource.attachment}}
-                <br/>
-                <!-- <a href="https://localhost:8080{{resource.attachment}}" download target="_blank" rel="noopener noreferrer">Download current attachment</a> -->
-                <button type="button" (click)="downloadAttachment(resource.attachment)">Download current attachment</button> 
-            
-            </div>
-            <br/>
-            <form>
-                <input type="file" name="attachment" (change)="selectAttachment($event)" />
-                <button type="submit" (click)="onSubmitAttachment()">Upload</button>
-            </form>
-            <div class="alert alert-warning" *ngIf="errorMsgUploadAttachment && !isUploadAttachmentSuccessful">
-                Upload attachment failed!<br />{{ errorMsgUploadAttachment }}
-            </div>
-        </div>
-
-        <div class="form-group">
-        <button class="btn btn-primary btn-block">Update Resource</button>
-        </div>
-        
-        <div class="alert alert-warning" *ngIf="f.submitted && !isUpdateSuccessful">
-            Update failed!<br />{{ errorMessage }}
-        </div>
-
-        <div class="alert alert-success" *ngIf="isUpdateSuccessful">
-            Your update is successful!
-        </div>
-    </form>
+<div *ngIf="!stillOwner()">
+    <h3>Access denied</h3>
+    You are not an owner of this knowledge resource so you may not edit it.
 </div>
+<div *ngIf="stillOwner()">
+    <div class="row">
+        <div class="col-8">
+            <h1 class="h1">
+                Edit Resource Details
+                <a class="btn btn-primary float-right" href="/resource/resourceDetails?id={{id}}&type={{type}}">Back to Resource details</a>
+            </h1>
+        </div>
+        <br/>
+    </div>
+    <div class="row">
+        <div class="col-8">
+        
+            <form
+            name="form"
+            (ngSubmit)="f.form.valid && onSubmit()"
+            #f="ngForm"
+            novalidate
+            >
+                <!-- display and update pic for Item Resource -->
+                <div class="form-group" *ngIf="type == 'item'">
+                    <div *ngIf="resource.imgPath.length > 0">
+                        <img
+                        src="https://localhost:8080{{resource.imgPath}}"
+                        class="img-thumbnail img-fluid"
+                        style="width: 200px; height: 200px; object-fit: cover;"
+                        alt="Item Resource picture"
+                        />
+                    </div>
+                    <div *ngIf="resource.imgPath.length == 0">
+                        <img
+                        src="../../assets/img/item.png"
+                        class="rounded-circle img-fluid"
+                        style="width: 200px; height: 200px; object-fit: cover;"
+                        alt="Item Resource picture"
+                        />
+                    </div>
+                    <br/>
+                    <form>
+                        <input type="file" name="itemImage" (change)="selectItemImage($event)" />
+                        <button type="submit" (click)="onSubmitItemImage()">Upload</button>
+                    </form>
+                    <div class="alert alert-warning" *ngIf="errorMsgUploadPic && !isUploadItemPicSuccessful">
+                        Upload picture failed!<br />{{ errorMsgUploadPic }}
+                    </div>
+                </div>
+        
+                <!-- display and update pics for Venue Resource -->
+                <div class="form-group" *ngIf="type == 'venue'">
+                    <div *ngIf="resource.imgPath.length == 0">
+                        Currently no images of venue
+                    </div>
+                    <div *ngIf="resource.imgPath.length > 0">
+                        <p-carousel [value]="resource.imgPath">
+                            <ng-template let-img pTemplate="item">
+                                <img src="https://localhost:8080{{img}}" class="img-fluid" style="width: 500px; height:400px; object-fit: cover;">
+                            </ng-template>
+                        </p-carousel>
+                    </div>
+                    <br/>
+                    You may upload multiple pictures of the venue.
+                    <form action="/multiple-upload" method="POST" enctype="multipart/form-data">
+                        <input type="file" multiple (change)="selectImages($event)">
+                        <button type="submit" (click)="onSubmitVenueImages()">Upload</button>
+                    </form>
+                    <div class="alert alert-warning" *ngIf="errorMsgUploadPic && !isUploadVenuePicSuccessful">
+                        Upload picture failed!<br />{{ errorMsgUploadPic }}
+                    </div>
+                </div>
+            
+                <!-- edit resource details -->
+                <div class="form-group row">
+                    <label for="title" class="col-sm-2 col-form-label">Title</label>
+                    <div class="col-sm-10">
+                    <input
+                        type="text"
+                        class="form-control"
+                        name="title"
+                        [(ngModel)]="resource.title"
+                        required
+                        minlength="3"
+                        #title="ngModel"
+                        (click)="isUpdateSuccessful=false; f.submitted=false"
+                    />
+                    </div>
+                    <div class="alert-danger" *ngIf="f.submitted && title.invalid">
+                        <div *ngIf="title.errors.required">Title is required</div>
+                        <div *ngIf="title.errors.minlength">
+                            Title must be at least 3 characters
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="desc" class="col-sm-2 col-form-label">Description</label>
+                    <div class="col-sm-10">
+                        <textarea
+                        class="form-control"
+                        name="desc"
+                        [(ngModel)]="resource.desc"
+                        required
+                        minlength="3"
+                        #desc="ngModel"
+                        rows="3"
+                        ></textarea>
+                    </div>
+                    <div class="alert-danger" *ngIf="f.submitted && desc.invalid">
+                        <div *ngIf="desc.errors.required">Description is required</div>
+                        <div *ngIf="desc.errors.minlength">
+                            Description must be at least 3 characters
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row" *ngIf="type == 'venue'">
+                    <label for="address" class="col-sm-2 col-form-label">Address</label>
+                    <div class="col-sm-10">
+                    <input
+                        type="text"
+                        class="form-control"
+                        name="address"
+                        [(ngModel)]="resource.address"
+                        required
+                        minlength="3"
+                        #address="ngModel"
+                    />
+                    </div>
+                    <div class="alert-danger" *ngIf="f.submitted && address.invalid">
+                        <div *ngIf="address.errors.required">Address is required</div>
+                        <div *ngIf="address.errors.minlength">
+                            Address must be at least 3 characters
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row" *ngIf="type != 'knowledge'">
+                    <label for="country" class="col-sm-2 col-form-label">Country</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" name="country" [(ngModel)]="resource.country" required #country="ngModel" (click)="isUpdateSuccessful=false; f.submitted=false">
+                            <option *ngFor="let c of countries" value={{c}}>{{c}}</option>
+                        </select>
+                    </div>
+                    <div class="alert-danger" *ngIf="f.submitted && country.invalid">
+                        <div *ngIf="country.errors.required">Country is required</div>
+                    </div>
+                </div>
+        
+                <div class="form-group" *ngIf="type == 'knowledge'">
+                    <div *ngIf="resource.attachment.length > 0">
+                        Attachment: {{resource.attachment}}
+                        <br/>
+                        <!-- <a href="https://localhost:8080{{resource.attachment}}" download target="_blank" rel="noopener noreferrer">Download current attachment</a> -->
+                        <button type="button" (click)="downloadAttachment(resource.attachment)">Download current attachment</button> 
+                    
+                    </div>
+                    <br/>
+                    <form>
+                        <input type="file" name="attachment" (change)="selectAttachment($event)" />
+                        <button type="submit" (click)="onSubmitAttachment()">Upload</button>
+                    </form>
+                    <div class="alert alert-warning" *ngIf="errorMsgUploadAttachment && !isUploadAttachmentSuccessful">
+                        Upload attachment failed!<br />{{ errorMsgUploadAttachment }}
+                    </div>
+                </div>
+        
+                <div class="form-group">
+                <button class="btn btn-primary btn-block">Update Resource</button>
+                </div>
+                
+                <div class="alert alert-warning" *ngIf="f.submitted && !isUpdateSuccessful">
+                    Update failed!<br />{{ errorMessage }}
+                </div>
+        
+                <div class="alert alert-success" *ngIf="isUpdateSuccessful">
+                    Your update is successful!
+                </div>
+            </form>
+        </div>
+        <!-- Manage owners -->
+        <div class="col-4">
+            <h3>Owners</h3>
+            <div *ngFor="let owner of userOwners">
+                <div class="card">
+                    <div class="card-body row">
+                        <div class="col-3">
+                            <div *ngIf="owner.profilePic.length > 0">
+                                <img
+                                src={{owner.profilePic}}
+                                class="rounded-circle img-fluid"
+                                style="object-fit: cover;"
+                                alt="Profile picture"
+                                />
+                            </div>
+                            <div *ngIf="owner.profilePic.length == 0">
+                                <img
+                                src="../../../assets/img/profilePic_Placeholder.png"
+                                class="rounded-circle img-fluid"
+                                style="object-fit: cover;"
+                                alt="Profile picture"
+                                />
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="col-5">
+                            Name: <a href="/profile?username={{owner.username}}&userType=individual">{{owner.name}}</a>
+                            <br/>
+                            Username: {{owner.username}}
+                        </div>
+                        <div class="col-4">
+                            <button class="btn btn-danger float-right" (click)=deleteOwner(owner)>Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <form
+                name="form"
+                (ngSubmit)="f.form.valid && searchUsers()"
+                #f="ngForm"
+                novalidate
+            >
+                <div class="form-inline">
+                    <input
+                        type="text"
+                        class="form-control mr-md-2"
+                        name="search"
+                        [(ngModel)]="keyword"
+                        #search="ngModel"
+                        placeholder="Enter a username"
+                    />
+                    <button class="btn btn-primary" (click)=searchUsers()>Search</button>
+                </div>
+            </form>
+            <br/>
+            <div class="alert alert-warning" *ngIf="f.submitted && !isSearchSuccessful">
+                {{ errorMsgSearch }}
+            </div>
+            <div *ngIf=isSearchSuccessful>
+                <div *ngFor="let user of searchResults">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="card border-0 col-3" style="width:20%">
+                                    <div *ngIf="user.profilePic.length > 0">
+                                        <img
+                                        src={{user.profilePic}}
+                                        class="rounded-circle img-fluid"
+                                        style="object-fit: cover;"
+                                        alt="Profile picture"
+                                        />
+                                    </div>
+                                    <div *ngIf="user.profilePic.length == 0">
+                                        <img
+                                        src="../../assets/img/profilePic_Placeholder.png"
+                                        class="rounded-circle img-fluid"
+                                        style="object-fit: cover;"
+                                        alt="Profile picture"
+                                        />
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="card border-0 col-5" style="width:80%">
+                                        Name: {{user.name}} <br/>
+                                        Username: {{user.username}}
+                                </div>
+                                <div class="col-4">
+                                    <div *ngIf="isUserOwner(user) || isInstitutionOwner(user)">
+                                        <p class="float-right">Already a co-owner</p>
+                                    </div>
+                                    <div *ngIf="!isUserOwner(user) && !isInstitutionOwner(user)">
+                                        <button class="btn btn-primary float-right" (click)=addOwner(user)>Add</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 

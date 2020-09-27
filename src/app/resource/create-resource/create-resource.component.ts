@@ -36,8 +36,9 @@ export class CreateResourceComponent implements OnInit {
 
   onSubmit(): void {
     console.log(this.form);
-    this.form.country = this.currentCountry;
     if (this.resourceType == 'Item') {
+      // set country
+      this.form.country = this.currentCountry;
       this.resourceService.createItem(this.form).subscribe(
         response => {
           this.isSuccessful = true;
@@ -71,6 +72,8 @@ export class CreateResourceComponent implements OnInit {
         }
       );
     } else if (this.resourceType == 'Venue') {
+      // set country
+      this.form.country = this.currentCountry;
       this.resourceService.createVenue(this.form).subscribe(
         response => {
           this.isSuccessful = true;

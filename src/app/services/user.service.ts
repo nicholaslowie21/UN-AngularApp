@@ -68,4 +68,8 @@ export class UserService {
   getUserAffiliations(data): Observable<any> {
     return this.http.get(API_URL + '/affiliations?userId=' + data.id);
   }
+
+  viewUserById(data): Observable<any> {
+    return this.http.get(API_URL + '/viewUserById?userId=' + data.id);
+  }
 }
