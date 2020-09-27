@@ -35,7 +35,7 @@ export class EditResourceDetailsComponent implements OnInit {
   institutionOwners: any;
   keyword = '';
   searchResults: any;
-  isSearchSuccessful: any;
+  isSearchSuccessful = false;
   errorMsgSearch = '';
   isAddSuccessful = false;
   isDelSuccessful = false;

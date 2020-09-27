@@ -10,7 +10,6 @@
                 <a class="btn btn-primary float-right" href="/resource/resourceDetails?id={{id}}&type={{type}}">Back to Resource details</a>
             </h1>
         </div>
-        <br/>
     </div>
     <div class="row">
         <div class="col-8">
@@ -214,10 +213,11 @@
                 </div>
             </div>
             <br/>
+            <h3>Add Owners</h3>
             <form
                 name="form"
-                (ngSubmit)="f.form.valid && searchUsers()"
-                #f="ngForm"
+                (ngSubmit)="fs.form.valid && searchUsers()"
+                #fs="ngForm"
                 novalidate
             >
                 <div class="form-inline">
@@ -233,7 +233,8 @@
                 </div>
             </form>
             <br/>
-            <div class="alert alert-warning" *ngIf="f.submitted && !isSearchSuccessful">
+            
+            <div class="alert alert-warning" *ngIf="fs.submitted && !isSearchSuccessful">
                 {{ errorMsgSearch }}
             </div>
             <div *ngIf=isSearchSuccessful>
