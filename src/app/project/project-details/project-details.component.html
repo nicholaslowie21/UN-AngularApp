@@ -1,306 +1,308 @@
-<div class="container float-left " style="width: 75%">
-    <div class="row bg-secondary text-white">
-        <div class="col-3">
-            <div *ngIf="project.imgPath.length != 0">
-                <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src={{imgString}} style="margin: 25px; width: 150px; height: 150px; object-fit: cover;"
-                    alt="Profile picture">
-            </div>
-            <div *ngIf="project.imgPath.length == 0">
-                <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src="../../../assets/img/team.jpg" style="margin: 25px; width: 150px; height: 150px; object-fit: cover;"
-                    alt="Project picture">
-            </div>
-
-        </div>
-        <div class="col-6">
-            <h3 class="card-title text-left mt-md-4 mb-md-0">{{ project.title }}</h3>
-            <!--h6 class="card-title text-left mt-md-3">Description: {{project.desc}}</h6-->
-            <h6 class="card-title text-left mt-md-1">Status: {{project.status}}</h6>
-            <h6 class="card-title text-left mt-md-1">Country: {{project.country}}</h6>
-            <h6 class="card-title text-left mt-md-1">SDGs:
-                <div *ngIf="project.SDGs.length == 0" style="display:inline-block;">
-                    -
+<div class="row">
+    <div class="col-9">
+        <div class="row bg-secondary text-white">
+            <div class="col-3">
+                <div *ngIf="project.imgPath.length != 0">
+                    <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src={{imgString}} style="margin: 25px; width: 150px; height: 150px; object-fit: cover;"
+                        alt="Profile picture">
                 </div>
-                <div *ngFor="let sdg of project.SDGs" style="display:inline-block;">
-                    <button class="sdg sdg{{sdg}} mr-md-1">{{sdg}}</button>
+                <div *ngIf="project.imgPath.length == 0">
+                    <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src="../../../assets/img/team.jpg" style="margin: 25px; width: 150px; height: 150px; object-fit: cover;"
+                        alt="Project picture">
                 </div>
-            </h6>
-        </div>
 
-        <div class="col-3">
-            <div *ngIf=isCreator||isAdmin>
-                <a *ngIf=isOngoing class="btn btn-primary mt-3" href="/project/editDetails?id={{project.id}}" role="button" style="margin: 3px; width: 170px">
-                    <i class="pi pi-pencil"></i>
-                    Edit Project
-                </a>
-                <a *ngIf=!isOngoing class="btn btn-primary mt-3 disabled" aria-disabled="true" role="button" style="margin: 3px; width: 170px">
-                    <i class="pi pi-pencil"></i>
-                    Edit Project
-                </a>
-                <a *ngIf=isOngoing&&isCreator class="btn btn-light" href="/project/editAdmin?id={{project.id}}" role="button" style="margin: 3px; width: 170px">
-                    <i class="pi pi-user-edit"></i>
-                    Edit Admins
-                </a>
-                <a *ngIf=!isOngoing&&isCreator class="btn btn-light disabled" aria-disabled="true" role="button" style="margin: 3px; width: 170px">
-                    <i class="pi pi-user-edit"></i>
-                    Edit Admins
-                </a>
-                <a *ngIf=isOngoing&&isCreator class="btn btn-success text-white" (click)=completeProject(project.title) role="button" style="margin: 3px; width: 170px">
-                    <i class="pi pi-check"></i>
-                    Mark Complete
-                </a>
-                <a *ngIf=!isOngoing&&isCreator class="btn btn-success text-white disabled" aria-disabled="true" role="button" style="margin: 3px; width: 170px">
-                    <i class="pi pi-check"></i>
-                    Mark Complete
-                </a>
-                <a *ngIf=isOngoing&&isCreator class="btn btn-danger mb-3 text-white" (click)="deleteProject(project.title)" role="button"
-                    style="margin: 3px; width: 170px">
-                    <i class="pi pi-trash"></i>
-                    Delete Project
-                </a>
-                <a *ngIf=!isOngoing&&isCreator class="btn btn-danger mb-3 text-white disabled" aria-disabled="true" role="button" style="margin: 3px; width: 170px">
-                    <i class="pi pi-trash"></i>
-                    Delete Project
-                </a>
             </div>
-        </div>
-
-    </div>
-
-    <div class="row mt-1 bg-info text-white">
-        <h6 class="card-title text-left text-justify" style="margin: 20px">Description: {{project.desc}}</h6>
-    </div>
-
-    <div class="row mt-3">
-        <div class="col-4">
-            <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-9 mt-md-1">Contributors:</div>
-                        <div class="col-3">
-                            <a *ngIf=isOngoing&&isCreator href="/project/editAdmin?id={{project.id}}" role="button" style="height: 35px; width: 40px">
-                                <button pButton class="p-button-rounded" icon="pi pi-user-edit"></button>
-                            </a>
-                            <a *ngIf=!isOngoing&&isCreator aria-disabled="true" role="button" style="height: 35px; width: 40px">
-                                <button pButton disabled class="p-button-rounded" icon="pi pi-user-edit"></button>
-                            </a>
-                        </div>
-                    </div> 
-                </div>
-                <div class="card-body row">
-                    <div class="col-4">
-                        <div *ngIf="host.profilePic.length > 0">
-                            <img src={{host.profilePic}} class="rounded-circle img-fluid" style="width: 50px; height: 50px; object-fit: cover;" alt="Profile picture"
-                            />
-                        </div>
-                        <div *ngIf="host.profilePic.length == 0">
-                            <img src="../../assets/img/profilePic_Placeholder.png" class="rounded-circle img-fluid" style="width: 50px; height: 50px; object-fit: cover;"
-                                alt="Profile picture" />
-                        </div>
+            <div class="col-6">
+                <h3 class="card-title text-left mt-md-4 mb-md-0">{{ project.title }}</h3>
+                <!--h6 class="card-title text-left mt-md-3">Description: {{project.desc}}</h6-->
+                <h6 class="card-title text-left mt-md-1">Status: {{project.status}}</h6>
+                <h6 class="card-title text-left mt-md-1">Country: {{project.country}}</h6>
+                <h6 class="card-title text-left mt-md-1">SDGs:
+                    <div *ngIf="project.SDGs.length == 0" style="display:inline-block;">
+                        -
                     </div>
-                    <br/>
-                    <div class="col-8">
-                        <a href="/profile?username={{host.username}}&userType=individual">{{host.name}}</a>
-                        <br/><div class="text-secondary" style="font-size: small;">Project Creator</div>
+                    <div *ngFor="let sdg of project.SDGs" style="display:inline-block;">
+                        <button class="sdg sdg{{sdg}} mr-md-1">{{sdg}}</button>
                     </div>
+                </h6>
+            </div>
+
+            <div class="col-3">
+                <div *ngIf=isCreator||isAdmin>
+                    <a *ngIf=isOngoing class="btn btn-primary mt-3" href="/project/editDetails?id={{project.id}}" role="button" style="margin: 3px; width: 170px">
+                        <i class="pi pi-pencil"></i>
+                        Edit Project
+                    </a>
+                    <a *ngIf=!isOngoing class="btn btn-primary mt-3 disabled" aria-disabled="true" role="button" style="margin: 3px; width: 170px">
+                        <i class="pi pi-pencil"></i>
+                        Edit Project
+                    </a>
+                    <!-- <a *ngIf=isOngoing&&isCreator class="btn btn-light" href="/project/editAdmin?id={{project.id}}" role="button" style="margin: 3px; width: 170px">
+                        <i class="pi pi-user-edit"></i>
+                        Edit Admins
+                    </a>
+                    <a *ngIf=!isOngoing&&isCreator class="btn btn-light disabled" aria-disabled="true" role="button" style="margin: 3px; width: 170px">
+                        <i class="pi pi-user-edit"></i>
+                        Edit Admins
+                    </a> -->
+                    <a *ngIf=isOngoing&&isCreator class="btn btn-success text-white" (click)=completeProject(project.title) role="button" style="margin: 3px; width: 170px">
+                        <i class="pi pi-check"></i>
+                        Mark Complete
+                    </a>
+                    <a *ngIf=!isOngoing&&isCreator class="btn btn-success text-white disabled" aria-disabled="true" role="button" style="margin: 3px; width: 170px">
+                        <i class="pi pi-check"></i>
+                        Mark Complete
+                    </a>
+                    <a *ngIf=isOngoing&&isCreator class="btn btn-danger mb-3 text-white" (click)="deleteProject(project.title)" role="button"
+                        style="margin: 3px; width: 170px">
+                        <i class="pi pi-trash"></i>
+                        Delete Project
+                    </a>
+                    <a *ngIf=!isOngoing&&isCreator class="btn btn-danger mb-3 text-white disabled" aria-disabled="true" role="button" style="margin: 3px; width: 170px">
+                        <i class="pi pi-trash"></i>
+                        Delete Project
+                    </a>
                 </div>
             </div>
-            <!-- <div class="card mt-2">
-                <div class="card-header">
-                    Project Admins:
-                    
-                </div>
-            </div> -->
 
-            <div *ngIf="admins.length == 0">
+        </div>
+
+        <div class="row mt-1 bg-info text-white">
+            <h6 class="card-title text-left text-justify" style="margin: 20px">Description: {{project.desc}}</h6>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-4">
                 <div class="card">
-                    <div class="card-body row">
-                        <p style="margin-left: 10px">There are no project admins for now.</p>
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-9 mt-md-1">Contributors:</div>
+                            <div class="col-3">
+                                <a *ngIf=isOngoing&&isCreator href="/project/editAdmin?id={{project.id}}" role="button" style="height: 35px; width: 40px">
+                                    <button pButton class="p-button-rounded" icon="pi pi-user-edit"></button>
+                                </a>
+                                <a *ngIf=!isOngoing&&isCreator aria-disabled="true" role="button" style="height: 35px; width: 40px">
+                                    <button pButton disabled class="p-button-rounded" icon="pi pi-user-edit"></button>
+                                </a>
+                            </div>
+                        </div> 
                     </div>
-                </div>
-
-            </div>
-            <div *ngFor="let admin of admins">
-                <div class="card">
                     <div class="card-body row">
                         <div class="col-4">
-                            <div *ngIf="admin.profilePic.length > 0">
-                                <img src={{admin.profilePic}} class="rounded-circle img-fluid" style="width: 50px; height: 50px; object-fit: cover;" alt="Profile picture"
+                            <div *ngIf="host.profilePic.length > 0">
+                                <img src={{host.profilePic}} class="rounded-circle img-fluid" style="width: 50px; height: 50px; object-fit: cover;" alt="Profile picture"
                                 />
                             </div>
-                            <div *ngIf="admin.profilePic.length == 0">
+                            <div *ngIf="host.profilePic.length == 0">
                                 <img src="../../assets/img/profilePic_Placeholder.png" class="rounded-circle img-fluid" style="width: 50px; height: 50px; object-fit: cover;"
                                     alt="Profile picture" />
                             </div>
                         </div>
                         <br/>
                         <div class="col-8">
-                            <a href="/profile?username={{admin.username}}&userType=individual">{{admin.name}}</a>
-                            <br/><div class="text-secondary" style="font-size: small;">Project Admin</div>
+                            <a href="/profile?username={{host.username}}&userType=individual">{{host.name}}</a>
+                            <br/><div class="text-secondary" style="font-size: small;">Project Creator</div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <!-- <div class="card mt-2">
-                <div class="card-header">
-                    Project Contributors:
+                <!-- <div class="card mt-2">
+                    <div class="card-header">
+                        Project Admins:
+                        
+                    </div>
+                </div> -->
+
+                <div *ngIf="admins.length == 0">
+                    <div class="card">
+                        <div class="card-body row">
+                            <p style="margin-left: 10px">There are no project admins for now.</p>
+                        </div>
+                    </div>
+
                 </div>
-            </div> -->
-        </div>
-        <div class="col-8">
-            <div class="container-fluid">
-                <div class="card border-dark">
-                    <h5 class="card-title text-center mt-md-3">
-                        Project Feed
-                    </h5>
+                <div *ngFor="let admin of admins">
+                    <div class="card">
+                        <div class="card-body row">
+                            <div class="col-4">
+                                <div *ngIf="admin.profilePic.length > 0">
+                                    <img src={{admin.profilePic}} class="rounded-circle img-fluid" style="width: 50px; height: 50px; object-fit: cover;" alt="Profile picture"
+                                    />
+                                </div>
+                                <div *ngIf="admin.profilePic.length == 0">
+                                    <img src="../../assets/img/profilePic_Placeholder.png" class="rounded-circle img-fluid" style="width: 50px; height: 50px; object-fit: cover;"
+                                        alt="Profile picture" />
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="col-8">
+                                <a href="/profile?username={{admin.username}}&userType=individual">{{admin.name}}</a>
+                                <br/><div class="text-secondary" style="font-size: small;">Project Admin</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                <!-- <div class="card mt-2">
+                    <div class="card-header">
+                        Project Contributors:
+                    </div>
+                </div> -->
             </div>
-        </div>
-    </div>
-</div>
-
-<div class="container float-right" style="width: 25%">
-    <div class="card bg-secondary mb-md-1">
-        <div class="card-header">
-            <a href="/project/resources?id={{projectId}}" class="text-white">
-                <u>See project resources</u>
-                <i class="pi pi-arrow-circle-right ml-md-2 float-right" style="font-size: 1.5em;"></i>
-            </a>
-        </div>
-    </div>
-    <div class="card-header bg-secondary text-white">
-        <i class="pi pi-chart-bar"></i>
-        <h5 style="display: inline-block;" class="mt-md-1 mb-md-0 ml-md-2">KPIs</h5>
-        <button pButton *ngIf=isCreator&&isOngoing type="button" icon="pi pi-plus" class="p-button-rounded float-right" data-toggle="modal"
-            data-target="#kpiModal" title="Add KPI">
-        </button>
-    </div>
-
-    <div *ngIf="KPIs.length == 0" class="alert alert-info mt-md-1">
-        This project has no KPI yet.
-    </div>
-
-    <div *ngFor="let kpi of KPIs">
-        <ul class="list-group">
-            <li class="list-group-item">
-                <div class="row">
-                    <div class="card border-0" style="width:80%">
-                        <h5 class="card-title text-left mt-md-1" style="margin-left: 5%;">
-                            {{kpi.title}}
+            <div class="col-8">
+                <div class="container-fluid">
+                    <div class="card border-dark">
+                        <h5 class="card-title text-center mt-md-3">
+                            Project Feed
                         </h5>
-                        <h6 class="card-title text-left text-secondary" style="margin-left: 5%;">{{kpi.desc}} </h6>
-                        <h6 class="card-title text-left text-secondary" style="margin-left: 5%;">Completion: {{kpi.completion}}% </h6>
                     </div>
-                    <div class="card border-0" style="width:20%">
-                        <a *ngIf=isOngoing&&isCreator class="btn btn-primary text-white" role="button" style="margin: 3px" (click)=getForm(kpi.id,kpi.title,kpi.desc,kpi.completion)
-                            data-toggle="modal" data-target="#editModal">
-                            <i class="pi pi-pencil"></i>
-                        </a>
-                        <a *ngIf=isOngoing&&isCreator class="btn btn-danger text-white" role="button" style="margin: 3px" (click)=confirmDeleteKPI(kpi.id)>
-                            <i class="pi pi-trash"></i>
-                        </a>
-                    </div>
-                </div>
-
-            </li>
-        </ul>
-    </div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editModalLabel">Update KPI</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form name="form" (ngSubmit)="f.form.valid && onUpdate()" #f="ngForm" novalidate>
-                        <div class="form-group row">
-                            <label for="title" class="col-sm-3 col-form-label">Title</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" name="title" [(ngModel)]="updateForm.title" required minlength="3" #title="ngModel"
-                                />
-                            </div>
-                            <div class="alert-danger" *ngIf="f.submitted && title.invalid">
-                                <div *ngIf="title.errors.required">Title is required</div>
-                                <div *ngIf="title.errors.minlength">
-                                    Title must be at least 3 characters
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="desc" class="col-sm-3 col-form-label">Description</label>
-                            <div class="col-sm-8">
-                                <textarea class="form-control" name="desc" [(ngModel)]="updateForm.desc" required #desc="ngModel" rows="3"></textarea>
-                            </div>
-                            <div class="alert-danger" *ngIf="f.submitted && desc.invalid">
-                                <div *ngIf="desc.errors.required">Description is required</div>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="completion" class="col-sm-3 col-form-label">Completion</label>
-                            <div class="col-sm-8">
-                                <input type="number" class="form-control" name="completion" [(ngModel)]="updateForm.completion" required min="0" max="100"
-                                    #completion="ngModel" />
-                            </div>
-                            <div class="alert-danger" *ngIf="f.submitted && completion.invalid">
-                                <div *ngIf="completion.errors.required">Completion rate is required</div>
-                                <div *ngIf="completion.errors.min">
-                                    Completion rate cannot be below 0
-                                </div>
-                                <div *ngIf="completion.errors.max">
-                                    Completion rate cannot be above 100
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <button class="btn btn-primary btn-block">Update</button>
-                        </div>
-                    </form>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="kpiModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add KPI</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
-                        <div class="form-group row">
-                            <label for="title" class="col-sm-3 col-form-label">Title</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" name="title" [(ngModel)]="form.title" required minlength="3" #title="ngModel" />
-                            </div>
-                            <div class="alert-danger" *ngIf="f.submitted && title.invalid">
-                                <div *ngIf="title.errors.required">Title is required</div>
-                                <div *ngIf="title.errors.minlength">
-                                    Title must be at least 3 characters
+    <div class="col-3">
+        <div class="card bg-secondary mb-md-1">
+            <div class="card-header">
+                <a href="/project/resources?id={{projectId}}" class="text-white">
+                    <u>See project resources</u>
+                    <i class="pi pi-arrow-circle-right ml-md-2 float-right" style="font-size: 1.5em;"></i>
+                </a>
+            </div>
+        </div>
+        <div class="card-header bg-secondary text-white">
+            <i class="pi pi-chart-bar"></i>
+            <h5 style="display: inline-block;" class="mt-md-1 mb-md-0 ml-md-2">KPIs</h5>
+            <button pButton *ngIf=isCreator&&isOngoing type="button" icon="pi pi-plus" class="p-button-rounded float-right" data-toggle="modal"
+                data-target="#kpiModal" title="Add KPI">
+            </button>
+        </div>
+
+        <div *ngIf="KPIs.length == 0" class="alert alert-info mt-md-1">
+            This project has no KPI yet.
+        </div>
+
+        <div *ngFor="let kpi of KPIs">
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="card border-0" style="width:80%">
+                            <h5 class="card-title text-left mt-md-1" style="margin-left: 5%;">
+                                {{kpi.title}}
+                            </h5>
+                            <h6 class="card-title text-left text-secondary" style="margin-left: 5%;">{{kpi.desc}} </h6>
+                            <h6 class="card-title text-left text-secondary" style="margin-left: 5%;">Completion: {{kpi.completion}}% </h6>
+                        </div>
+                        <div class="card border-0" style="width:20%">
+                            <a *ngIf=isOngoing&&isCreator class="btn btn-primary text-white" role="button" style="margin: 3px" (click)=getForm(kpi.id,kpi.title,kpi.desc,kpi.completion)
+                                data-toggle="modal" data-target="#editModal">
+                                <i class="pi pi-pencil"></i>
+                            </a>
+                            <a *ngIf=isOngoing&&isCreator class="btn btn-danger text-white" role="button" style="margin: 3px" (click)=confirmDeleteKPI(kpi.id)>
+                                <i class="pi pi-trash"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editModalLabel">Update KPI</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form name="form" (ngSubmit)="f.form.valid && onUpdate()" #f="ngForm" novalidate>
+                            <div class="form-group row">
+                                <label for="title" class="col-sm-3 col-form-label">Title</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" name="title" [(ngModel)]="updateForm.title" required minlength="3" #title="ngModel"
+                                    />
+                                </div>
+                                <div class="alert-danger" *ngIf="f.submitted && title.invalid">
+                                    <div *ngIf="title.errors.required">Title is required</div>
+                                    <div *ngIf="title.errors.minlength">
+                                        Title must be at least 3 characters
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="desc" class="col-sm-3 col-form-label">Description</label>
-                            <div class="col-sm-8">
-                                <textarea class="form-control" name="desc" [(ngModel)]="form.desc" required #desc="ngModel" rows="3"></textarea>
+                            <div class="form-group row">
+                                <label for="desc" class="col-sm-3 col-form-label">Description</label>
+                                <div class="col-sm-8">
+                                    <textarea class="form-control" name="desc" [(ngModel)]="updateForm.desc" required #desc="ngModel" rows="3"></textarea>
+                                </div>
+                                <div class="alert-danger" *ngIf="f.submitted && desc.invalid">
+                                    <div *ngIf="desc.errors.required">Description is required</div>
+                                </div>
                             </div>
-                            <div class="alert-danger" *ngIf="f.submitted && desc.invalid">
-                                <div *ngIf="desc.errors.required">Description is required</div>
+                            <div class="form-group row">
+                                <label for="completion" class="col-sm-3 col-form-label">Completion</label>
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control" name="completion" [(ngModel)]="updateForm.completion" required min="0" max="100"
+                                        #completion="ngModel" />
+                                </div>
+                                <div class="alert-danger" *ngIf="f.submitted && completion.invalid">
+                                    <div *ngIf="completion.errors.required">Completion rate is required</div>
+                                    <div *ngIf="completion.errors.min">
+                                        Completion rate cannot be below 0
+                                    </div>
+                                    <div *ngIf="completion.errors.max">
+                                        Completion rate cannot be above 100
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <button class="btn btn-primary btn-block" (click)="onSubmit()">Create</button>
-                        </div>
-                    </form>
+                            <div class="form-group">
+                                <button class="btn btn-primary btn-block">Update</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="kpiModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add KPI</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+                            <div class="form-group row">
+                                <label for="title" class="col-sm-3 col-form-label">Title</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" name="title" [(ngModel)]="form.title" required minlength="3" #title="ngModel" />
+                                </div>
+                                <div class="alert-danger" *ngIf="f.submitted && title.invalid">
+                                    <div *ngIf="title.errors.required">Title is required</div>
+                                    <div *ngIf="title.errors.minlength">
+                                        Title must be at least 3 characters
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="desc" class="col-sm-3 col-form-label">Description</label>
+                                <div class="col-sm-8">
+                                    <textarea class="form-control" name="desc" [(ngModel)]="form.desc" required #desc="ngModel" rows="3"></textarea>
+                                </div>
+                                <div class="alert-danger" *ngIf="f.submitted && desc.invalid">
+                                    <div *ngIf="desc.errors.required">Description is required</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-primary btn-block" (click)="onSubmit()">Create</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
