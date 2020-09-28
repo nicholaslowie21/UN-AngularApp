@@ -33,14 +33,9 @@ export class AuthService {
     }, httpOptions);
   }
 
-  signupInstitution(institution): Observable<any> {
-    return this.http.post(AUTH_API + '/institution/signup', {
-      name: institution.name,
-      username: institution.username,
-      email: institution.email,
-      password: institution.password,
-      country: institution.country
-    }, httpOptions);
+  signupInstitution(formData): Observable<any> {
+    return this.http.post(AUTH_API + '/institution/signup', 
+      formData);
   }
 
   changePasswordUser(newPass): Observable<any> {

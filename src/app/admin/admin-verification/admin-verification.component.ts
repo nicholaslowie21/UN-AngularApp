@@ -4,6 +4,7 @@ import { InstitutionService } from '../../services/institution.service';
 import { TokenStorageService } from '../../services/token-storage.service';
 import { VerificationService } from '../../services/verification.service';
 import { AdminService } from '../../services/admin.service';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-admin-verification',
@@ -28,6 +29,8 @@ export class AdminVerificationComponent implements OnInit {
   errorMsg = '';
   isAccepted = false;
   isRejected = false;
+
+  tempStrings: any;
 
   constructor(private userService: UserService, private institutionService: InstitutionService, private tokenStorage: TokenStorageService,
     private verificationService: VerificationService, private adminService: AdminService) { }
@@ -92,6 +95,20 @@ export class AdminVerificationComponent implements OnInit {
         this.verifyInstitution = response.data.institutions;
       }
     );
+  }
+
+  downloadAttachment(filePath) {
+    console.log(filePath);
+    this.verificationService.getAttachmentFile(filePath).subscribe(
+      response => {
+        this.tempStrings = filePath.split("/");
+        saveAs(response, this.tempStrings[this.tempStrings.length-1]);
+        this.reloadPage();
+      },
+      err => {
+        alert('Something went wrong while downloading the file. Please try again!')
+      }
+    )
   }
 
   uVerify(x): void {

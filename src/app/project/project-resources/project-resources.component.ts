@@ -96,6 +96,7 @@ export class ProjectResourcesComponent implements OnInit {
   }
 
   calculateProgress(): void {
+    this.progress = 0;
     for(var i=0; i<this.resourceNeeds.length; i++) {
       this.progress += this.resourceNeeds[i].completion;
     }

@@ -30,35 +30,28 @@ export class SignupInstitutionComponent implements OnInit {
     }
   }
 
-  onSubmitFile(): void {
+  onSubmit(): void {
     if (this.file == null) {
-      this.errorMsgUpload = 'Choose a file!';
+      this.errorMessage = 'Choose a file!';
+      this.isSignUpFailed = true;
       return;
     }
 
-    const formData = new FormData();
-    // formData.append("knowledgeId", this.id);
-    // formData.append("IP", this.attachment);
-
-    // this.resourceService.uploadKnowledgeAttachment(formData).subscribe(
-    //   response => {
-    //     this.isUploadAttachmentSuccessful = true;
-    //     this.reloadPage();
-    //   },
-    //   err => {
-    //     this.errorMsgUploadAttachment = err.error.msg;
-    //     this.isUploadAttachmentSuccessful = false;
-    //   }
-    // )
-  }
-
-  onSubmit(): void {
     if(this.form.password !== this.form.confirmPassword) {
       this.errorMessage = 'Your password and confirm password do not match!'
       this.isSignUpFailed = true;
       return;
     }
-    this.authService.signupInstitution(this.form).subscribe(
+
+    const formData = new FormData();
+    formData.append("name", this.form.name);
+    formData.append("username", this.form.username);
+    formData.append("email", this.form.email);
+    formData.append("password", this.form.password);
+    formData.append("country", this.form.country);
+    formData.append("verifyDoc", this.file);
+
+    this.authService.signupInstitution(formData).subscribe(
       response => {
         console.log(response);
         this.isSuccessful = true;

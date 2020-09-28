@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 const API_URL = 'https://localhost:8080/api/verification';
+const base_url = 'https://localhost:8080';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -53,6 +54,10 @@ export class VerificationService {
 
   getRegionalInstitutionRequest(): Observable<any> {
     return this.http.get(API_URL + '/regional/institutionRequest');
+  }
+
+  getAttachmentFile(filePath): Observable<any> {
+    return this.http.get(base_url+filePath, {responseType: 'blob'});
   }
 
 }
