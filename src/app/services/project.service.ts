@@ -145,4 +145,14 @@ export class ProjectService {
   getProjectContributions(data): Observable<any> {
     return this.http.get(API_URL + '/contributions?projectId=' + data.id);
   }
+
+  removeContribution(data): Observable<any> {
+    return this.http.post(API_URL + '/removeContribution', {
+      contributionId: data.id
+    }, httpOptions);
+  }
+
+  getProjectContributors(data): Observable<any> {
+    return this.http.get(API_URL + '/contributors?projectId=' + data.id);
+  }
 }
