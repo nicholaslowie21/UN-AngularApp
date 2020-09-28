@@ -108,14 +108,13 @@ Project Code: {{project.code}}
                                 <span class="product-category">Completion: {{need.completion}}%</span>
                                 <div class="product-description">Status: {{need.status}}</div>
                             </div>
-                            <div class="">
-                                <i class="pi pi-tag product-category-icon"></i>{{need.type}}
-                                <br/>
-                                <button *ngIf="isOwnerAdmin" class="btn btn-success" (click)="markCompleteNeed(need)"><i class="pi pi-check"></i></button>
-                                <button *ngIf="isOwnerAdmin" class="btn btn-primary" data-toggle="modal" data-target="#EditModal" (click)=getForm(need)>
+                            <i class="pi pi-tag product-category-icon"></i>{{need.type}}
+                            <div *ngIf="isOwnerAdmin && project.status == 'ongoing'">
+                                <button class="btn btn-success" (click)="markCompleteNeed(need)" title="Mark as complete"><i class="pi pi-check"></i></button>
+                                <button class="btn btn-primary" data-toggle="modal" data-target="#EditModal" (click)=getForm(need) title="Edit">
                                     <i class="pi pi-pencil"></i>
                                 </button>
-                                <button *ngIf="isOwnerAdmin" class="btn btn-danger" (click)="deleteNeed(need)"><i class="pi pi-trash"></i></button>
+                                <button class="btn btn-danger" (click)="deleteNeed(need)" title="Delete"><i class="pi pi-trash"></i></button>
                                 <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
@@ -183,6 +182,11 @@ Project Code: {{project.code}}
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                            <div *ngIf="isOwnerAdmin && project.status != 'ongoing'">
+                                <button class="btn btn-success" disabled title="Mark as complete"><i class="pi pi-check"></i></button>
+                                <button class="btn btn-primary" disabled title="Edit"><i class="pi pi-pencil"></i></button>
+                                <button class="btn btn-danger" disabled title="Delete"><i class="pi pi-trash"></i></button>
                             </div>
                         </div>
                     </div>

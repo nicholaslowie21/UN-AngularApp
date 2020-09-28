@@ -1,5 +1,5 @@
-<h2>My Resources
-    <a href="/resource/createResource" class="btn btn-primary float-right">Create New Resource</a>
+<h2>{{user.name}}'s Resources
+    <a *ngIf="isOwner" href="/resource/createResource" class="btn btn-primary float-right">Create New Resource</a>
 </h2>
 
 <p-toast key="toastMsg" [baseZIndex]="100"></p-toast>
@@ -52,7 +52,7 @@
                             </div>
                             <div class="product-grid-item-bottom">
                                 <span class="product-category">{{item.status}}</span>
-                                <p-inputSwitch [ngModel]="checkStatus(item)" (onChange)="handleChangeItem($event, item)"></p-inputSwitch>
+                                <p-inputSwitch *ngIf="isOwner" [ngModel]="checkStatus(item)" (onChange)="handleChangeItem($event, item)"></p-inputSwitch>
                                 <!-- <button *ngIf="item.status == 'active'" pButton type="button" label="Deactivate" (click)="deactivateItem(item)"
                                     class="p-button-sm p-button-rounded p-button-danger float-right"></button>
 
@@ -94,12 +94,11 @@
                                 <img *ngIf="user.profilePic.length == 0" src="../../../assets/img/profilePic_Placeholder.png" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;" alt="Profile pic"/>
                                 <img *ngIf="user.profilePic.length != 0" src="{{user.profilePic}}" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;" alt="Profile pic"/>
                                 <div class="product-name"><a href="/resource/resourceDetails?id={{manpower.id}}&type=manpower">{{manpower.title}}</a></div>
-                                <!-- <div class="product-description">{{item.desc}}</div> -->
                                 <div class="product-description">{{manpower.country}}</div>
                             </div>
                             <div class="product-grid-item-bottom">
                                 <span class="product-price">{{manpower.status}}</span>
-                                <p-inputSwitch [ngModel]="checkStatus(manpower)" (onChange)="handleChangeMpw($event, manpower)"></p-inputSwitch>
+                                <p-inputSwitch *ngIf="isOwner" [ngModel]="checkStatus(manpower)" (onChange)="handleChangeMpw($event, manpower)"></p-inputSwitch>
                                 <!-- <button *ngIf="manpower.status == 'active'" pButton type="button" label="Deactivate" (click)="deactivateManpower(manpower)"
                                     class="p-button-sm p-button-rounded p-button-danger float-right"></button>
 
@@ -145,7 +144,7 @@
                             </div>
                             <div class="product-grid-item-bottom">
                                 <span class="product-price">{{venue.status}}</span>
-                                <p-inputSwitch [ngModel]="checkStatus(venue)" (onChange)="handleChangeVen($event, venue)"></p-inputSwitch>
+                                <p-inputSwitch *ngIf="isOwner" [ngModel]="checkStatus(venue)" (onChange)="handleChangeVen($event, venue)"></p-inputSwitch>
                                 <!-- <button *ngIf="venue.status == 'active'" pButton type="button" label="Deactivate" (click)="deactivateVenue(venue)"
                                     class="p-button-sm p-button-rounded p-button-danger float-right"></button>
 
@@ -189,7 +188,7 @@
                             </div>
                             <div class="product-grid-item-bottom">
                                 <span class="product-price">{{knowledge.status}}</span>
-                                <p-inputSwitch [ngModel]="checkStatus(knowledge)" (onChange)="handleChangeKno($event, knowledge)"></p-inputSwitch>
+                                <p-inputSwitch *ngIf="isOwner" [ngModel]="checkStatus(knowledge)" (onChange)="handleChangeKno($event, knowledge)"></p-inputSwitch>
                                 <!-- <button *ngIf="knowledge.status == 'active'" pButton type="button" label="Deactivate" (click)="deactivateKnowledge(knowledge)"
                                     class="p-button-sm p-button-rounded p-button-danger float-right"></button>
 

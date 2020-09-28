@@ -16,7 +16,7 @@
           <select class="form-control" name="type" [(ngModel)]="resourceType" required #type="ngModel">
             <option>Item</option>
             <option>Knowledge</option>
-            <option>Manpower</option>
+            <option *ngIf="userType == 'individual'">Manpower</option>
             <option>Venue</option>
           </select>
         </div>
@@ -104,7 +104,7 @@
     </form>
     <div class="alert alert-success" *ngIf="isSuccessful">
       {{ resourceType }} Resource successfully created!<br/>
-      You can view and edit the new {{ resourceType }} Resource <a href="/resource/myResources">here</a>
+      You can view and edit the new {{ resourceType }} Resource <a href="/resource/myResources?username={{user.username}}&type={{userType}}">here</a>
     </div>
   </div>
 </div>

@@ -22,9 +22,9 @@ import { InstitutionService } from '../services/institution.service';
 export class OwnProfileComponent implements OnInit {
 
   user: any;
+  userType: any;
   isIndividual = false;
   isVerified = false;
-  usernameFormatted = '';
   shareLink = '';
   faFacebookSquare = faFacebookSquare;
   faTwitter = faTwitter;
@@ -47,6 +47,9 @@ export class OwnProfileComponent implements OnInit {
   item: any = [];
   venue: any = [];
   indAffiliations = [];
+
+  resourceOffers = [];
+
   //projectList = Array;
 
   constructor(private authService: AuthService, private tokenStorageService: TokenStorageService, private userService: UserService,
@@ -59,6 +62,7 @@ export class OwnProfileComponent implements OnInit {
     this.iFrameLink = "http://localhost:4200/shareProfile?username=" + this.user.username;
     
     if (this.tokenStorageService.getAccountType() == "user") {
+      this.userType = 'individual';
       this.isIndividual = true;
       if(this.user.isVerified == "true") {
         this.isVerified = true;
@@ -66,6 +70,7 @@ export class OwnProfileComponent implements OnInit {
       this.shareLink += "&userType=individual";
       this.iFrameLink += "&userType=individual";
     } else {
+      this.userType = 'institution';
       if(this.user.isVerified) {
         this.isVerified = true;
       }
@@ -79,7 +84,7 @@ export class OwnProfileComponent implements OnInit {
     this.userId = this.user.id;
     console.log(JSON.stringify(this.userId));
 
-    if (this.isIndividual == true) {
+    if (this.isIndividual) {
       await this.userService.getBadges({ id: this.userId }).toPromise().then(
         response => {
           this.badges = response.data.badges;
@@ -107,18 +112,21 @@ export class OwnProfileComponent implements OnInit {
       await this.resourceService.getUserItem({ id: this.userId }).toPromise().then(
         response => {
           this.item = response.data.items;
+          this.resourceOffers = this.resourceOffers.concat(response.data.items);
         }
       );
 
       await this.resourceService.getUserManpower({ id: this.userId }).toPromise().then(
         response => {
           this.manpower = response.data.manpowers;
+          this.resourceOffers = this.resourceOffers.concat(response.data.manpowers);
         }
       );
 
       await this.resourceService.getUserVenue({ id: this.userId }).toPromise().then(
         response => {
           this.venue = response.data.venues;
+          this.resourceOffers = this.resourceOffers.concat(response.data.venues);
         }
       );
 
@@ -128,47 +136,41 @@ export class OwnProfileComponent implements OnInit {
         }
       )
 
-    } else if (this.isIndividual == false) {
-      this.institutionService.getCurrentProjects({ id: this.userId }).subscribe(
+    } else {
+      await this.institutionService.getCurrentProjects({ id: this.userId }).toPromise().then(
         response => {
-          console.log(JSON.stringify(response));
           this.currentProj = response.data.currProjects;
-          console.log(JSON.stringify(this.currentProj));
         }
       );
 
-      this.institutionService.getPastInvolvement({ id: this.userId }).subscribe(
+      await this.institutionService.getPastInvolvement({ id: this.userId }).toPromise().then(
         response => {
-          console.log(JSON.stringify(response));
           this.pastProj = response.data.pastProjects;
-          console.log(JSON.stringify(this.pastProj));
         }
       );
 
-      this.resourceService.getInstitutionKnowledge({ id: this.userId }).subscribe(
+      await this.resourceService.getInstitutionKnowledge({ id: this.userId }).toPromise().then(
         response => {
-          console.log(JSON.stringify(response));
           this.knowledge = response.data.knowledges;
-          console.log(JSON.stringify(this.knowledge));
         }
       );
 
-      this.resourceService.getInstitutionItem({ id: this.userId }).subscribe(
+      await this.resourceService.getInstitutionItem({ id: this.userId }).toPromise().then(
         response => {
-          console.log(JSON.stringify(response));
           this.item = response.data.items;
-          console.log(JSON.stringify(this.item));
+          this.resourceOffers = this.resourceOffers.concat(response.data.items);
         }
       );
 
-      this.resourceService.getInstitutionVenue({ id: this.userId }).subscribe(
+      await this.resourceService.getInstitutionVenue({ id: this.userId }).toPromise().then(
         response => {
-          console.log(JSON.stringify(response));
           this.venue = response.data.venues;
-          console.log(JSON.stringify(this.venue));
+          this.resourceOffers = this.resourceOffers.concat(response.data.venues);
         }
       );
     }
+
+    this.resourceOffers.sort(this.sortFunction);
 
     console.log("BADGES: "+this.badges);
     console.log("CURR PROJ: "+this.currentProj);
@@ -177,6 +179,14 @@ export class OwnProfileComponent implements OnInit {
     console.log("MPW: " + this.manpower);
     console.log("ITEM: " + this.item);
     console.log("VENUE: " + this.venue);
+    console.log("RES OFFERS: " + JSON.stringify(this.resourceOffers));
+  }
+
+  sortFunction(a, b) {
+    var dateA = new Date(a.updatedAt).getTime();
+    console.log("DATE A" + dateA);
+    var dateB = new Date(b.updatedAt).getTime();
+    return dateA > dateB ? -1 : 1;
   }
 
   copied(): void {

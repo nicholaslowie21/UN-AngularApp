@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { TokenStorageService } from '../../services/token-storage.service';
 import { ResourceService } from '../../services/resource.service';
 import { MessageService } from 'primeng/api';
+import { ActivatedRoute } from '@angular/router';
+import { UserService } from '../../services/user.service';
+import { InstitutionService } from '../../services/institution.service';
 
 @Component({
   selector: 'app-my-resources',
@@ -11,8 +14,14 @@ import { MessageService } from 'primeng/api';
 })
 export class MyResourcesComponent implements OnInit {
 
+  username: any;
+  type: any;
   user: any;
+
+  loggedInUser: any;
   isIndividual = false;
+  isOwner = false;
+
   items: any = [];
   knowledges: any = [];
   manpowers: any = [];
@@ -43,11 +52,32 @@ export class MyResourcesComponent implements OnInit {
   checked = false;
 
   constructor(private tokenStorageService: TokenStorageService, private resourceService: ResourceService,
-    private messageService: MessageService) { }
+    private messageService: MessageService, private route: ActivatedRoute, private userService: UserService, private institutionService: InstitutionService) { }
 
   async ngOnInit() {
-    this.user = this.tokenStorageService.getUser();
+    this.route.queryParams.subscribe(
+      params => {
+        this.username = params.username;
+        this.type = params.type;
+      }
+    );
+
+    if (this.type == 'individual') {
+      await this.userService.viewUserProfile({username: this.username}).toPromise().then(
+        res => this.user = res.data.targetUser
+      );
+    } else {
+      await this.institutionService.viewInstitutionProfile({username: this.username}).toPromise().then(
+        res => this.user = res.data.targetInstitution
+      );
+    }
+
+    this.loggedInUser = this.tokenStorageService.getUser();
     this.isIndividual = this.user.role;
+
+    if(this.user.id == this.loggedInUser.id) {
+      this.isOwner = true;
+    }
 
     this.sortOptions = [
       {label: 'Date Newest to Oldest', value: '!updatedAt'},
@@ -60,15 +90,27 @@ export class MyResourcesComponent implements OnInit {
     ];
 
     if(this.isIndividual) {
-      // this.items = await this.resourceService.getUserPrivateItem().toPromise().then(res => this.items=res.data.items);
-      await this.resourceService.getUserPrivateItem().toPromise().then(res => this.items = res.data.items);
-      await this.resourceService.getUserPrivateManpower().toPromise().then(res => this.manpowers = res.data.manpowers);
-      await this.resourceService.getUserPrivateKnowledge().toPromise().then(res => this.knowledges = res.data.knowledges);
-      await this.resourceService.getUserPrivateVenue().toPromise().then(res => this.venues = res.data.venues);
+      if(this.isOwner) {
+        await this.resourceService.getUserPrivateItem().toPromise().then(res => this.items = res.data.items);
+        await this.resourceService.getUserPrivateManpower().toPromise().then(res => this.manpowers = res.data.manpowers);
+        await this.resourceService.getUserPrivateKnowledge().toPromise().then(res => this.knowledges = res.data.knowledges);
+        await this.resourceService.getUserPrivateVenue().toPromise().then(res => this.venues = res.data.venues);
+      } else {
+        await this.resourceService.getUserItem({id: this.user.id}).toPromise().then(res => this.items = res.data.items);
+        await this.resourceService.getUserManpower({id: this.user.id}).toPromise().then(res => this.manpowers = res.data.manpowers);
+        await this.resourceService.getUserKnowledge({id: this.user.id}).toPromise().then(res => this.knowledges = res.data.knowledges);
+        await this.resourceService.getUserVenue({id: this.user.id}).toPromise().then(res => this.venues = res.data.venues);
+      }
     } else {
-      await this.resourceService.getInstitutionPrivateItem().toPromise().then(res => this.items = res.data.items);
-      await this.resourceService.getInstitutionPrivateKnowledge().toPromise().then(res => this.knowledges = res.data.knowledges);
-      await this.resourceService.getInstitutionPrivateVenue().toPromise().then(res => this.venues = res.data.venues);
+      if(this.isOwner) {
+        await this.resourceService.getInstitutionPrivateItem().toPromise().then(res => this.items = res.data.items);
+        await this.resourceService.getInstitutionPrivateKnowledge().toPromise().then(res => this.knowledges = res.data.knowledges);
+        await this.resourceService.getInstitutionPrivateVenue().toPromise().then(res => this.venues = res.data.venues);
+      } else {
+        await this.resourceService.getInstitutionItem({id: this.user.id}).toPromise().then(res => this.items = res.data.items);
+      await this.resourceService.getInstitutionKnowledge({id: this.user.id}).toPromise().then(res => this.knowledges = res.data.knowledges);
+      await this.resourceService.getInstitutionVenue({id: this.user.id}).toPromise().then(res => this.venues = res.data.venues);
+      }
     }
     console.log(this.items);
     console.log(this.manpowers);

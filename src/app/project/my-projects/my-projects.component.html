@@ -40,7 +40,7 @@
                             </div>
                             <div class="product-list-detail">
                                 <div class="product-name">{{product.title}}</div>
-                                <div class="product-description">{{product.desc}}</div>
+                                <div class="product-description p-text-nowrap p-text-truncate" style="width: 50rem">{{product.desc}}</div>
                             </div>
                             <div class="product-list-action">
                                 <a class="btn btn-primary" href="/project/projectDetails?id={{product.id}}" target="_blank" role="button">View Project</a>
@@ -67,11 +67,16 @@
                 <ng-template let-product pTemplate="listItem">
                     <div class="p-col-12">
                         <div class="product-list-item">
-                            <img src="../../assets/img/profilePic_Placeholder.png" style="margin:15px; width: 50px; height: 50px; object-fit: cover;"
-                                [alt]="product.name" />
+                            <div *ngIf="product.imgPath.length != 0">
+                                <img src="https://localhost:8080{{product.imgPath}}" style="margin: 15px; width: 50px; height: 50px; object-fit: cover;"
+                                    alt="Profile picture">
+                            </div>
+                            <div *ngIf="product.imgPath.length == 0">
+                                <img src="../../../assets/img/team.jpg" style="margin: 15px; width: 50px; height: 50px; object-fit: cover;" alt="Project picture">
+                            </div>
                             <div class="product-list-detail">
                                 <div class="product-name">{{product.title}}</div>
-                                <div class="product-description">{{product.desc}}</div>
+                                <div class="product-description p-text-nowrap p-text-truncate" style="width: 50rem">{{product.desc}}</div>
                             </div>
                             <div class="product-list-action">
                                 <a class="btn btn-primary" href="/project/projectDetails?id={{product.id}}" target="_blank" role="button">View Project</a>

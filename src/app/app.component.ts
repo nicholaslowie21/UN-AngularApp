@@ -11,6 +11,7 @@ export class AppComponent implements OnInit {
   private role: string;
   isLoggedIn = false;
   username: string;
+  userType: any;
   showAdmin = false;
   showNavBar = true;
 
@@ -22,6 +23,11 @@ export class AppComponent implements OnInit {
 
     if (this.isLoggedIn) {
       const user = this.tokenStorageService.getUser();
+      if(this.tokenStorageService.getAccountType() == 'user') {
+        this.userType = 'individual';
+      } else {
+        this.userType = 'institution';
+      }
       this.role = user.role;
       console.log(this.role);
       if(this.role == 'admin') {

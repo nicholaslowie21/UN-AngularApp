@@ -11,6 +11,7 @@ export class CreateResourceComponent implements OnInit {
 
   form: any = {};
   user: any;
+  userType: any;
   isSuccessful = false;
   createFailed = false;
   errorMessage = '';
@@ -24,6 +25,11 @@ export class CreateResourceComponent implements OnInit {
   ngOnInit(): void {
     if(this.tokenStorage.getToken()) {
       this.user = this.tokenStorage.getUser();
+      if(this.tokenStorage.getAccountType() == 'user') {
+        this.userType = 'individual';
+      } else {
+        this.userType = 'institution';
+      }
     }
     // by default, set the country option of the resource to that of the user
     this.currentCountry = this.user.country;
