@@ -6,6 +6,7 @@ import { ResourceService } from '../../services/resource.service';
 import { UserService } from '../../services/user.service';
 
 import { saveAs } from 'file-saver';
+import { ThrowStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-edit-resource-details',
@@ -22,9 +23,14 @@ export class EditResourceDetailsComponent implements OnInit {
 
   itemImage: any;
   isUploadItemPicSuccessful = false;
-  venueImages: FileList;
+  toBeAdded: FileList;
   isUploadVenuePicSuccessful = false;
   errorMsgUploadPic = '';
+  // array of 10 booleans for max 10 pics
+  toBeDeleted: boolean[] = [false, false, false, false, false, false, false, false, false, false];
+  isDeleteVenuePicSuccessful;
+  errorMsgDeletePic = '';
+
   attachment: any;
   isUploadAttachmentSuccessful = false;
   errorMsgUploadAttachment = '';
@@ -109,12 +115,42 @@ export class EditResourceDetailsComponent implements OnInit {
     )
   }
 
+  updateCheckedImages(x, event) {
+    this.toBeDeleted[x] = event.target.checked;
+    console.log(x);
+  }
+
+  deleteVenueImages() {
+    var indexToDelete = [];
+    for (let i = 0; i < this.toBeDeleted.length; i++) {
+      if (this.toBeDeleted[i]) {
+        indexToDelete.push(i);
+      }
+    }
+    // if no pictures selected, alert user
+    if (indexToDelete.length == 0) {
+      this.errorMsgDeletePic = "No picture selected!";
+      this.isDeleteVenuePicSuccessful = false;
+    } else {
+      this.resourceService.deleteVenuePicture({venueId: this.resource.id, indexes: indexToDelete}).subscribe(
+        response => {
+          this.isDeleteVenuePicSuccessful = true;
+          this.reloadPage();
+        },
+        err => {
+          this.errorMsgDeletePic = err.error.msg;
+          this.isDeleteVenuePicSuccessful = false;
+        }
+      )
+    }
+  }
+
   selectImages(event): void {
-    this.venueImages = event.target.files;
+    this.toBeAdded = event.target.files;
   }
 
   onSubmitVenueImages(): void {
-    if (this.venueImages.length == 0) {
+    if (this.toBeAdded.length == 0) {
       this.errorMsgUploadPic = 'Choose a file!';
       this.isUploadVenuePicSuccessful = false;
       return;
@@ -122,8 +158,8 @@ export class EditResourceDetailsComponent implements OnInit {
 
     const formData = new FormData();
     formData.append("venueId", this.id);
-    for (let i = 0; i < this.venueImages.length; i++) {
-      formData.append("venuePics", this.venueImages[i]);
+    for (let i = 0; i < this.toBeAdded.length; i++) {
+      formData.append("venuePics", this.toBeAdded[i]);
     }
 
     this.resourceService.uploadVenuePicture(formData).subscribe(
@@ -231,19 +267,27 @@ export class EditResourceDetailsComponent implements OnInit {
     }
   }
 
-  // checks if current user is still an owner of this knowledge resource
+  // checks if current user is still an owner of this resource
   stillOwner(): boolean {
-    for(var i = 0; i < this.userOwners.length; i++) {
-      if (this.userOwners[i].username == this.tokenStorageService.getUser().username) {
+    if (this.type == 'knowledge') {
+      for(var i = 0; i < this.userOwners.length; i++) {
+        if (this.userOwners[i].username == this.tokenStorageService.getUser().username) {
+          return true;
+        }
+      }
+      for(var i = 0; i < this.institutionOwners.length; i++) {
+        if (this.institutionOwners[i].username == this.tokenStorageService.getUser().username) {
+          return true;
+        }
+      }
+      return false;
+    } else { // item, resource, manpower
+      if (this.resource.owner == this.tokenStorageService.getUser().id) {
         return true;
+      } else {
+        return false;
       }
     }
-    for(var i = 0; i < this.institutionOwners.length; i++) {
-      if (this.institutionOwners[i].username == this.tokenStorageService.getUser().username) {
-        return true;
-      }
-    }
-    return false;
   }
 
   isUserOwner(user): boolean {

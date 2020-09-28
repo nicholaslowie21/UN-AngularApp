@@ -90,6 +90,11 @@ export class ResourceService {
       formData);
   }
 
+  deleteVenuePicture(formData): Observable<any> {
+    return this.http.post(API_URL + '/deleteVenuePicture', 
+      formData);
+  }
+
   createManpower(data): Observable<any> {
     return this.http.post(API_URL + '/createManpower', {
       title: data.title,
