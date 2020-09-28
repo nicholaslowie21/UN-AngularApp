@@ -49,7 +49,7 @@ Project Code: {{project.code}}
                         </div>
                     </div>
                     <div class="form-group row" *ngIf="form.resourceType == 'money'">
-                        <label for="total" class="col-sm-3 col-form-label">Total Sum</label>
+                        <label for="total" class="col-sm-3 col-form-label">Target Sum</label>
                         <div class="col-sm-8">
                             <div class="input-group">
                                 <div class="input-group-prepend">
@@ -59,7 +59,7 @@ Project Code: {{project.code}}
                             </div>
                         </div>
                         <div class="alert-danger" *ngIf="f.submitted && total.invalid">
-                            <div *ngIf="total.errors.required">Total sum is required</div>
+                            <div *ngIf="total.errors.required">Target sum is required</div>
                         </div>
                     </div>
                     <div class="form-group">
@@ -104,7 +104,7 @@ Project Code: {{project.code}}
                                 <div class="product-description">{{need.desc}}</div>
                                 <div class="product-description" *ngIf="need.type == 'money'">Pending Sum: ${{need.pendingSum}}</div>
                                 <div class="product-description" *ngIf="need.type == 'money'">Received Sum: ${{need.receivedSum}}</div>
-                                <div class="product-description" *ngIf="need.type == 'money'">Total Sum: ${{need.total}}</div>
+                                <div class="product-description" *ngIf="need.type == 'money'">Target Sum: ${{need.total}}</div>
                                 <span class="product-category">Completion: {{need.completion}}%</span>
                                 <div class="product-description">Status: {{need.status}}</div>
                             </div>
@@ -144,7 +144,7 @@ Project Code: {{project.code}}
                                                         </div>
                                                     </div>
                                                     <div class="form-group row" *ngIf="updateForm.type == 'money'">
-                                                        <label for="total" class="col-sm-3 col-form-label">Total Sum</label>
+                                                        <label for="total" class="col-sm-3 col-form-label">Target Sum</label>
                                                         <div class="col-sm-8">
                                                             <div class="input-group">
                                                                 <div class="input-group-prepend">
@@ -154,7 +154,7 @@ Project Code: {{project.code}}
                                                             </div>
                                                         </div>
                                                         <div class="alert-danger" *ngIf="f.submitted && total.invalid">
-                                                            <div *ngIf="total.errors.required">Total sum is required</div>
+                                                            <div *ngIf="total.errors.required">Target sum is required</div>
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
