@@ -1,7 +1,7 @@
 <a href="/project/projectDetails?id={{projectId}}"><u><< Back to project</u></a>
 
 <h2 class="mt-md-2">Project Resources
-    <button class="btn btn-primary float-right" data-toggle="modal" data-target="#CreateModal">
+    <button *ngIf="isOwnerAdmin" class="btn btn-primary float-right" data-toggle="modal" data-target="#CreateModal">
         Create Resource Need
     </button>
 </h2>
@@ -110,8 +110,8 @@ Project Code: {{project.code}}
                             </div>
                             <div class="product-list-action">
                                 <i class="pi pi-tag product-category-icon"></i>{{need.type}}
-                                <button class="btn btn-danger" (click)="deleteNeed(need)">Delete</button>
-                                <button class="btn btn-primary" data-toggle="modal" data-target="#EditModal" (click)=getForm(need)>
+                                <button *ngIf="isOwnerAdmin" class="btn btn-danger" (click)="deleteNeed(need)">Delete</button>
+                                <button *ngIf="isOwnerAdmin" class="btn btn-primary" data-toggle="modal" data-target="#EditModal" (click)=getForm(need)>
                                     Edit
                                 </button>
                                 <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
@@ -219,7 +219,7 @@ Project Code: {{project.code}}
                             </div>
                             <div class="product-list-action">
                                 <i class="pi pi-tag product-category-icon"></i>{{cb.resType}}
-                                <button class="btn btn-danger" (click)="deleteNeed(need)">Delete</button>
+                                <button *ngIf="isOwnerAdmin" class="btn btn-danger">Delete</button>
                             </div>
                         </div>
                     </div>

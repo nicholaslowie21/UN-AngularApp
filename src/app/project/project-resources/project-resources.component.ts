@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProjectService } from '../../services/project.service';
+import { TokenStorageService } from '../../services/token-storage.service';
 
 @Component({
   selector: 'app-project-resources',
@@ -11,6 +12,10 @@ export class ProjectResourcesComponent implements OnInit {
 
   projectId: any;
   project: any;
+  
+  isOwnerAdmin = false;
+  user: any;
+
   resourceNeeds = [];
   contributions = [];
 
@@ -28,7 +33,7 @@ export class ProjectResourcesComponent implements OnInit {
   form: any = {};
   updateForm: any = {};
 
-  constructor(private route: ActivatedRoute, private projectService: ProjectService) { }
+  constructor(private route: ActivatedRoute, private projectService: ProjectService, private tokenStorageService: TokenStorageService) { }
 
   async ngOnInit() {
     this.route.queryParams
@@ -46,9 +51,22 @@ export class ProjectResourcesComponent implements OnInit {
       {label: 'Completed', value:'completed'}
     ];
 
+    this.user = this.tokenStorageService.getUser();
+
     await this.projectService.viewProject({id: this.projectId}).toPromise().then(
       res => this.project = res.data.targetProject
     )
+
+    if(this.project.host == this.user.id) {
+      this.isOwnerAdmin = true;
+    } else {
+      for(var i=0; i<this.project.admins.length; i++) {
+        if(this.project.admins[i] == this.user.id) {
+          this.isOwnerAdmin = true;
+          break;
+        }
+      }
+    }
     
     await this.projectService.getProjectResourceNeeds({id: this.projectId}).toPromise().then(
       res => this.resourceNeeds = res.data.resourceneeds
