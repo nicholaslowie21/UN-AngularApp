@@ -145,6 +145,25 @@ export class ProjectResourcesComponent implements OnInit {
     }
   }
 
+  markCompleteNeed(need): void {
+    const formComplete = {
+      id: need.id,
+      title: need.title,
+      desc: need.desc,
+      total: need.total,
+      completion: 100
+    }
+    this.projectService.editResourceNeed(formComplete).subscribe(
+      response => {
+        alert("Resource need updated!");
+        window.location.reload();
+      },
+      err => {
+        alert("Error: " + err.error.msg);
+      }
+    )
+  }
+
   editResourceNeed(): void {
     const formEdit = {
       id: this.updateForm.id,
