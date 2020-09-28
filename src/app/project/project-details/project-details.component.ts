@@ -37,6 +37,8 @@ export class ProjectDetailsComponent implements OnInit {
   imgString: any;
 
   admins: any;
+  host: any;
+  contributions: any;
 
   constructor(private route: ActivatedRoute, private projectService: ProjectService, private userService: UserService,
     private tokenStorageService: TokenStorageService) { }
@@ -119,6 +121,21 @@ export class ProjectDetailsComponent implements OnInit {
       }
     );
     console.log(this.admins);
+
+    await this.projectService.getProjectHost({ id: this.projectId }).toPromise().then(
+      response => {
+        console.log(JSON.stringify(response));
+        this.host = response.data.host;
+      }
+    );
+
+    await this.projectService.getProjectContributions({ id: this.projectId}).toPromise().then(
+      response => {
+        console.log(JSON.stringify(response));
+        this.contributions = response.data.contributions;
+      }
+    );
+    console.log(this.contributions.length);
 
   }
 
