@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ProjectService } from '../../services/project.service';
 import { TokenStorageService } from '../../services/token-storage.service';
 import { MessageService } from 'primeng/api';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
 @Component({
   selector: 'app-project-resources',
@@ -89,7 +90,7 @@ export class ProjectResourcesComponent implements OnInit {
       res => this.contributions = res.data.contributions
     )
     console.log(this.resourceNeeds);
-    console.log(this.contributions);
+    console.log(JSON.stringify(this.contributions));
   }
 
   onSortChangeNeeds(event) {
@@ -334,8 +335,21 @@ export class ProjectResourcesComponent implements OnInit {
     }
   }
 
-  deleteObtained(need): void {
-
+  deleteObtained(cb): void {
+    let r = confirm("Are you sure you want to delete this obtained resource?");
+    if (r == true) {
+      this.projectService.removeContribution({id: cb.contributionId}).subscribe(
+        response => {
+          this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Resource obtained deleted!'});
+          this.ngOnInit();
+        },
+        err => {
+          this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+        }
+      )
+    } else {
+      return;
+    }
   }
 
 }
