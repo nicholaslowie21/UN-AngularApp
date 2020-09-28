@@ -3,7 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import { ProjectService } from '../../services/project.service';
 import { TokenStorageService } from '../../services/token-storage.service';
 import { MessageService } from 'primeng/api';
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
 @Component({
   selector: 'app-project-resources',
@@ -21,6 +20,7 @@ export class ProjectResourcesComponent implements OnInit {
 
   resourceNeeds = [];
   contributions = [];
+  progress = 0;
 
   sortOrderNeeds: number;
   sortOrderCb: number;
@@ -89,8 +89,18 @@ export class ProjectResourcesComponent implements OnInit {
     await this.projectService.getProjectContributions({id: this.projectId}).toPromise().then(
       res => this.contributions = res.data.contributions
     )
+
+    this.calculateProgress();
     console.log(this.resourceNeeds);
     console.log(JSON.stringify(this.contributions));
+  }
+
+  calculateProgress(): void {
+    for(var i=0; i<this.resourceNeeds.length; i++) {
+      this.progress += this.resourceNeeds[i].completion;
+    }
+    this.progress = this.progress/(this.resourceNeeds.length*100)*100;
+    this.progress = parseFloat(this.progress.toFixed(2));
   }
 
   onSortChangeNeeds(event) {
@@ -319,7 +329,7 @@ export class ProjectResourcesComponent implements OnInit {
   }
 
   deleteNeed(need): void {
-    let r = confirm("Are you sure you want to delete this resource need?");
+    let r = confirm("Are you sure you want to delete this resource need? Resources obtained for this resource need will be automatically deleted as well.");
     if (r == true) {
       this.projectService.deleteResourceNeed({id: need.id}).subscribe(
         response => {

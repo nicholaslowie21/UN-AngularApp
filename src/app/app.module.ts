@@ -46,6 +46,7 @@ import { MyResourcesComponent } from './resource/my-resources/my-resources.compo
 import { ResourceDetailsComponent } from './resource/resource-details/resource-details.component';
 import { CreateResourceComponent } from './resource/create-resource/create-resource.component';
 import { EditResourceDetailsComponent } from './resource/edit-resource-details/edit-resource-details.component';
+import { ProjectResourcesComponent } from './project/project-resources/project-resources.component';
 
 import { DataViewModule } from 'primeng/dataview';
 import { ButtonModule } from 'primeng/button';
@@ -55,7 +56,7 @@ import { RatingModule } from 'primeng/rating';
 import { ToastModule } from 'primeng/toast';
 import {CarouselModule} from 'primeng/carousel';
 import {InputSwitchModule} from 'primeng/inputswitch';
-import { ProjectResourcesComponent } from './project/project-resources/project-resources.component';
+import {ProgressBarModule} from 'primeng/progressbar';
 
 @NgModule({
   declarations: [
@@ -109,7 +110,8 @@ import { ProjectResourcesComponent } from './project/project-resources/project-r
     RatingModule,
     ToastModule,
     CarouselModule,
-    InputSwitchModule
+    InputSwitchModule,
+    ProgressBarModule
   ],
   providers: [authInterceptorProviders, AuthGuardService],
   bootstrap: [AppComponent]

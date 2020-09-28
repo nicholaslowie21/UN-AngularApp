@@ -6,6 +6,9 @@
     </button>
 </h2>
 {{project.title}} (code: {{project.code}})
+<br/>
+Progress:
+<p-progressBar [value]="progress"></p-progressBar>
 
 <p-toast key="toastMsg" [baseZIndex]="100"></p-toast>
 
@@ -105,8 +108,10 @@
                             <div class="col-9">
                                 <div class="product-name">{{need.title}}</div>
                                 <div>{{need.desc}}</div>
-                                <div *ngIf="need.type == 'money'">Pending Sum: ${{need.pendingSum}}</div>
-                                <div *ngIf="need.type == 'money'">Received Sum: ${{need.receivedSum}}</div>
+                                <div *ngIf="need.type == 'money'">Pending Sum: ${{need.pendingSum}},
+                                    <span *ngIf="need.type == 'money'">Received Sum: ${{need.receivedSum}}</span>
+                                </div>
+                                
                                 <div *ngIf="need.type == 'money'">Target Sum: ${{need.total}}</div>
                                 <span class="product-category">Completion: {{need.completion}}%</span>
                             </div>
