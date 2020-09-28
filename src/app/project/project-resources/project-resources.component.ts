@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProjectService } from '../../services/project.service';
 import { TokenStorageService } from '../../services/token-storage.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-project-resources',
   templateUrl: './project-resources.component.html',
-  styleUrls: ['./project-resources.component.css']
+  styleUrls: ['./project-resources.component.css'],
+  providers: [MessageService]
 })
 export class ProjectResourcesComponent implements OnInit {
 
@@ -36,7 +38,8 @@ export class ProjectResourcesComponent implements OnInit {
   form: any = {};
   updateForm: any = {};
 
-  constructor(private route: ActivatedRoute, private projectService: ProjectService, private tokenStorageService: TokenStorageService) { }
+  constructor(private route: ActivatedRoute, private projectService: ProjectService, 
+    private tokenStorageService: TokenStorageService, private messageService: MessageService) { }
 
   async ngOnInit() {
     this.route.queryParams
@@ -255,11 +258,11 @@ export class ProjectResourcesComponent implements OnInit {
 
     this.projectService.createResourceNeed(formCreate).subscribe(
       response => {
-        alert("Resource Need Created!");
+        this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Resource need created!'});
         window.location.reload();
       }, 
       err => {
-        alert("Error: " + err.error.msg);
+        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
       }
     );
   }
@@ -285,11 +288,12 @@ export class ProjectResourcesComponent implements OnInit {
     }
     this.projectService.editResourceNeed(formComplete).subscribe(
       response => {
-        alert("Resource need updated!");
-        window.location.reload();
+        this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Resource need marked as completed!'});
+        this.ngOnInit();
+        // window.location.reload();
       },
       err => {
-        alert("Error: " + err.error.msg);
+        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
       }
     )
   }
@@ -304,11 +308,11 @@ export class ProjectResourcesComponent implements OnInit {
     }
     this.projectService.editResourceNeed(formEdit).subscribe(
       response => {
-        alert("Resource need updated!");
+        this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Resource need updated!'});
         window.location.reload();
       },
       err => {
-        alert("Error: " + err.error.msg);
+        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
       }
     )
   }
@@ -318,11 +322,11 @@ export class ProjectResourcesComponent implements OnInit {
     if (r == true) {
       this.projectService.deleteResourceNeed({id: need.id}).subscribe(
         response => {
-          alert("Resource need deleted!");
-          window.location.reload();
+          this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Resource need deleted!'});
+          this.ngOnInit();
         },
         err => {
-          alert("Error: " + err.error.msg);
+          this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
         }
       )
     } else {
