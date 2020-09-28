@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../services/user.service';
+import { InstitutionService } from '../../services/institution.service';
 import { TokenStorageService } from '../../services/token-storage.service';
 import { ProjectService } from '../../services/project.service';
 import { faBreadSlice } from '@fortawesome/free-solid-svg-icons';
-
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-my-projects',
@@ -12,7 +13,12 @@ import { faBreadSlice } from '@fortawesome/free-solid-svg-icons';
 })
 export class MyProjectsComponent implements OnInit {
 
+  username: any;
+  type: any;
   user: any;
+  isOwner = false;
+
+  loggedInUser: any;
   isVerified = false;
   userId: any;
   currProj: any;
@@ -25,36 +31,65 @@ export class MyProjectsComponent implements OnInit {
 
   filterOptions: any = [];
 
-  constructor(private tokenStorageService: TokenStorageService, private userService: UserService, private projectService: ProjectService) { }
+  constructor(private tokenStorageService: TokenStorageService, private userService: UserService, 
+    private projectService: ProjectService, private route: ActivatedRoute, private institutionService: InstitutionService) { }
 
-  ngOnInit(): void {
-    this.user = this.tokenStorageService.getUser();
+  async ngOnInit() {
+    this.route.queryParams.subscribe(
+      params => {
+        this.username = params.username;
+        this.type = params.type;
+      }
+    );
+
+    if (this.type == 'individual') {
+      await this.userService.viewUserProfile({username: this.username}).toPromise().then(
+        res => this.user = res.data.targetUser
+      );
+    } else {
+      await this.institutionService.viewInstitutionProfile({username: this.username}).toPromise().then(
+        res => this.user = res.data.targetInstitution
+      );
+    }
+
     this.userId = this.user.id;
-    if (this.user.isVerified == "true") {
+    this.loggedInUser = this.tokenStorageService.getUser();
+    
+    if(this.user.id == this.loggedInUser.id) {
+      this.isOwner = true;
+    }
+
+    if (this.loggedInUser.isVerified == "true" || this.loggedInUser.isVerified) {
       this.isVerified = true;
     }
+
     this.filterOptions = [
       { label: 'All', value: 'all' },
       { label: 'Creator', value: 'creator' },
       { label: 'Admin', value: 'admin' },
       { label: 'Contributor', value: 'contributor' },
     ];
-    this.userService.getCurrentProjects({ id: this.userId }).subscribe(
-      response => {
-        console.log(JSON.stringify(response));
-        this.currProj = response.data.currProjects;
-        console.log(JSON.stringify(this.currProj));
-      }
-    );
 
-    this.userService.getPastProjects({ id: this.userId }).subscribe(
-      response => {
-        console.log(JSON.stringify(response));
-        this.pastProj = response.data.pastProjects;
-        console.log(JSON.stringify(this.pastProj));
-      }
-    );
-
+    if(this.type == 'individual') {
+      this.userService.getCurrentProjects({ id: this.userId }).subscribe(
+        response => {
+          this.currProj = response.data.currProjects;
+        }
+      );
+  
+      this.userService.getPastProjects({ id: this.userId }).subscribe(
+        response => {
+          this.pastProj = response.data.pastProjects;
+        }
+      );
+    } else {
+      await this.institutionService.getCurrentProjects({id: this.userId}).toPromise().then(
+        res => this.currProj = res.data.currProjects
+      );
+      await this.institutionService.getPastInvolvement({id: this.userId}).toPromise().then(
+        res => this.pastProj = res.data.pastProjects
+      );
+    }
   }
 
   async filterRoleCurrentProj(event) {
@@ -69,11 +104,8 @@ export class MyProjectsComponent implements OnInit {
       }
     } else if (value == 'admin') {
       for (var i = 0; i < this.currProj.length; i++) {
-        console.log("check admin: " + this.currProj[i].admins);
         for (var j = 0; j < this.currProj[i].admins.length; j++) {
-          console.log("***inner for loop")
           if (this.currProj[i].admins[j] == this.user.id) {
-            console.log("isAdmin HERE")
             arr.push(this.currProj[i]);
             break;
           }
@@ -112,11 +144,8 @@ export class MyProjectsComponent implements OnInit {
       }
     } else if (value == 'admin') {
       for (var i = 0; i < this.pastProj.length; i++) {
-        console.log("check admin: " + this.pastProj[i].admins);
         for (var j = 0; j < this.pastProj[i].admins.length; j++) {
-          console.log("***inner for loop")
           if (this.pastProj[i].admins[j] == this.user.id) {
-            console.log("isAdmin HERE")
             arr.push(this.pastProj[i]);
             break;
           }

@@ -1,7 +1,7 @@
-<h2>My Projects
-    <a *ngIf=isVerified class="btn btn-primary float-right" href="/project/create" role="button">Create a New Project</a>
+<h2>{{user.name}}'s Projects
+    <a *ngIf="isVerified && isOwner" class="btn btn-primary float-right" href="/project/create" role="button">Create a New Project</a>
 </h2>
-<div *ngIf=!isVerified class="alert alert-info " role="alert">
+<div *ngIf="!isVerified && isOwner" class="alert alert-info " role="alert">
     Your account needs to be verified to create a project. <br/>
     Go to <a href="/settings">Settings</a> > Verification to request for verification now!
 </div>
