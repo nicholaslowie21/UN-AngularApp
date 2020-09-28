@@ -4,12 +4,8 @@
 }
 
 .product-name {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: 700;
-}
-
-.product-description {
-    margin: 0 0 1rem 0;
 }
 
 .product-category-icon {

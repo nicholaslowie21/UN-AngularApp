@@ -5,9 +5,7 @@
         Create Resource Need
     </button>
 </h2>
-Project Title: {{project.title}} <br/>
-Project Code: {{project.code}}
-
+{{project.title}} (code: {{project.code}})
 <div class="modal fade" id="CreateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -71,7 +69,7 @@ Project Code: {{project.code}}
     </div>
 </div>
 
-<ul class="nav nav-tabs" id="myTab" role="tablist">
+<!-- <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item">
       <a class="nav-link active" id="needs-tab" data-toggle="tab" href="#needs" role="tab" aria-controls="needs" aria-selected="true">Resource Needs</a>
     </li>
@@ -79,17 +77,19 @@ Project Code: {{project.code}}
       <a class="nav-link" id="obtained-tab" data-toggle="tab" href="#obtained" role="tab" aria-controls="obtained" aria-selected="false">Resource Obtained</a>
     </li>
     
-</ul>
-<div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade show active" id="needs" role="tabpanel" aria-labelledby="needs-tab">
+</ul> -->
+<div class="row mt-md-2">
+    <div class="col-7">
+        <h5>Resource Needs</h5>
         <div class="card">
             <p-dataView #mp [value]="resourceNeeds" [paginator]="true" [rows]="9" filterBy="title"
                 [sortField]="sortFieldNeeds" [sortOrder]="sortOrderNeeds" layout="list">
                 <ng-template pTemplate="header">
                     <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
-                        <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyNeeds" placeholder="Sort By Date" (onChange)="onSortChangeNeeds($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                        <!-- <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyNeeds" placeholder="Sort By Date" (onChange)="onSortChangeNeeds($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown> -->
                         <p-dropdown [options]="filterStatusOptions" [(ngModel)]="filterKeyNeeds" placeholder="Filter By Status" (onChange)="filterNeedsStatus($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
-                        
+                        <p-dropdown [options]="filterTypeOptions" [(ngModel)]="filterKeyNeedType" placeholder="Filter By Type" (onChange)="filterNeedsType($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+
                         <span class="p-input-icon-left p-mb-2 p-mb-md-0">
                             <i class="pi pi-search"></i>
                             <input type="search" pInputText placeholder="Search by Title" (input)="mp.filter($event.target.value)">
@@ -98,18 +98,18 @@ Project Code: {{project.code}}
                 </ng-template>
                 <ng-template let-need pTemplate="listItem">
                     <div class="p-col-12">
-                        <div class="product-list-item">
-                            <div class="product-list-detail">
+                        <div class="row p-3">
+                            <div class="col-9">
                                 <div class="product-name">{{need.title}}</div>
-                                <div class="product-description">{{need.desc}}</div>
-                                <div class="product-description" *ngIf="need.type == 'money'">Pending Sum: ${{need.pendingSum}}</div>
-                                <div class="product-description" *ngIf="need.type == 'money'">Received Sum: ${{need.receivedSum}}</div>
-                                <div class="product-description" *ngIf="need.type == 'money'">Target Sum: ${{need.total}}</div>
+                                <div>{{need.desc}}</div>
+                                <div *ngIf="need.type == 'money'">Pending Sum: ${{need.pendingSum}}</div>
+                                <div *ngIf="need.type == 'money'">Received Sum: ${{need.receivedSum}}</div>
+                                <div *ngIf="need.type == 'money'">Target Sum: ${{need.total}}</div>
                                 <span class="product-category">Completion: {{need.completion}}%</span>
-                                <div class="product-description">Status: {{need.status}}</div>
                             </div>
-                            <i class="pi pi-tag product-category-icon"></i>{{need.type}}
-                            <div *ngIf="isOwnerAdmin && project.status == 'ongoing'">
+                            <div class="col-3">
+                                <div class="float-right"><i class="pi pi-tag product-category-icon"></i>{{need.type}}</div>
+                            <div *ngIf="isOwnerAdmin && project.status == 'ongoing'" class="mt-md-2 float-right">
                                 <button class="btn btn-success" (click)="markCompleteNeed(need)" title="Mark as complete"><i class="pi pi-check"></i></button>
                                 <button class="btn btn-primary" data-toggle="modal" data-target="#EditModal" (click)=getForm(need) title="Edit">
                                     <i class="pi pi-pencil"></i>
@@ -188,13 +188,15 @@ Project Code: {{project.code}}
                                 <button class="btn btn-primary" disabled title="Edit"><i class="pi pi-pencil"></i></button>
                                 <button class="btn btn-danger" disabled title="Delete"><i class="pi pi-trash"></i></button>
                             </div>
+                            </div>
                         </div>
                     </div>
                 </ng-template>
             </p-dataView>
         </div>
     </div>
-    <div class="tab-pane fade" id="obtained" role="tabpanel" aria-labelledby="obtained-tab">
+    <div class="col-5">
+        <h5>Resources Obtained</h5>
         <div class="card">
             <p-dataView #cb [value]="contributions" [paginator]="true" [rows]="9" filterBy="resourceTitle"
                 [sortField]="sortFieldCb" [sortOrder]="sortOrderCb" layout="list">
@@ -211,21 +213,27 @@ Project Code: {{project.code}}
                 </ng-template>
                 <ng-template let-cb pTemplate="listItem">
                     <div class="p-col-12">
-                        <div class="product-list-item">
-                            <div class="product-list-detail">
+                        <div class="row p-3">
+                            <div class="col-8">
                                 <div class="product-name">{{cb.resourceTitle}}</div>
-                                <div class="product-description">{{cb.desc}}</div>
-                                <div class="product-description">Contributed to {{cb.needTitle}}</div>
-                                <div class="product-description" *ngIf="cb.contributorType == 'user'">
-                                    <a href="/profile?username={{cb.contributorUsername}}&userType=individual" target="_blank">{{cb.contributorUsername}}</a>
+                                <div>{{cb.desc}}</div>
+                                <div *ngIf="cb.contributorType == 'user'">
+                                    <div><a href="/profile?username={{cb.contributorUsername}}&userType=individual" target="_blank">
+                                        <b>{{cb.contributorName}}</b></a>
+                                        <span style="font-size: small;">({{cb.contributorUsername}})</span>
+                                    </div>
                                 </div>
-                                <div class="product-description" *ngIf="cb.contributorType == 'institution'">
-                                    <a href="/profile?username={{cb.contributorUsername}}&userType=institution" target="_blank">{{cb.contributorUsername}}</a>
+                                <div *ngIf="cb.contributorType == 'institution'">
+                                    <h5><a href="/profile?username={{cb.contributorUsername}}&userType=institution" target="_blank">
+                                        {{cb.contributorName}}</a>
+                                        <span style="font-size: small;">({{cb.contributorUsername}})</span>
+                                    </h5>
                                 </div>
+                                <div>Contributed to {{cb.needTitle}}</div>
                             </div>
-                            <div class="product-list-action">
-                                <i class="pi pi-tag product-category-icon"></i>{{cb.resType}}
-                                <button *ngIf="isOwnerAdmin" class="btn btn-danger">Delete</button>
+                            <div class="col-4">
+                                <div class="float-right"><i class="pi pi-tag product-category-icon"></i>{{cb.resType}}</div>
+                                <button *ngIf="isOwnerAdmin" class="btn btn-danger mt-md-2 float-right" (click)="deleteObtained(cb)" title="Delete"><i class="pi pi-trash"></i></button>
                             </div>
                         </div>
                     </div>

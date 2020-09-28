@@ -51,13 +51,15 @@
                                 <div class="product-description">{{item.country}}</div>
                             </div>
                             <div class="product-grid-item-bottom">
-                                <span class="product-category">{{item.status}}</span>
+                                <span *ngIf="isOwner" class="product-category">{{item.status}}</span>
                                 <p-inputSwitch *ngIf="isOwner" [ngModel]="checkStatus(item)" (onChange)="handleChangeItem($event, item)"></p-inputSwitch>
                                 <!-- <button *ngIf="item.status == 'active'" pButton type="button" label="Deactivate" (click)="deactivateItem(item)"
                                     class="p-button-sm p-button-rounded p-button-danger float-right"></button>
 
                                 <button *ngIf="item.status == 'inactive'" pButton type="button" label="Activate" (click)="activateItem(item)"
                                     class="p-button-sm p-button-rounded p-button-success float-right"></button> -->
+                                <button *ngIf="!isOwner" pButton type="button" label="Request" 
+                                    class="p-button-sm p-button-rounded p-button-success float-right"></button>
                             </div>
                         </div>
                     </div>
@@ -97,7 +99,7 @@
                                 <div class="product-description">{{manpower.country}}</div>
                             </div>
                             <div class="product-grid-item-bottom">
-                                <span class="product-price">{{manpower.status}}</span>
+                                <span *ngIf="isOwner" class="product-price">{{manpower.status}}</span>
                                 <p-inputSwitch *ngIf="isOwner" [ngModel]="checkStatus(manpower)" (onChange)="handleChangeMpw($event, manpower)"></p-inputSwitch>
                                 <!-- <button *ngIf="manpower.status == 'active'" pButton type="button" label="Deactivate" (click)="deactivateManpower(manpower)"
                                     class="p-button-sm p-button-rounded p-button-danger float-right"></button>
@@ -143,7 +145,7 @@
                                 <div class="product-description">{{venue.country}}</div>
                             </div>
                             <div class="product-grid-item-bottom">
-                                <span class="product-price">{{venue.status}}</span>
+                                <span *ngIf="isOwner" class="product-price">{{venue.status}}</span>
                                 <p-inputSwitch *ngIf="isOwner" [ngModel]="checkStatus(venue)" (onChange)="handleChangeVen($event, venue)"></p-inputSwitch>
                                 <!-- <button *ngIf="venue.status == 'active'" pButton type="button" label="Deactivate" (click)="deactivateVenue(venue)"
                                     class="p-button-sm p-button-rounded p-button-danger float-right"></button>
@@ -187,7 +189,7 @@
                                 <div class="product-description"></div>
                             </div>
                             <div class="product-grid-item-bottom">
-                                <span class="product-price">{{knowledge.status}}</span>
+                                <span *ngIf="isOwner" class="product-price">{{knowledge.status}}</span>
                                 <p-inputSwitch *ngIf="isOwner" [ngModel]="checkStatus(knowledge)" (onChange)="handleChangeKno($event, knowledge)"></p-inputSwitch>
                                 <!-- <button *ngIf="knowledge.status == 'active'" pButton type="button" label="Deactivate" (click)="deactivateKnowledge(knowledge)"
                                     class="p-button-sm p-button-rounded p-button-danger float-right"></button>

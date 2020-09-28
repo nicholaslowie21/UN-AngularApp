@@ -25,10 +25,12 @@ export class ProjectResourcesComponent implements OnInit {
   sortFieldCb: string;
   sortOptions: any = [];
   filterStatusOptions: any = [];
+  filterTypeOptions: any = [];
   sortKeyNeeds = '';
   sortKeyCb = '';
   filterKeyNeeds = '';
   filterKeyCb = '';
+  filterKeyNeedType = '';
 
   form: any = {};
   updateForm: any = {};
@@ -49,6 +51,13 @@ export class ProjectResourcesComponent implements OnInit {
       {label: 'All', value:'all'},
       {label: 'In progress', value:'progress'},
       {label: 'Completed', value:'completed'}
+    ];
+    this.filterTypeOptions = [
+      {label: 'All', value:'all'},
+      {label: 'Item', value:'item'},
+      {label: 'Manpower', value:'manpower'},
+      {label: 'Venue', value:'venue'},
+      {label: 'Money', value:'money'}
     ];
 
     this.user = this.tokenStorageService.getUser();
@@ -92,7 +101,9 @@ export class ProjectResourcesComponent implements OnInit {
   }
 
   async filterNeedsStatus(event) {
+    console.log(event);
     this.filterKeyNeeds = event.value;
+    console.log(this.resourceNeeds);
     await this.ngOnInit();
     let value = event.value;
     let arr = [];
@@ -111,7 +122,90 @@ export class ProjectResourcesComponent implements OnInit {
     } else {
       arr = this.resourceNeeds; 
     }
-    this.resourceNeeds = arr;
+
+    let tempArr = [];
+    if(this.filterKeyNeedType == 'item') {
+      for(var i=0; i<arr.length; i++) {
+        if(arr[i].type == 'item') {
+          tempArr.push(arr[i]);
+        }
+      }
+    } else if(this.filterKeyNeedType == 'manpower') {
+      for(var i=0; i<arr.length; i++) {
+        if(arr[i].type == 'manpower') {
+          tempArr.push(arr[i]);
+        }
+      }
+    } else if(this.filterKeyNeedType == 'venue') {
+      for(var i=0; i<arr.length; i++) {
+        if(arr[i].type == 'venue') {
+          tempArr.push(arr[i]);
+        }
+      }
+    } else if(this.filterKeyNeedType == 'money') {
+      for(var i=0; i<arr.length; i++) {
+        if(arr[i].type == 'money') {
+          tempArr.push(arr[i]);
+        }
+      }
+    } else {
+      tempArr = arr;
+    }
+
+    this.resourceNeeds = tempArr;
+  }
+
+  async filterNeedsType(event) {
+    this.filterKeyNeedType = event.value;
+    await this.ngOnInit();
+    let value = event.value;
+    let arr = [];
+    if(value == 'item') {
+      for(var i=0; i<this.resourceNeeds.length; i++) {
+        if(this.resourceNeeds[i].type == 'item') {
+          arr.push(this.resourceNeeds[i]);
+        }
+      }
+    } else if(value == 'manpower') {
+      for(var i=0; i<this.resourceNeeds.length; i++) {
+        if(this.resourceNeeds[i].type == 'manpower') {
+          arr.push(this.resourceNeeds[i]);
+        }
+      }
+    } else if(value == 'venue') {
+      for(var i=0; i<this.resourceNeeds.length; i++) {
+        if(this.resourceNeeds[i].type == 'venue') {
+          arr.push(this.resourceNeeds[i]);
+        }
+      }
+    } else if(value == 'money') {
+      for(var i=0; i<this.resourceNeeds.length; i++) {
+        if(this.resourceNeeds[i].type == 'money') {
+          arr.push(this.resourceNeeds[i]);
+        }
+      }
+    } else {
+      arr = this.resourceNeeds;
+    }
+
+    let tempArr = [];
+    if(this.filterKeyNeeds == 'progress') {
+      for(var i=0; i<arr.length; i++) {
+        if(arr[i].status == 'progress') {
+          tempArr.push(arr[i]);
+        }
+      }
+    } else if(this.filterKeyNeeds == 'completed') {
+      for(var i=0; i<arr.length; i++) {
+        if(arr[i].status == 'completed') {
+          tempArr.push(arr[i]);
+        }
+      }
+    } else {
+      tempArr = arr; 
+    }
+
+    this.resourceNeeds = tempArr;
   }
 
   onSubmit(): void {
@@ -198,6 +292,10 @@ export class ProjectResourcesComponent implements OnInit {
     } else {
       return;
     }
+  }
+
+  deleteObtained(need): void {
+    
   }
 
 }
