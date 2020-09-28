@@ -112,6 +112,9 @@ export class OwnProfileComponent implements OnInit {
       await this.resourceService.getUserItem({ id: this.userId }).toPromise().then(
         response => {
           this.item = response.data.items;
+          for(var i=0; i<response.data.items.length; i++) {
+            response.data.items[i].type = 'item';
+          }
           this.resourceOffers = this.resourceOffers.concat(response.data.items);
         }
       );
@@ -119,6 +122,9 @@ export class OwnProfileComponent implements OnInit {
       await this.resourceService.getUserManpower({ id: this.userId }).toPromise().then(
         response => {
           this.manpower = response.data.manpowers;
+          for(var i=0; i<response.data.manpowers.length; i++) {
+            response.data.manpowers[i].type = 'manpower';
+          }
           this.resourceOffers = this.resourceOffers.concat(response.data.manpowers);
         }
       );
@@ -126,6 +132,9 @@ export class OwnProfileComponent implements OnInit {
       await this.resourceService.getUserVenue({ id: this.userId }).toPromise().then(
         response => {
           this.venue = response.data.venues;
+          for(var i=0; i<response.data.venues.length; i++) {
+            response.data.venues[i].type = 'venue';
+          }
           this.resourceOffers = this.resourceOffers.concat(response.data.venues);
         }
       );
