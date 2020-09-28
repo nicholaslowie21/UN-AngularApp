@@ -60,7 +60,7 @@
                     </div>
                     <div *ngIf="resource.imgPath.length > 0">
                         <!-- card group version -->
-                        <div *ngIf="resource.imgPath.length > 5">
+                        <!-- <div *ngIf="resource.imgPath.length > 5"> -->
                             <div class="card-group">
                                 <div class="card" *ngFor="let img of resource.imgPath.slice(0, 5)">
                                     <img src="https://localhost:8080{{img}}" class="img-fluid" style="object-fit: cover;">
@@ -71,15 +71,22 @@
                                 <div class="card" *ngFor="let img of resource.imgPath.slice(5)">
                                     <img src="https://localhost:8080{{img}}" class="img-fluid" style="object-fit: cover;">
                                 </div>
+                                <div class="card" *ngFor="let a of emptyPlaceholder">
+                                    <img src="../../../assets/img/venue.png" class="img-fluid" style="object-fit: cover;">
+                                </div>
                             </div>
-                        </div>
-                        <div *ngIf="resource.imgPath.length <= 5">
+                        <!-- </div> -->
+                        <!-- <div *ngIf="resource.imgPath.length <= 5">
                             <div class="card-group">
                                 <div class="card" *ngFor="let img of resource.imgPath">
                                     <img src="https://localhost:8080{{img}}" class="img-fluid" style="object-fit: cover;">
                                 </div>
+                                <div class="card-group" >
+                                    
+                                </div>
                             </div>
-                        </div>
+                        </div> -->
+                        
                         <!-- manually set img size version -->
                         <!-- <div *ngIf="resource.imgPath.length > 5">
                             <div class="row">
@@ -103,7 +110,7 @@
                         </div> -->
                     </div>
                     <br/>
-                    <p>You may upload multiple pictures of the venue, up to 10 pictures.<br/>
+                    <p>You may select multiple pictures of the venue to upload, up to 10 pictures.<br/>
                     Uploading pictures will add to the existing set of pictures.</p>
                     <form action="/multiple-upload" method="POST" enctype="multipart/form-data">
                         <input type="file" multiple (change)="selectImages($event)">
