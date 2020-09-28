@@ -31,6 +31,7 @@ export class ProjectResourcesComponent implements OnInit {
   filterKeyNeeds = '';
   filterKeyCb = '';
   filterKeyNeedType = '';
+  filterKeyCbType = '';
 
   form: any = {};
   updateForm: any = {};
@@ -208,6 +209,41 @@ export class ProjectResourcesComponent implements OnInit {
     this.resourceNeeds = tempArr;
   }
 
+  async filterCbType(event) {
+    this.filterKeyCbType = event.value;
+    await this.ngOnInit();
+    let value = event.value;
+    let arr = [];
+    if(value == 'item') {
+      for(var i=0; i<this.contributions.length; i++) {
+        if(this.contributions[i].resType == 'item') {
+          arr.push(this.contributions[i]);
+        }
+      }
+    } else if(value == 'manpower') {
+      for(var i=0; i<this.contributions.length; i++) {
+        if(this.contributions[i].resType == 'manpower') {
+          arr.push(this.contributions[i]);
+        }
+      }
+    } else if(value == 'venue') {
+      for(var i=0; i<this.contributions.length; i++) {
+        if(this.contributions[i].resType == 'venue') {
+          arr.push(this.contributions[i]);
+        }
+      }
+    } else if(value == 'money') {
+      for(var i=0; i<this.contributions.length; i++) {
+        if(this.contributions[i].resType == 'money') {
+          arr.push(this.contributions[i]);
+        }
+      }
+    } else {
+      arr = this.contributions;
+    }
+    this.contributions = arr;
+  }
+
   onSubmit(): void {
     const formCreate = {
       id: this.projectId,
@@ -295,7 +331,7 @@ export class ProjectResourcesComponent implements OnInit {
   }
 
   deleteObtained(need): void {
-    
+
   }
 
 }

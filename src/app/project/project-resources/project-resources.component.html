@@ -202,9 +202,7 @@
                 [sortField]="sortFieldCb" [sortOrder]="sortOrderCb" layout="list">
                 <ng-template pTemplate="header">
                     <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
-                        <!-- <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyCb" placeholder="Sort By Date" (onChange)="onSortChangeNeeds($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown> -->
-                        <!-- <p-dropdown [options]="filterStatusOptions" [(ngModel)]="filterKeyCb" placeholder="Filter By Status" (onChange)="filterNeedsStatus($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown> -->
-                        
+                        <p-dropdown [options]="filterTypeOptions" [(ngModel)]="filterKeyCbType" placeholder="Filter By Type" (onChange)="filterCbType($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
                         <span class="p-input-icon-left p-mb-2 p-mb-md-0">
                             <i class="pi pi-search"></i>
                             <input type="search" pInputText placeholder="Search by Title" (input)="cb.filter($event.target.value)">
