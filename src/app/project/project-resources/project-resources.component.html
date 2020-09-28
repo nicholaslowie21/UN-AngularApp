@@ -116,7 +116,10 @@ Progress:
                                 <span class="product-category">Completion: {{need.completion}}%</span>
                             </div>
                             <div class="col-3">
-                                <div class="float-right"><i class="pi pi-tag product-category-icon"></i>{{need.type}}</div>
+                                <div class="float-right">
+                                    <i class="pi pi-tag product-category-icon"></i>
+                                    <span class="{{need.type}}type rounded-sm text-white">&nbsp;{{need.type}}&nbsp;</span>
+                                </div>
                             <div *ngIf="isOwnerAdmin && project.status == 'ongoing'" class="mt-md-2 float-right">
                                 <button class="btn btn-success" (click)="markCompleteNeed(need)" title="Mark as complete"><i class="pi pi-check"></i></button>
                                 <button class="btn btn-primary" data-toggle="modal" data-target="#EditModal" (click)=getForm(need) title="Edit">
@@ -238,7 +241,10 @@ Progress:
                                 <div>Contributed to {{cb.needTitle}}</div>
                             </div>
                             <div class="col-4">
-                                <div class="float-right"><i class="pi pi-tag product-category-icon"></i>{{cb.resType}}</div>
+                                <div class="float-right">
+                                    <i class="pi pi-tag product-category-icon"></i>
+                                    <span class="{{cb.resType}}type rounded-sm text-white">&nbsp;{{cb.resType}}&nbsp;</span>
+                                </div>
                                 <button *ngIf="isOwnerAdmin" class="btn btn-danger mt-md-2 float-right" (click)="deleteObtained(cb)" title="Delete"><i class="pi pi-trash"></i></button>
                             </div>
                         </div>

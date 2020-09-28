@@ -102,9 +102,16 @@
                 <button *ngIf="resource.status == 'inactive' && isOwner" pButton type="button" label="Activate" (click)="activateResource()"
                     class="p-button-rounded p-button-success"></button> -->
             </div>
-            <div class="col-3" *ngIf="isOwner">
-                <a href="/resource/editDetails?id={{resource.id}}&type={{type}}" class="btn btn-primary float-right">Edit</a>
-                <button class="btn btn-danger float-right" (click)="deleteResource()">Delete</button>
+            <div class="col-3">
+                <div class="float-right">
+                    <i class="pi pi-tag"></i>
+                    <span class="{{type}}type rounded-sm text-white">&nbsp;{{type}}&nbsp;</span>
+                </div>
+                <br/>
+                <div *ngIf="isOwner" class="float-right mt-md-2">
+                    <a href="/resource/editDetails?id={{resource.id}}&type={{type}}" class="btn btn-primary float-right"><i class="pi pi-pencil"></i></a>
+                    <button class="btn btn-danger float-right" (click)="deleteResource()"><i class="pi pi-trash"></i></button>
+                </div>
             </div>
         </div>
     </div>

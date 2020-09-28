@@ -387,7 +387,10 @@
                                             </div>
                                             <div class="card border-0" style="width:80%">
                                                 <h5 class="card-title text-left mt-md-3" style="margin-left: 5%;"><a href="/resource/resourceDetails?id={{ro.id}}&type={{ro.type}}">{{ro.title}}</a>
-                                                    <div class="float-right mr-md-2" style="font-size: medium;">{{ro.type}}</div>
+                                                    <div class="float-right">
+                                                        <i class="pi pi-tag"></i>
+                                                        <span class="ml-md-1 mr-md-2 {{ro.type}}type text-white rounded-sm" style="font-size: small;">&nbsp;{{ro.type}}&nbsp;</span>
+                                                    </div>    
                                                 </h5>
                                                 <h6 class="card-title text-left text-secondary mt-md-1 p-text-nowrap p-text-truncate" style="width: 22rem; margin-left: 5%;">{{ro.desc}} </h6>
                                             </div>
