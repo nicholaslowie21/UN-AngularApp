@@ -245,7 +245,12 @@ Progress:
                                     <i class="pi pi-tag product-category-icon"></i>
                                     <span class="{{cb.resType}}type rounded-sm text-white">&nbsp;{{cb.resType}}&nbsp;</span>
                                 </div>
-                                <button *ngIf="isOwnerAdmin" class="btn btn-danger mt-md-2 float-right" (click)="deleteObtained(cb)" title="Delete"><i class="pi pi-trash"></i></button>
+                                <button *ngIf="isOwnerAdmin && project.status == 'ongoing'" class="btn btn-danger mt-md-2 float-right" (click)="deleteObtained(cb)" title="Delete">
+                                    <i class="pi pi-trash"></i>
+                                </button>
+                                <button *ngIf="isOwnerAdmin && project.status != 'ongoing'" class="btn btn-danger mt-md-2 float-right disabled" (click)="deleteObtained(cb)" title="Delete">
+                                    <i class="pi pi-trash"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
