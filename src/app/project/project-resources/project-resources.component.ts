@@ -97,11 +97,15 @@ export class ProjectResourcesComponent implements OnInit {
 
   calculateProgress(): void {
     this.progress = 0;
-    for(var i=0; i<this.resourceNeeds.length; i++) {
-      this.progress += this.resourceNeeds[i].completion;
+    if(this.resourceNeeds.length == 0) {
+      this.progress = 0;
+    } else {
+      for(var i=0; i<this.resourceNeeds.length; i++) {
+        this.progress += this.resourceNeeds[i].completion;
+      }
+      this.progress = this.progress/(this.resourceNeeds.length*100)*100;
+      this.progress = parseFloat(this.progress.toFixed(2));
     }
-    this.progress = this.progress/(this.resourceNeeds.length*100)*100;
-    this.progress = parseFloat(this.progress.toFixed(2));
   }
 
   onSortChangeNeeds(event) {
