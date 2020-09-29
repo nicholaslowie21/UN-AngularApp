@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProjectService } from '../../services/project.service';
 import { TokenStorageService } from '../../services/token-storage.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-edit-project-admin',
   templateUrl: './edit-project-admin.component.html',
-  styleUrls: ['./edit-project-admin.component.css']
+  styleUrls: ['./edit-project-admin.component.css'],
+  providers: [MessageService]
 })
 export class EditProjectAdminComponent implements OnInit {
 
@@ -23,7 +25,8 @@ export class EditProjectAdminComponent implements OnInit {
   user: any;
   userId: any;
 
-  constructor(private route: ActivatedRoute, private projectService: ProjectService, private tokenStorageService: TokenStorageService) { }
+  constructor(private route: ActivatedRoute, private projectService: ProjectService, 
+    private tokenStorageService: TokenStorageService, private messageService: MessageService) { }
 
   async ngOnInit() {
     this.route.queryParams
@@ -104,9 +107,12 @@ export class EditProjectAdminComponent implements OnInit {
     this.projectService.addProjectAdmin(addAdm).subscribe(
       response => {
         this.isAddSuccessful = true;
-        alert("User " + name + " has been added as Project Admin");
-        window.location.reload();
+        // alert("User " + name + " has been added as Project Admin");
+        this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'User '+name+' has been added as Project Admin!'});
+        this.ngOnInit();
+        // window.location.reload();
       }, err => {
+        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
         this.errorMessage = err.error.msg;
         console.log(this.errorMessage);
         this.isAddSuccessful = false;
@@ -133,8 +139,10 @@ export class EditProjectAdminComponent implements OnInit {
     this.projectService.deleteProjectAdmin(dAdmin).subscribe(
       response => {
         this.isDelSuccessful = true;
-        alert("User " + user.name + " has been removed from Project Admins");
-        window.location.reload();
+        this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'User '+user.name+' has been removed from Project Admins!'});
+        this.ngOnInit();
+        // alert("User " + user.name + " has been removed from Project Admins");
+        // window.location.reload();
       }, err => {
         console.log(JSON.stringify(err));
         this.errorMessage = err.error.msg;

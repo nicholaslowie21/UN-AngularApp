@@ -1,5 +1,7 @@
 <a href="/project/projectDetails?id={{projectId}}"><u><< Back to project</u></a>
 
+<p-toast key="toastMsg" [baseZIndex]="100"></p-toast>
+
 <div class="row mt-md-2">
     <div class="container float-left" style="width: 50%">
         <h4>Project Admins
@@ -27,7 +29,7 @@
                         <br/> Username: {{admin.username}}
                     </div>
                     <div class="col-4">
-                        <button class="btn btn-danger float-right" (click)=deleteAdminAlert(admin)>Delete</button>
+                        <button class="btn btn-danger float-right" (click)=deleteAdminAlert(admin)>Remove</button>
                     </div>
                 </div>
             </div>

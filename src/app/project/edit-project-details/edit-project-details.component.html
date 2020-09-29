@@ -96,5 +96,14 @@
         <div class="form-group">
             <button class="btn btn-primary btn-block">Update Project</button>
         </div>
+
+        <div class="alert alert-warning" *ngIf="f.submitted && !isUpdateSuccessful">
+            Update failed!
+            <br />{{ errorMessage }}
+        </div>
+
+        <div class="alert alert-success" *ngIf="isUpdateSuccessful">
+            Your update is successful!
+        </div>
     </form>
 </div>
