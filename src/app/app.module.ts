@@ -57,6 +57,7 @@ import { ToastModule } from 'primeng/toast';
 import {CarouselModule} from 'primeng/carousel';
 import {InputSwitchModule} from 'primeng/inputswitch';
 import {ProgressBarModule} from 'primeng/progressbar';
+import {GalleriaModule} from 'primeng/galleria';
 
 @NgModule({
   declarations: [
@@ -111,7 +112,8 @@ import {ProgressBarModule} from 'primeng/progressbar';
     ToastModule,
     CarouselModule,
     InputSwitchModule,
-    ProgressBarModule
+    ProgressBarModule,
+    GalleriaModule
   ],
   providers: [authInterceptorProviders, AuthGuardService],
   bootstrap: [AppComponent]
