@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { TokenStorageService } from '../../services/token-storage.service';
 import { ResourceService } from '../../services/resource.service';
 
+import { saveAs } from 'file-saver';
+
 @Component({
   selector: 'app-resource-details',
   templateUrl: './resource-details.component.html',
@@ -13,6 +15,9 @@ export class ResourceDetailsComponent implements OnInit {
   id: any;
   type: any;
   resource: any;
+  attachmentPath: any;
+  tempStrings: any;
+  startIndexFound: boolean;
   owner: any;
   institutionOwner: any;
   isOwner = false;
@@ -44,11 +49,31 @@ export class ResourceDetailsComponent implements OnInit {
           this.resource = res.data.knowledge; 
           this.owner = res.data.userOwner; 
           this.institutionOwner = res.data.institutionOwner;
+          this.attachmentPath = res.data.knowledge.attachment;
         }
       );
     }
     console.log(this.resource);
     console.log(this.owner);
+
+    if (this.type == 'knowledge') {
+      this.startIndexFound = false;
+      var startIndex = 0;
+      var endIndex = 0;
+      var extensionIndex = 0;
+      for (let i = this.attachmentPath.length; i > 0; i--) {
+        if (this.attachmentPath[i] == '.') {
+          extensionIndex = i;
+        }
+        else if (this.attachmentPath[i] == '-') {
+          endIndex = i;
+        } else if (this.attachmentPath[i] == '/' && !this.startIndexFound) {
+          startIndex = i;
+          this.startIndexFound = true;
+        }
+      }
+      this.attachmentPath = this.attachmentPath.slice(startIndex+1, endIndex) + this.attachmentPath.slice(extensionIndex);
+    }
 
     if (this.type != 'knowledge' && this.owner.username == this.tokenStorageService.getUser().username) {
       this.isOwner = true;
@@ -207,6 +232,24 @@ export class ResourceDetailsComponent implements OnInit {
     } else {
       return;
     }
+  }
+
+  downloadAttachment(filePath) {
+    this.resourceService.getAttachmentFile(filePath).subscribe(
+      response => {
+        this.tempStrings = filePath.split("/");
+        // saveAs(response, this.tempStrings[this.tempStrings.length-1]);
+        saveAs(response, this.attachmentPath);
+        this.reloadPage();
+      },
+      err => {
+        alert('Something went wrong while downloading the file. Please try again!')
+      }
+    )
+  }
+
+  reloadPage(): void {
+    window.location.reload();
   }
 
 }

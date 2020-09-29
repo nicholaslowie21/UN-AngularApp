@@ -90,21 +90,43 @@
             </div>
         </div>
         <div class="row mt-md-1 p-2 bg-light">
-            <div class="col-9">
+            <div class="col-8">
                 <h5>{{resource.title}}</h5>
-                <div *ngIf="type=='venue'" class="mb-md-1">{{resource.address}}</div>
+                <div *ngIf="type =='venue'" class="mb-md-1">{{resource.address}}</div>
                 <h6 class="text-secondary">{{resource.desc}}</h6>
                 <h6 *ngIf="type != 'knowledge'" class="text-secondary">Country: {{resource.country}}</h6>
+                <h6 *ngIf="type =='knowledge'" class="text-secondary">
+                    Attachment: {{attachmentPath}} 
+                </h6>
+                
                 <h6 class="text-secondary">Status: {{resource.status}}</h6>
                 <p-inputSwitch [ngModel]="checkStatus()" (onChange)="handleChangeChecked($event)"></p-inputSwitch>
                 <!-- <button *ngIf="resource.status == 'active' && isOwner" pButton type="button" label="Deactivate" (click)="deactivateResource()"
                     class="p-button-rounded p-button-danger"></button>
                 <button *ngIf="resource.status == 'inactive' && isOwner" pButton type="button" label="Activate" (click)="activateResource()"
                     class="p-button-rounded p-button-success"></button> -->
+                    
             </div>
-            <div class="col-3" *ngIf="isOwner">
-                <a href="/resource/editDetails?id={{resource.id}}&type={{type}}" class="btn btn-primary float-right">Edit</a>
-                <button class="btn btn-danger float-right" (click)="deleteResource()">Delete</button>
+            <div class="col-4 align-self-end" *ngIf="isOwner">
+                <a href="/resource/editDetails?id={{resource.id}}&type={{type}}" class="btn btn-primary float-right">
+                    <i class="pi pi-pencil" style="color: white"></i>&nbsp;
+                    Edit
+                </a>
+                <button class="btn btn-danger float-right" (click)="deleteResource()">
+                    <i class="pi pi-trash" style="color: white"></i>&nbsp;
+                    Delete</button>
+                <br/>
+                <br/>
+                <button type="button" class="btn btn-primary float-right" (click)="downloadAttachment(resource.attachment)">
+                    <i class="pi pi-download" style="color: white"></i>&nbsp;
+                    Download attachment
+                </button> 
+                <!-- <span class="p-input-icon-left p-mb-2 p-mb-md-0" *ngIf="type == 'knowledge'">
+                    <button type="button" class="btn btn-primary btn-sm float-right" (click)="downloadAttachment(resource.attachment)">
+                        <i class="pi pi-download" style="color: white"></i>&nbsp;
+                        Download attachment
+                    </button> 
+                </span> -->
             </div>
         </div>
     </div>
