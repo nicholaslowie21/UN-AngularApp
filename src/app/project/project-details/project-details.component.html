@@ -197,7 +197,7 @@
         <div class="card-header bg-secondary text-white">
             <i class="pi pi-chart-bar"></i>
             <h5 style="display: inline-block;" class="mt-md-1 mb-md-0 ml-md-2">KPIs</h5>
-            <button pButton *ngIf=isCreator&&isOngoing type="button" icon="pi pi-plus" class="p-button-rounded float-right" data-toggle="modal"
+            <button pButton *ngIf="(isCreator||isAdmin)&&isOngoing" type="button" icon="pi pi-plus" class="p-button-rounded float-right" data-toggle="modal"
                 data-target="#kpiModal" title="Add KPI">
             </button>
         </div>
@@ -218,11 +218,11 @@
                             <h6 class="card-title text-left text-secondary" style="margin-left: 5%;">Completion: {{kpi.completion}}% </h6>
                         </div>
                         <div class="card border-0" style="width:20%">
-                            <a *ngIf=isOngoing&&isCreator class="btn btn-primary text-white" role="button" style="margin: 3px" (click)=getForm(kpi.id,kpi.title,kpi.desc,kpi.completion)
+                            <a *ngIf="(isCreator||isAdmin)&&isOngoing" class="btn btn-primary text-white" role="button" style="margin: 3px" (click)=getForm(kpi.id,kpi.title,kpi.desc,kpi.completion)
                                 data-toggle="modal" data-target="#editModal">
                                 <i class="pi pi-pencil"></i>
                             </a>
-                            <a *ngIf=isOngoing&&isCreator class="btn btn-danger text-white" role="button" style="margin: 3px" (click)=confirmDeleteKPI(kpi.id)>
+                            <a *ngIf="(isCreator||isAdmin)&&isOngoing" class="btn btn-danger text-white" role="button" style="margin: 3px" (click)=confirmDeleteKPI(kpi.id)>
                                 <i class="pi pi-trash"></i>
                             </a>
                         </div>
@@ -324,7 +324,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <button class="btn btn-primary btn-block" (click)="onSubmit()">Create</button>
+                                <button class="btn btn-primary btn-block" >Create</button>
                             </div>
                         </form>
                     </div>
