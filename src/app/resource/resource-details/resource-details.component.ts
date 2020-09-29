@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TokenStorageService } from '../../services/token-storage.service';
 import { ResourceService } from '../../services/resource.service';
-
 import { saveAs } from 'file-saver';
+import { Galleria } from 'primeng/galleria';
 
 @Component({
   selector: 'app-resource-details',
@@ -26,6 +26,27 @@ export class ResourceDetailsComponent implements OnInit {
 
   checked = false;
 
+  venueImages = [];
+  showThumbnails: boolean;
+  fullscreen: boolean = false;
+  activeIndex: number = 0;
+  onFullScreenListener: any;
+  @ViewChild('galleria') galleria: Galleria;
+  responsiveOptions:any[] = [
+    {
+        breakpoint: '1024px',
+        numVisible: 5
+    },
+    {
+        breakpoint: '768px',
+        numVisible: 3
+    },
+    {
+        breakpoint: '560px',
+        numVisible: 1
+    }
+  ];
+
   constructor(private route: ActivatedRoute, private tokenStorageService: TokenStorageService, 
     private resourceService: ResourceService) { }
 
@@ -43,6 +64,9 @@ export class ResourceDetailsComponent implements OnInit {
       await this.resourceService.viewManpowerDetails({id: this.id}).toPromise().then(res => {this.resource = res.data.manpower; this.owner = res.data.owner});
     } else if (this.type == 'venue') {
       await this.resourceService.viewVenueDetails({id: this.id}).toPromise().then(res => {this.resource = res.data.venue; this.owner = res.data.owner});
+      for (let i = 0; i < this.resource.imgPath.length; i++) {
+        this.venueImages[i] = "https://localhost:8080" + this.resource.imgPath[i];
+      }
     } else if (this.type == 'knowledge') {
       await this.resourceService.viewKnowledgeDetails({id: this.id}).toPromise().then(
         res => {
@@ -84,11 +108,6 @@ export class ResourceDetailsComponent implements OnInit {
           this.isOwner = true;
         }
       }
-      // for(var i=0; i<this.institutionOwner.length; i++) {
-      //   if(this.institutionOwner[i].username == this.tokenStorageService.getUser().username) {
-      //     this.isOwner = true;
-      //   }
-      // }
     }
   }
 
@@ -240,7 +259,7 @@ export class ResourceDetailsComponent implements OnInit {
         this.tempStrings = filePath.split("/");
         // saveAs(response, this.tempStrings[this.tempStrings.length-1]);
         saveAs(response, this.attachmentPath);
-        this.reloadPage();
+        // this.reloadPage();
       },
       err => {
         alert('Something went wrong while downloading the file. Please try again!')
@@ -250,6 +269,83 @@ export class ResourceDetailsComponent implements OnInit {
 
   reloadPage(): void {
     window.location.reload();
+  }
+
+  // below is all code for venue images galleria
+  onThumbnailButtonClick() {
+    this.showThumbnails = !this.showThumbnails;
+  }
+
+  toggleFullScreen() {
+    if (this.fullscreen) {
+      this.closePreviewFullScreen();
+    }
+    else {
+      this.openPreviewFullScreen();
+    }
+  }
+
+  openPreviewFullScreen() {
+    let elem = this.galleria.element.nativeElement.querySelector(".p-galleria");
+    if (elem.requestFullscreen) {
+      elem.requestFullscreen();
+    }
+    else if (elem['mozRequestFullScreen']) { /* Firefox */
+      elem['mozRequestFullScreen']();
+    }
+    else if (elem['webkitRequestFullscreen']) { /* Chrome, Safari & Opera */
+      elem['webkitRequestFullscreen']();
+    }
+    else if (elem['msRequestFullscreen']) { /* IE/Edge */
+      elem['msRequestFullscreen']();
+    }
+  }
+
+  onFullScreenChange() {
+    this.fullscreen = !this.fullscreen;
+  }
+
+  closePreviewFullScreen() {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
+    else if (document['mozCancelFullScreen']) {
+      document['mozCancelFullScreen']();
+    }
+    else if (document['webkitExitFullscreen']) {
+      document['webkitExitFullscreen']();
+    }
+    else if (document['msExitFullscreen']) {
+      document['msExitFullscreen']();
+    }
+  }
+
+  bindDocumentListeners() {
+    this.onFullScreenListener = this.onFullScreenChange.bind(this);
+    document.addEventListener("fullscreenchange", this.onFullScreenListener);
+    document.addEventListener("mozfullscreenchange", this.onFullScreenListener);
+    document.addEventListener("webkitfullscreenchange", this.onFullScreenListener);
+    document.addEventListener("msfullscreenchange", this.onFullScreenListener);
+  }
+
+  unbindDocumentListeners() {
+    document.removeEventListener("fullscreenchange", this.onFullScreenListener);
+    document.removeEventListener("mozfullscreenchange", this.onFullScreenListener);
+    document.removeEventListener("webkitfullscreenchange", this.onFullScreenListener);
+    document.removeEventListener("msfullscreenchange", this.onFullScreenListener);
+    this.onFullScreenListener = null;
+  }
+
+  ngOnDestroy() {
+    this.unbindDocumentListeners();
+  }
+
+  galleriaClass() {
+    return `custom-galleria ${this.fullscreen ? 'fullscreen' : ''}`;
+  }
+
+  fullScreenIcon() {
+    return `pi ${this.fullscreen ? 'pi-window-minimize' : 'pi-window-maximize'}`;
   }
 
 }

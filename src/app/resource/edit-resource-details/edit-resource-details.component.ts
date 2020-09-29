@@ -4,10 +4,7 @@ import { InstitutionService } from '../../services/institution.service';
 import { TokenStorageService } from '../../services/token-storage.service';
 import { ResourceService } from '../../services/resource.service';
 import { UserService } from '../../services/user.service';
-
 import { Galleria } from 'primeng/galleria';
-
-import { ThrowStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-edit-resource-details',

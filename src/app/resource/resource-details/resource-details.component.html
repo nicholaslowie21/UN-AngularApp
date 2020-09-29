@@ -6,11 +6,32 @@
             <img *ngIf="resource.imgPath.length != 0" src="https://localhost:8080{{resource.imgPath}}" class="img-fluid" height="200" width="300" [alt]="resource.title"/>
         </div>
         <div *ngIf="type == 'venue'">
-            <p-carousel *ngIf="resource.imgPath.length > 0" [value]="resource.imgPath">
+            <!-- <p-carousel *ngIf="resource.imgPath.length > 0" [value]="resource.imgPath">
                 <ng-template let-img pTemplate="item">
                     <img src="https://localhost:8080{{img}}" class="img-fluid" style="width: 500px; height:400px; object-fit: cover;">
                 </ng-template>
-            </p-carousel>
+            </p-carousel> -->
+            <p-galleria #galleria [(value)]="venueImages" [responsiveOptions]="responsiveOptions" [(activeIndex)]="activeIndex" [numVisible]="5" [containerStyle]="{'max-width':'640px'}" [containerClass]="galleriaClass()" [showThumbnails]="showThumbnails"
+                [showItemNavigators]="true" [showItemNavigatorsOnHover]="true" [circular]="true" [autoPlay]="true" [transitionInterval]="3000"> 
+                <ng-template pTemplate="item" let-item>
+                    <img [src]="item" [ngStyle]="{'width': !fullscreen ? '100%' : '', 'display': !fullscreen ? 'block' : ''}" />
+                </ng-template>
+                <ng-template pTemplate="thumbnail" let-item>
+                    <div class="p-grid p-nogutter p-justify-center">
+                        <img [src]="item" class="img-fluid" width="100" height="100" />
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="footer" let-item>
+                    <div class="custom-galleria-footer">
+                        <button type="button" pButton icon="pi pi-list" (click)="onThumbnailButtonClick()"></button>
+                        <span *ngIf="venueImages"  class="title-container">
+                            <span>{{activeIndex + 1}}/{{venueImages.length}}</span>
+                            <span class="title">Picture {{activeIndex+1}}</span>
+                        </span>
+                        <button type="button" pButton [icon]="fullScreenIcon()" (click)="toggleFullScreen()" class="fullscreen-button"></button>
+                    </div>
+                </ng-template>
+            </p-galleria>
             <div *ngIf="resource.imgPath.length == 0">
                 <img src="../../../assets/img/venue.png" class="img-fluid" style="width: 300px; height:300px; object-fit: cover;">
             </div>
@@ -96,18 +117,17 @@
                 <h6 class="text-secondary">{{resource.desc}}</h6>
                 <h6 *ngIf="type != 'knowledge'" class="text-secondary">Country: {{resource.country}}</h6>
                 <h6 *ngIf="type =='knowledge'" class="text-secondary">
-                    Attachment: {{attachmentPath}} 
+                    <span>Attachment: {{attachmentPath}}</span>
+                    <span class="ml-md-2">
+                        <button pButton class="p-button-rounded" title="Download attachment" icon="pi pi-download" (click)="downloadAttachment(resource.attachment)"></button>
+                    </span>
                 </h6>
                 
                 <h6 class="text-secondary">Status: {{resource.status}}</h6>
                 <p-inputSwitch [ngModel]="checkStatus()" (onChange)="handleChangeChecked($event)"></p-inputSwitch>
-                <!-- <button *ngIf="resource.status == 'active' && isOwner" pButton type="button" label="Deactivate" (click)="deactivateResource()"
-                    class="p-button-rounded p-button-danger"></button>
-                <button *ngIf="resource.status == 'inactive' && isOwner" pButton type="button" label="Activate" (click)="activateResource()"
-                    class="p-button-rounded p-button-success"></button> -->
                     
             </div>
-            <div class="col-4 align-self-end" *ngIf="isOwner">
+            <div class="col-4" *ngIf="isOwner">
                 <a href="/resource/editDetails?id={{resource.id}}&type={{type}}" class="btn btn-primary float-right">
                     <i class="pi pi-pencil" style="color: white"></i>&nbsp;
                     Edit
@@ -115,12 +135,10 @@
                 <button class="btn btn-danger float-right" (click)="deleteResource()">
                     <i class="pi pi-trash" style="color: white"></i>&nbsp;
                     Delete</button>
-                <br/>
-                <br/>
-                <button type="button" class="btn btn-primary float-right" (click)="downloadAttachment(resource.attachment)">
+                <!-- <button *ngIf="type == 'knowledge'" type="button" class="btn btn-primary float-right" (click)="downloadAttachment(resource.attachment)">
                     <i class="pi pi-download" style="color: white"></i>&nbsp;
                     Download attachment
-                </button> 
+                </button>  -->
                 <!-- <span class="p-input-icon-left p-mb-2 p-mb-md-0" *ngIf="type == 'knowledge'">
                     <button type="button" class="btn btn-primary btn-sm float-right" (click)="downloadAttachment(resource.attachment)">
                         <i class="pi pi-download" style="color: white"></i>&nbsp;
