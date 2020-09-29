@@ -126,7 +126,7 @@ export class EditProjectDetailsComponent implements OnInit {
       response => {
         console.log(JSON.stringify(response));
         this.isUpdateSuccessful = true;
-        alert("Project updated!");
+        //alert("Project updated!");
       },
       err => {
         this.errorMessage = err.error.msg;
