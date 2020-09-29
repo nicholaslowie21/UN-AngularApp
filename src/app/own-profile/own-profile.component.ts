@@ -182,13 +182,12 @@ export class OwnProfileComponent implements OnInit {
     this.resourceOffers.sort(this.sortFunction);
 
     console.log("BADGES: "+this.badges);
-    console.log("CURR PROJ: "+this.currentProj);
+    console.log("CURR PROJ: "+JSON.stringify(this.currentProj));
     console.log("PAST PROJ: " + this.pastProj);
     console.log("KNO: " + this.knowledge);
     console.log("MPW: " + this.manpower);
     console.log("ITEM: " + this.item);
     console.log("VENUE: " + this.venue);
-    console.log("RES OFFERS: " + JSON.stringify(this.resourceOffers));
   }
 
   sortFunction(a, b) {
