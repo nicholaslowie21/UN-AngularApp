@@ -160,7 +160,7 @@
                                 </div>
                             </div>
                             <div class="col-8">
-                                <a href="/profile?username={{con.username}}&userType=individual">{{con.contributorName}}</a>
+                                <a href="/profile?username={{con.contributorUsername}}&userType=individual">{{con.contributorName}}</a>
                                 <br/>
                                 <div class="text-secondary" style="font-size: small;">Project {{con.contributionType}}</div>
                             </div>
@@ -243,41 +243,40 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form name="form" (ngSubmit)="f.form.valid && onUpdate()" #f="ngForm" novalidate>
+                        <form name="formU" (ngSubmit)="f.form.valid && onUpdate()" #f="ngForm" novalidate>
                             <div class="form-group row">
-                                <label for="title" class="col-sm-3 col-form-label">Title</label>
+                                <label for="titleU" class="col-sm-3 col-form-label">Title</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" name="title" [(ngModel)]="updateForm.title" required minlength="3" #title="ngModel"
-                                    />
+                                    <input type="text" class="form-control" name="titleU" [(ngModel)]="updateForm.title" required #titleU="ngModel"/>
                                 </div>
-                                <div class="alert-danger" *ngIf="f.submitted && title.invalid">
-                                    <div *ngIf="title.errors.required">Title is required</div>
-                                    <div *ngIf="title.errors.minlength">
+                                <div class="alert-danger" *ngIf="f.submitted && titleU.invalid">
+                                    <div *ngIf="titleU.errors.required">Title is required</div>
+                                    <!-- <div *ngIf="titleU.errors.minlength">
                                         Title must be at least 3 characters
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="desc" class="col-sm-3 col-form-label">Description</label>
+                                <label for="descU" class="col-sm-3 col-form-label">Description</label>
                                 <div class="col-sm-8">
-                                    <textarea class="form-control" name="desc" [(ngModel)]="updateForm.desc" required #desc="ngModel" rows="3"></textarea>
+                                    <textarea class="form-control" name="descU" [(ngModel)]="updateForm.desc" required #descU="ngModel" rows="3"></textarea>
                                 </div>
-                                <div class="alert-danger" *ngIf="f.submitted && desc.invalid">
-                                    <div *ngIf="desc.errors.required">Description is required</div>
+                                <div class="alert-danger" *ngIf="f.submitted && descU.invalid">
+                                    <div *ngIf="descU.errors.required">Description is required</div>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="completion" class="col-sm-3 col-form-label">Completion</label>
+                                <label for="completionU" class="col-sm-3 col-form-label">Completion</label>
                                 <div class="col-sm-8">
-                                    <input type="number" class="form-control" name="completion" [(ngModel)]="updateForm.completion" required min="0" max="100"
-                                        #completion="ngModel" />
+                                    <input type="number" class="form-control" name="completionU" [(ngModel)]="updateForm.completion" required min="0" max="100"
+                                        #completionU="ngModel" />
                                 </div>
-                                <div class="alert-danger" *ngIf="f.submitted && completion.invalid">
-                                    <div *ngIf="completion.errors.required">Completion rate is required</div>
-                                    <div *ngIf="completion.errors.min">
+                                <div class="alert-danger" *ngIf="f.submitted && completionU.invalid">
+                                    <div *ngIf="completionU.errors.required">Completion rate is required</div>
+                                    <div *ngIf="completionU.errors.min">
                                         Completion rate cannot be below 0
                                     </div>
-                                    <div *ngIf="completion.errors.max">
+                                    <div *ngIf="completionU.errors.max">
                                         Completion rate cannot be above 100
                                     </div>
                                 </div>
@@ -302,17 +301,17 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+                        <form name="form" (ngSubmit)="fa.form.valid && onSubmit()" #fa="ngForm" novalidate>
                             <div class="form-group row">
                                 <label for="title" class="col-sm-3 col-form-label">Title</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" name="title" [(ngModel)]="form.title" required minlength="3" #title="ngModel" />
+                                    <input type="text" class="form-control" name="title" [(ngModel)]="form.title" required  #title="ngModel" />
                                 </div>
-                                <div class="alert-danger" *ngIf="f.submitted && title.invalid">
+                                <div class="alert-danger" *ngIf="fa.submitted && title.invalid">
                                     <div *ngIf="title.errors.required">Title is required</div>
-                                    <div *ngIf="title.errors.minlength">
+                                    <!-- <div *ngIf="title.errors.minlength">
                                         Title must be at least 3 characters
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -320,7 +319,7 @@
                                 <div class="col-sm-8">
                                     <textarea class="form-control" name="desc" [(ngModel)]="form.desc" required #desc="ngModel" rows="3"></textarea>
                                 </div>
-                                <div class="alert-danger" *ngIf="f.submitted && desc.invalid">
+                                <div class="alert-danger" *ngIf="fa.submitted && desc.invalid">
                                     <div *ngIf="desc.errors.required">Description is required</div>
                                 </div>
                             </div>

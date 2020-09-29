@@ -33,6 +33,7 @@ export class ProjectDetailsComponent implements OnInit {
 
   form: any = {};
   errorMsg = '';
+  isUpdateSuccessful = false;
   KPIs: any;
   updateForm: any = {};
 
@@ -189,11 +190,11 @@ export class ProjectDetailsComponent implements OnInit {
         console.log(JSON.stringify(response));
         //this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Project '+ title +' has been deleted'});
         //this.ngOnInit();
-        alert("Project " + title + " has been deleted");
+        // alert("Project " + title + " has been deleted");
         window.location.reload();
-        //window.close();
       },
       err => {
+        alert("Error: " + err.error.msg);
         console.log(JSON.stringify(err.error.msg));
       }
     );
@@ -203,10 +204,11 @@ export class ProjectDetailsComponent implements OnInit {
     this.projectService.completeProject({ id: this.projectId }).subscribe(
       response => {
         console.log(JSON.stringify(response));
-        alert("Project " + title + " has been completed!");
+        // alert("Project " + title + " has been completed!");
         window.location.reload();
       },
       err => {
+        alert("Error: " + err.error.msg);
         console.log(JSON.stringify(err.error.msg));
       }
     );
@@ -223,10 +225,11 @@ export class ProjectDetailsComponent implements OnInit {
     this.projectService.createKPI(formCreateKPI).subscribe(
       response => {
         console.log(JSON.stringify(response));
-        alert("KPI Created!");
+        // alert("KPI Created!");
         window.location.reload();
       },
       err => {
+        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
         this.errorMsg = err.error.msg;
         console.log(this.errorMsg);
       }
@@ -255,10 +258,11 @@ export class ProjectDetailsComponent implements OnInit {
     this.projectService.updateKPI(formUpdateKPI).subscribe(
       response => {
         console.log(JSON.stringify(response));
-        alert("KPI Updated!");
+        // alert("KPI Updated!");
         window.location.reload();
       },
       err => {
+        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
         this.errorMsg = err.error.msg;
         console.log(this.errorMsg);
       }
@@ -270,12 +274,12 @@ export class ProjectDetailsComponent implements OnInit {
     this.projectService.deleteKPI({ id: kid }).subscribe(
       response => {
         console.log(JSON.stringify(response));
-        alert("KPI deleted!");
-        window.location.reload();
+        this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'KPI deleted!'});
+        this.ngOnInit();
       },
       err => {
-        this.errorMsg = err.error.msg;
-        console.log(this.errorMsg);
+        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+        console.log(err.error.msg);
       }
     );
   }
