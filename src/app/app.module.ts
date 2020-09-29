@@ -56,6 +56,7 @@ import { ToastModule } from 'primeng/toast';
 import {CarouselModule} from 'primeng/carousel';
 import {InputSwitchModule} from 'primeng/inputswitch';
 import { ProjectResourcesComponent } from './project/project-resources/project-resources.component';
+import {GalleriaModule} from 'primeng/galleria';
 
 @NgModule({
   declarations: [
@@ -109,7 +110,8 @@ import { ProjectResourcesComponent } from './project/project-resources/project-r
     RatingModule,
     ToastModule,
     CarouselModule,
-    InputSwitchModule
+    InputSwitchModule,
+    GalleriaModule
   ],
   providers: [authInterceptorProviders, AuthGuardService],
   bootstrap: [AppComponent]
