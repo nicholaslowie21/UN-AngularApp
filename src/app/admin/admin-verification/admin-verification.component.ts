@@ -102,8 +102,9 @@ export class AdminVerificationComponent implements OnInit {
     this.verificationService.getAttachmentFile(filePath).subscribe(
       response => {
         this.tempStrings = filePath.split("/");
+        console.log(this.tempStrings);
         saveAs(response, this.tempStrings[this.tempStrings.length-1]);
-        this.reloadPage();
+        // this.reloadPage();
       },
       err => {
         alert('Something went wrong while downloading the file. Please try again!')

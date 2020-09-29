@@ -115,7 +115,7 @@
                                             <h6 class="card-title text-left mt-md-3" style="margin-left: 5%;"> Username: {{i.username}} </h6>
                                             <h6 class="card-title text-left mt-md-3" style="margin-left: 5%;"> Status: {{i.status}} </h6>
                                             <h6 class="card-title text-left mt-md-3" style="margin-left: 5%;"> Verified: {{i.isVerified}} </h6>
-                                            <button class="btn btn-primary" style="width: 50%;" (click)="downloadAttachment(i.verifyFilePath)"><i class="pi pi-download"></i>Download attachment</button>
+                                            
                                         </div>
                                         <div class="card border-0" style="width:50%; float: right">
                                             <div class="card-body">
@@ -128,6 +128,9 @@
                                                     Verify
                                                 </button>
                                             </div>
+                                            <button class="btn btn-primary" (click)="downloadAttachment(i.verifyFilePath)">
+                                                <i class="pi pi-download"></i>&nbsp;Download attachment
+                                            </button>
                                         </div>
                                     </div>
                                 </li>
