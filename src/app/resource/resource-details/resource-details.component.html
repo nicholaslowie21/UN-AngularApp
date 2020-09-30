@@ -1,4 +1,7 @@
 <h2>Resource details</h2>
+
+<p-toast key="toastMsg" [baseZIndex]="100"></p-toast>
+
 <div *ngIf="!isDeleted && resource.status !== 'deleted'" class="row">
     <div class="col-8">
         <div *ngIf="type == 'item'">

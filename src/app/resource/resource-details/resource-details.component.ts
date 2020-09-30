@@ -4,11 +4,13 @@ import { TokenStorageService } from '../../services/token-storage.service';
 import { ResourceService } from '../../services/resource.service';
 import { saveAs } from 'file-saver';
 import { Galleria } from 'primeng/galleria';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-resource-details',
   templateUrl: './resource-details.component.html',
-  styleUrls: ['./resource-details.component.css']
+  styleUrls: ['./resource-details.component.css'],
+  providers: [MessageService]
 })
 export class ResourceDetailsComponent implements OnInit {
 
@@ -48,7 +50,7 @@ export class ResourceDetailsComponent implements OnInit {
   ];
 
   constructor(private route: ActivatedRoute, private tokenStorageService: TokenStorageService, 
-    private resourceService: ResourceService) { }
+    private resourceService: ResourceService, private messageService: MessageService) { }
 
   async ngOnInit() {
     this.route.queryParams.subscribe(
@@ -137,36 +139,36 @@ export class ResourceDetailsComponent implements OnInit {
       this.resourceService.deactivateItem({id: this.id}).toPromise().then(
         res => {
           this.resource = res.data.item;
-          alert("Item deactivated!");
+          this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Item deactivated!'});
         }, err => {
-          alert("Error: " + err.error.msg);
+          this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
         }
       );
     } else if (this.type == 'manpower') {
       this.resourceService.deactivateManpower({id: this.id}).toPromise().then(
         res => {
           this.resource = res.data.manpower;
-          alert("Manpower deactivated!");
+          this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Manpower deactivated!'});
         }, err => {
-          alert("Error: " + err.error.msg);
+          this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
         }
       );
     } else if (this.type == 'venue') {
       this.resourceService.deactivateVenue({id: this.id}).toPromise().then(
        res => {
          this.resource = res.data.venue;
-         alert("Venue deactivated!");
+         this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Venue deactivated!'});
        }, err => {
-         alert("Error: " + err.error.msg);
+        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
        }
       );
     } else if (this.type == 'knowledge') {
       this.resourceService.deactivateKnowledge({id: this.id}).toPromise().then(
         res => {
           this.resource = res.data.knowledge;
-          alert("Knowledge deactivated!");
+          this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Knowledge deactivated!'});
         }, err => {
-          alert("Error: " + err.error.msg);
+          this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
         }
       );
     }
@@ -177,36 +179,36 @@ export class ResourceDetailsComponent implements OnInit {
       this.resourceService.activateItem({id: this.id}).toPromise().then(
         res => {
           this.resource = res.data.item;
-          alert("Item activated!");
+          this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Item activated!'});
         }, err => {
-          alert("Error: " + err.error.msg);
+          this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
         }
       );
     } else if (this.type == 'manpower') {
       this.resourceService.activateManpower({id: this.id}).toPromise().then(
         res => {
           this.resource = res.data.manpower;
-          alert("Manpower activated!");
+          this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Manpower activated!'});
         }, err => {
-          alert("Error: " + err.error.msg);
+          this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
         }
       );
     } else if (this.type == 'venue') {
       this.resourceService.activateVenue({id: this.id}).toPromise().then(
        res => {
          this.resource = res.data.venue;
-         alert("Venue activated!");
+         this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Venue activated!'});
        }, err => {
-         alert("Error: " + err.error.msg);
+        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
        }
       );
     } else if (this.type == 'knowledge') {
       this.resourceService.activateKnowledge({id: this.id}).toPromise().then(
         res => {
           this.resource = res.data.knowledge;
-          alert("Knowledge activated!");
+          this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Knowledge activated!'});
         }, err => {
-          alert("Error: " + err.error.msg);
+          this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
         }
       );
     }
