@@ -21,6 +21,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class OwnProfileComponent implements OnInit {
 
+  isLoggedIn = false;
   username: any;
   user: any;
   userType: any;
@@ -65,6 +66,10 @@ export class OwnProfileComponent implements OnInit {
       }
     )
 
+    if(this.tokenStorageService.getToken()) {
+      this.isLoggedIn = true;
+    }
+
     if(this.userType == "individual") {
       this.isIndividual = true;
       await this.userService.viewUserProfile({username: this.username}).toPromise().then(
@@ -92,7 +97,7 @@ export class OwnProfileComponent implements OnInit {
     }
 
     this.shareLink = "http://localhost:4200/profile?username=" + this.username+"&userType="+this.userType;
-    this.iFrameLink = "http://localhost:4200/shareProfile?username=" + this.username;
+    this.iFrameLink = "http://localhost:4200/shareProfile?username=" + this.username+"&userType="+this.userType;
 
     this.copyIFrameLink = "<iframe src="+ this.iFrameLink +" title=\"User Profile\" width=\"500\" height=\"500\"></iframe>";
 
@@ -182,6 +187,9 @@ export class OwnProfileComponent implements OnInit {
       await this.resourceService.getInstitutionItem({ id: this.userId }).toPromise().then(
         response => {
           this.item = response.data.items;
+          for(var i=0; i<response.data.items.length; i++) {
+            response.data.items[i].type = 'item';
+          }
           this.resourceOffers = this.resourceOffers.concat(response.data.items);
         }
       );
@@ -189,6 +197,9 @@ export class OwnProfileComponent implements OnInit {
       await this.resourceService.getInstitutionVenue({ id: this.userId }).toPromise().then(
         response => {
           this.venue = response.data.venues;
+          for(var i=0; i<response.data.venues.length; i++) {
+            response.data.venues[i].type = 'venue';
+          }
           this.resourceOffers = this.resourceOffers.concat(response.data.venues);
         }
       );

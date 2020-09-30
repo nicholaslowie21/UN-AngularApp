@@ -27,6 +27,8 @@ export class ShareProfilePageComponent implements OnInit {
   item: any = [];
   venue: any = [];
 
+  resourceOffers = [];
+
   constructor(private route: ActivatedRoute, private userService: UserService, private institutionService: InstitutionService, private resourceService: ResourceService) { }
 
   async ngOnInit() {
@@ -40,9 +42,9 @@ export class ShareProfilePageComponent implements OnInit {
     if(this.userType == "individual") {
       this.isIndividual = true;
       await this.userService.viewUserProfile({username: this.username}).toPromise().then(
-        response => {
+        async response => {
           this.user = response.data.targetUser;
-          this.loadUserData(this.user);
+          await this.loadUserData(this.user);
           if(this.user.isVerified == "true") {
             this.isVerified = true;
           }
@@ -51,84 +53,115 @@ export class ShareProfilePageComponent implements OnInit {
     } else if(this.userType == "institution") {
       this.isIndividual = false;
       await this.institutionService.viewInstitutionProfile({username: this.username}).toPromise().then(
-        response => {
+        async response => {
           this.user = response.data.targetInstitution;
-          this.loadInstitutionData(this.user);
+          await this.loadInstitutionData(this.user);
           if(this.user.isVerified) {
             this.isVerified = true;
           }
         }
       )
     }
-    console.log("SHARE PROFILE: " + this.user);
+    this.resourceOffers.sort(this.sortFunction);
   }
 
-  loadUserData(user): void {
-    this.userService.getCurrentProjects({ id: user.id }).subscribe(
+  async loadUserData(user) {
+    await this.userService.getCurrentProjects({ id: user.id }).toPromise().then(
       response => {
         this.currentProj = response.data.currProjects;
       }
     );
-    this.userService.getPastProjects({ id: user.id }).subscribe(
+    await this.userService.getPastProjects({ id: user.id }).toPromise().then(
       response => {
         this.pastProj = response.data.pastProjects;
       }
     );
-    this.resourceService.getUserKnowledge({ id: user.id }).subscribe(
+    await this.resourceService.getUserKnowledge({ id: user.id }).toPromise().then(
       response => {
         this.knowledge = response.data.knowledges;
+        for(var i=0; i<response.data.knowledges.length; i++) {
+          response.data.knowledges[i].type = 'knowledge';
+        }
+        this.resourceOffers = this.resourceOffers.concat(response.data.knowledges);
       }
     );
-
-    this.resourceService.getUserItem({ id: user.id }).subscribe(
+    await this.resourceService.getUserItem({ id: user.id }).toPromise().then(
       response => {
         this.item = response.data.items;
+        for(var i=0; i<response.data.items.length; i++) {
+          response.data.items[i].type = 'item';
+        }
+        this.resourceOffers = this.resourceOffers.concat(response.data.items);
       }
     );
-
-    this.resourceService.getUserManpower({ id: user.id }).subscribe(
+    await this.resourceService.getUserManpower({ id: user.id }).toPromise().then(
       response => {
         this.manpower = response.data.manpowers;
+        for(var i=0; i<response.data.manpowers.length; i++) {
+          response.data.manpowers[i].type = 'manpower';
+        }
+        this.resourceOffers = this.resourceOffers.concat(response.data.manpowers);
       }
     );
-
-    this.resourceService.getUserVenue({ id: user.id }).subscribe(
+    await this.resourceService.getUserVenue({ id: user.id }).toPromise().then(
       response => {
         this.venue = response.data.venues;
+        for(var i=0; i<response.data.venues.length; i++) {
+          response.data.venues[i].type = 'venue';
+        }
+        this.resourceOffers = this.resourceOffers.concat(response.data.venues);
       }
     );
   }
 
-  loadInstitutionData(institution): void {
-      this.institutionService.getCurrentProjects({ id: institution.id }).subscribe(
+  async loadInstitutionData(institution) {
+    await this.institutionService.getCurrentProjects({ id: institution.id }).toPromise().then(
         response => {
           this.currentProj = response.data.currProjects;
         }
       );
 
-      this.institutionService.getPastInvolvement({ id: institution.id }).subscribe(
+      await this.institutionService.getPastInvolvement({ id: institution.id }).toPromise().then(
         response => {
           this.pastProj = response.data.pastProjects;
         }
       );
 
-      this.resourceService.getInstitutionKnowledge({ id: institution.id }).subscribe(
+      await this.resourceService.getInstitutionKnowledge({ id: institution.id }).toPromise().then(
         response => {
           this.knowledge = response.data.knowledges;
+          for(var i=0; i<response.data.knowledges.length; i++) {
+            response.data.knowledges[i].type = 'knowledge';
+          }
+          this.resourceOffers = this.resourceOffers.concat(response.data.knowledges);
         }
       );
 
-      this.resourceService.getInstitutionItem({ id: institution.id }).subscribe(
+      await this.resourceService.getInstitutionItem({ id: institution.id }).toPromise().then(
         response => {
           this.item = response.data.items;
+          for(var i=0; i<response.data.items.length; i++) {
+            response.data.items[i].type = 'item';
+          }
+          this.resourceOffers = this.resourceOffers.concat(response.data.items);
         }
       );
 
-      this.resourceService.getInstitutionVenue({ id: institution.id }).subscribe(
+      await this.resourceService.getInstitutionVenue({ id: institution.id }).toPromise().then(
         response => {
           this.venue = response.data.venues;
+          for(var i=0; i<response.data.venues.length; i++) {
+            response.data.venues[i].type = 'venue';
+          }
+          this.resourceOffers = this.resourceOffers.concat(response.data.venues);
         }
       );
+  }
+
+  sortFunction(a, b) {
+    var dateA = new Date(a.updatedAt).getTime();
+    var dateB = new Date(b.updatedAt).getTime();
+    return dateA > dateB ? -1 : 1;
   }
 
 }
