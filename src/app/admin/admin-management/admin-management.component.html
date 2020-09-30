@@ -67,8 +67,7 @@
                     </div>
                   </div>
                   <div class="col-5">
-                    Name: <a *ngIf="user.username != thisUser.username" href="/profile?username={{user.username}}&userType=individual" target="_blank">{{user.name}}<br/></a> 
-                    <a *ngIf="user.username == thisUser.username" href="/ownProfile" target="_blank">{{user.name}}<br/></a> 
+                    Name: <a href="/profile?username={{user.username}}&userType=individual" target="_blank">{{user.name}}<br/></a> 
                     Username: {{user.username}} <br/>
                     Role: {{user.role}}
                   </div>

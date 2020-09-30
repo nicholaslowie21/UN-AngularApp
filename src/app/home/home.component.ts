@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../services/auth.service';
 import { TokenStorageService } from '../services/token-storage.service';
 
 @Component({
@@ -10,22 +9,17 @@ import { TokenStorageService } from '../services/token-storage.service';
 export class HomeComponent implements OnInit {
 
   user: any;
+  userType: any;
 
-  constructor(private authService: AuthService, private tokenStorageService: TokenStorageService) { }
+  constructor(private tokenStorageService: TokenStorageService) { }
 
   ngOnInit(): void {
     this.user = this.tokenStorageService.getUser();
-  }
-
-  test(): void {
-    this.authService.test().subscribe(
-      response => {
-        console.log(response.msg);
-      },
-      err => {
-        console.log(err.error.msg);
-      }
-    )
+    if(this.tokenStorageService.getAccountType() == 'user') {
+      this.userType = 'individual';
+    } else {
+      this.userType = 'institution';
+    }
   }
 
 }
