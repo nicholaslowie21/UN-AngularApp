@@ -124,7 +124,7 @@
                 </h6>
                 
                 <h6 class="text-secondary">Status: {{resource.status}}</h6>
-                <p-inputSwitch [ngModel]="checkStatus()" (onChange)="handleChangeChecked($event)"></p-inputSwitch>
+                <p-inputSwitch *ngIf="isOwner" [ngModel]="checkStatus()" (onChange)="handleChangeChecked($event)"></p-inputSwitch>
                     
             </div>
             <div class="col-4">

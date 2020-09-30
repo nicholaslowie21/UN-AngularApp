@@ -14,6 +14,7 @@ export class EditProfileComponent implements OnInit {
   user: any;
   userSkills: any;
   isIndividual = false;
+  userType: any;
   isUpdateSuccessful = false;
   errorMessage = '';
 
@@ -41,7 +42,10 @@ export class EditProfileComponent implements OnInit {
       this.user = this.tokenStorage.getUser();
       if (this.tokenStorage.getAccountType() == "user") {
         this.isIndividual = true;
+        this.userType = 'individual';
         this.userSkills = this.user.skills.toString();
+      } else {
+        this.userType = 'institution';
       }
     }
 

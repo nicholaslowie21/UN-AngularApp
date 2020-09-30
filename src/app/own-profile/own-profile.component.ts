@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../services/auth.service';
 import { TokenStorageService } from '../services/token-storage.service';
 import { faFacebookSquare } from '@fortawesome/free-brands-svg-icons/faFacebookSquare';
 import { faTwitter } from '@fortawesome/free-brands-svg-icons/faTwitter';
@@ -13,6 +12,7 @@ import { faClipboard } from '@fortawesome/free-solid-svg-icons/faClipboard';
 import { UserService } from '../services/user.service';
 import { ResourceService } from '../services/resource.service';
 import { InstitutionService } from '../services/institution.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-own-profile',
@@ -21,8 +21,10 @@ import { InstitutionService } from '../services/institution.service';
 })
 export class OwnProfileComponent implements OnInit {
 
+  username: any;
   user: any;
   userType: any;
+  isOwner = false;
   isIndividual = false;
   isVerified = false;
   shareLink = '';
@@ -52,34 +54,47 @@ export class OwnProfileComponent implements OnInit {
 
   //projectList = Array;
 
-  constructor(private authService: AuthService, private tokenStorageService: TokenStorageService, private userService: UserService,
-    private resourceService: ResourceService, private institutionService: InstitutionService) { }
+  constructor(private tokenStorageService: TokenStorageService, private userService: UserService,
+    private resourceService: ResourceService, private institutionService: InstitutionService, private route: ActivatedRoute) { }
 
   async ngOnInit() {
-    this.user = this.tokenStorageService.getUser();
-    console.log("USER: " + this.user.profilePic);
-    this.shareLink = "http://localhost:4200/profile?username=" + this.user.username;
-    this.iFrameLink = "http://localhost:4200/shareProfile?username=" + this.user.username;
-    
-    if (this.tokenStorageService.getAccountType() == "user") {
-      this.userType = 'individual';
+    this.route.queryParams.subscribe(
+      params => {
+        this.username = params.username;
+        this.userType = params.userType;
+      }
+    )
+
+    if(this.userType == "individual") {
       this.isIndividual = true;
-      if(this.user.isVerified == "true") {
-        this.isVerified = true;
-      }
-      this.shareLink += "&userType=individual";
-      this.iFrameLink += "&userType=individual";
+      await this.userService.viewUserProfile({username: this.username}).toPromise().then(
+        response => {
+          this.user = response.data.targetUser;
+          if(this.user.isVerified == "true") {
+            this.isVerified = true;
+          }
+        }
+      )
     } else {
-      this.userType = 'institution';
-      if(this.user.isVerified) {
-        this.isVerified = true;
-      }
-      this.shareLink += "&userType=institution";
-      this.iFrameLink += "&userType=institution";
+      this.isIndividual = false;
+      await this.institutionService.viewInstitutionProfile({username: this.username}).toPromise().then(
+        response => {
+          this.user = response.data.targetInstitution;
+          if(this.user.isVerified) {
+            this.isVerified = true;
+          }
+        }
+      )
     }
 
+    if(this.user.id == this.tokenStorageService.getUser().id) {
+      this.isOwner = true;
+    }
+
+    this.shareLink = "http://localhost:4200/profile?username=" + this.username+"&userType="+this.userType;
+    this.iFrameLink = "http://localhost:4200/shareProfile?username=" + this.username;
+
     this.copyIFrameLink = "<iframe src="+ this.iFrameLink +" title=\"User Profile\" width=\"500\" height=\"500\"></iframe>";
-    //this.projectList = this.user.projects;
 
     this.userId = this.user.id;
     console.log(JSON.stringify(this.userId));

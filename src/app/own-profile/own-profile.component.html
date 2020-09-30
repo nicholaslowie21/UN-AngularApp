@@ -25,7 +25,7 @@
             <h6 class="card-title text-left mt-md-1">{{ user.bio }}</h6>
             <h6 class="card-title text-left mt-md-1"><a [href]="user.website">{{ user.website }}</a></h6>
         </div>
-        <div class="col-2">
+        <div class="col-2" *ngIf="isOwner">
             <a href="/editProfile" class="btn btn-primary mb-md-2">
                 <fa-icon [icon]="faPencilAlt" size="1x"></fa-icon>
             </a>
@@ -120,7 +120,7 @@
             </h6>
         </div>
         <div class="col-3 bg-primary text-white border-0" *ngIf=isIndividual>
-            <h6 class="card-title text-left mt-md-3 center" style="margin: 15px">My Points: {{ user.points }}</h6>
+            <h6 *ngIf="isOwner" class="card-title text-left mt-md-3 center" style="margin: 15px">My Points: {{ user.points }}</h6>
             <!-- <h6 class="card-title text-left mt-md-3 center" style="margin: 15px">My Affiliations:</h6> -->
             <!-- Button trigger modal -->
             <button type="button" class="btn btn-warning ml-md-2 mt-md-4" data-toggle="modal" data-target="#individualAffiliations">
@@ -163,7 +163,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-3 bg-primary text-white border-0" *ngIf=isIndividual>
+        <div class="col-3 bg-primary text-white border-0" *ngIf="isIndividual && isOwner">
             <h6 class="card-title text-left mt-md-3" style="margin: 15px">My Wallet: {{ user.wallet }}</h6>
         </div>
     </div>
