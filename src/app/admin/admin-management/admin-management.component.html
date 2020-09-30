@@ -77,10 +77,11 @@
                     Name: <a *ngIf="user.username != thisUser.username" href="/profile?username={{user.username}}&userType=individual" target="_blank">{{user.name}}<br/></a> 
                     <a *ngIf="user.username == thisUser.username" href="/ownProfile" target="_blank">{{user.name}}<br/></a> 
                     Username: {{user.username}} <br/>
-                    Role: {{user.role}}
+                    Role: {{user.role}} <br/>
+                    Country: {{user.country}}
                   </div>
                   <div class="col-4">
-                    <div class="dropdown float-right">
+                    <div class="dropdown float-right" *ngIf="user.username != thisUser.username">
                       <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Assign role
                       </button>
@@ -127,9 +128,9 @@
                     </div>
                   </div>
                   <div class="col-5">
-                    <a href="/profile?username={{c.username}}&userType=individual" target="_blank">{{c.name}}<br/></a> 
-                    {{c.username}} <br/>
+                    <a href="/profile?username={{c.username}}&userType=individual" target="_blank">{{c.name}}</a> ({{c.username}}) <br/> 
                     <div class="text-secondary">{{c.role}}</div>
+                    <div class="text-secondary">{{c.country}}</div>
                   </div>
                   <div class="col-4">
                     <div class="dropdown float-right" *ngIf="c.username != thisUser.username">
@@ -177,9 +178,9 @@
                     </div>
                   </div>
                   <div class="col-5">
-                    <a href="/profile?username={{a.username}}&userType=individual" target="_blank">{{a.name}}</a> <br/>
-                    {{a.username}} <br/>
+                    <a href="/profile?username={{a.username}}&userType=individual" target="_blank">{{a.name}}</a> ({{a.username}}) <br/>
                     <div class="text-secondary">{{a.role}}</div>
+                    <div class="text-secondary">{{a.country}}</div>
                   </div>
                   <div class="col-4">
                     <div class="dropdown float-right">
@@ -227,9 +228,9 @@
                     </div>
                   </div>
                   <div class="col-5">
-                    <a href="/profile?username={{r.username}}&userType=individual" target="_blank">{{r.name}}</a> <br/>
-                    {{r.username}} <br/>
+                    <a href="/profile?username={{r.username}}&userType=individual" target="_blank">{{r.name}}</a> ({{r.username}}) <br/>
                     <div class="text-secondary">{{r.role}}</div>
+                    <div class="text-secondary">{{r.country}}</div>
                   </div>
                   <div class="col-4">
                     <div class="dropdown float-right">
