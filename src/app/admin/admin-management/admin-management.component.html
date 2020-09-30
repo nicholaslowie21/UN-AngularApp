@@ -41,10 +41,17 @@
         </div>
       </form>
 
-      <div class="alert alert-warning" *ngIf="f.submitted && !isSearchSuccessful">
+      <div class="alert alert-warning" style="width: 60%;" *ngIf="f.submitted && !isSearchSuccessful">
           {{ errorMsgSearch }}
       </div>
       <div *ngIf=isSearchSuccessful>
+        <select class="form-control" style="width: 30%;" [(ngModel)]="filterUserCountryKey" (change)="filterUsersByCountry()">
+          <option hidden selected>{{filterUserCountryKey}}</option>
+          <option *ngFor="let c of countries" value={{c}}>{{c}}</option>
+        </select>
+        <div class="alert alert-warning" style="width: 30%;" *ngIf="searchResults.length == 0">
+          No user found in this country
+        </div>
         <div *ngFor="let user of searchResults">
             <div class="card" style="width: 70%">
                 <div class="card-body row">
@@ -91,6 +98,13 @@
       </div>
     </div>
     <div class="tab-pane fade" id="adminLeads" role="tabpanel" aria-labelledby="adminLeads-tab">
+        <select class="form-control" style="width: 30%;" [(ngModel)]="filterAdminLeadsCountryKey" (change)="filterAdminLeadsByCountry()">
+          <option hidden selected>{{filterAdminLeadsCountryKey}}</option>
+          <option *ngFor="let c of countries" value={{c}}>{{c}}</option>
+        </select>
+        <div class="alert alert-warning" style="width: 30%;" *ngIf="adminLeads.length == 0">
+          No admin leads in this country
+        </div>
         <div *ngFor="let c of adminLeads">
             <div class="card" style="width: 70%">
                 <div class="card-body row">
@@ -134,6 +148,13 @@
         </div>
     </div>
     <div class="tab-pane fade" id="admins" role="tabpanel" aria-labelledby="admins-tab">
+        <select class="form-control" style="width: 30%;" [(ngModel)]="filterAdminsCountryKey" (change)="filterAdminsByCountry()">
+          <option hidden selected>{{filterAdminsCountryKey}}</option>
+          <option *ngFor="let c of countries" value={{c}}>{{c}}</option>
+        </select>
+        <div class="alert alert-warning" style="width: 30%;" *ngIf="admins.length == 0">
+          No admins in this country
+        </div>
         <div *ngFor="let a of admins">
             <div class="card" style="width: 70%">
                 <div class="card-body row">
@@ -177,6 +198,13 @@
         </div>
     </div>
     <div class="tab-pane fade" id="regionalAdmins" role="tabpanel" aria-labelledby="regionalAdmins-tab">
+        <select class="form-control" style="width: 30%;" [(ngModel)]="filterRegionalAdminsCountryKey" (change)="filterRegionalAdminsByCountry()">
+          <option hidden selected>{{filterRegionalAdminsCountryKey}}</option>
+          <option *ngFor="let c of countries" value={{c}}>{{c}}</option>
+        </select>
+        <div class="alert alert-warning" style="width: 30%;" *ngIf="regionalAdmins.length == 0">
+          No regional admins in this country
+        </div>
         <div *ngFor="let r of regionalAdmins">
             <div class="card" style="width: 70%">
                 <div class="card-body row">

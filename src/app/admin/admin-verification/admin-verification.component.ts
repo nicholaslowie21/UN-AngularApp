@@ -32,6 +32,10 @@ export class AdminVerificationComponent implements OnInit {
 
   tempStrings: any;
 
+  filterUserCountryKey = 'Filter by country';
+  filterInstitutionCountryKey = 'Filter by country';
+  countries = ["All","Afghanistan","Albania","Algeria","Andorra","Angola","Anguilla","Antigua and Barbuda","Argentina","Armenia","Aruba","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bermuda","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi","Cambodia","Cameroon","Canada","Cape Verde","Cayman Islands","Central African Republic","Chad","Chile","China","Colombia","Congo","Cook Islands","Costa Rica","Côte d'Ivoire","Croatia","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","East Timor","Ecuador","Egypt","El Salvador","Equatorial Guinea","Estonia","Ethiopia","Falkland Islands","Faroe Islands","Fiji","Finland","France","French Polynesia","Gabon","Gambia","Georgia","Germany","Ghana","Gibraltar","Greece","Greenland","Grenada","Guam","Guatemala","Guernsey","Guinea","Guinea Bissau","Guyana","Haiti","Honduras","Hong Kong","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Isle of Man","Israel","Italy","Jamaica","Japan","Jersey","Jordan","Kazakhstan","Kenya","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Macau","Macedonia","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Mauritania","Mauritius","Mexico","Moldova","Monaco","Mongolia","Montenegro","Montserrat","Morocco","Mozambique","Namibia","Nepal","Netherlands","Netherlands Antilles","New Caledonia","New Zealand","Nicaragua","Niger","Nigeria","Norway","Oman","Pakistan","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Puerto Rico","Qatar","Reunion","Romania","Russia","Rwanda","Saint Pierre and Miquelon","Samoa","San Marino","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","South Africa","South Korea","Spain","Sri Lanka","Saint Kitts and Nevis","Saint Lucia","Saint Vincent And The Grenadines","Sudan","Suriname","Swaziland","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Turks and Caicos Islands","Uganda","Ukraine","United Arab Emirates","United Kingdom","Uruguay","Uzbekistan","Venezuela","Vietnam", "Virgin Islands (British)", "Virgin Islands (US)","Yemen","Zambia","Zimbabwe"];
+
   constructor(private userService: UserService, private institutionService: InstitutionService, private tokenStorage: TokenStorageService,
     private verificationService: VerificationService, private adminService: AdminService) { }
 
@@ -61,8 +65,46 @@ export class AdminVerificationComponent implements OnInit {
     }
   }
 
-  loadUserRequests(): void {
-    this.verificationService.getUserRequests().subscribe(
+  async filterUsersByCountry() {
+    let arr = [];
+    if (this.tokenStorage.getUser().role == "regionaladmin") {
+      await this.loadRegionalUsers();
+    } else {
+      await this.loadUserRequests();
+    }
+    if (this.filterUserCountryKey == 'Filter by country' || this.filterUserCountryKey == 'All') {
+      return;
+    } else {
+      for(var i=0; i<this.verify.length; i++) {
+        if(this.verify[i].country == this.filterUserCountryKey) {
+          arr.push(this.verify[i]);
+        }
+      }
+    }
+    this.verify = arr;
+  }
+
+  async filterInstitutionsByCountry() {
+    let arr = [];
+    if (this.tokenStorage.getUser().role == "regionaladmin") {
+      await this.loadRegionalInstitutions();
+    } else {
+      await this.loadInstitutionRequests();
+    }
+    if (this.filterInstitutionCountryKey == 'Filter by country' || this.filterInstitutionCountryKey == 'All') {
+      return;
+    } else {
+      for(var i=0; i<this.verifyInstitution.length; i++) {
+        if(this.verifyInstitution[i].country == this.filterInstitutionCountryKey) {
+          arr.push(this.verifyInstitution[i]);
+        }
+      }
+    }
+    this.verifyInstitution = arr;
+  }
+
+  async loadUserRequests() {
+    await this.verificationService.getUserRequests().toPromise().then(
       response => {
         console.log(JSON.stringify(response));
         this.verify = response.data.verifyRequests;
@@ -70,8 +112,8 @@ export class AdminVerificationComponent implements OnInit {
     );
   }
 
-  loadInstitutionRequests(): void {
-    this.verificationService.getInstitutionRequests().subscribe(
+  async loadInstitutionRequests() {
+    await this.verificationService.getInstitutionRequests().toPromise().then(
       response => {
         console.log(JSON.stringify(response));
         this.verifyInstitution = response.data.institutions;
@@ -79,8 +121,8 @@ export class AdminVerificationComponent implements OnInit {
     );
   }
 
-  loadRegionalUsers(): void {
-    this.verificationService.getRegionalUserRequest().subscribe(
+  async loadRegionalUsers() {
+    await this.verificationService.getRegionalUserRequest().toPromise().then(
       response => {
         console.log(JSON.stringify(response));
         this.verify = response.data.verifyRequests;
@@ -88,8 +130,8 @@ export class AdminVerificationComponent implements OnInit {
     );
   }
 
-  loadRegionalInstitutions(): void {
-    this.verificationService.getRegionalInstitutionRequest().subscribe(
+  async loadRegionalInstitutions() {
+    await this.verificationService.getRegionalInstitutionRequest().toPromise().then(
       response => {
         console.log(JSON.stringify(response));
         this.verifyInstitution = response.data.institutions;

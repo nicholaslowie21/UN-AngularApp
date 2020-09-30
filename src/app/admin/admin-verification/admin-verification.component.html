@@ -25,6 +25,11 @@
 
                 <div class="tab-content">
                     <div class="tab-pane fade show active" id="search" role="tabpanel" aria-labelledby="search-tab">
+                        <select class="form-control" style="width: 30%;" [(ngModel)]="filterUserCountryKey" (change)="filterUsersByCountry()">
+                            <option hidden selected>{{filterUserCountryKey}}</option>
+                            <option *ngFor="let c of countries" value={{c}}>{{c}}</option>
+                        </select>
+
                         <div class="alert alert-warning mt-md-2" *ngIf="verify.length == 0">
                             No request found.
                         </div>
@@ -41,6 +46,7 @@
                                             <h6 class="card-title text-left mt-md-3" style="margin-left: 5%;"> Name: <a href="/profile?username={{v.username}}&userType=individual" target="_blank">{{v.name}}</a> </h6>
                                             <h6 class="card-title text-left mt-md-3" style="margin-left: 5%;"> Username: {{v.username}} </h6>
                                             <h6 class="card-title text-left mt-md-3" style="margin-left: 5%;"> Status: {{v.status}} </h6>
+                                            <h6 class="card-title text-left mt-md-3" style="margin-left: 5%;"> Country: {{v.country}} </h6>
                                             <!--h6 class="card-title text-left mt-md-3" style="margin: 5px;" id="vId"> Id: {{v.userId}} </h6-->
                                         </div>
 
@@ -102,6 +108,12 @@
                     </div>
 
                     <div class="tab-pane fade" id="adminLeads" role="tabpanel" aria-labelledby="adminLeads-tab">
+                        
+                        <select class="form-control" style="width: 30%;" [(ngModel)]="filterInstitutionCountryKey" (change)="filterInstitutionsByCountry()">
+                            <option hidden selected>{{filterInstitutionCountryKey}}</option>
+                            <option *ngFor="let c of countries" value={{c}}>{{c}}</option>
+                        </select>
+
                         <div class="alert alert-warning mt-md-2" *ngIf="verifyInstitution.length == 0">
                             No request found.
                         </div>
@@ -114,6 +126,7 @@
                                             <h6 class="card-title text-left mt-md-3" style="margin-left: 5%;"> Name: <a href="/profile?username={{i.username}}&userType=institution" target="_blank">{{i.name}}</a></h6>
                                             <h6 class="card-title text-left mt-md-3" style="margin-left: 5%;"> Username: {{i.username}} </h6>
                                             <h6 class="card-title text-left mt-md-3" style="margin-left: 5%;"> Status: {{i.status}} </h6>
+                                            <h6 class="card-title text-left mt-md-3" style="margin-left: 5%;"> Country: {{i.country}} </h6>
                                             <h6 class="card-title text-left mt-md-3" style="margin-left: 5%;"> Verified: {{i.isVerified}} </h6>
                                             
                                         </div>
