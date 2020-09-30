@@ -20,6 +20,10 @@
     {{ errorMsgSearch }}
 </div>
 <div *ngIf=isSearchSuccessful>
+    <select class="form-control" style="width: 30%;" [(ngModel)]="filterCountryKey" (change)="filterByCountry()">
+        <option hidden selected>{{filterCountryKey}}</option>
+        <option *ngFor="let c of countries" value={{c}}>{{c}}</option>
+    </select>
     <div class="alert alert-warning" *ngIf="searchResults.length == 0">
         No result found
     </div>
@@ -40,9 +44,9 @@
                         </div>
                         <div class="col-7">
                             {{user.name}} ({{user.username}})
-                            <div *ngIf="user.role" class="text-secondary">{{user.role}}</div>
-                            <div class="text-secondary">{{user.status}}</div>
-                            <div class="text-secondary">{{user.country}}</div>
+                            <div *ngIf="user.role" class="text-secondary">Role: {{user.role}}</div>
+                            <div class="text-secondary">Status: {{user.status}}</div>
+                            <div class="text-secondary">Country: {{user.country}}</div>
                         </div>
                         <div class="col-3">
                             <div *ngIf="user.role == 'user' || user.members || isAdminLead && user.username != thisUser.username">
@@ -81,8 +85,8 @@
                         Title: {{project.title}} <br/>
                         Code: {{project.code}} <br/>
                         Status: {{project.status}} <br/>
-                        Country: {{project.region}}
-                        <div *ngIf="(isRegionalAdmin && regAdminCountry == project.region) || isAdmin || isAdminLead">
+                        Country: {{project.country}}
+                        <div *ngIf="(isRegionalAdmin && regAdminCountry == project.country) || isAdmin || isAdminLead">
                             <div class="btn-group float-right">
                                 <button type="button" (click)="viewProject(project)" class="btn btn-primary">View</button>
                             </div>
