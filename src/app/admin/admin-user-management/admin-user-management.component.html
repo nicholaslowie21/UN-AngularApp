@@ -43,7 +43,7 @@
                             </div>
                         </div>
                         <div class="col-7">
-                            {{user.name}} ({{user.username}})
+                            <a href="/profile?username={{user.username}}&userType={{searchType}}" target="_blank">{{user.name}}</a> ({{user.username}})
                             <div *ngIf="user.role" class="text-secondary">Role: {{user.role}}</div>
                             <div class="text-secondary">Status: {{user.status}}</div>
                             <div class="text-secondary">Country: {{user.country}}</div>
@@ -82,7 +82,7 @@
             <div *ngFor="let project of searchResults">
                 <div class="card">
                     <div class="card-body">
-                        Title: {{project.title}} <br/>
+                        Title: <a href="/project/projectDetails?id={{project.id}}" target="_blank">{{project.title}}</a> <br/>
                         Code: {{project.code}} <br/>
                         Status: {{project.status}} <br/>
                         Country: {{project.country}}
