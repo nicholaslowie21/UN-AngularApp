@@ -176,7 +176,12 @@
             <div class="card-body w-100">
                 <h5 class="card-title">My Current Projects</h5>
                 <div *ngIf="currentProj.length == 0">
-                    Start or join a new project now!
+                    <div *ngIf="isOwner">
+                        Start or join a new project now!
+                    </div>
+                    <div *ngIf="!isOwner">
+                        No project found.
+                    </div>
                 </div>
                 <div *ngIf="currentProj.length > 0">
                     <div *ngFor="let proj of currentProj; let p = index">
@@ -210,7 +215,12 @@
             <div class="card-body w-100">
                 <h5 class="card-title">My Past Projects</h5>
                 <div *ngIf="pastProj.length == 0">
-                    Start or join a new project now!
+                    <div *ngIf="isOwner">
+                        Start or join a new project now!
+                    </div>
+                    <div *ngIf="!isOwner">
+                        No project found.
+                    </div>
                 </div>
                 <div *ngIf="pastProj.length > 0">
                     <div *ngFor="let project of pastProj">
@@ -247,7 +257,12 @@
                 <div class="card-body" *ngIf=isIndividual>
                     <h5 class="card-title">My Badges</h5>
                     <div *ngIf="badges.length == 0">
-                        Start contributing to collect points and unlock badges!
+                        <div *ngIf="isOwner">
+                            Start contributing to collect points and unlock badges!
+                        </div>
+                        <div *ngIf="!isOwner">
+                            No badge found.
+                        </div>
                     </div>
                     <div *ngFor="let b of badges">
                         <ul class="list-group">
@@ -325,7 +340,7 @@
                         </div>
                         <div class="tab-pane fade" id="knowledge" role="tabpanel" aria-labelledby="knowledge-tab">
                             <div *ngIf="knowledge.length == 0" class="mt-md-3">
-                                Start sharing your knowledge resource!
+                                No knowledge resource found.
                             </div>
                             <div *ngIf="knowledge.length > 0">
                                 <div *ngFor="let k of knowledge; let z = index">
@@ -345,7 +360,7 @@
                         </div>
                         <div class="tab-pane fade" id="offer" role="tabpanel" aria-labelledby="offer-tab">
                             <div *ngIf="item.length == 0 && manpower.length == 0 && venue.length == 0" class="mt-md-3">
-                                Start offering your item/venue/manpower resources!
+                                No resource found.
                             </div>
                             <div *ngIf="resourceOffers.length > 0">
                             <div *ngFor="let ro of resourceOffers; let x = index">
