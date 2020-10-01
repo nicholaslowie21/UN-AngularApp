@@ -20,7 +20,7 @@
             <p-dataView #dv [value]="currProj" [paginator]="true" [rows]="9" filterBy="title" layout="list">
                 <ng-template pTemplate="header">
                     <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
-                        <p-dropdown [options]="filterOptions" [(ngModel)]="filterKeyRole" placeholder="Filter By Role" (onChange)="filterRoleCurrentProj($event)"
+                        <p-dropdown [options]="filterOptions" [(ngModel)]="filterKeyRoleCurrent" placeholder="Filter By Role" (onChange)="filterRoleCurrentProj($event)"
                             styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
                         <span class="p-input-icon-left p-mb-2 p-mb-md-0">
                             <i class="pi pi-search"></i>
@@ -56,7 +56,7 @@
             <p-dataView #pi [value]="pastProj" [paginator]="true" [rows]="9" filterBy="title" layout="list">
                 <ng-template pTemplate="header">
                     <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
-                        <p-dropdown [options]="filterOptions" [(ngModel)]="filterKeyRole" placeholder="Filter By Role" (onChange)="filterRolePastProj($event)"
+                        <p-dropdown [options]="filterOptions" [(ngModel)]="filterKeyRolePast" placeholder="Filter By Role" (onChange)="filterRolePastProj($event)"
                             styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
                         <span class="p-input-icon-left p-mb-2 p-mb-md-0">
                             <i class="pi pi-search"></i>
