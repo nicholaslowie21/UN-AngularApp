@@ -25,6 +25,8 @@ export class EditProjectAdminComponent implements OnInit {
   user: any;
   userId: any;
 
+  isProjHost = false;
+
   constructor(private route: ActivatedRoute, private projectService: ProjectService, 
     private tokenStorageService: TokenStorageService, private messageService: MessageService) { }
 
@@ -47,6 +49,14 @@ export class EditProjectAdminComponent implements OnInit {
     this.user = this.tokenStorageService.getUser();
     this.userId = this.user.id;
     console.log(this.userId);
+
+    await this.projectService.viewProject({ id: this.projectId }).toPromise().then(
+      response => {
+        if(response.data.targetProject.host == this.user.id) {
+          this.isProjHost = true;
+        }
+      }
+    )
   }
 
   searchUsers(): void {

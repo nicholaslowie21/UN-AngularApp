@@ -2,7 +2,11 @@
 
 <p-toast key="toastMsg" [baseZIndex]="100"></p-toast>
 
-<div class="row mt-md-2">
+<div *ngIf="!isProjHost">
+    Only project creator has access to this page.
+</div>
+
+<div *ngIf="isProjHost" class="row mt-md-2">
     <div class="container float-left" style="width: 50%">
         <h4>Project Admins
         </h4>
