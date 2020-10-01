@@ -25,7 +25,7 @@
                 [sortField]="sortField" [sortOrder]="sortOrder" layout="grid">
                 <ng-template pTemplate="header">
                     <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
-                        <p-dropdown [options]="filterStatusOptions" [(ngModel)]="filterKeyItem" placeholder="Filter By Status" (onChange)="filterItemStatus($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                        <p-dropdown *ngIf="isOwner" [options]="filterStatusOptions" [(ngModel)]="filterKeyItem" placeholder="Filter By Status" (onChange)="filterItemStatus($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
                         <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyItem" placeholder="Sort By Date" (onChange)="onSortChangeItem($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
                         <span class="p-input-icon-left p-mb-2 p-mb-md-0">
                             <i class="pi pi-search"></i>
@@ -73,7 +73,7 @@
                 [sortField]="sortFieldMpw" [sortOrder]="sortOrderMpw" layout="grid">
                 <ng-template pTemplate="header">
                     <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
-                        <p-dropdown [options]="filterStatusOptions" [(ngModel)]="filterKeyMpw" placeholder="Filter By Status" (onChange)="filterManpowerStatus($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                        <p-dropdown *ngIf="isOwner" [options]="filterStatusOptions" [(ngModel)]="filterKeyMpw" placeholder="Filter By Status" (onChange)="filterManpowerStatus($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
                         <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyMpw" placeholder="Sort By Date" (onChange)="onSortChangeManpower($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
                         <span class="p-input-icon-left p-mb-2 p-mb-md-0">
                             <i class="pi pi-search"></i>
@@ -119,7 +119,7 @@
                 [sortField]="sortFieldVen" [sortOrder]="sortOrderVen" layout="grid">
                 <ng-template pTemplate="header">
                     <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
-                        <p-dropdown [options]="filterStatusOptions" [(ngModel)]="filterKeyVen" placeholder="Filter By Status" (onChange)="filterVenueStatus($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                        <p-dropdown *ngIf="isOwner" [options]="filterStatusOptions" [(ngModel)]="filterKeyVen" placeholder="Filter By Status" (onChange)="filterVenueStatus($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
                         <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyVen" placeholder="Sort By Date" (onChange)="onSortChangeVenue($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
                         <span class="p-input-icon-left p-mb-2 p-mb-md-0">
                             <i class="pi pi-search"></i>
@@ -165,7 +165,7 @@
                 [sortField]="sortFieldKno" [sortOrder]="sortOrderKno" layout="grid">
                 <ng-template pTemplate="header">
                     <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
-                        <p-dropdown [options]="filterStatusOptions" [(ngModel)]="filterKeyKno" placeholder="Filter By Status" (onChange)="filterKnowledgeStatus($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                        <p-dropdown *ngIf="isOwner" [options]="filterStatusOptions" [(ngModel)]="filterKeyKno" placeholder="Filter By Status" (onChange)="filterKnowledgeStatus($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
                         <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyKno" placeholder="Sort By Date" (onChange)="onSortChangeKnowledge($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
                         <span class="p-input-icon-left p-mb-2 p-mb-md-0">
                             <i class="pi pi-search"></i>
