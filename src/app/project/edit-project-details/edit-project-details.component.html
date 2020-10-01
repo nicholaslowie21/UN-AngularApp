@@ -5,105 +5,108 @@
             <a class="btn btn-primary float-right" href="/project/projectDetails?id={{project.id}}" role="button"> Back to Project</a>
         </h1>
     </div>
+    <div *ngIf="!isHostAdmin">
+        Only project creator and admin have access to this page.
+    </div>
+    <div *ngIf="isHostAdmin">
+        <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
 
-    <br>
-    <br>
-    <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
-
-        <div class="form-group">
-            <div *ngIf="project.imgPath.length > 0">
-                <img src={{imgString}} class="rounded-circle img-fluid" style="width: 200px; height: 200px; object-fit: cover;" alt="Project picture"
-                />
-            </div>
-            <div *ngIf="project.imgPath.length == 0">
-                <img src="../../../assets/img/team.jpg" class="rounded-circle img-fluid" style="width: 200px; height: 200px; object-fit: cover;"
-                    alt="Project picture" />
-            </div>
-            <br/>
-            <form>
-                <input type="file" name="image" (change)="selectImage($event)" />
-                <button type="submit" (click)="onSubmitImage()">Upload</button>
-            </form>
-            <div class="alert alert-warning" *ngIf="errorMsgUploadPic && !isUploadPicSuccessful">
-                Upload picture failed!
-                <br />{{ errorMsgUploadPic }}
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label for="title" class="col-sm-3 col-form-label">Title</label>
-            <div class="col-sm-9">
-                <input type="text" class="form-control" name="title" [(ngModel)]="project.title" required minlength="3" #title="ngModel"
-                    (click)="isUpdateSuccessful=false; f.submitted=false" />
-            </div>
-            <div class="alert-danger" *ngIf="f.submitted && title.invalid">
-                <div *ngIf="title.errors.required">Name is required</div>
-                <div *ngIf="title.errors.minlength">
-                    Name must be at least 3 characters
+            <div class="form-group">
+                <div *ngIf="project.imgPath.length > 0">
+                    <img src={{imgString}} class="rounded-circle img-fluid" style="width: 200px; height: 200px; object-fit: cover;" alt="Project picture"
+                    />
+                </div>
+                <div *ngIf="project.imgPath.length == 0">
+                    <img src="../../../assets/img/team.jpg" class="rounded-circle img-fluid" style="width: 200px; height: 200px; object-fit: cover;"
+                        alt="Project picture" />
+                </div>
+                <br/>
+                <form>
+                    <input type="file" name="image" (change)="selectImage($event)" />
+                    <button type="submit" (click)="onSubmitImage()">Upload</button>
+                </form>
+                <div class="alert alert-warning" *ngIf="errorMsgUploadPic && !isUploadPicSuccessful">
+                    Upload picture failed!
+                    <br />{{ errorMsgUploadPic }}
                 </div>
             </div>
-        </div>
 
-        <div class="form-group row">
-            <label for="desc" class="col-sm-3 col-form-label">Description </label>
-            <div class="col-sm-9">
-                <textarea class="form-control" name="desc" [(ngModel)]="project.desc" #desc="ngModel" required rows="3" (click)="isUpdateSuccessful=false; f.submitted=false"></textarea>
+            <div class="form-group row">
+                <label for="title" class="col-sm-3 col-form-label">Title</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" name="title" [(ngModel)]="project.title" required minlength="3" #title="ngModel"
+                        (click)="isUpdateSuccessful=false; f.submitted=false" />
+                </div>
+                <div class="alert-danger" *ngIf="f.submitted && title.invalid">
+                    <div *ngIf="title.errors.required">Name is required</div>
+                    <div *ngIf="title.errors.minlength">
+                        Name must be at least 3 characters
+                    </div>
+                </div>
             </div>
-            <div class="alert-danger" *ngIf="f.submitted && desc.invalid">
-                <div *ngIf="desc.errors.required">Description is required</div>
-            </div>
-        </div>
 
-        <div class="form-group row">
-            <label for="rating" class="col-sm-3 col-form-label">Level of Difficulty </label>
-            <div class="col-sm-9">
-                <select class="form-control" name="rating" [(ngModel)]="project.rating" required #rating="ngModel">
-                    <option value="" selected hidden>Choose...</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                </select>
+            <div class="form-group row">
+                <label for="desc" class="col-sm-3 col-form-label">Description </label>
+                <div class="col-sm-9">
+                    <textarea class="form-control" name="desc" [(ngModel)]="project.desc" #desc="ngModel" required rows="3" (click)="isUpdateSuccessful=false; f.submitted=false"></textarea>
+                </div>
+                <div class="alert-danger" *ngIf="f.submitted && desc.invalid">
+                    <div *ngIf="desc.errors.required">Description is required</div>
+                </div>
             </div>
-            <div class="alert-danger" *ngIf="f.submitted && rating.invalid">
-                <div *ngIf="rating.errors.required">Level of Difficulty is required</div>
-            </div>
-        </div>
 
-        <div class="form-group row">
-            <label for="country" class="col-sm-3 col-form-label">Country</label>
-            <div class="col-sm-9">
-                <select class="form-control" name="country" [(ngModel)]="project.country" required #country="ngModel" (click)="isUpdateSuccessful=false; f.submitted=false">
-                    <option *ngFor="let c of countries" value={{c}}>{{c}}</option>
-                </select>
+            <div class="form-group row">
+                <label for="rating" class="col-sm-3 col-form-label">Level of Difficulty </label>
+                <div class="col-sm-9">
+                    <select class="form-control" name="rating" [(ngModel)]="project.rating" required #rating="ngModel">
+                        <option value="" selected hidden>Choose...</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+                <div class="alert-danger" *ngIf="f.submitted && rating.invalid">
+                    <div *ngIf="rating.errors.required">Level of Difficulty is required</div>
+                </div>
             </div>
-            <div class="alert-danger" *ngIf="f.submitted && country.invalid">
-                <div *ngIf="country.errors.required">Country is required</div>
+
+            <div class="form-group row">
+                <label for="country" class="col-sm-3 col-form-label">Country</label>
+                <div class="col-sm-9">
+                    <select class="form-control" name="country" [(ngModel)]="project.country" required #country="ngModel" (click)="isUpdateSuccessful=false; f.submitted=false">
+                        <option *ngFor="let c of countries" value={{c}}>{{c}}</option>
+                    </select>
+                </div>
+                <div class="alert-danger" *ngIf="f.submitted && country.invalid">
+                    <div *ngIf="country.errors.required">Country is required</div>
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            <label for="SDGs">SDGs</label>
-            <br/>
-            <div class="form-check" *ngFor="let SDG of SDGs; let i = index">
-                <label>
-                    <input type="checkbox" name="SDGs" value="i" [checked]="SDGsMap[i]" (change)="updateCheckedSDGs(i, $event); isUpdateSuccessful=false; f.submitted=false"
-                    /> {{SDG}}
-                </label>
+            <div class="form-group">
+                <label for="SDGs">SDGs</label>
+                <br/>
+                <div class="form-check" *ngFor="let SDG of SDGs; let i = index">
+                    <label>
+                        <input type="checkbox" name="SDGs" value="i" [checked]="SDGsMap[i]" (change)="updateCheckedSDGs(i, $event); isUpdateSuccessful=false; f.submitted=false"
+                        /> {{SDG}}
+                    </label>
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <button class="btn btn-primary btn-block">Update Project</button>
-        </div>
+            <div class="form-group">
+                <button class="btn btn-primary btn-block">Update Project</button>
+            </div>
 
-        <div class="alert alert-warning" *ngIf="f.submitted && !isUpdateSuccessful">
-            Update failed!
-            <br />{{ errorMessage }}
-        </div>
+            <div class="alert alert-warning" *ngIf="f.submitted && !isUpdateSuccessful">
+                Update failed!
+                <br />{{ errorMessage }}
+            </div>
 
-        <div class="alert alert-success" *ngIf="isUpdateSuccessful">
-            Your update is successful!
-        </div>
-    </form>
+            <div class="alert alert-success" *ngIf="isUpdateSuccessful">
+                Your update is successful!
+            </div>
+        </form>
+    </div>
+    
 </div>

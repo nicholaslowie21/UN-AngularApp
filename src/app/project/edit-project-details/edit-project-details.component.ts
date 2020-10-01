@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProjectService } from '../../services/project.service';
+import { TokenStorageService } from '../../services/token-storage.service';
 
 @Component({
   selector: 'app-edit-project-details',
@@ -11,6 +12,9 @@ export class EditProjectDetailsComponent implements OnInit {
 
   projectId: any;
   project: any;
+
+  loggedInUser: any;
+  isHostAdmin = false;
 
   countries = ["Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Anguilla", "Antigua and Barbuda", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cambodia", "Cameroon", "Canada", "Cape Verde", "Cayman Islands", "Central African Republic", "Chad", "Chile", "China", "Colombia", "Congo", "Cook Islands", "Costa Rica", "Côte d'Ivoire", "Croatia", "Cuba", "Cyprus", "Czech Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "East Timor", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Estonia", "Ethiopia", "Falkland Islands", "Faroe Islands", "Fiji", "Finland", "France", "French Polynesia", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Gibraltar", "Greece", "Greenland", "Grenada", "Guam", "Guatemala", "Guernsey", "Guinea", "Guinea Bissau", "Guyana", "Haiti", "Honduras", "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Isle of Man", "Israel", "Italy", "Jamaica", "Japan", "Jersey", "Jordan", "Kazakhstan", "Kenya", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Macau", "Macedonia", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Mauritania", "Mauritius", "Mexico", "Moldova", "Monaco", "Mongolia", "Montenegro", "Montserrat", "Morocco", "Mozambique", "Namibia", "Nepal", "Netherlands", "Netherlands Antilles", "New Caledonia", "New Zealand", "Nicaragua", "Niger", "Nigeria", "Norway", "Oman", "Pakistan", "Palestine", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Puerto Rico", "Qatar", "Reunion", "Romania", "Russia", "Rwanda", "Saint Pierre and Miquelon", "Samoa", "San Marino", "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "South Africa", "South Korea", "Spain", "Sri Lanka", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent And The Grenadines", "Sudan", "Suriname", "Swaziland", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Turks and Caicos Islands", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "Uruguay", "Uzbekistan", "Venezuela", "Vietnam", "Virgin Islands (British)", "Virgin Islands (US)", "Yemen", "Zambia", "Zimbabwe"];
 
@@ -32,14 +36,17 @@ export class EditProjectDetailsComponent implements OnInit {
   errorMsgUploadPic = '';
   imgString: any;
 
-  constructor(private route: ActivatedRoute, private projectService: ProjectService) { }
+  constructor(private route: ActivatedRoute, private projectService: ProjectService, private tokenStorageService: TokenStorageService) { }
 
   async ngOnInit() {
     this.route.queryParams
       .subscribe(params => {
         this.projectId = params.id;
       }
-      );
+    );
+
+    this.loggedInUser = this.tokenStorageService.getUser();
+
     console.log(this.projectId);
     await this.projectService.viewProject({ id: this.projectId }).toPromise().then(
       response => {
@@ -52,6 +59,16 @@ export class EditProjectDetailsComponent implements OnInit {
         alert(err.error.msg);
       }
     );
+
+    if(this.project.host == this.loggedInUser.id) {
+      this.isHostAdmin = true;
+    }
+    for(var i=0; i<this.project.admins.length; i++) {
+      if(this.project.admins[i] == this.loggedInUser.id) {
+        this.isHostAdmin = true;
+        break;
+      }
+    }
 
     for (var x = 0; x < this.SDGs.length; x++) {
       if (this.project.SDGs.includes(x + 1)) {
