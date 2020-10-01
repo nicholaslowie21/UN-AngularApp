@@ -132,6 +132,10 @@ export class AdminManagementComponent implements OnInit {
         this.loadAdminLeads();
         this.loadRegionalAdmins();
         this.searchUsers();
+        this.filterAdminsByCountry();
+        this.filterAdminLeadsByCountry();
+        this.filterRegionalAdminsByCountry();
+        this.filterUsersByCountry();
       },
       err => {
         alert(err.error.msg);
@@ -147,6 +151,10 @@ export class AdminManagementComponent implements OnInit {
         this.loadAdminLeads();
         this.loadRegionalAdmins();
         this.searchUsers();
+        this.filterAdminsByCountry();
+        this.filterAdminLeadsByCountry();
+        this.filterRegionalAdminsByCountry();
+        this.filterUsersByCountry();
       },
       err => {
         alert(err.error.msg);
@@ -162,6 +170,10 @@ export class AdminManagementComponent implements OnInit {
         this.loadAdminLeads();
         this.loadRegionalAdmins();
         this.searchUsers();
+        this.filterAdminsByCountry();
+        this.filterAdminLeadsByCountry();
+        this.filterRegionalAdminsByCountry();
+        this.filterUsersByCountry();
       },
       err => {
         alert(err.error.msg);
@@ -177,6 +189,10 @@ export class AdminManagementComponent implements OnInit {
         this.loadAdminLeads();
         this.loadRegionalAdmins();
         this.searchUsers();
+        this.filterAdminsByCountry();
+        this.filterAdminLeadsByCountry();
+        this.filterRegionalAdminsByCountry();
+        this.filterUsersByCountry();
       },
       err => {
         alert(err.error.msg);

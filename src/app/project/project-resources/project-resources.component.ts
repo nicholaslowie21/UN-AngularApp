@@ -108,6 +108,10 @@ export class ProjectResourcesComponent implements OnInit {
     }
   }
 
+  calculateRemaining(pending,received,total) {
+    return total-pending-received;
+  }
+
   onSortChangeNeeds(event) {
     let value = event.value;
     if (value.indexOf('!') === 0) {

@@ -2,12 +2,12 @@
 
 <h2 class="mt-md-2">Project Resources
     <button *ngIf="isOwnerAdmin && project.status == 'ongoing'" class="btn btn-primary float-right" data-toggle="modal" data-target="#CreateModal">
-        Create Resource Need
+        Add Resource Need
     </button>
 </h2>
 {{project.title}} (code: {{project.code}})
 <br/>
-Progress:
+Overall Need Progress:
 <p-progressBar [value]="progress"></p-progressBar>
 
 <p-toast key="toastMsg" [baseZIndex]="100"></p-toast>
@@ -75,15 +75,6 @@ Progress:
     </div>
 </div>
 
-<!-- <ul class="nav nav-tabs" id="myTab" role="tablist">
-    <li class="nav-item">
-      <a class="nav-link active" id="needs-tab" data-toggle="tab" href="#needs" role="tab" aria-controls="needs" aria-selected="true">Resource Needs</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" id="obtained-tab" data-toggle="tab" href="#obtained" role="tab" aria-controls="obtained" aria-selected="false">Resource Obtained</a>
-    </li>
-    
-</ul> -->
 <div class="row mt-md-2">
     <div class="col-7">
         <h5>Resource Needs</h5>
@@ -108,11 +99,11 @@ Progress:
                             <div class="col-9">
                                 <div class="product-name">{{need.title}}</div>
                                 <div>{{need.desc}}</div>
+                                <div *ngIf="need.type == 'money'">Target Sum: ${{need.total}}</div>
                                 <div *ngIf="need.type == 'money'">Pending Sum: ${{need.pendingSum}},
                                     <span *ngIf="need.type == 'money'">Received Sum: ${{need.receivedSum}}</span>
                                 </div>
-                                
-                                <div *ngIf="need.type == 'money'">Target Sum: ${{need.total}}</div>
+                                <div *ngIf="need.type == 'money'">Remaining Sum Needed: ${{calculateRemaining(need.pendingSum, need.receivedSum, need.total)}}</div>
                                 <span class="product-category">Completion: {{need.completion}}%</span>
                             </div>
                             <div class="col-3">
@@ -120,85 +111,85 @@ Progress:
                                     <i class="pi pi-tag product-category-icon"></i>
                                     <span class="{{need.type}}type rounded-sm text-white">&nbsp;{{need.type}}&nbsp;</span>
                                 </div>
-                            <div *ngIf="isOwnerAdmin && project.status == 'ongoing'" class="mt-md-2 float-right">
-                                <button class="btn btn-success" (click)="markCompleteNeed(need)" title="Mark as complete"><i class="pi pi-check"></i></button>
-                                <button class="btn btn-primary" data-toggle="modal" data-target="#EditModal" (click)=getForm(need) title="Edit">
-                                    <i class="pi pi-pencil"></i>
-                                </button>
-                                <button class="btn btn-danger" (click)="deleteNeed(need)" title="Delete"><i class="pi pi-trash"></i></button>
-                                <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="editModalLabel">Edit Resource Need</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form name="form" (ngSubmit)="f.form.valid && editResourceNeed()" #f="ngForm" novalidate>
-                                                    <div class="form-group row">
-                                                        <label for="title" class="col-sm-3 col-form-label">Title</label>
-                                                        <div class="col-sm-8">
-                                                            <input type="text" class="form-control" name="title" [(ngModel)]="updateForm.title" required #title="ngModel" />
+                                <div *ngIf="isOwnerAdmin && project.status == 'ongoing'" class="mt-md-2 float-right">
+                                    <button class="btn btn-success" (click)="markCompleteNeed(need)" title="Mark as complete"><i class="pi pi-check"></i></button>
+                                    <button class="btn btn-primary" data-toggle="modal" data-target="#EditModal" (click)=getForm(need) title="Edit">
+                                        <i class="pi pi-pencil"></i>
+                                    </button>
+                                    <button class="btn btn-danger" (click)="deleteNeed(need)" title="Delete"><i class="pi pi-trash"></i></button>
+                                    <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="editModalLabel">Edit Resource Need</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form name="form" (ngSubmit)="f.form.valid && editResourceNeed()" #f="ngForm" novalidate>
+                                                        <div class="form-group row">
+                                                            <label for="title" class="col-sm-3 col-form-label">Title</label>
+                                                            <div class="col-sm-8">
+                                                                <input type="text" class="form-control" name="title" [(ngModel)]="updateForm.title" required #title="ngModel" />
+                                                            </div>
+                                                            <div class="alert-danger" *ngIf="f.submitted && title.invalid">
+                                                                <div *ngIf="title.errors.required">Title is required</div>
+                                                            </div>
                                                         </div>
-                                                        <div class="alert-danger" *ngIf="f.submitted && title.invalid">
-                                                            <div *ngIf="title.errors.required">Title is required</div>
+                                                        <div class="form-group row">
+                                                            <label for="desc" class="col-sm-3 col-form-label">Description</label>
+                                                            <div class="col-sm-8">
+                                                                <textarea class="form-control" name="desc" [(ngModel)]="updateForm.desc" required #desc="ngModel" rows="3"></textarea>
+                                                            </div>
+                                                            <div class="alert-danger" *ngIf="f.submitted && desc.invalid">
+                                                                <div *ngIf="desc.errors.required">Description is required</div>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <label for="desc" class="col-sm-3 col-form-label">Description</label>
-                                                        <div class="col-sm-8">
-                                                            <textarea class="form-control" name="desc" [(ngModel)]="updateForm.desc" required #desc="ngModel" rows="3"></textarea>
-                                                        </div>
-                                                        <div class="alert-danger" *ngIf="f.submitted && desc.invalid">
-                                                            <div *ngIf="desc.errors.required">Description is required</div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row" *ngIf="updateForm.type == 'money'">
-                                                        <label for="total" class="col-sm-3 col-form-label">Target Sum</label>
-                                                        <div class="col-sm-8">
-                                                            <div class="input-group">
-                                                                <div class="input-group-prepend">
-                                                                    <div class="input-group-text">$</div>
+                                                        <div class="form-group row" *ngIf="updateForm.type == 'money'">
+                                                            <label for="total" class="col-sm-3 col-form-label">Target Sum</label>
+                                                            <div class="col-sm-8">
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <div class="input-group-text">$</div>
+                                                                    </div>
+                                                                    <input type="text" class="form-control" name="total" [(ngModel)]="updateForm.total" required #total="ngModel" />
                                                                 </div>
-                                                                <input type="text" class="form-control" name="total" [(ngModel)]="updateForm.total" required #total="ngModel" />
+                                                            </div>
+                                                            <div class="alert-danger" *ngIf="f.submitted && total.invalid">
+                                                                <div *ngIf="total.errors.required">Target sum is required</div>
                                                             </div>
                                                         </div>
-                                                        <div class="alert-danger" *ngIf="f.submitted && total.invalid">
-                                                            <div *ngIf="total.errors.required">Target sum is required</div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <label for="completion" class="col-sm-3 col-form-label">Completion</label>
-                                                        <div class="col-sm-8">
-                                                            <input type="number" class="form-control" name="completion" [(ngModel)]="updateForm.completion" required min="0" max="100"
-                                                                #completion="ngModel" />
-                                                        </div>
-                                                        <div class="alert-danger" *ngIf="f.submitted && completion.invalid">
-                                                            <div *ngIf="completion.errors.required">Completion rate is required</div>
-                                                            <div *ngIf="completion.errors.min">
-                                                                Completion cannot be below 0
+                                                        <div class="form-group row">
+                                                            <label for="completion" class="col-sm-3 col-form-label">Completion</label>
+                                                            <div class="col-sm-8">
+                                                                <input type="number" class="form-control" name="completion" [(ngModel)]="updateForm.completion" required min="0" max="100"
+                                                                    #completion="ngModel" />
                                                             </div>
-                                                            <div *ngIf="completion.errors.max">
-                                                                Completion cannot be above 100
+                                                            <div class="alert-danger" *ngIf="f.submitted && completion.invalid">
+                                                                <div *ngIf="completion.errors.required">Completion rate is required</div>
+                                                                <div *ngIf="completion.errors.min">
+                                                                    Completion cannot be below 0
+                                                                </div>
+                                                                <div *ngIf="completion.errors.max">
+                                                                    Completion cannot be above 100
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <button class="btn btn-primary btn-block">Update</button>
-                                                    </div>
-                                                </form>
+                                                        <div class="form-group">
+                                                            <button class="btn btn-primary btn-block">Update</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div *ngIf="isOwnerAdmin && project.status != 'ongoing'">
-                                <button class="btn btn-success" disabled title="Mark as complete"><i class="pi pi-check"></i></button>
-                                <button class="btn btn-primary" disabled title="Edit"><i class="pi pi-pencil"></i></button>
-                                <button class="btn btn-danger" disabled title="Delete"><i class="pi pi-trash"></i></button>
-                            </div>
+                                <div *ngIf="isOwnerAdmin && project.status != 'ongoing'" class="mt-md-2 float-right">
+                                    <button class="btn btn-success" disabled title="Mark as complete"><i class="pi pi-check"></i></button>
+                                    <button class="btn btn-primary" disabled title="Edit"><i class="pi pi-pencil"></i></button>
+                                    <button class="btn btn-danger" disabled title="Delete"><i class="pi pi-trash"></i></button>
+                                </div>
                             </div>
                         </div>
                     </div>

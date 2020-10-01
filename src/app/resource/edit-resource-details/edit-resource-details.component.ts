@@ -283,6 +283,7 @@ export class EditResourceDetailsComponent implements OnInit {
         this.ngOnInit();
         // this.reloadPage();
       }, err => {
+        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
         this.errorMsgAdd = err.error.msg;
         this.isAddSuccessful = false;
       }
@@ -300,6 +301,7 @@ export class EditResourceDetailsComponent implements OnInit {
             this.ngOnInit();
             // this.reloadPage();
           }, err => {
+            this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
             this.errorMsgDel = err.error.msg;
             this.isDelSuccessful = false;
           }
@@ -310,9 +312,9 @@ export class EditResourceDetailsComponent implements OnInit {
             this.isDelSuccessful = true;
             this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'User ' + user.username + ' is no longer a co-owner of this resource'});
             this.ngOnInit();
-            // alert("User " + user.username + " is no longer a co-owner of this resource");
             // this.reloadPage();
           }, err => {
+            this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
             this.errorMsgDel = err.error.msg;
             this.isDelSuccessful = false;
           }
