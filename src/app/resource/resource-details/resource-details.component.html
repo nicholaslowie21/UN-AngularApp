@@ -120,8 +120,9 @@
                 <h6 class="text-secondary">{{resource.desc}}</h6>
                 <h6 *ngIf="type != 'knowledge'" class="text-secondary">Country: {{resource.country}}</h6>
                 <h6 *ngIf="type =='knowledge'" class="text-secondary">
-                    <span>Attachment: {{attachmentPath}}</span>
-                    <span class="ml-md-2">
+                    <span *ngIf="resource.attachment.length == 0">Attachment: -</span>
+                    <span *ngIf="resource.attachment.length > 0">Attachment: {{attachmentPath}}</span>
+                    <span *ngIf="resource.attachment.length > 0" class="ml-md-2">
                         <button pButton class="p-button-rounded" title="Download attachment" icon="pi pi-download" (click)="downloadAttachment(resource.attachment)"></button>
                     </span>
                 </h6>

@@ -3,13 +3,14 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { InstitutionService } from '../../services/institution.service';
 import { TokenStorageService } from '../../services/token-storage.service';
 import { ResourceService } from '../../services/resource.service';
-import { UserService } from '../../services/user.service';
 import { Galleria } from 'primeng/galleria';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-edit-resource-details',
   templateUrl: './edit-resource-details.component.html',
   styleUrls: ['./edit-resource-details.component.css'],
+  providers: [MessageService]
 })
 export class EditResourceDetailsComponent implements OnInit {
 
@@ -71,7 +72,8 @@ export class EditResourceDetailsComponent implements OnInit {
     }
   ];
 
-  constructor(private route: ActivatedRoute, private institutionService: InstitutionService, private resourceService: ResourceService, private tokenStorageService: TokenStorageService, private userService: UserService) { }
+  constructor(private route: ActivatedRoute, private institutionService: InstitutionService, private resourceService: ResourceService, 
+    private tokenStorageService: TokenStorageService, private messageService: MessageService) { }
 
   async ngOnInit() {
     this.route.queryParams.subscribe(
@@ -247,8 +249,9 @@ export class EditResourceDetailsComponent implements OnInit {
     this.resourceService.addKnowledgeOwner({knowledgeId: this.resource.id, userId: user.id}).subscribe(
       response => {
         this.isAddSuccessful = true;
-        alert("User " + user.username + " is now a co-owner of this resource");
-        this.reloadPage();
+        this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'User ' + user.username + ' is now a co-owner of this resource'});
+        this.ngOnInit();
+        // this.reloadPage();
       }, err => {
         this.errorMsgAdd = err.error.msg;
         this.isAddSuccessful = false;
@@ -257,28 +260,36 @@ export class EditResourceDetailsComponent implements OnInit {
   }
 
   deleteOwner(user): void {
-    if (this.isUserOwner(user)) {
-      this.resourceService.deleteKnowledgeOwner({knowledgeId: this.resource.id, userId: user.id, userType: "user"}).subscribe(
-        response => {
-          this.isDelSuccessful = true;
-          alert("User " + user.username + " is no longer a co-owner of this resource");
-          this.reloadPage();
-        }, err => {
-          this.errorMsgDel = err.error.msg;
-          this.isDelSuccessful = false;
-        }
-      )
-    } else { // this user is an institution
-      this.resourceService.deleteKnowledgeOwner({knowledgeId: this.resource.id, userId: user.id, userType: "institution"}).subscribe(
-        response => {
-          this.isDelSuccessful = true;
-          alert("User " + user.username + " is no longer a co-owner of this resource");
-          this.reloadPage();
-        }, err => {
-          this.errorMsgDel = err.error.msg;
-          this.isDelSuccessful = false;
-        }
-      )
+    let r = confirm("Are you sure you want to remove this owner?");
+    if (r == true) {
+      if (this.isUserOwner(user)) {
+        this.resourceService.deleteKnowledgeOwner({knowledgeId: this.resource.id, userId: user.id, userType: "user"}).subscribe(
+          response => {
+            this.isDelSuccessful = true;
+            this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'User ' + user.username + ' is no longer a co-owner of this resource'});
+            this.ngOnInit();
+            // this.reloadPage();
+          }, err => {
+            this.errorMsgDel = err.error.msg;
+            this.isDelSuccessful = false;
+          }
+        )
+      } else { // this user is an institution
+        this.resourceService.deleteKnowledgeOwner({knowledgeId: this.resource.id, userId: user.id, userType: "institution"}).subscribe(
+          response => {
+            this.isDelSuccessful = true;
+            this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'User ' + user.username + ' is no longer a co-owner of this resource'});
+            this.ngOnInit();
+            // alert("User " + user.username + " is no longer a co-owner of this resource");
+            // this.reloadPage();
+          }, err => {
+            this.errorMsgDel = err.error.msg;
+            this.isDelSuccessful = false;
+          }
+        )
+      }
+    } else {
+      return;
     }
   }
 

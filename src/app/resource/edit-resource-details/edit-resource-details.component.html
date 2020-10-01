@@ -1,8 +1,11 @@
-<!-- <div *ngIf="!stillOwner()">
+<div *ngIf="!stillOwner()">
     <h3>Access denied</h3>
     You are not an owner of this resource so you may not edit it.
 </div>
-<div *ngIf="stillOwner()"> -->
+
+<p-toast key="toastMsg" [baseZIndex]="100"></p-toast>
+
+<div *ngIf="stillOwner()">
     <div class="row">
         <div class="col-8">
             <h1 class="h1">
@@ -300,13 +303,13 @@
                             </div>
                         </div>
                         <br/>
-                        <div class="col-5">
+                        <div class="col-7">
                             Name: <a href="/profile?username={{owner.username}}&userType=individual">{{owner.name}}</a>
                             <br/>
                             Username: {{owner.username}}
                         </div>
-                        <div class="col-4">
-                            <button class="btn btn-danger float-right" (click)=deleteOwner(owner)>Delete</button>
+                        <div class="col-2">
+                            <button class="btn btn-danger float-right" (click)=deleteOwner(owner) title="Remove owner"><i class="pi pi-trash"></i></button>
                         </div>
                     </div>
                 </div>
@@ -379,6 +382,6 @@
             </div>
         </div>
     </div>
-<!-- </div> -->
+</div>
 
 
