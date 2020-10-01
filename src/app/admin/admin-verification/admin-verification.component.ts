@@ -44,9 +44,7 @@ export class AdminVerificationComponent implements OnInit {
       this.isLoggedIn = true;
       this.user = this.tokenStorage.getUser();
 
-      //this.loadUserRequests();
-      //this.loadInstitutionRequests();
-      //console.log(JSON.stringify(this.verifyInstitution));
+      this.filterUserCountryKey = 'Filter by country';
 
       if (this.tokenStorage.getUser().role == "admin") {
         this.isAdmin = true;
@@ -160,6 +158,7 @@ export class AdminVerificationComponent implements OnInit {
         console.log(JSON.stringify(response))
         this.isAccepted = true;
         this.loadUserRequests();
+        this.filterUsersByCountry();
         alert("User "+ x.username +" verification is accepted");
         // this.reloadPage();
       },
@@ -176,6 +175,7 @@ export class AdminVerificationComponent implements OnInit {
         console.log(JSON.stringify(response))
         this.isRejected = true;
         this.loadUserRequests();
+        this.filterUsersByCountry();
         alert("User "+ x.username +" verification is rejected")
         // this.reloadPage();
       },
@@ -192,6 +192,7 @@ export class AdminVerificationComponent implements OnInit {
         console.log(JSON.stringify(response))
         this.isAccepted = true;
         this.loadInstitutionRequests();
+        this.filterInstitutionsByCountry();
         alert("Institution "+ x.username +" verification is accepted");
         // this.reloadPage();
       },
@@ -208,6 +209,7 @@ export class AdminVerificationComponent implements OnInit {
         console.log(JSON.stringify(response))
         this.isRejected = true;
         this.loadInstitutionRequests();
+        this.filterInstitutionsByCountry();
         alert("Institution " + x.username +  " verification is rejected");
         // this.reloadPage();
       },
