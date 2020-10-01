@@ -57,7 +57,6 @@
                 <!-- display and update pics for Venue Resource -->
                 <div class="form-group" *ngIf="type == 'venue'">
                     <h3>Resource Images</h3>
-                    <br/>
                     <div *ngIf="resource.imgPath.length == 0">
                         Currently no images of venue
                     </div>
@@ -78,7 +77,8 @@
                                     <button type="button" pButton icon="pi pi-list" (click)="onThumbnailButtonClick()"></button>
                                     <span *ngIf="venueImages"  class="title-container">
                                         <span>{{activeIndex + 1}}/{{venueImages.length}}</span>
-                                        <span class="title">Picture {{activeIndex+1}}</span>
+                                        <span class="title">Picture {{activeIndex + 1}}</span>
+                                        <!-- <span class="title">{{venueImgFileNames[activeIndex]}}</span> -->
                                     </span>
                                     <button type="button" pButton [icon]="fullScreenIcon()" (click)="toggleFullScreen()" class="fullscreen-button"></button>
                                 </div>
@@ -246,13 +246,17 @@
                         <div *ngIf="country.errors.required">Country is required</div>
                     </div>
                 </div>
-        
+                
                 <div class="form-group" *ngIf="type == 'knowledge'">
+                    <div *ngIf="resource.attachment.length == 0">
+                        Attachment: Currently no attachment
+                    </div>
                     <div *ngIf="resource.attachment.length > 0">
-                        Attachment: {{resource.attachment}}
-                        <br/>
-                        <!-- <a href="https://localhost:8080{{resource.attachment}}" download target="_blank" rel="noopener noreferrer">Download current attachment</a> -->
-                        <button type="button" (click)="downloadAttachment(resource.attachment)">Download current attachment</button> 
+                        Attachment: {{ attachmentPath }}
+                        <span class="ml-md-2">
+                            <button pButton class="p-button-rounded" title="Download current attachment" icon="pi pi-download" (click)="downloadAttachment(resource.attachment)"></button>
+                        </span>
+                        <!-- <button type="button" class="btn btn-primary btn-sm float-right" (click)="downloadAttachment(resource.attachment)">Download current attachment</button>  -->
                     
                     </div>
                     <br/>
