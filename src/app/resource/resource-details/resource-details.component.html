@@ -65,7 +65,7 @@
             </div>
             </div>
             <div class="col-4 mt-md-1 text-light">
-                {{formatDate(resource.updatedAt)}}
+                Last modified: {{formatDate(resource.updatedAt)}}
             </div>
             <div *ngIf="owner.length > 1">
                 <a class="btn text-light" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
@@ -110,7 +110,7 @@
                 {{owner.username}}
             </div>
             <div class="col-4 mt-md-1 text-light">
-                {{formatDate(resource.updatedAt)}}
+                Last modified: {{formatDate(resource.updatedAt)}}
             </div>
         </div>
         <div class="row mt-md-1 p-2 bg-light">

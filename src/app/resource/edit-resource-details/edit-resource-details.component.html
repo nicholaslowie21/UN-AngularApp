@@ -281,6 +281,39 @@
         <!-- Manage owners -->
         <div class="col-4" *ngIf="type == 'knowledge'">
             <h3>Owners</h3>
+            <div *ngFor="let owner of institutionOwners">
+                <div class="card">
+                    <div class="card-body row">
+                        <div class="col-3">
+                            <div *ngIf="owner.profilePic.length > 0">
+                                <img
+                                src={{owner.profilePic}}
+                                class="rounded-circle img-fluid"
+                                style="object-fit: cover;"
+                                alt="Profile picture"
+                                />
+                            </div>
+                            <div *ngIf="owner.profilePic.length == 0">
+                                <img
+                                src="../../../assets/img/profilePic_Placeholder.png"
+                                class="rounded-circle img-fluid"
+                                style="object-fit: cover;"
+                                alt="Profile picture"
+                                />
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="col-7">
+                            Name: <a href="/profile?username={{owner.username}}&userType=institution">{{owner.name}}</a>
+                            <br/>
+                            Username: {{owner.username}}
+                        </div>
+                        <div class="col-2">
+                            <button class="btn btn-danger float-right" (click)=deleteOwner(owner) title="Remove owner"><i class="pi pi-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div *ngFor="let owner of userOwners">
                 <div class="card">
                     <div class="card-body row">

@@ -5,6 +5,7 @@ import { TokenStorageService } from '../../services/token-storage.service';
 import { ResourceService } from '../../services/resource.service';
 import { Galleria } from 'primeng/galleria';
 import { MessageService } from 'primeng/api';
+import { _DisposeViewRepeaterStrategy } from '@angular/cdk/collections';
 
 @Component({
   selector: 'app-edit-resource-details',

@@ -139,7 +139,7 @@ export class ResourceDetailsComponent implements OnInit {
       this.resourceService.deactivateItem({id: this.id}).toPromise().then(
         res => {
           this.resource = res.data.item;
-          this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Item deactivated!'});
+          this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Item resource deactivated!'});
         }, err => {
           this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
         }
@@ -148,7 +148,7 @@ export class ResourceDetailsComponent implements OnInit {
       this.resourceService.deactivateManpower({id: this.id}).toPromise().then(
         res => {
           this.resource = res.data.manpower;
-          this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Manpower deactivated!'});
+          this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Manpower resource deactivated!'});
         }, err => {
           this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
         }
@@ -157,7 +157,7 @@ export class ResourceDetailsComponent implements OnInit {
       this.resourceService.deactivateVenue({id: this.id}).toPromise().then(
        res => {
          this.resource = res.data.venue;
-         this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Venue deactivated!'});
+         this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Venue resource deactivated!'});
        }, err => {
         this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
        }
@@ -166,7 +166,7 @@ export class ResourceDetailsComponent implements OnInit {
       this.resourceService.deactivateKnowledge({id: this.id}).toPromise().then(
         res => {
           this.resource = res.data.knowledge;
-          this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Knowledge deactivated!'});
+          this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Knowledge resource deactivated!'});
         }, err => {
           this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
         }
@@ -179,7 +179,7 @@ export class ResourceDetailsComponent implements OnInit {
       this.resourceService.activateItem({id: this.id}).toPromise().then(
         res => {
           this.resource = res.data.item;
-          this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Item activated!'});
+          this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Item resource activated!'});
         }, err => {
           this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
         }
@@ -188,7 +188,7 @@ export class ResourceDetailsComponent implements OnInit {
       this.resourceService.activateManpower({id: this.id}).toPromise().then(
         res => {
           this.resource = res.data.manpower;
-          this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Manpower activated!'});
+          this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Manpower resource activated!'});
         }, err => {
           this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
         }
@@ -197,7 +197,7 @@ export class ResourceDetailsComponent implements OnInit {
       this.resourceService.activateVenue({id: this.id}).toPromise().then(
        res => {
          this.resource = res.data.venue;
-         this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Venue activated!'});
+         this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Venue resource activated!'});
        }, err => {
         this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
        }
@@ -206,7 +206,7 @@ export class ResourceDetailsComponent implements OnInit {
       this.resourceService.activateKnowledge({id: this.id}).toPromise().then(
         res => {
           this.resource = res.data.knowledge;
-          this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Knowledge activated!'});
+          this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Knowledge resource activated!'});
         }, err => {
           this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
         }
