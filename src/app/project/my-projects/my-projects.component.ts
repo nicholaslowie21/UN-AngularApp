@@ -65,7 +65,7 @@ export class MyProjectsComponent implements OnInit {
 
     this.filterOptions = [
       { label: 'All', value: 'all' },
-      { label: 'Creator', value: 'creator' },
+      { label: 'Founder', value: 'creator' },
       { label: 'Admin', value: 'admin' },
       { label: 'Contributor', value: 'contributor' },
     ];
