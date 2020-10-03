@@ -18,8 +18,9 @@
                 <h3 class="card-title text-left mt-md-4 mb-md-0">{{ project.title }}</h3>
                 <!--h6 class="card-title text-left mt-md-3">Description: {{project.desc}}</h6-->
                 <h6 class="card-title text-left mt-md-1">Status: {{project.status}}</h6>
-                <h6 class="card-title text-left mt-md-1">Country: {{project.country}}</h6>
-                <h6 class="card-title text-left mt-md-1">SDGs:
+                <h6 class="card-title text-left">Country: {{project.country}}</h6>
+                <h6 class="card-title text-left">Level of difficulty: {{project.rating}}</h6>
+                <h6 class="card-title text-left">SDGs:
                     <div *ngIf="project.SDGs.length == 0" style="display:inline-block;">
                         -
                     </div>

@@ -30,20 +30,24 @@
                 </ng-template>
                 <ng-template let-product pTemplate="listItem">
                     <div class="p-col-12">
-                        <div class="product-list-item">
-                            <div *ngIf="product.imgPath.length != 0">
-                                <img src="https://localhost:8080{{product.imgPath}}" style="margin: 15px; width: 50px; height: 50px; object-fit: cover;"
-                                    alt="Profile picture">
+                        <div class="row p-2">
+                            <div class="col-1">
+                                <div *ngIf="product.imgPath.length != 0">
+                                    <img src="https://localhost:8080{{product.imgPath}}" style="margin: 15px; width: 50px; height: 50px; object-fit: cover;"
+                                        alt="Profile picture">
+                                </div>
+                                <div *ngIf="product.imgPath.length == 0">
+                                    <img src="../../../assets/img/team.jpg" style="margin: 15px; width: 50px; height: 50px; object-fit: cover;" alt="Project picture">
+                                </div>
                             </div>
-                            <div *ngIf="product.imgPath.length == 0">
-                                <img src="../../../assets/img/team.jpg" style="margin: 15px; width: 50px; height: 50px; object-fit: cover;" alt="Project picture">
-                            </div>
-                            <div class="product-list-detail">
+                            <div class="col-8">
                                 <div class="product-name">{{product.title}}</div>
                                 <div class="product-description p-text-nowrap p-text-truncate" style="width: 50rem">{{product.desc}}</div>
                             </div>
-                            <div class="product-list-action">
-                                <a class="btn btn-primary" href="/project/projectDetails?id={{product.id}}" role="button">View Project</a>
+                            <div class="col-3">
+                                <div class="float-right role{{checkRole(product)}} rounded-sm"><i class="pi pi-user"></i>&nbsp;{{checkRole(product)}}&nbsp;</div>
+                                <br/>
+                                <a class="mt-md-1 btn btn-primary float-right" href="/project/projectDetails?id={{product.id}}" role="button">View Project</a>
                             </div>
                         </div>
                     </div>
@@ -66,20 +70,24 @@
                 </ng-template>
                 <ng-template let-product pTemplate="listItem">
                     <div class="p-col-12">
-                        <div class="product-list-item">
-                            <div *ngIf="product.imgPath.length != 0">
-                                <img src="https://localhost:8080{{product.imgPath}}" style="margin: 15px; width: 50px; height: 50px; object-fit: cover;"
-                                    alt="Profile picture">
+                        <div class="row p-2">
+                            <div class="col-1">
+                                <div *ngIf="product.imgPath.length != 0">
+                                    <img src="https://localhost:8080{{product.imgPath}}" style="margin: 15px; width: 50px; height: 50px; object-fit: cover;"
+                                        alt="Profile picture">
+                                </div>
+                                <div *ngIf="product.imgPath.length == 0">
+                                    <img src="../../../assets/img/team.jpg" style="margin: 15px; width: 50px; height: 50px; object-fit: cover;" alt="Project picture">
+                                </div>
                             </div>
-                            <div *ngIf="product.imgPath.length == 0">
-                                <img src="../../../assets/img/team.jpg" style="margin: 15px; width: 50px; height: 50px; object-fit: cover;" alt="Project picture">
-                            </div>
-                            <div class="product-list-detail">
+                            <div class="col-8">
                                 <div class="product-name">{{product.title}}</div>
                                 <div class="product-description p-text-nowrap p-text-truncate" style="width: 50rem">{{product.desc}}</div>
                             </div>
-                            <div class="product-list-action">
-                                <a class="btn btn-primary" href="/project/projectDetails?id={{product.id}}" role="button">View Project</a>
+                            <div class="col-3">
+                                <div class="float-right role{{checkRole(product)}} rounded-sm"><i class="pi pi-user"></i>&nbsp;{{checkRole(product)}}&nbsp;</div>
+                                <br/>
+                                <a class="mt-md-1 btn btn-primary" href="/project/projectDetails?id={{product.id}}" role="button">View Project</a>
                             </div>
                         </div>
                     </div>

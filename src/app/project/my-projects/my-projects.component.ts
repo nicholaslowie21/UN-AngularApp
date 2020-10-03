@@ -172,4 +172,16 @@ export class MyProjectsComponent implements OnInit {
     this.pastProj = arr;
   }
 
+  checkRole(project): string {
+    if(project.host == this.user.id) {
+      return 'Founder';
+    }
+    for(var i=0; i<project.admins.length; i++) {
+      if(project.admins[i] == this.user.id) {
+        return 'Admin';
+      }
+    }
+    return 'Contributor';
+  }
+
 }
