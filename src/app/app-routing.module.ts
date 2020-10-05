@@ -32,6 +32,9 @@ import { CreateResourceComponent } from './resource/create-resource/create-resou
 import { EditResourceDetailsComponent } from './resource/edit-resource-details/edit-resource-details.component';
 import { MyResourcesComponent } from './resource/my-resources/my-resources.component';
 import { ResourceDetailsComponent } from './resource/resource-details/resource-details.component';
+import { ProjectMarketplaceComponent } from './marketplace/project-marketplace/project-marketplace.component';
+import { ResourceMarketplaceComponent } from './marketplace/resource-marketplace/resource-marketplace.component';
+import { FundingMarketplaceComponent } from './marketplace/funding-marketplace/funding-marketplace.component';
 
 const routes: Routes = [
   { path: 'landing', component: LandingComponent},
@@ -73,6 +76,13 @@ const routes: Routes = [
       { path: 'editDetails', component: EditResourceDetailsComponent},
       { path: 'myResources', component: MyResourcesComponent},
       { path: 'resourceDetails', component: ResourceDetailsComponent}
+    ]
+  },
+  { path: 'marketplace', canActivate: [AuthGuardService],
+    children: [
+      { path: 'project', component: ProjectMarketplaceComponent },
+      { path: 'resource', component: ResourceMarketplaceComponent},
+      { path: 'funding', component: FundingMarketplaceComponent}
     ]
   },
   { path: 'shareProfile', component: ShareProfilePageComponent},

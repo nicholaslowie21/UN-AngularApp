@@ -58,6 +58,9 @@ import {CarouselModule} from 'primeng/carousel';
 import {InputSwitchModule} from 'primeng/inputswitch';
 import {ProgressBarModule} from 'primeng/progressbar';
 import {GalleriaModule} from 'primeng/galleria';
+import { ProjectMarketplaceComponent } from './marketplace/project-marketplace/project-marketplace.component';
+import { ResourceMarketplaceComponent } from './marketplace/resource-marketplace/resource-marketplace.component';
+import { FundingMarketplaceComponent } from './marketplace/funding-marketplace/funding-marketplace.component';
 
 @NgModule({
   declarations: [
@@ -92,7 +95,10 @@ import {GalleriaModule} from 'primeng/galleria';
     ResourceDetailsComponent,
     CreateResourceComponent,
     EditResourceDetailsComponent,
-    ProjectResourcesComponent
+    ProjectResourcesComponent,
+    ProjectMarketplaceComponent,
+    ResourceMarketplaceComponent,
+    FundingMarketplaceComponent
   ],
   imports: [
     BrowserModule,
