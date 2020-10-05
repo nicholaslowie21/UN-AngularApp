@@ -11,7 +11,18 @@
                   <li class="nav-item mt-md-1"><a class="nav-link js-scroll-trigger" href="/login" routerLink="login">Login</a></li>
                 </ul>
                 <ul class="navbar-nav" *ngIf="isLoggedIn">
-                  <li class="nav-item mt-md-1"><a class="nav-link js-scroll-trigger" href="#" routerLink="">Marketplace</a></li>
+                  <li class="nav-item">
+                    <div class="dropdown">
+                      <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMarketplace" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Marketplace
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMarketplace">
+                        <a class="dropdown-item" href="/marketplace/project">Projects</a>
+                        <a class="dropdown-item" href="/marketplace/resource">Resources</a>
+                        <a class="dropdown-item" href="/marketplace/funding">Funding</a>
+                      </div>
+                    </div>
+                  </li>
                   <li class="nav-item" *ngIf="showAdmin">
                     <div class="dropdown">
                       <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownAdmin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
