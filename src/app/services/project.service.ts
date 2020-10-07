@@ -155,4 +155,8 @@ export class ProjectService {
   getProjectContributors(data): Observable<any> {
     return this.http.get(API_URL + '/contributors?projectId=' + data.id);
   }
+
+  getNewsFeed(): Observable<any> {
+    return this.http.get(API_URL + '/accountNewsFeed');
+  }
 }
