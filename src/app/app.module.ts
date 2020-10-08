@@ -58,6 +58,7 @@ import {CarouselModule} from 'primeng/carousel';
 import {InputSwitchModule} from 'primeng/inputswitch';
 import {ProgressBarModule} from 'primeng/progressbar';
 import {GalleriaModule} from 'primeng/galleria';
+import {MultiSelectModule} from 'primeng/multiselect';
 import { ProjectMarketplaceComponent } from './marketplace/project-marketplace/project-marketplace.component';
 import { ResourceMarketplaceComponent } from './marketplace/resource-marketplace/resource-marketplace.component';
 import { FundingMarketplaceComponent } from './marketplace/funding-marketplace/funding-marketplace.component';
@@ -119,7 +120,8 @@ import { FundingMarketplaceComponent } from './marketplace/funding-marketplace/f
     CarouselModule,
     InputSwitchModule,
     ProgressBarModule,
-    GalleriaModule
+    GalleriaModule,
+    MultiSelectModule
   ],
   providers: [authInterceptorProviders, AuthGuardService],
   bootstrap: [AppComponent]
