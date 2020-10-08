@@ -1,16 +1,100 @@
-<a href="/project/projectDetails?id={{projectId}}"><u><< Back to project</u></a>
+<a href="/project/projectDetails?id={{projectId}}">
+    <u>
+        << Back to project</u>
+</a>
 
 <h2 class="mt-md-2">Project Resources
+    <button *ngIf="project.status=='ongoing'" class="btn btn-primary float-right" data-toggle="modal" data-target="#exampleModalScrollable">Request Contribution</button>
     <button *ngIf="isOwnerAdmin && project.status == 'ongoing'" class="btn btn-primary float-right" data-toggle="modal" data-target="#CreateModal">
         Add Resource Need
     </button>
 </h2>
 {{project.title}} (code: {{project.code}})
-<br/>
-Overall Need Progress:
+<br/> Overall Need Progress:
 <p-progressBar [value]="progress"></p-progressBar>
 
 <p-toast key="toastMsg" [baseZIndex]="100"></p-toast>
+
+<div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalScrollableTitle">Request to Contribute</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-6">
+                        <h5>Select resource need:</h5>
+                        <div *ngFor="let r of resourceNeeds; let i = index">
+                            <label>
+                                <input type="checkbox" name="needs" value="i" [checked]="needsMap[i]" (change)="updateCheckedNeeds(r.id, $event); isUpdateSuccessful=false"
+                                /> {{r.title}} <span class="{{r.type}}type rounded-sm text-white">&nbsp;{{r.type}}&nbsp;</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <h5>Select your resource:</h5>
+                        <select class="form-control" name="type" [(ngModel)]="resourceType" required #type="ngModel">
+                            <option>Item</option>
+                            <option>Knowledge</option>
+                            <option *ngIf="userType == 'individual'">Manpower</option>
+                            <option>Venue</option>
+                        </select>
+                        <div *ngIf="resourceType=='Item'">
+                            <div *ngFor="let it of item; let i = index">
+                                <label>
+                                    <input type="checkbox" name="res" value="i" [checked]="resMap[i]" (change)="updateCheckedRes(it.id, $event, resourceType); isUpdateSuccessful=false"
+                                    /> {{it.title}} ({{it.desc}})
+                                </label>
+                            </div>
+                        </div>
+                        <div *ngIf="resourceType=='Knowledge'">
+                            <div *ngFor="let kn of knowledge; let i = index">
+                                <label>
+                                    <input type="checkbox" name="res" value="i" [checked]="resMap[i]" (change)="updateCheckedRes(kn.id, $event, resourceType); isUpdateSuccessful=false"
+                                    /> {{kn.title}} ({{kn.desc}})
+                                </label>
+                            </div>
+                        </div>
+                        <div *ngIf="resourceType=='Manpower'">
+                            <div *ngFor="let mn of manpower; let i = index">
+                                <label>
+                                    <input type="checkbox" name="res" value="i" [checked]="resMap[i]" (change)="updateCheckedRes(mn.id, $event, resourceType); isUpdateSuccessful=false"
+                                    /> {{mn.title}} ({{mn.desc}})
+                                </label>
+                            </div>
+                        </div>
+                        <div *ngIf="resourceType=='Venue'">
+                            <div *ngFor="let vn of venue; let i = index">
+                                <label>
+                                    <input type="checkbox" name="res" value="i" [checked]="resMap[i]" (change)="updateCheckedRes(vn.id, $event, resourceType); isUpdateSuccessful=false"
+                                    /> {{vn.title}} ({{vn.desc}})
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        Request Description:
+                    </div>
+                    <div class="col-9">
+                        <textarea class="form-control" name="reqDesc" [(ngModel)]="reqDescription" required #reqDesc="ngModel" rows="3" cols="60"></textarea>
+                    </div>
+                </div>
+                <br>
+                <div class="form-group">
+                    <button class="btn btn-primary btn-block" (click)=onReqSubmit()>Create</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <div class="modal fade" id="CreateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -26,12 +110,12 @@ Overall Need Progress:
                     <div class="form-group row">
                         <label for="type" class="col-sm-3 col-form-label">Resource Type</label>
                         <div class="col-sm-9">
-                          <select class="form-control" name="type" [(ngModel)]="form.resourceType" required #type="ngModel">
-                            <option value="item">Item</option>
-                            <option value="manpower">Manpower</option>
-                            <option value="venue">Venue</option>
-                            <option value="money">Money</option>
-                          </select>
+                            <select class="form-control" name="type" [(ngModel)]="form.resourceType" required #type="ngModel">
+                                <option value="item">Item</option>
+                                <option value="manpower">Manpower</option>
+                                <option value="venue">Venue</option>
+                                <option value="money">Money</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -79,13 +163,15 @@ Overall Need Progress:
     <div class="col-7">
         <h5>Resource Needs</h5>
         <div class="card">
-            <p-dataView #mp [value]="resourceNeeds" [paginator]="true" [rows]="9" filterBy="title"
-                [sortField]="sortFieldNeeds" [sortOrder]="sortOrderNeeds" layout="list">
+            <p-dataView #mp [value]="resourceNeeds" [paginator]="true" [rows]="9" filterBy="title" [sortField]="sortFieldNeeds" [sortOrder]="sortOrderNeeds"
+                layout="list">
                 <ng-template pTemplate="header">
                     <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
                         <!-- <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyNeeds" placeholder="Sort By Date" (onChange)="onSortChangeNeeds($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown> -->
-                        <p-dropdown [options]="filterStatusOptions" [(ngModel)]="filterKeyNeeds" placeholder="Filter By Status" (onChange)="filterNeedsStatus($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
-                        <p-dropdown [options]="filterTypeOptions" [(ngModel)]="filterKeyNeedType" placeholder="Filter By Type" (onChange)="filterNeedsType($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                        <p-dropdown [options]="filterStatusOptions" [(ngModel)]="filterKeyNeeds" placeholder="Filter By Status" (onChange)="filterNeedsStatus($event)"
+                            styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                        <p-dropdown [options]="filterTypeOptions" [(ngModel)]="filterKeyNeedType" placeholder="Filter By Type" (onChange)="filterNeedsType($event)"
+                            styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
 
                         <span class="p-input-icon-left p-mb-2 p-mb-md-0">
                             <i class="pi pi-search"></i>
@@ -112,11 +198,15 @@ Overall Need Progress:
                                     <span class="{{need.type}}type rounded-sm text-white">&nbsp;{{need.type}}&nbsp;</span>
                                 </div>
                                 <div *ngIf="isOwnerAdmin && project.status == 'ongoing'" class="mt-md-2 float-right">
-                                    <button class="btn btn-success" (click)="markCompleteNeed(need)" title="Mark as complete"><i class="pi pi-check"></i></button>
+                                    <button class="btn btn-success" (click)="markCompleteNeed(need)" title="Mark as complete">
+                                        <i class="pi pi-check"></i>
+                                    </button>
                                     <button class="btn btn-primary" data-toggle="modal" data-target="#EditModal" (click)=getForm(need) title="Edit">
                                         <i class="pi pi-pencil"></i>
                                     </button>
-                                    <button class="btn btn-danger" (click)="deleteNeed(need)" title="Delete"><i class="pi pi-trash"></i></button>
+                                    <button class="btn btn-danger" (click)="deleteNeed(need)" title="Delete">
+                                        <i class="pi pi-trash"></i>
+                                    </button>
                                     <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
@@ -186,9 +276,15 @@ Overall Need Progress:
                                     </div>
                                 </div>
                                 <div *ngIf="isOwnerAdmin && project.status != 'ongoing'" class="mt-md-2 float-right">
-                                    <button class="btn btn-success" disabled title="Mark as complete"><i class="pi pi-check"></i></button>
-                                    <button class="btn btn-primary" disabled title="Edit"><i class="pi pi-pencil"></i></button>
-                                    <button class="btn btn-danger" disabled title="Delete"><i class="pi pi-trash"></i></button>
+                                    <button class="btn btn-success" disabled title="Mark as complete">
+                                        <i class="pi pi-check"></i>
+                                    </button>
+                                    <button class="btn btn-primary" disabled title="Edit">
+                                        <i class="pi pi-pencil"></i>
+                                    </button>
+                                    <button class="btn btn-danger" disabled title="Delete">
+                                        <i class="pi pi-trash"></i>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -200,11 +296,12 @@ Overall Need Progress:
     <div class="col-5">
         <h5>Resources Obtained</h5>
         <div class="card">
-            <p-dataView #cb [value]="contributions" [paginator]="true" [rows]="9" filterBy="resourceTitle"
-                [sortField]="sortFieldCb" [sortOrder]="sortOrderCb" layout="list">
+            <p-dataView #cb [value]="contributions" [paginator]="true" [rows]="9" filterBy="resourceTitle" [sortField]="sortFieldCb"
+                [sortOrder]="sortOrderCb" layout="list">
                 <ng-template pTemplate="header">
                     <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
-                        <p-dropdown [options]="filterTypeOptions" [(ngModel)]="filterKeyCbType" placeholder="Filter By Type" (onChange)="filterCbType($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                        <p-dropdown [options]="filterTypeOptions" [(ngModel)]="filterKeyCbType" placeholder="Filter By Type" (onChange)="filterCbType($event)"
+                            styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
                         <span class="p-input-icon-left p-mb-2 p-mb-md-0">
                             <i class="pi pi-search"></i>
                             <input type="search" pInputText placeholder="Search by Title" (input)="cb.filter($event.target.value)">
@@ -218,14 +315,17 @@ Overall Need Progress:
                                 <div class="product-name">{{cb.resourceTitle}}</div>
                                 <div>{{cb.desc}}</div>
                                 <div *ngIf="cb.contributorType == 'user'">
-                                    <div><a href="/profile?username={{cb.contributorUsername}}&userType=individual" target="_blank">
-                                        <b>{{cb.contributorName}}</b></a>
+                                    <div>
+                                        <a href="/profile?username={{cb.contributorUsername}}&userType=individual" target="_blank">
+                                            <b>{{cb.contributorName}}</b>
+                                        </a>
                                         <span style="font-size: small;">({{cb.contributorUsername}})</span>
                                     </div>
                                 </div>
                                 <div *ngIf="cb.contributorType == 'institution'">
-                                    <h5><a href="/profile?username={{cb.contributorUsername}}&userType=institution" target="_blank">
-                                        {{cb.contributorName}}</a>
+                                    <h5>
+                                        <a href="/profile?username={{cb.contributorUsername}}&userType=institution" target="_blank">
+                                            {{cb.contributorName}}</a>
                                         <span style="font-size: small;">({{cb.contributorUsername}})</span>
                                     </h5>
                                 </div>
@@ -237,10 +337,12 @@ Overall Need Progress:
                                     <span class="{{cb.resType}}type rounded-sm text-white">&nbsp;{{cb.resType}}&nbsp;</span>
                                 </div>
                                 <br/>
-                                <button *ngIf="isOwnerAdmin && project.status == 'ongoing'" class="btn btn-danger mt-md-2 float-right" (click)="deleteObtained(cb)" title="Delete">
+                                <button *ngIf="isOwnerAdmin && project.status == 'ongoing'" class="btn btn-danger mt-md-2 float-right" (click)="deleteObtained(cb)"
+                                    title="Delete">
                                     <i class="pi pi-trash"></i>
                                 </button>
-                                <button *ngIf="isOwnerAdmin && project.status != 'ongoing'" class="btn btn-danger mt-md-2 float-right disabled" (click)="deleteObtained(cb)" title="Delete">
+                                <button *ngIf="isOwnerAdmin && project.status != 'ongoing'" class="btn btn-danger mt-md-2 float-right disabled" (click)="deleteObtained(cb)"
+                                    title="Delete">
                                     <i class="pi pi-trash"></i>
                                 </button>
                             </div>

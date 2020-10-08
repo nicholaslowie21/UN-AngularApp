@@ -1,1 +1,53 @@
-<p>project-marketplace works!</p>
+<h3>Project Marketplace</h3>
+
+<div class="card">
+    <p-dataView #dv [value]="projects" [paginator]="true" [rows]="9" filterBy="title"
+        layout="grid">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>
+                    <p-multiSelect [options]="SDGs" placeholder="Search SDGs" (onChange)="onRepresentativeChange($event)" styleClass="p-column-filter"
+                        optionLabel="name">
+                        <ng-template let-option pTemplate="item">
+                            <div class="p-multiselect-representative-option">
+                                <img [alt]="option.label" src="assets/showcase/images/demo/avatar/{{option.value.image}}" width="32" style="vertical-align: middle"
+                                />
+                                <span class="p-ml-1">{{option.label}}</span>
+                            </div>
+                        </ng-template>
+                    </p-multiSelect>
+
+                </th>
+                <th></th>
+            </tr>
+            <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                <span class="p-input-icon-left p-mb-2 p-mb-md-0">
+                    <i class="pi pi-search"></i>
+                    <input type="search" pInputText placeholder="Search by Title" (input)="dv.filter($event.target.value)">
+                </span>
+            </div>
+        </ng-template>
+        <ng-template let-project pTemplate="gridItem">
+            <div class="p-col-12 p-md-3">
+                <div class="product-grid-item card p-3">
+                    <div class="product-grid-item-top">
+
+                    </div>
+                    <div class="product-grid-item-content">
+                        <img *ngIf="project.imgPath.length == 0" src="../../../assets/img/team.jpg" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;"
+                            [alt]="project.title" />
+                        <img *ngIf="project.imgPath.length != 0" src="https://localhost:8080{{project.imgPath}}" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;"
+                            [alt]="project.title" />
+                        <div class="product-name">
+                            <a href="/project/resources?id={{project.id}}">{{project.title}}</a>
+                        </div>
+                        <div class="product-description">{{project.country}}</div>
+                        <div *ngFor="let sdg of project.SDGs" style="display:inline-block;">
+                            <button class="sdg sdg{{sdg}} mr-md-1">{{sdg}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+    </p-dataView>
+</div>
