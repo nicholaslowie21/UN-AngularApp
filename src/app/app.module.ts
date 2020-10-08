@@ -62,6 +62,8 @@ import {MultiSelectModule} from 'primeng/multiselect';
 import { ProjectMarketplaceComponent } from './marketplace/project-marketplace/project-marketplace.component';
 import { ResourceMarketplaceComponent } from './marketplace/resource-marketplace/resource-marketplace.component';
 import { FundingMarketplaceComponent } from './marketplace/funding-marketplace/funding-marketplace.component';
+import { ProjectRequestsComponent } from './project/project-requests/project-requests.component';
+import { MyRequestsComponent } from './my-requests/my-requests.component';
 
 @NgModule({
   declarations: [
@@ -99,7 +101,9 @@ import { FundingMarketplaceComponent } from './marketplace/funding-marketplace/f
     ProjectResourcesComponent,
     ProjectMarketplaceComponent,
     ResourceMarketplaceComponent,
-    FundingMarketplaceComponent
+    FundingMarketplaceComponent,
+    ProjectRequestsComponent,
+    MyRequestsComponent
   ],
   imports: [
     BrowserModule,
