@@ -82,6 +82,7 @@ export class ProjectResourcesComponent implements OnInit {
       { label: 'Item', value: 'item' },
       { label: 'Manpower', value: 'manpower' },
       { label: 'Venue', value: 'venue' },
+      { label: 'Knowledge', value: 'knowledge' },
       { label: 'Money', value: 'money' }
     ];
 
@@ -214,6 +215,12 @@ export class ProjectResourcesComponent implements OnInit {
           tempArr.push(arr[i]);
         }
       }
+    } else if (this.filterKeyNeedType == 'knowledge') {
+      for (var i = 0; i < arr.length; i++) {
+        if (arr[i].type == 'knowledge') {
+          tempArr.push(arr[i]);
+        }
+      }
     } else if (this.filterKeyNeedType == 'money') {
       for (var i = 0; i < arr.length; i++) {
         if (arr[i].type == 'money') {
@@ -247,6 +254,12 @@ export class ProjectResourcesComponent implements OnInit {
     } else if (value == 'venue') {
       for (var i = 0; i < this.resourceNeeds.length; i++) {
         if (this.resourceNeeds[i].type == 'venue') {
+          arr.push(this.resourceNeeds[i]);
+        }
+      }
+    } else if (value == 'knowledge') {
+      for (var i = 0; i < this.resourceNeeds.length; i++) {
+        if (this.resourceNeeds[i].type == 'knowledge') {
           arr.push(this.resourceNeeds[i]);
         }
       }
