@@ -85,7 +85,7 @@ export class InstitutionService {
     return this.http.get(API_URL + '/searchUsers?username=' + data.username);
   }
 
-  generateShareProfilePic(): Observable<any> {
-    return this.http.get(API_URL + '/shareProfile');
+  getInstitutionProfileFeed(data): Observable<any> {
+    return this.http.get(API_URL + '/profileFeed?institutionId=' + data.id);
   }
 }

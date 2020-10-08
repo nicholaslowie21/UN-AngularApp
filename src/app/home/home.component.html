@@ -2,7 +2,7 @@
     <div class="row">
       <div class="col-2">
         <div class="card">
-          <div class="card-body bg-light">
+          <div class="card-body">
             <div *ngIf="user.profilePic.length > 0">
               <img class="card-img-top rounded-circle img-fluid mx-auto d-block" style="width: 120px; height: 120px; object-fit: cover;" src={{user.profilePic}} alt="Profile picture">
             </div>
@@ -14,29 +14,28 @@
                 alt="Profile picture"
               />
             </div>
-            <h5 class="card-title text-center mt-md-3">
+            <h6 class="card-title text-center mt-md-3">
               <a href="/profile?username={{user.username}}&userType={{userType}}" class="text-dark">{{ user.name }}</a>
-            </h5>
+            </h6>
           </div>
         </div>
         <br/>
         <div class="card">
-          <h5 class="card-title text-center mt-md-3">
+          <h6 class="card-title text-center mt-md-3">
             <a href="#" class="text-dark">Chats</a>
-          </h5>
+          </h6>
         </div>
         <div class="card">
-          <h5 class="card-title text-center mt-md-3">
+          <h6 class="card-title text-center mt-md-3">
             <a href="#" class="text-dark">Notifications</a>
-          </h5>
+          </h6>
         </div>
       </div>
       <div class="col-7">
-        <div class="card">
-          <div class="card-body">
-            <h5>News feed</h5>
+        <!-- <div class="card"> -->
+          <!-- <div class="card-body"> -->
             <div *ngFor="let n of newsFeed">
-              <div class="card">
+              <div class="card mb-md-2">
                 <div *ngIf="n.imgPath.length == 0">
                   <img class="card-img-top img-fluid" src="../../assets/img/team.jpg" 
                     alt="Project picture" style="height: 300px; object-fit: cover;">
@@ -76,8 +75,8 @@
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+          <!-- </div> -->
+        <!-- </div> -->
       </div>
       <div class="col-3">
         <div class="card">

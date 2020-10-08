@@ -52,8 +52,7 @@ export class OwnProfileComponent implements OnInit {
   indAffiliations = [];
 
   resourceOffers = [];
-
-  //projectList = Array;
+  feed = [];
 
   constructor(private tokenStorageService: TokenStorageService, private userService: UserService,
     private resourceService: ResourceService, private institutionService: InstitutionService, private route: ActivatedRoute) { }
@@ -163,7 +162,11 @@ export class OwnProfileComponent implements OnInit {
         response => {
           this.indAffiliations = response.data.affiliations;
         }
-      )
+      );
+
+      await this.userService.getUserProfileFeeds({id: this.userId}).toPromise().then(
+        response => this.feed = response.data.feeds
+      );
 
     } else {
       await this.institutionService.getCurrentProjects({ id: this.userId }).toPromise().then(
@@ -203,9 +206,14 @@ export class OwnProfileComponent implements OnInit {
           this.resourceOffers = this.resourceOffers.concat(response.data.venues);
         }
       );
+
+      await this.institutionService.getInstitutionProfileFeed({id: this.userId}).toPromise().then(
+        response => this.feed = response.data.feeds
+      );
     }
 
     this.resourceOffers.sort(this.sortFunction);
+    this.feed.sort(this.sortFeed);
 
     console.log("BADGES: "+this.badges);
     console.log("CURR PROJ: "+JSON.stringify(this.currentProj));
@@ -225,6 +233,17 @@ export class OwnProfileComponent implements OnInit {
 
   copied(): void {
     alert("Copied!");
+  }
+
+  sortFeed(a, b) {
+    var dateA = new Date(a.createdAt).getTime();
+    var dateB = new Date(b.createdAt).getTime();
+    return dateA > dateB ? -1 : 1;
+  }
+
+  formatDate(date): any {
+    let formattedDate = new Date(date).toUTCString();
+    return formattedDate.substring(5, formattedDate.length-13);
   }
 
 }
