@@ -57,13 +57,12 @@ export class FundingMarketplaceComponent implements OnInit {
     await this.ngOnInit();
     let arr = [];
     if(this.selectedSDGs.length == 0) {
-      this.ngOnInit();
+      return;
     } else {
-      
-        for(var j=0; j<this.projects.length; j++) {
-          let isProject = false;
-          for(var k=0; k<this.projects[j].SDGs.length; k++) {
-            for(var i=0; i<this.selectedSDGs.length; i++) {
+      for(var j=0; j<this.projects.length; j++) {
+        let isProject = false;
+        for(var k=0; k<this.projects[j].SDGs.length; k++) {
+          for(var i=0; i<this.selectedSDGs.length; i++) {
             if(this.projects[j].SDGs[k] == this.selectedSDGs[i].number) {
               arr.push(this.projects[j]);
               isProject = true;
@@ -71,10 +70,8 @@ export class FundingMarketplaceComponent implements OnInit {
             }
           }
           if(isProject) break;
-          }
-          
-        }
-      
+        }  
+      }
       this.projects = arr; 
     }
   }

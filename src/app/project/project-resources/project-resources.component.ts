@@ -271,7 +271,7 @@ export class ProjectResourcesComponent implements OnInit {
     const formCreate = {
       id: this.projectId,
       title: this.form.title,
-      desc: this.form.desc,
+      desc: this.form.desc || '',
       resourceType: this.form.resourceType,
       total: this.form.total
     }

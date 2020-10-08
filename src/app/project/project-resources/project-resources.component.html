@@ -30,6 +30,7 @@ Overall Need Progress:
                             <option value="item">Item</option>
                             <option value="manpower">Manpower</option>
                             <option value="venue">Venue</option>
+                            <option value="knowledge">Knowledge</option>
                             <option value="money">Money</option>
                           </select>
                         </div>
@@ -46,10 +47,7 @@ Overall Need Progress:
                     <div class="form-group row">
                         <label for="desc" class="col-sm-3 col-form-label">Description</label>
                         <div class="col-sm-8">
-                            <textarea class="form-control" name="desc" [(ngModel)]="form.desc" required #desc="ngModel" rows="3"></textarea>
-                        </div>
-                        <div class="alert-danger" *ngIf="f.submitted && desc.invalid">
-                            <div *ngIf="desc.errors.required">Description is required</div>
+                            <textarea class="form-control" name="desc" [(ngModel)]="form.desc" #desc="ngModel" rows="3"></textarea>
                         </div>
                     </div>
                     <div class="form-group row" *ngIf="form.resourceType == 'money'">
@@ -140,10 +138,7 @@ Overall Need Progress:
                                                         <div class="form-group row">
                                                             <label for="desc" class="col-sm-3 col-form-label">Description</label>
                                                             <div class="col-sm-8">
-                                                                <textarea class="form-control" name="desc" [(ngModel)]="updateForm.desc" required #desc="ngModel" rows="3"></textarea>
-                                                            </div>
-                                                            <div class="alert-danger" *ngIf="f.submitted && desc.invalid">
-                                                                <div *ngIf="desc.errors.required">Description is required</div>
+                                                                <textarea class="form-control" name="desc" [(ngModel)]="updateForm.desc" #desc="ngModel" rows="3"></textarea>
                                                             </div>
                                                         </div>
                                                         <div class="form-group row" *ngIf="updateForm.type == 'money'">
