@@ -15,6 +15,19 @@ export class MarketplaceService {
 
   constructor(private http: HttpClient) { }
 
+  getOngoingProjects(): Observable<any> {
+    return this.http.get(API_URL + '/projects');
+  }
+
+  createProjectRequest(data): Observable<any> {
+    return this.http.post(API_URL + '/requestProject', {
+      needId:data.needId,
+      resourceId:data.resourceId,
+      resType:data.resType,
+      desc:data.desc
+    }, httpOptions)
+  }
+
   viewFundingProject(): Observable<any> {
     return this.http.get(API_URL + '/fundingNeeds');
   }
@@ -26,4 +39,5 @@ export class MarketplaceService {
       moneySum: data.moneySum
     }, httpOptions);
   }
+
 }
