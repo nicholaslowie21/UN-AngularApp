@@ -316,6 +316,12 @@ export class ProjectResourcesComponent implements OnInit {
           arr.push(this.contributions[i]);
         }
       }
+    } else if (value == 'knowledge') {
+      for (var i = 0; i < this.contributions.length; i++) {
+        if (this.contributions[i].resType == 'knowledge') {
+          arr.push(this.contributions[i]);
+        }
+      }
     } else if (value == 'money') {
       for (var i = 0; i < this.contributions.length; i++) {
         if (this.contributions[i].resType == 'money') {
@@ -334,7 +340,7 @@ export class ProjectResourcesComponent implements OnInit {
       title: this.form.title,
       desc: this.form.desc || '',
       resourceType: this.form.resourceType,
-      total: this.form.total
+      total: parseInt(this.form.total)
     }
 
     this.projectService.createResourceNeed(formCreate).subscribe(
@@ -364,7 +370,7 @@ export class ProjectResourcesComponent implements OnInit {
       id: need.id,
       title: need.title,
       desc: need.desc,
-      total: need.total,
+      total: parseInt(need.total),
       completion: 100
     }
     this.projectService.editResourceNeed(formComplete).subscribe(
@@ -380,13 +386,15 @@ export class ProjectResourcesComponent implements OnInit {
   }
 
   editResourceNeed(): void {
+    console.log(this.updateForm.completion);
     const formEdit = {
       id: this.updateForm.id,
       title: this.updateForm.title,
       desc: this.updateForm.desc,
-      total: this.updateForm.total,
+      total: parseInt(this.updateForm.total),
       completion: this.updateForm.completion
     }
+    console.log(formEdit)
     this.projectService.editResourceNeed(formEdit).subscribe(
       response => {
         this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Resource need updated!' });
