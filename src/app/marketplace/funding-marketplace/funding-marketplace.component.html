@@ -1,1 +1,108 @@
-<p>funding-marketplace works!</p>
+<h2>Funding Marketplace</h2>
+
+<p-toast key="toastMsg" [baseZIndex]="100"></p-toast>
+
+<p-dataView #dv [value]="projects" [paginator]="true" [rows]="9" filterBy="title"
+                [sortField]="sortField" [sortOrder]="sortOrder" layout="grid">
+                <ng-template pTemplate="header">
+                    <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                        <p-dropdown [options]="filterStatusOptions" [(ngModel)]="filterKeyItem" placeholder="Filter By Status" (onChange)="filterItemStatus($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                        <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyItem" placeholder="Sort By Date" (onChange)="onSortChangeItem($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                        <span class="p-input-icon-left p-mb-2 p-mb-md-0">
+                            <i class="pi pi-search"></i>
+                            <input type="search" pInputText placeholder="Search by Title" (input)="dv.filter($event.target.value)">
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template let-proj pTemplate="gridItem">
+                    <div class="p-col-12 p-md-3">
+                        <div class="product-grid-item card pt-2 pl-3 pr-3 pb-2">
+                            <div class="product-grid-item-top">
+                                <span class="product-category">{{proj.country}}</span>
+                                <!-- <span class="float-right">{{formatDate(item.updatedAt)}}</span> -->
+                            </div>
+                            <div>
+                                <img *ngIf="proj.imgPath.length == 0" src="../../../assets/img/team.jpg" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;" [alt]="proj.title"/>
+                                <img *ngIf="proj.imgPath.length != 0" src="https://localhost:8080{{proj.imgPath}}" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;" [alt]="proj.title"/>
+                                <div class="product-name"><a href="/project/projectDetails?id={{proj.id}}">{{proj.title}}</a></div>
+                                <span class="float-right"><span *ngFor="let sdg of proj.SDGs" class="sdg sdg{{sdg}} small">{{sdg}}</span></span>
+                                <div class="mb-md-1">{{proj.fundingTitle}}</div>
+                                Target Sum: ${{proj.total}}
+                                Pending Sum: ${{proj.pendingSum}}
+                                Received Sum: ${{proj.receivedSum}}
+                            </div>
+                            <div class="product-grid-item-bottom">
+                                <button pButton type="button" label="Donate" class="p-button-sm p-button-rounded"
+                                    data-toggle="modal" data-target="#DonateModal" (click)=getForm(proj)></button>
+                                <div class="modal fade" id="DonateModal" tabindex="-1" role="dialog" aria-labelledby="donateModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="donateModalLabel">Donate</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <img *ngIf="projForm.imgPath.length == 0" class="img-fluid" src="../../../assets/img/team.jpg" style="height: 250px; width: 500px; object-fit: cover;">
+                                                <img *ngIf="projForm.imgPath.length > 0" class="img-fluid" src="https://localhost:8080{{projForm.imgPath}}" style="height: 250px; width: 500px; object-fit: cover;">
+                                                <br>
+                                                <h5 class="mt-md-2"><a href="/project/projectDetails?id={{projForm.id}}">{{projForm.title}}</a> | {{projForm.country}}
+                                                    <span class="float-right small">SDGs:&nbsp;<span *ngFor="let sdg of projForm.SDGs" class="sdg sdg{{sdg}}">{{sdg}}</span></span>
+                                                </h5>
+                                                
+                                                {{projForm.desc}}
+                                                <br>
+                                                <img *ngIf="projForm.ownerImg.length == 0" src="../../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle" style="height: 40px; width: 40px; object-fit: cover;">
+                                                <img *ngIf="projForm.ownerImg.length > 0" src="https://localhost:8080{{projForm.ownerImg}}" class="img-fluid rounded-circle" style="height: 40px; width: 40px; object-fit: cover;">
+
+                                                <div *ngIf="projForm.ownerType == 'user'" style="display: inline-block;">
+                                                    <a href="/profile?username={{projForm.ownerUsername}}&userType=individual">{{projForm.ownerName}}</a>
+                                                </div>
+                                                <div *ngIf="projForm.ownerType != 'user'" style="display: inline-block;">
+                                                    <a href="/profile?username={{projForm.ownerUsername}}&userType=institution">{{projForm.ownerName}}</a>
+                                                </div>
+                                                <br>
+                                                <h6>{{projForm.fundingTitle}}</h6>
+                                                {{projForm.fundingDesc}}
+                                                <br>
+                                                Target Sum: ${{projForm.targetSum}}
+                                                Pending Sum: ${{projForm.pendingSum}}
+                                                Received Sum: ${{projForm.receivedSum}}
+                                                Remaining Sum: ${{projForm.remainingSum}}
+                                                <br>
+                                                <h6 class="mt-md-3">Submit a request to donate</h6>
+                                                <form name="form" (ngSubmit)="f.form.valid && donate()" #f="ngForm" novalidate>
+                                                    <div class="form-group row">
+                                                        <label for="moneySum" class="col-sm-3 col-form-label">Amount</label>
+                                                        <div class="col-sm-8">
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <div class="input-group-text">$</div>
+                                                                </div>
+                                                                <input type="text" class="form-control" name="moneySum" [(ngModel)]="form.moneySum" required #moneySum="ngModel" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="alert-danger" *ngIf="f.submitted && moneySum.invalid">
+                                                            <div *ngIf="moneySum.errors.required">Amount is required</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="desc" class="col-sm-3 col-form-label">Description</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" class="form-control" name="desc" [(ngModel)]="form.desc" #desc="ngModel" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <button class="btn btn-primary btn-block">Donate</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-dataView>
