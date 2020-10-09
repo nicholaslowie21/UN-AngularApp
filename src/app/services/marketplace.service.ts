@@ -40,4 +40,41 @@ export class MarketplaceService {
     }, httpOptions);
   }
 
+  getItemOffers(): Observable<any> {
+    return this.http.get(API_URL + '/resources/item');
+  }
+
+  getManpowerOffers(): Observable<any> {
+    return this.http.get(API_URL + '/resources/manpower');
+  }
+
+  getVenueOffers(): Observable<any> {
+    return this.http.get(API_URL + '/resources/venue');
+  }
+
+  getKnowledgeOffers(): Observable<any> {
+    return this.http.get(API_URL + '/resources/knowledge');
+  }
+
+  requestResource(data): Observable<any> {
+    return this.http.post(API_URL + '/requestResource', {
+      needId: data.needId,
+      resourceId: data.resourceId,
+      resType: data.resType,
+      desc: data.desc
+    }, httpOptions);
+  }
+
+  useKnowledgeResource(data): Observable<any> {
+    return this.http.post(API_URL + '/useKnowledgeResource', {
+      resourceId: data.resourceId,
+      needId: data.needId,
+      desc: data.desc
+    }, httpOptions);
+  }
+
+  getUserProjects(data): Observable<any> {
+    return this.http.get(API_URL + '/accProjects?accountId=' + data.id + '&accountType=' + data.accountType);
+  }
+
 }
