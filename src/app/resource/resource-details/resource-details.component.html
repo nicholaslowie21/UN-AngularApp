@@ -155,8 +155,111 @@
             </div>
         </div>
     </div>
-    <div *ngIf="!isOwner" class="col-4">
-        <button class="btn btn-primary">Request</button>
+    <div *ngIf="!isOwner && type != 'knowledge'" class="col-4">
+        <button class="btn btn-primary" data-toggle="modal" data-target="#requestModal">Request</button>
+    </div>
+    <div *ngIf="!isOwner && type == 'knowledge'" class="col-4">
+        <button class="btn btn-primary" data-toggle="modal" data-target="#useKnowledgeModal">Use in My Project</button>
+    </div>
+
+    <div class="modal fade" id="requestModal" tabindex="-1" role="dialog" aria-labelledby="requestModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="requestModalLabel">Request Resource</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+                        <!-- show current user's projects and get them to choose one -->
+                        <div class="form-group row">
+                            <label for="project" class="col-sm-3 col-form-label">Select Project</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" name="project" [(ngModel)]="selectedProjectId" required #project="ngModel" (click)="updateSelectedProject($event)">
+                                    <option *ngFor="let p of myProjects" value={{p.id}}>{{p.title}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- show resource needs of selected project and get user to choose one -->
+                        <div class="form-group row">
+                            <label for="resourceNeed" class="col-sm-3 col-form-label">Select Resource Need</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" name="resourceNeed" [(ngModel)]="selectedResourceNeedId" required #resourceNeed="ngModel" (click)="updateSelectedResourceNeed($event)">
+                                    <option *ngFor="let r of resourceNeeds" value={{r.id}}>{{r.title}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- input description for resource request -->
+                        <div class="form-group row">
+                            <label for="desc" class="col-sm-3 col-form-label">Description</label>
+                            <div class="col-sm-9">
+                                <textarea class="form-control" name="desc" [(ngModel)]="form.desc" required #desc="ngModel" rows="3"></textarea>
+                            </div>
+                            <div class="alert-danger" *ngIf="f.submitted && desc.invalid">
+                                <div *ngIf="desc.errors.required">Description is required</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-primary btn-block">Request</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="useKnowledgeModal" tabindex="-1" role="dialog" aria-labelledby="useKnowledgeModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="useKnowledgeModalLabel">Use Knowledge Resource</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form name="form" (ngSubmit)="f.form.valid && onSubmitKnowledge()" #f="ngForm" novalidate>
+                        This will notify the owner(s) of the knowledge resource that you have used their knowledge in your project.<br/><br/>
+                        <!-- show current user's projects and get them to choose one -->
+                        <div class="form-group row">
+                            <label for="project" class="col-sm-3 col-form-label">Select Project</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" name="project" [(ngModel)]="selectedProjectId" required #project="ngModel" (click)="updateSelectedProject($event)">
+                                    <option *ngFor="let p of myProjects" value={{p.id}}>{{p.title}}</option>
+                                </select>
+                                <div *ngIf="selectedProject">
+                                    You have selected {{selectedProject}}
+                                </div>
+                            </div>
+                        </div>
+                        <!-- show resource needs of selected project and get user to choose one -->
+                        <div class="form-group row">
+                            <label for="resourceNeed" class="col-sm-3 col-form-label">Select Resource Need:</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" name="resourceNeed" [(ngModel)]="selectedResourceNeedId" required #resourceNeed="ngModel" (click)="updateSelectedResourceNeed($event)">
+                                    <option *ngFor="let r of resourceNeeds" value={{r.id}}>{{r.title}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- input description for resource request -->
+                        <div class="form-group row">
+                            <label for="desc" class="col-sm-3 col-form-label">Description</label>
+                            <div class="col-sm-9">
+                                <textarea class="form-control" name="desc" [(ngModel)]="form.desc" required #desc="ngModel" rows="3"></textarea>
+                            </div>
+                            <div class="alert-danger" *ngIf="f.submitted && desc.invalid">
+                                <div *ngIf="desc.errors.required">Description is required</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-primary btn-block">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
