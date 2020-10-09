@@ -72,4 +72,8 @@ export class UserService {
   viewUserById(data): Observable<any> {
     return this.http.get(API_URL + '/viewUserById?userId=' + data.id);
   }
+
+  getUserProfileFeeds(data): Observable<any> {
+    return this.http.get(API_URL + '/profileFeed?userId=' + data.id);
+  }
 }

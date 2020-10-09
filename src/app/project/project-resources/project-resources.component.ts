@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { ProjectService } from '../../services/project.service';
 import { TokenStorageService } from '../../services/token-storage.service';
 import { MessageService } from 'primeng/api';
+import { ResourceService } from '../../services/resource.service';
+import { MarketplaceService } from '../../services/marketplace.service';
 
 @Component({
   selector: 'app-project-resources',
@@ -14,11 +16,14 @@ export class ProjectResourcesComponent implements OnInit {
 
   projectId: any;
   project: any;
-  
+
   isOwnerAdmin = false;
   user: any;
+  userType: any;
 
   resourceNeeds = [];
+  needsMap = [];
+  needsChecked = [];
   contributions = [];
   progress = 0;
 
@@ -39,54 +44,98 @@ export class ProjectResourcesComponent implements OnInit {
   form: any = {};
   updateForm: any = {};
 
-  constructor(private route: ActivatedRoute, private projectService: ProjectService, 
-    private tokenStorageService: TokenStorageService, private messageService: MessageService) { }
+  resourceType = '';
+  item = [];
+  knowledge = [];
+  manpower = [];
+  venue = [];
+
+  reqDescription = '';
+  resMap = [];
+  resChecked = [];
+  typeMap = '';
+  isUpdateSuccessful = false;
+  finalNeed = '';
+  finalRes = '';
+
+  constructor(private route: ActivatedRoute, private projectService: ProjectService,
+    private tokenStorageService: TokenStorageService, private messageService: MessageService,
+    private resourceService: ResourceService, private marketplaceService: MarketplaceService) { }
 
   async ngOnInit() {
     this.route.queryParams
       .subscribe(params => {
         this.projectId = params.id;
       }
-    );
+      );
     this.sortOptions = [
-      {label: 'Date Newest to Oldest', value: '!updatedAt'},
-      {label: 'Date Oldest to Newest', value: 'updatedAt'}
+      { label: 'Date Newest to Oldest', value: '!updatedAt' },
+      { label: 'Date Oldest to Newest', value: 'updatedAt' }
     ];
     this.filterStatusOptions = [
-      {label: 'All', value:'all'},
-      {label: 'In progress', value:'progress'},
-      {label: 'Completed', value:'completed'}
+      { label: 'All', value: 'all' },
+      { label: 'In progress', value: 'progress' },
+      { label: 'Completed', value: 'completed' }
     ];
     this.filterTypeOptions = [
-      {label: 'All', value:'all'},
-      {label: 'Item', value:'item'},
-      {label: 'Manpower', value:'manpower'},
-      {label: 'Venue', value:'venue'},
-      {label: 'Money', value:'money'}
+      { label: 'All', value: 'all' },
+      { label: 'Item', value: 'item' },
+      { label: 'Manpower', value: 'manpower' },
+      { label: 'Venue', value: 'venue' },
+      { label: 'Knowledge', value: 'knowledge' },
+      { label: 'Money', value: 'money' }
     ];
 
+    console.log(this.tokenStorageService.getToken());
     this.user = this.tokenStorageService.getUser();
+    if (this.tokenStorageService.getAccountType() == 'user') {
+      this.userType = 'individual';
+      await this.resourceService.getUserItem({ id: this.user.id }).toPromise().then(
+        res => this.item = res.data.items
+      );
+      await this.resourceService.getUserKnowledge({ id: this.user.id }).toPromise().then(
+        res => this.knowledge = res.data.knowledges
+      );
+      await this.resourceService.getUserManpower({ id: this.user.id }).toPromise().then(
+        res => this.manpower = res.data.manpowers
+      );
+      await this.resourceService.getUserVenue({ id: this.user.id }).toPromise().then(
+        res => this.venue = res.data.venues
+      );
+      console.log(this.item);
+    } else {
+      this.userType = 'institution';
+      await this.resourceService.getInstitutionItem({ id: this.user.id }).toPromise().then(
+        res => this.item = res.data.items
+      );
+      await this.resourceService.getInstitutionKnowledge({ id: this.user.id }).toPromise().then(
+        res => this.knowledge = res.data.knowledges
+      );
+      await this.resourceService.getInstitutionVenue({ id: this.user.id }).toPromise().then(
+        res => this.venue = res.data.venues
+      );
+    }
 
-    await this.projectService.viewProject({id: this.projectId}).toPromise().then(
+    await this.projectService.viewProject({ id: this.projectId }).toPromise().then(
       res => this.project = res.data.targetProject
     )
 
-    if(this.project.host == this.user.id) {
+    if (this.project.host == this.user.id) {
       this.isOwnerAdmin = true;
     } else {
-      for(var i=0; i<this.project.admins.length; i++) {
-        if(this.project.admins[i] == this.user.id) {
+      for (var i = 0; i < this.project.admins.length; i++) {
+        if (this.project.admins[i] == this.user.id) {
           this.isOwnerAdmin = true;
           break;
         }
       }
     }
-    
-    await this.projectService.getProjectResourceNeeds({id: this.projectId}).toPromise().then(
+
+    await this.projectService.getProjectResourceNeeds({ id: this.projectId }).toPromise().then(
       res => this.resourceNeeds = res.data.resourceneeds
     )
 
-    await this.projectService.getProjectContributions({id: this.projectId}).toPromise().then(
+    await this.projectService.getProjectContributions({ id: this.projectId }).toPromise().then(
       res => this.contributions = res.data.contributions
     )
 
@@ -97,30 +146,30 @@ export class ProjectResourcesComponent implements OnInit {
 
   calculateProgress(): void {
     this.progress = 0;
-    if(this.resourceNeeds.length == 0) {
+    if (this.resourceNeeds.length == 0) {
       this.progress = 0;
     } else {
-      for(var i=0; i<this.resourceNeeds.length; i++) {
+      for (var i = 0; i < this.resourceNeeds.length; i++) {
         this.progress += this.resourceNeeds[i].completion;
       }
-      this.progress = this.progress/(this.resourceNeeds.length*100)*100;
+      this.progress = this.progress / (this.resourceNeeds.length * 100) * 100;
       this.progress = parseFloat(this.progress.toFixed(2));
     }
   }
 
-  calculateRemaining(pending,received,total) {
-    return total-pending-received;
+  calculateRemaining(pending, received, total) {
+    return total - pending - received;
   }
 
   onSortChangeNeeds(event) {
     let value = event.value;
     if (value.indexOf('!') === 0) {
-        this.sortOrderNeeds = -1;
-        this.sortFieldNeeds = value.substring(1, value.length);
+      this.sortOrderNeeds = -1;
+      this.sortFieldNeeds = value.substring(1, value.length);
     }
     else {
-        this.sortOrderNeeds = 1;
-        this.sortFieldNeeds = value;
+      this.sortOrderNeeds = 1;
+      this.sortFieldNeeds = value;
     }
   }
 
@@ -131,44 +180,50 @@ export class ProjectResourcesComponent implements OnInit {
     await this.ngOnInit();
     let value = event.value;
     let arr = [];
-    if(value == 'progress') {
-      for(var i=0; i<this.resourceNeeds.length; i++) {
-        if(this.resourceNeeds[i].status == 'progress') {
+    if (value == 'progress') {
+      for (var i = 0; i < this.resourceNeeds.length; i++) {
+        if (this.resourceNeeds[i].status == 'progress') {
           arr.push(this.resourceNeeds[i]);
         }
       }
-    } else if(value == 'completed') {
-      for(var i=0; i<this.resourceNeeds.length; i++) {
-        if(this.resourceNeeds[i].status == 'completed') {
+    } else if (value == 'completed') {
+      for (var i = 0; i < this.resourceNeeds.length; i++) {
+        if (this.resourceNeeds[i].status == 'completed') {
           arr.push(this.resourceNeeds[i]);
         }
       }
     } else {
-      arr = this.resourceNeeds; 
+      arr = this.resourceNeeds;
     }
 
     let tempArr = [];
-    if(this.filterKeyNeedType == 'item') {
-      for(var i=0; i<arr.length; i++) {
-        if(arr[i].type == 'item') {
+    if (this.filterKeyNeedType == 'item') {
+      for (var i = 0; i < arr.length; i++) {
+        if (arr[i].type == 'item') {
           tempArr.push(arr[i]);
         }
       }
-    } else if(this.filterKeyNeedType == 'manpower') {
-      for(var i=0; i<arr.length; i++) {
-        if(arr[i].type == 'manpower') {
+    } else if (this.filterKeyNeedType == 'manpower') {
+      for (var i = 0; i < arr.length; i++) {
+        if (arr[i].type == 'manpower') {
           tempArr.push(arr[i]);
         }
       }
-    } else if(this.filterKeyNeedType == 'venue') {
-      for(var i=0; i<arr.length; i++) {
-        if(arr[i].type == 'venue') {
+    } else if (this.filterKeyNeedType == 'venue') {
+      for (var i = 0; i < arr.length; i++) {
+        if (arr[i].type == 'venue') {
           tempArr.push(arr[i]);
         }
       }
-    } else if(this.filterKeyNeedType == 'money') {
-      for(var i=0; i<arr.length; i++) {
-        if(arr[i].type == 'money') {
+    } else if (this.filterKeyNeedType == 'knowledge') {
+      for (var i = 0; i < arr.length; i++) {
+        if (arr[i].type == 'knowledge') {
+          tempArr.push(arr[i]);
+        }
+      }
+    } else if (this.filterKeyNeedType == 'money') {
+      for (var i = 0; i < arr.length; i++) {
+        if (arr[i].type == 'money') {
           tempArr.push(arr[i]);
         }
       }
@@ -184,27 +239,33 @@ export class ProjectResourcesComponent implements OnInit {
     await this.ngOnInit();
     let value = event.value;
     let arr = [];
-    if(value == 'item') {
-      for(var i=0; i<this.resourceNeeds.length; i++) {
-        if(this.resourceNeeds[i].type == 'item') {
+    if (value == 'item') {
+      for (var i = 0; i < this.resourceNeeds.length; i++) {
+        if (this.resourceNeeds[i].type == 'item') {
           arr.push(this.resourceNeeds[i]);
         }
       }
-    } else if(value == 'manpower') {
-      for(var i=0; i<this.resourceNeeds.length; i++) {
-        if(this.resourceNeeds[i].type == 'manpower') {
+    } else if (value == 'manpower') {
+      for (var i = 0; i < this.resourceNeeds.length; i++) {
+        if (this.resourceNeeds[i].type == 'manpower') {
           arr.push(this.resourceNeeds[i]);
         }
       }
-    } else if(value == 'venue') {
-      for(var i=0; i<this.resourceNeeds.length; i++) {
-        if(this.resourceNeeds[i].type == 'venue') {
+    } else if (value == 'venue') {
+      for (var i = 0; i < this.resourceNeeds.length; i++) {
+        if (this.resourceNeeds[i].type == 'venue') {
           arr.push(this.resourceNeeds[i]);
         }
       }
-    } else if(value == 'money') {
-      for(var i=0; i<this.resourceNeeds.length; i++) {
-        if(this.resourceNeeds[i].type == 'money') {
+    } else if (value == 'knowledge') {
+      for (var i = 0; i < this.resourceNeeds.length; i++) {
+        if (this.resourceNeeds[i].type == 'knowledge') {
+          arr.push(this.resourceNeeds[i]);
+        }
+      }
+    } else if (value == 'money') {
+      for (var i = 0; i < this.resourceNeeds.length; i++) {
+        if (this.resourceNeeds[i].type == 'money') {
           arr.push(this.resourceNeeds[i]);
         }
       }
@@ -213,20 +274,20 @@ export class ProjectResourcesComponent implements OnInit {
     }
 
     let tempArr = [];
-    if(this.filterKeyNeeds == 'progress') {
-      for(var i=0; i<arr.length; i++) {
-        if(arr[i].status == 'progress') {
+    if (this.filterKeyNeeds == 'progress') {
+      for (var i = 0; i < arr.length; i++) {
+        if (arr[i].status == 'progress') {
           tempArr.push(arr[i]);
         }
       }
-    } else if(this.filterKeyNeeds == 'completed') {
-      for(var i=0; i<arr.length; i++) {
-        if(arr[i].status == 'completed') {
+    } else if (this.filterKeyNeeds == 'completed') {
+      for (var i = 0; i < arr.length; i++) {
+        if (arr[i].status == 'completed') {
           tempArr.push(arr[i]);
         }
       }
     } else {
-      tempArr = arr; 
+      tempArr = arr;
     }
 
     this.resourceNeeds = tempArr;
@@ -237,27 +298,33 @@ export class ProjectResourcesComponent implements OnInit {
     await this.ngOnInit();
     let value = event.value;
     let arr = [];
-    if(value == 'item') {
-      for(var i=0; i<this.contributions.length; i++) {
-        if(this.contributions[i].resType == 'item') {
+    if (value == 'item') {
+      for (var i = 0; i < this.contributions.length; i++) {
+        if (this.contributions[i].resType == 'item') {
           arr.push(this.contributions[i]);
         }
       }
-    } else if(value == 'manpower') {
-      for(var i=0; i<this.contributions.length; i++) {
-        if(this.contributions[i].resType == 'manpower') {
+    } else if (value == 'manpower') {
+      for (var i = 0; i < this.contributions.length; i++) {
+        if (this.contributions[i].resType == 'manpower') {
           arr.push(this.contributions[i]);
         }
       }
-    } else if(value == 'venue') {
-      for(var i=0; i<this.contributions.length; i++) {
-        if(this.contributions[i].resType == 'venue') {
+    } else if (value == 'venue') {
+      for (var i = 0; i < this.contributions.length; i++) {
+        if (this.contributions[i].resType == 'venue') {
           arr.push(this.contributions[i]);
         }
       }
-    } else if(value == 'money') {
-      for(var i=0; i<this.contributions.length; i++) {
-        if(this.contributions[i].resType == 'money') {
+    } else if (value == 'knowledge') {
+      for (var i = 0; i < this.contributions.length; i++) {
+        if (this.contributions[i].resType == 'knowledge') {
+          arr.push(this.contributions[i]);
+        }
+      }
+    } else if (value == 'money') {
+      for (var i = 0; i < this.contributions.length; i++) {
+        if (this.contributions[i].resType == 'money') {
           arr.push(this.contributions[i]);
         }
       }
@@ -271,18 +338,18 @@ export class ProjectResourcesComponent implements OnInit {
     const formCreate = {
       id: this.projectId,
       title: this.form.title,
-      desc: this.form.desc,
+      desc: this.form.desc || '',
       resourceType: this.form.resourceType,
-      total: this.form.total
+      total: parseInt(this.form.total)
     }
 
     this.projectService.createResourceNeed(formCreate).subscribe(
       response => {
-        this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Resource need created!'});
+        this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Resource need created!' });
         window.location.reload();
-      }, 
+      },
       err => {
-        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+        this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: err.error.msg });
       }
     );
   }
@@ -303,36 +370,38 @@ export class ProjectResourcesComponent implements OnInit {
       id: need.id,
       title: need.title,
       desc: need.desc,
-      total: need.total,
+      total: parseInt(need.total),
       completion: 100
     }
     this.projectService.editResourceNeed(formComplete).subscribe(
       response => {
-        this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Resource need marked as completed!'});
+        this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Resource need marked as completed!' });
         this.ngOnInit();
         // window.location.reload();
       },
       err => {
-        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+        this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: err.error.msg });
       }
     )
   }
 
   editResourceNeed(): void {
+    console.log(this.updateForm.completion);
     const formEdit = {
       id: this.updateForm.id,
       title: this.updateForm.title,
       desc: this.updateForm.desc,
-      total: this.updateForm.total,
+      total: parseInt(this.updateForm.total),
       completion: this.updateForm.completion
     }
+    console.log(formEdit)
     this.projectService.editResourceNeed(formEdit).subscribe(
       response => {
-        this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Resource need updated!'});
+        this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Resource need updated!' });
         window.location.reload();
       },
       err => {
-        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+        this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: err.error.msg });
       }
     )
   }
@@ -340,13 +409,13 @@ export class ProjectResourcesComponent implements OnInit {
   deleteNeed(need): void {
     let r = confirm("Are you sure you want to delete this resource need? Resources obtained for this resource need will be automatically deleted as well.");
     if (r == true) {
-      this.projectService.deleteResourceNeed({id: need.id}).subscribe(
+      this.projectService.deleteResourceNeed({ id: need.id }).subscribe(
         response => {
-          this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Resource need deleted!'});
+          this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Resource need deleted!' });
           this.ngOnInit();
         },
         err => {
-          this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+          this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: err.error.msg });
         }
       )
     } else {
@@ -357,13 +426,13 @@ export class ProjectResourcesComponent implements OnInit {
   deleteObtained(cb): void {
     let r = confirm("Are you sure you want to delete this obtained resource?");
     if (r == true) {
-      this.projectService.removeContribution({id: cb.contributionId}).subscribe(
+      this.projectService.removeContribution({ id: cb.contributionId }).subscribe(
         response => {
-          this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Resource obtained deleted!'});
+          this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Resource obtained deleted!' });
           this.ngOnInit();
         },
         err => {
-          this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+          this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: err.error.msg });
         }
       )
     } else {
@@ -371,4 +440,85 @@ export class ProjectResourcesComponent implements OnInit {
     }
   }
 
+  updateCheckedNeeds(x, event) {
+    this.needsMap[x] = event.target.checked;
+    console.log(x);
+  }
+
+  updateCheckedRes(x, event, y) {
+    this.resMap[x] = event.target.checked;
+    console.log(x);
+    this.typeMap = y;
+    console.log(y);
+  }
+
+  clearLists(): void {
+
+  }
+
+  onReqSubmit(): void {
+    //check for valid selection and description
+
+    console.log(this.needsMap);
+    for (var x in this.needsMap) {
+      if (this.needsMap[x]) {
+        this.needsChecked.push(x);
+      }
+    }
+    console.log(this.resMap);
+    for (var x in this.resMap) {
+      if (this.resMap[x]) {
+        this.resChecked.push(x);
+      }
+    }
+    console.log(this.needsChecked);
+    console.log(this.resChecked);
+    if (this.needsChecked.length == 0) {
+      this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: "Select a resource need!" });
+      console.log("select a resource need!");
+    } else if (this.needsChecked.length > 1) {
+      this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: "Select only 1 resource need!" });
+      console.log("choose only 1 resource need!");
+    } else {
+      console.log("it's good (need)!");
+      this.finalNeed = this.needsChecked[0];
+      console.log(this.finalNeed);
+    }
+
+    if (this.resChecked.length == 0) {
+      this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: "Select a resource!" });
+      console.log("select a resource !");
+    } else if (this.resChecked.length > 1) {
+      this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: "Select only 1 resource!" });
+      console.log("choose only 1 resource!");
+    } else {
+      console.log("it's good (res)!");
+      this.finalRes = this.resChecked[0];
+      console.log(this.finalRes);
+    }
+    console.log(this.typeMap.toLowerCase());
+    console.log(this.reqDescription);
+
+    if (this.needsChecked.length == 1 && this.resChecked.length == 1) {
+      const formReq = {
+        needId: this.finalNeed,
+        resourceId: this.finalRes,
+        resType: this.typeMap.toLowerCase(),
+        desc: this.reqDescription
+      }
+
+      console.log(formReq);
+
+      this.marketplaceService.createProjectRequest(formReq).subscribe(
+        response => {
+          this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Request created!' });
+          window.location.reload();
+        },
+        err => {
+          this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: err.error.msg });
+        }
+      );
+    }
+
+  }
 }
