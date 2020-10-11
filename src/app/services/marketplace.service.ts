@@ -77,4 +77,12 @@ export class MarketplaceService {
     return this.http.get(API_URL + '/accProjects?accountId=' + data.id + '&accountType=' + data.accountType);
   }
 
+  viewProjIncomingProjReq(data): Observable<any> {
+    return this.http.get(API_URL + '/project/projectReq?reqStatus='+data.reqStatus+'&projectId='+data.id);
+  }
+
+  viewProjOutgoingResReq(data): Observable<any> {
+    return this.http.get(API_URL + '/project/resourceReq?reqStatus='+data.reqStatus+'&projectId='+data.id);
+  }
+
 }
