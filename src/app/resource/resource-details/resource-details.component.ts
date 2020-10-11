@@ -1,10 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TokenStorageService } from '../../services/token-storage.service';
+import { UserService } from '../../services/user.service';
+import { InstitutionService } from '../../services/institution.service';
 import { ResourceService } from '../../services/resource.service';
 import { saveAs } from 'file-saver';
 import { Galleria } from 'primeng/galleria';
 import { MessageService } from 'primeng/api';
+import { ProjectService } from '../../services/project.service';
+import { MarketplaceService } from '../../services/marketplace.service';
 
 @Component({
   selector: 'app-resource-details',
@@ -49,8 +53,16 @@ export class ResourceDetailsComponent implements OnInit {
     }
   ];
 
+  form: any = {};
+  myProjects: any[];
+  selectedProjectId: any;
+  filterKeyProject = 'Select a Project';
+  resourceNeeds: any[];
+  selectedResourceNeedId: any;
+
   constructor(private route: ActivatedRoute, private tokenStorageService: TokenStorageService, 
-    private resourceService: ResourceService, private messageService: MessageService) { }
+    private userService: UserService, private institutionService: InstitutionService, private projectService: ProjectService,
+    private resourceService: ResourceService, private marketplaceService: MarketplaceService, private messageService: MessageService) { }
 
   async ngOnInit() {
     this.route.queryParams.subscribe(
@@ -111,6 +123,12 @@ export class ResourceDetailsComponent implements OnInit {
         }
       }
     }
+
+    // retrieve current user's projects
+    await this.marketplaceService.getUserProjects({id: this.tokenStorageService.getUser().id, accountType: this.tokenStorageService.getAccountType()}).toPromise().then(
+      res => this.myProjects = res.data.theProjects
+    );
+
   }
 
   checkStatus(): boolean {
@@ -271,6 +289,86 @@ export class ResourceDetailsComponent implements OnInit {
 
   reloadPage(): void {
     window.location.reload();
+  }
+
+  updateSelectedProject(event) {
+    this.selectedProjectId = event.target.value;
+    console.log(this.selectedProjectId);
+    this.projectService.getProjectResourceNeeds({id: this.selectedProjectId}).subscribe(
+      res => this.resourceNeeds = res.data.resourceneeds
+    );
+    // filter resource needs is currently buggy
+    // this.filterResourceNeeds();
+  }
+
+  // show only resource needs of the same type as the one being requested
+  filterResourceNeeds(): void {
+    let arr = [];
+    console.log(this.type);
+    if (this.type == 'item') {
+      for (let i = 0; i < this.resourceNeeds.length; i++) {
+        if (this.resourceNeeds[i].type == 'item') {
+          arr.push(this.resourceNeeds[i]);
+        }
+      }
+    } else if (this.type == 'manpower') {
+      for (let i = 0; i < this.resourceNeeds.length; i++) {
+        if (this.resourceNeeds[i].type == 'manpower') {
+          arr.push(this.resourceNeeds[i]);
+        }
+      }
+    } else if (this.type == 'venue') {
+      for (let i = 0; i < this.resourceNeeds.length; i++) {
+        if (this.resourceNeeds[i].type == 'venue') {
+          arr.push(this.resourceNeeds[i]);
+        }
+      }
+    }
+    console.log(arr.length);
+    this.resourceNeeds = arr;
+  }
+
+  updateSelectedResourceNeed(event) {
+    this.selectedResourceNeedId = event.target.value;
+  }
+
+  // for requesting non-knowledge resource
+  onSubmit(): void {
+    const formCreate = {
+      needId: this.selectedResourceNeedId,
+      resourceId: this.id,
+      resType: this.type,
+      desc: this.form.desc
+    };
+
+    this.marketplaceService.requestResource(formCreate).subscribe(
+      response => {
+        this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Resource request created!'});
+        window.location.reload();
+      }, 
+      err => {
+        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+      }
+    );
+  }
+
+  // for requesting knowledge resource
+  onSubmitKnowledge(): void {
+    const formCreate = {
+      needId: this.selectedResourceNeedId,
+      resourceId: this.id,
+      desc: this.form.desc
+    };
+
+    this.marketplaceService.useKnowledgeResource(formCreate).subscribe(
+      response => {
+        this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Resource request created!'});
+        window.location.reload();
+      }, 
+      err => {
+        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+      }
+    );
   }
 
   // below is all code for venue images galleria
