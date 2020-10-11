@@ -35,20 +35,24 @@
                         <div class="product-grid-item card pt-2 pl-3 pr-3 pb-2">
                             <div class="product-grid-item-top">
                                 <span class="product-category">{{proj.country}}</span>
-                                <!-- <span class="float-right">{{formatDate(item.updatedAt)}}</span> -->
+                                <span class="float-right small">{{formatDate(proj.createdAt)}}</span>
                             </div>
                             <div>
-                                <img *ngIf="proj.imgPath.length == 0" src="../../../assets/img/team.jpg" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;" [alt]="proj.title"/>
-                                <img *ngIf="proj.imgPath.length != 0" src="https://localhost:8080{{proj.imgPath}}" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;" [alt]="proj.title"/>
+                                <img *ngIf="proj.imgPath.length == 0" src="../../../assets/img/team.jpg" class="img-fluid" style="width: 215px; height: 150px; object-fit: cover;" [alt]="proj.title"/>
+                                <img *ngIf="proj.imgPath.length != 0" src="https://localhost:8080{{proj.imgPath}}" class="img-fluid" style="width: 215px; height: 150px; object-fit: cover;" [alt]="proj.title"/>
                                 <div class="product-name"><a href="/project/projectDetails?id={{proj.id}}">{{proj.title}}</a></div>
-                                <span class="float-right"><span *ngFor="let sdg of proj.SDGs" class="sdg sdg{{sdg}} small">{{sdg}}</span></span>
                                 <div class="mb-md-1">{{proj.fundingTitle}}</div>
-                                Target Sum: ${{proj.total}}
-                                Pending Sum: ${{proj.pendingSum}}
-                                Received Sum: ${{proj.receivedSum}}
+                                
+                                <span>${{proj.receivedSum}} raised</span>
+                                <span class="float-right">{{calculateProgress(proj.total, proj.receivedSum)}}%</span>
+                                <p-progressBar [value]="calculateProgress(proj.total, proj.receivedSum)" [style]="{'height':'6px'}"></p-progressBar>
+                                Target: ${{proj.total}}
+                                <span class="float-right mt-md-2"><span *ngFor="let sdg of proj.SDGs" class="sdg sdg{{sdg}} small">{{sdg}}</span></span>
+                                <br>
+                                Pending: ${{proj.pendingSum}}
                             </div>
                             <div class="product-grid-item-bottom">
-                                <button pButton type="button" label="Donate" class="p-button-sm p-button-rounded"
+                                <button pButton type="button" label="Donate" class="p-button-sm p-button-rounded mt-md-2"
                                     data-toggle="modal" data-target="#DonateModal" (click)=getForm(proj)></button>
                                 <div class="modal fade" id="DonateModal" tabindex="-1" role="dialog" aria-labelledby="donateModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">

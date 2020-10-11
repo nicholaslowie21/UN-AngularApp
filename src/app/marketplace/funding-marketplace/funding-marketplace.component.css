@@ -60,8 +60,9 @@
 }
 
 .product-grid-item {
-    margin: .5em;
+    /* margin: .4em; */
     border: 1px solid #dee2e6;
+    height: 25rem;
 }
 
 .product-grid-item >

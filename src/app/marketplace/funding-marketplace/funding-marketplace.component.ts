@@ -44,6 +44,7 @@ export class FundingMarketplaceComponent implements OnInit {
     await this.marketplaceService.viewFundingProject().toPromise().then(
       res => this.projects = res.data.fundings
     );
+    console.log(this.projects)
   }
 
   async onSDGChange(event) {
@@ -67,6 +68,18 @@ export class FundingMarketplaceComponent implements OnInit {
       }
       this.projects = arr; 
     }
+  }
+
+  calculateProgress(total,received) {
+    if(received == 0) {
+      return 0;
+    }
+    return parseFloat((received*100/total).toFixed(2));
+  }
+
+  formatDate(date): any {
+    let formattedDate = new Date(date).toUTCString();
+    return formattedDate.substring(5, formattedDate.length-13);
   }
 
   getForm(proj): void {
