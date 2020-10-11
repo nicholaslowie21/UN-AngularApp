@@ -35,6 +35,8 @@ import { ResourceDetailsComponent } from './resource/resource-details/resource-d
 import { ProjectMarketplaceComponent } from './marketplace/project-marketplace/project-marketplace.component';
 import { ResourceMarketplaceComponent } from './marketplace/resource-marketplace/resource-marketplace.component';
 import { FundingMarketplaceComponent } from './marketplace/funding-marketplace/funding-marketplace.component';
+import { ProjectRequestsComponent } from './project/project-requests/project-requests.component';
+import { MyRequestsComponent } from './my-requests/my-requests.component';
 
 const routes: Routes = [
   { path: 'landing', component: LandingComponent},
@@ -67,7 +69,8 @@ const routes: Routes = [
       { path: 'projectDetails', component: ProjectDetailsComponent},
       { path: 'myProjects', component: MyProjectsComponent},
       { path: 'resources', component: ProjectResourcesComponent},
-      { path: 'rateContributor', component: RateContributorComponent}
+      { path: 'rateContributor', component: RateContributorComponent},
+      { path: 'requests', component: ProjectRequestsComponent}
     ]
   },
   { path: 'resource', canActivate: [AuthGuardService],
@@ -86,6 +89,7 @@ const routes: Routes = [
     ]
   },
   { path: 'shareProfile', component: ShareProfilePageComponent},
+  { path: 'myRequests', component: MyRequestsComponent},
   { path: '', redirectTo: 'home', pathMatch: 'full'}
 ];
 

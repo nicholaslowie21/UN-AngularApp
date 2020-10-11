@@ -85,4 +85,28 @@ export class MarketplaceService {
     return this.http.get(API_URL + '/project/resourceReq?reqStatus='+data.reqStatus+'&projectId='+data.id);
   }
 
+  acceptProjectReq(data): Observable<any> {
+    return this.http.post(API_URL + '/accept/projectReq', {
+      projectReqId: data.id
+    }, httpOptions);
+  }
+
+  declineProjectReq(data): Observable<any> {
+    return this.http.post(API_URL + '/decline/projectReq', {
+      projectReqId: data.id
+    }, httpOptions);
+  }
+
+  cancelProjectReq(data): Observable<any> {
+    return this.http.post(API_URL + '/cancel/projectReq', {
+      projectReqId: data.id
+    }, httpOptions);
+  }
+
+  completeProjectReq(data): Observable<any> {
+    return this.http.post(API_URL + '/complete/projectReq', {
+      projectReqId: data.id
+    }, httpOptions);
+  }
+
 }

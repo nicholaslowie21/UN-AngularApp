@@ -1,1 +1,117 @@
-<p>project-requests works!</p>
+<a href="/project/projectDetails?id={{projectId}}">
+    <u>
+        << Back to project</u>
+</a>
+
+<div class="row mt-md-2">
+    <div class="col-6">
+        <h5>Incoming Requests</h5>
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" id="iPending-tab" data-toggle="tab" href="#iPending" role="tab" aria-controls="iPending" aria-selected="true">Pending</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="iAccepted-tab" data-toggle="tab" href="#iAccepted" role="tab" aria-controls="iAccepted" aria-selected="false">Accepted</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="iDeclined-tab" data-toggle="tab" href="#iDeclined" role="tab" aria-controls="iDeclined" aria-selected="false">Declined</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="iCancelled-tab" data-toggle="tab" href="#iCancelled" role="tab" aria-controls="iCancelled" aria-selected="false">Cancelled</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="iPending" role="tabpanel" aria-labelledby="iPending-tab">
+                <div class="card">
+                    <p-dataView #ip [value]="iPending" [paginator]="true" [rows]="9" filterBy="title" layout="list">
+                        <ng-template pTemplate="header">
+                            <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                                <p-dropdown [options]="filterNeedOptions" [(ngModel)]="ipfilterKeyNeed" placeholder="Select resource need" (onChange)="ipfilterByNeed($event, [(inPen)])"
+                                    styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                            </div>
+                        </ng-template>
+                        <ng-template let-ip pTemplate="listItem">
+                            <div class="p-col-12">
+                                <div class="row p-3">
+                                    <div class="col-9">
+                                        <div class="product-name">
+                                            <a href="/resource/resourceDetails?id={{ip.resourceId}}&type={{ip.resType}}">{{ip.resourceTitle}}</a>
+                                        </div>
+                                        {{ip.desc}}<br>
+                                        Offered by {{ip.requesterName}} at {{formatDate(ip.createdAt)}}
+                                        <br>
+                                        For {{ip.needTitle}}
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="float-right">
+                                            <div class="float-right">
+                                                <i class="pi pi-tag product-category-icon"></i>
+                                                <span class="{{ip.resType}}type rounded-sm text-white">&nbsp;{{ip.resType}}&nbsp;</span>
+                                            </div>
+                                            <br>
+                                            <div class="mt-md-2">
+                                                <button class="btn btn-success" title="Accept"><i class="pi pi-check"></i></button>
+                                                <button class="btn btn-danger" title="Decline"><i class="pi pi-times"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </p-dataView>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="iAccepted" role="tabpanel" aria-labelledby="iAccepted-tab">
+                <div class="card">
+                    <p-dataView #ia [value]="iAccepted" [paginator]="true" [rows]="9" filterBy="title" layout="list">
+                        <ng-template pTemplate="header">
+                            <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                                <p-dropdown [options]="filterNeedOptions" [(ngModel)]="ipfilterKeyNeed" placeholder="Select resource need" (onChange)="ipfilterByNeed($event, [(inPen)])"
+                                    styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                            </div>
+                        </ng-template>
+                        <ng-template let-ia pTemplate="listItem">
+                            <div class="p-col-12">
+                                <div class="row p-3">
+                                    <div class="col-9">
+                                        <div class="product-name">
+                                            <a href="/resource/resourceDetails?id={{ia.resourceId}}&type={{ia.resType}}">{{ia.resourceTitle}}</a>
+                                        </div>
+                                        {{ia.desc}}<br>
+                                        Offered by {{ia.requesterName}} at {{formatDate(ia.createdAt)}}
+                                        <br>
+                                        For {{ia.needTitle}}
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="float-right">
+                                            <div class="float-right">
+                                                <i class="pi pi-tag product-category-icon"></i>
+                                                <span class="{{ip.resType}}type rounded-sm text-white">&nbsp;{{ia.resType}}&nbsp;</span>
+                                            </div>
+                                            <br>
+                                            <div class="mt-md-2">
+                                                <button class="btn btn-success" title="Accept"><i class="pi pi-check"></i></button>
+                                                <button class="btn btn-danger" title="Decline"><i class="pi pi-times"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </p-dataView>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="iDeclined" role="tabpanel" aria-labelledby="iDeclined-tab">
+                <div class="card">
+                </div>
+            </div>
+            <div class="tab-pane fade" id="iCancelled" role="tabpanel" aria-labelledby="iCancelled-tab">
+                <div class="card">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6">
+        <h5>Outgoing Requests</h5>
+    </div>
+</div>
