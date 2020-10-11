@@ -89,6 +89,7 @@ export class FundingMarketplaceComponent implements OnInit {
       desc: proj.desc,
       country: proj.country,
       imgPath: proj.imgPath,
+      createdAt: proj.createdAt,
       ownerName: proj.ownerName,
       ownerUsername: proj.ownerUsername,
       ownerType: proj.ownerType,
