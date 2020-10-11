@@ -47,32 +47,40 @@
                 <div class="row p-2">
                   <div class="col-2">
                     <div *ngIf="n.profilePic.length == 0">
-                      <img class="img-fluid rounded-circle" src="../../assets/img/profilePic_Placeholder.png"
-                        alt="Profile picture" style="height: 60px; width: 60px; object-fit: cover;">
+                      <div *ngIf="n.hostType == 'user'">
+                        <a href="/profile?username={{n.hostUsername}}&userType=individual"><img class="img-fluid rounded-circle" src="../../assets/img/profilePic_Placeholder.png"
+                            alt="Profile picture" style="height: 60px; width: 60px; object-fit: cover;"></a>
+                      </div>
+                      <div *ngIf="n.hostType != 'user'">
+                        <a href="/profile?username={{n.hostUsername}}&userType=institution"><img class="img-fluid rounded-circle" src="../../assets/img/profilePic_Placeholder.png"
+                            alt="Profile picture" style="height: 60px; width: 60px; object-fit: cover;"></a>
+                      </div>
                     </div>
                     <div *ngIf="n.profilePic.length > 0">
-                      <img class="img-fluid rounded-circle" src="{{n.profilePic}}"
-                        alt="Profile picture" style="height: 60px; width: 60px; object-fit: cover;">
+                      <div *ngIf="n.hostType == 'user'">
+                        <a href="/profile?username={{n.hostUsername}}&userType=individual"><img class="img-fluid rounded-circle" src="{{n.profilePic}}"
+                            alt="Profile picture" style="height: 60px; width: 60px; object-fit: cover;"></a>
+                      </div>
+                      <div *ngIf="n.hostType != 'user'">
+                        <a href="/profile?username={{n.hostUsername}}&userType=institution"><img class="img-fluid rounded-circle" src="{{n.profilePic}}"
+                            alt="Profile picture" style="height: 60px; width: 60px; object-fit: cover;"></a>
+                      </div>
                     </div>
                   </div>
                   <div class="col-10">
                     <h5><a href="/project/projectDetails?id={{n.id}}">{{n.title}}</a>
+                      <span class="ml-md-2 text-secondary" style="font-size: small;">created at {{formatDate(n.createdAt)}}</span>
                     <div class="float-right">
-                      <span style="font-size: medium;">SDGs:&nbsp;</span>
+                      <span style="font-size: small;">SDGs:&nbsp;</span>
                       <div *ngFor="let s of n.SDGs" style="display:inline-block;">
-                        <span class="sdg sdg{{s}}">{{s}}</span>
+                        <span class="sdg sdg{{s}}" style="font-size: small;">{{s}}</span>
                       </div>
                     </div>
                   </h5>
                     <h6 class="p-text-nowrap p-text-truncate text-secondary" style="width: 28rem;">{{n.desc}}</h6>
                   </div>
                 </div>
-                <div *ngIf="n.hostType == 'user'">
-                  <a href="/profile?username={{n.username}}&userType=individual">{{n.hostName}}</a>
-                </div>
-                <div *ngIf="n.hostType != 'user'">
-                  <a href="/profile?username={{n.username}}&userType=institution">{{n.hostName}}</a>
-                </div>
+                
               </div>
             </div>
           <!-- </div> -->
