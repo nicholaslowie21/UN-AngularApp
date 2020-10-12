@@ -157,194 +157,218 @@
     </div>
 </div>
 
-<div class="row mt-md-2">
-    <div class="col-7">
-        <h5>Resource Needs</h5>
-        <div class="card">
-            <p-dataView #mp [value]="resourceNeeds" [paginator]="true" [rows]="9" filterBy="title" [sortField]="sortFieldNeeds" [sortOrder]="sortOrderNeeds"
-                layout="list">
-                <ng-template pTemplate="header">
-                    <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
-                        <!-- <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyNeeds" placeholder="Sort By Date" (onChange)="onSortChangeNeeds($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown> -->
-                        <p-dropdown [options]="filterStatusOptions" [(ngModel)]="filterKeyNeeds" placeholder="Filter By Status" (onChange)="filterNeedsStatus($event)"
-                            styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
-                        <p-dropdown [options]="filterTypeOptions" [(ngModel)]="filterKeyNeedType" placeholder="Filter By Type" (onChange)="filterNeedsType($event)"
-                            styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+<div class="mt-md-2">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="need-tab" data-toggle="tab" href="#need" role="tab" aria-controls="need" aria-selected="true">Resource Needs</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="obtained-tab" data-toggle="tab" href="#obtained" role="tab" aria-controls="obtained" aria-selected="false">Resources Obtained</a>
+        </li>
+    </ul>
 
-                        <span class="p-input-icon-left p-mb-2 p-mb-md-0">
-                            <i class="pi pi-search"></i>
-                            <input type="search" pInputText placeholder="Search by Title" (input)="mp.filter($event.target.value)">
-                        </span>
-                    </div>
-                </ng-template>
-                <ng-template let-need pTemplate="listItem">
-                    <div class="p-col-12">
-                        <div class="row p-3">
-                            <div class="col-9">
-                                <div class="product-name">{{need.title}}</div>
-                                <div>{{need.desc}}</div>
-                                <div *ngIf="need.type == 'money'">Target Sum: ${{need.total}}</div>
-                                <div *ngIf="need.type == 'money'">Pending Sum: ${{need.pendingSum}},
-                                    <span *ngIf="need.type == 'money'">Received Sum: ${{need.receivedSum}}</span>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="need" role="tabpanel" aria-labelledby="need-tab">
+            <div class="row">
+                <div class="col-7">
+                    <div class="card">
+                        <p-dataView #mp [value]="resourceNeeds" [paginator]="true" [rows]="9" filterBy="title" [sortField]="sortFieldNeeds" [sortOrder]="sortOrderNeeds"
+                            layout="list">
+                            <ng-template pTemplate="header">
+                                <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                                    <!-- <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyNeeds" placeholder="Sort By Date" (onChange)="onSortChangeNeeds($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown> -->
+                                    <p-dropdown [options]="filterStatusOptions" [(ngModel)]="filterKeyNeeds" placeholder="Filter By Status" (onChange)="filterNeedsStatus($event)"
+                                        styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                                    <p-dropdown [options]="filterTypeOptions" [(ngModel)]="filterKeyNeedType" placeholder="Filter By Type" (onChange)="filterNeedsType($event)"
+                                        styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+            
+                                    <span class="p-input-icon-left p-mb-2 p-mb-md-0">
+                                        <i class="pi pi-search"></i>
+                                        <input type="search" pInputText placeholder="Search by Title" (input)="mp.filter($event.target.value)">
+                                    </span>
                                 </div>
-                                <div *ngIf="need.type == 'money'">Remaining Sum Needed: ${{calculateRemaining(need.pendingSum, need.receivedSum, need.total)}}</div>
-                                <span class="product-category">Completion: {{need.completion}}%</span>
-                            </div>
-                            <div class="col-3">
-                                <div class="float-right">
-                                    <i class="pi pi-tag product-category-icon"></i>
-                                    <span class="{{need.type}}type rounded-sm text-white">&nbsp;{{need.type}}&nbsp;</span>
-                                </div>
-                                <div *ngIf="isOwnerAdmin && project.status == 'ongoing'" class="mt-md-2 float-right">
-                                    <button class="btn btn-success" (click)="markCompleteNeed(need)" title="Mark as complete">
-                                        <i class="pi pi-check"></i>
-                                    </button>
-                                    <button class="btn btn-primary" data-toggle="modal" data-target="#EditModal" (click)=getForm(need) title="Edit">
-                                        <i class="pi pi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-danger" (click)="deleteNeed(need)" title="Delete">
-                                        <i class="pi pi-trash"></i>
-                                    </button>
-                                    <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="editModalLabel">Edit Resource Need</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <form name="form" (ngSubmit)="f.form.valid && editResourceNeed()" #f="ngForm" novalidate>
-                                                        <div class="form-group row">
-                                                            <label for="title" class="col-sm-3 col-form-label">Title</label>
-                                                            <div class="col-sm-8">
-                                                                <input type="text" class="form-control" name="title" [(ngModel)]="updateForm.title" required #title="ngModel" />
+                            </ng-template>
+                            <ng-template let-need pTemplate="listItem">
+                                <div class="p-col-12">
+                                    <div class="row p-3">
+                                        <div class="col-9">
+                                            <div class="product-name">{{need.title}}</div>
+                                            <div>{{need.desc}}</div>
+                                            <div *ngIf="need.type == 'money'">Target Sum: ${{need.total}}</div>
+                                            <div *ngIf="need.type == 'money'">Pending Sum: ${{need.pendingSum}},
+                                                <span *ngIf="need.type == 'money'">Received Sum: ${{need.receivedSum}}</span>
+                                            </div>
+                                            <div *ngIf="need.type == 'money'">Remaining Sum Needed: ${{calculateRemaining(need.pendingSum, need.receivedSum, need.total)}}</div>
+                                            <span class="product-category">Completion: {{need.completion}}%</span>
+                                        </div>
+                                        <div class="col-3">
+                                            <div class="float-right">
+                                                <i class="pi pi-tag product-category-icon"></i>
+                                                <span class="{{need.type}}type rounded-sm text-white">&nbsp;{{need.type}}&nbsp;</span>
+                                            </div>
+                                            <div *ngIf="isOwnerAdmin && project.status == 'ongoing'" class="mt-md-2 float-right">
+                                                <button class="btn btn-success" (click)="markCompleteNeed(need)" title="Mark as complete">
+                                                    <i class="pi pi-check"></i>
+                                                </button>
+                                                <button class="btn btn-primary" data-toggle="modal" data-target="#EditModal" (click)=getForm(need) title="Edit">
+                                                    <i class="pi pi-pencil"></i>
+                                                </button>
+                                                <button class="btn btn-danger" (click)="deleteNeed(need)" title="Delete">
+                                                    <i class="pi pi-trash"></i>
+                                                </button>
+                                                <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="editModalLabel">Edit Resource Need</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
                                                             </div>
-                                                            <div class="alert-danger" *ngIf="f.submitted && title.invalid">
-                                                                <div *ngIf="title.errors.required">Title is required</div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group row">
-                                                            <label for="desc" class="col-sm-3 col-form-label">Description</label>
-                                                            <div class="col-sm-8">
-                                                                <textarea class="form-control" name="desc" [(ngModel)]="updateForm.desc" #desc="ngModel" rows="3"></textarea>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group row" *ngIf="updateForm.type == 'money'">
-                                                            <label for="total" class="col-sm-3 col-form-label">Target Sum</label>
-                                                            <div class="col-sm-8">
-                                                                <div class="input-group">
-                                                                    <div class="input-group-prepend">
-                                                                        <div class="input-group-text">$</div>
+                                                            <div class="modal-body">
+                                                                <form name="form" (ngSubmit)="f.form.valid && editResourceNeed()" #f="ngForm" novalidate>
+                                                                    <div class="form-group row">
+                                                                        <label for="title" class="col-sm-3 col-form-label">Title</label>
+                                                                        <div class="col-sm-8">
+                                                                            <input type="text" class="form-control" name="title" [(ngModel)]="updateForm.title" required #title="ngModel" />
+                                                                        </div>
+                                                                        <div class="alert-danger" *ngIf="f.submitted && title.invalid">
+                                                                            <div *ngIf="title.errors.required">Title is required</div>
+                                                                        </div>
                                                                     </div>
-                                                                    <input type="text" class="form-control" name="total" [(ngModel)]="updateForm.total" required #total="ngModel" />
-                                                                </div>
-                                                            </div>
-                                                            <div class="alert-danger" *ngIf="f.submitted && total.invalid">
-                                                                <div *ngIf="total.errors.required">Target sum is required</div>
+                                                                    <div class="form-group row">
+                                                                        <label for="desc" class="col-sm-3 col-form-label">Description</label>
+                                                                        <div class="col-sm-8">
+                                                                            <textarea class="form-control" name="desc" [(ngModel)]="updateForm.desc" #desc="ngModel" rows="3"></textarea>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group row" *ngIf="updateForm.type == 'money'">
+                                                                        <label for="total" class="col-sm-3 col-form-label">Target Sum</label>
+                                                                        <div class="col-sm-8">
+                                                                            <div class="input-group">
+                                                                                <div class="input-group-prepend">
+                                                                                    <div class="input-group-text">$</div>
+                                                                                </div>
+                                                                                <input type="text" class="form-control" name="total" [(ngModel)]="updateForm.total" required #total="ngModel" />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="alert-danger" *ngIf="f.submitted && total.invalid">
+                                                                            <div *ngIf="total.errors.required">Target sum is required</div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group row" *ngIf="updateForm.type != 'money'">
+                                                                        <label for="completion" class="col-sm-3 col-form-label">Completion</label>
+                                                                        <div class="col-sm-8">
+                                                                            <input type="number" class="form-control" name="completion" [(ngModel)]="updateForm.completion" required min="0" max="100"
+                                                                                #completion="ngModel" />
+                                                                        </div>
+                                                                        <div class="alert-danger" *ngIf="f.submitted && completion.invalid">
+                                                                            <div *ngIf="completion.errors.required">Completion rate is required</div>
+                                                                            <div *ngIf="completion.errors.min">
+                                                                                Completion cannot be below 0
+                                                                            </div>
+                                                                            <div *ngIf="completion.errors.max">
+                                                                                Completion cannot be above 100
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <button class="btn btn-primary btn-block">Update</button>
+                                                                    </div>
+                                                                </form>
                                                             </div>
                                                         </div>
-                                                        <div class="form-group row" *ngIf="updateForm.type != 'money'">
-                                                            <label for="completion" class="col-sm-3 col-form-label">Completion</label>
-                                                            <div class="col-sm-8">
-                                                                <input type="number" class="form-control" name="completion" [(ngModel)]="updateForm.completion" required min="0" max="100"
-                                                                    #completion="ngModel" />
-                                                            </div>
-                                                            <div class="alert-danger" *ngIf="f.submitted && completion.invalid">
-                                                                <div *ngIf="completion.errors.required">Completion rate is required</div>
-                                                                <div *ngIf="completion.errors.min">
-                                                                    Completion cannot be below 0
-                                                                </div>
-                                                                <div *ngIf="completion.errors.max">
-                                                                    Completion cannot be above 100
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <button class="btn btn-primary btn-block">Update</button>
-                                                        </div>
-                                                    </form>
+                                                    </div>
                                                 </div>
+                                            </div>
+                                            <div *ngIf="isOwnerAdmin && project.status != 'ongoing'" class="mt-md-2 float-right">
+                                                <button class="btn btn-success" disabled title="Mark as complete">
+                                                    <i class="pi pi-check"></i>
+                                                </button>
+                                                <button class="btn btn-primary" disabled title="Edit">
+                                                    <i class="pi pi-pencil"></i>
+                                                </button>
+                                                <button class="btn btn-danger" disabled title="Delete">
+                                                    <i class="pi pi-trash"></i>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div *ngIf="isOwnerAdmin && project.status != 'ongoing'" class="mt-md-2 float-right">
-                                    <button class="btn btn-success" disabled title="Mark as complete">
-                                        <i class="pi pi-check"></i>
-                                    </button>
-                                    <button class="btn btn-primary" disabled title="Edit">
-                                        <i class="pi pi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-danger" disabled title="Delete">
-                                        <i class="pi pi-trash"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+                            </ng-template>
+                        </p-dataView>
                     </div>
-                </ng-template>
-            </p-dataView>
+                </div>
+                <div class="col-5">
+                    <!-- Can do the checking to display this -->
+                    Click on the 'Suggest' button on a resource need to see suggested resources!
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="col-5">
-        <h5>Resources Obtained</h5>
-        <div class="card">
-            <p-dataView #cb [value]="contributions" [paginator]="true" [rows]="9" filterBy="resourceTitle" [sortField]="sortFieldCb"
-                [sortOrder]="sortOrderCb" layout="list">
-                <ng-template pTemplate="header">
-                    <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
-                        <p-dropdown [options]="filterTypeOptions" [(ngModel)]="filterKeyCbType" placeholder="Filter By Type" (onChange)="filterCbType($event)"
-                            styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
-                        <span class="p-input-icon-left p-mb-2 p-mb-md-0">
-                            <i class="pi pi-search"></i>
-                            <input type="search" pInputText placeholder="Search by Title" (input)="cb.filter($event.target.value)">
-                        </span>
-                    </div>
-                </ng-template>
-                <ng-template let-cb pTemplate="listItem">
-                    <div class="p-col-12">
-                        <div class="row p-3">
-                            <div class="col-8">
-                                <div class="product-name">{{cb.resourceTitle}}</div>
-                                <div>{{cb.desc}}</div>
-                                <div *ngIf="cb.contributorType == 'user'">
-                                    <div>
-                                        <a href="/profile?username={{cb.contributorUsername}}&userType=individual" target="_blank">
-                                            <b>{{cb.contributorName}}</b>
-                                        </a>
-                                        <span style="font-size: small;">({{cb.contributorUsername}})</span>
+        <div class="tab-pane fade" id="obtained" role="tabpanel" aria-labelledby="obtained-tab">
+            <div class="row">
+                <div class="col-7">
+                    <div class="card">
+                        <p-dataView #cb [value]="contributions" [paginator]="true" [rows]="9" filterBy="resourceTitle" [sortField]="sortFieldCb"
+                            [sortOrder]="sortOrderCb" layout="list">
+                            <ng-template pTemplate="header">
+                                <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                                    <p-dropdown [options]="filterTypeOptions" [(ngModel)]="filterKeyCbType" placeholder="Filter By Type" (onChange)="filterCbType($event)"
+                                        styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                                    <span class="p-input-icon-left p-mb-2 p-mb-md-0">
+                                        <i class="pi pi-search"></i>
+                                        <input type="search" pInputText placeholder="Search by Title" (input)="cb.filter($event.target.value)">
+                                    </span>
+                                </div>
+                            </ng-template>
+                            <ng-template let-cb pTemplate="listItem">
+                                <div class="p-col-12">
+                                    <div class="row p-3">
+                                        <div class="col-8">
+                                            <div class="product-name">{{cb.resourceTitle}}</div>
+                                            <div>{{cb.desc}}</div>
+                                            <div *ngIf="cb.contributorType == 'user'">
+                                                <div>
+                                                    <a href="/profile?username={{cb.contributorUsername}}&userType=individual" target="_blank">
+                                                        <b>{{cb.contributorName}}</b>
+                                                    </a>
+                                                    <span style="font-size: small;">({{cb.contributorUsername}})</span>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="cb.contributorType == 'institution'">
+                                                <h5>
+                                                    <a href="/profile?username={{cb.contributorUsername}}&userType=institution" target="_blank">
+                                                        {{cb.contributorName}}</a>
+                                                    <span style="font-size: small;">({{cb.contributorUsername}})</span>
+                                                </h5>
+                                            </div>
+                                            <div>Contributed to {{cb.needTitle}}</div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="float-right">
+                                                <i class="pi pi-tag product-category-icon"></i>
+                                                <span class="{{cb.resType}}type rounded-sm text-white">&nbsp;{{cb.resType}}&nbsp;</span>
+                                            </div>
+                                            <br/>
+                                            <button *ngIf="isOwnerAdmin && project.status == 'ongoing'" class="btn btn-danger mt-md-2 float-right" (click)="deleteObtained(cb)"
+                                                title="Delete">
+                                                <i class="pi pi-trash"></i>
+                                            </button>
+                                            <button *ngIf="isOwnerAdmin && project.status != 'ongoing'" class="btn btn-danger mt-md-2 float-right disabled" (click)="deleteObtained(cb)"
+                                                title="Delete">
+                                                <i class="pi pi-trash"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                                <div *ngIf="cb.contributorType == 'institution'">
-                                    <h5>
-                                        <a href="/profile?username={{cb.contributorUsername}}&userType=institution" target="_blank">
-                                            {{cb.contributorName}}</a>
-                                        <span style="font-size: small;">({{cb.contributorUsername}})</span>
-                                    </h5>
-                                </div>
-                                <div>Contributed to {{cb.needTitle}}</div>
-                            </div>
-                            <div class="col-4">
-                                <div class="float-right">
-                                    <i class="pi pi-tag product-category-icon"></i>
-                                    <span class="{{cb.resType}}type rounded-sm text-white">&nbsp;{{cb.resType}}&nbsp;</span>
-                                </div>
-                                <br/>
-                                <button *ngIf="isOwnerAdmin && project.status == 'ongoing'" class="btn btn-danger mt-md-2 float-right" (click)="deleteObtained(cb)"
-                                    title="Delete">
-                                    <i class="pi pi-trash"></i>
-                                </button>
-                                <button *ngIf="isOwnerAdmin && project.status != 'ongoing'" class="btn btn-danger mt-md-2 float-right disabled" (click)="deleteObtained(cb)"
-                                    title="Delete">
-                                    <i class="pi pi-trash"></i>
-                                </button>
-                            </div>
-                        </div>
+                            </ng-template>
+                        </p-dataView>
                     </div>
-                </ng-template>
-            </p-dataView>
+                </div>
+            </div>
         </div>
     </div>
+    
+    
+    
 </div>
