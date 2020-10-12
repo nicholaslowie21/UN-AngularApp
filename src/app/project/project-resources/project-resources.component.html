@@ -4,7 +4,6 @@
 </a>
 
 <h2 class="mt-md-2">Project Resources
-    <button *ngIf="project.status=='ongoing'" class="btn btn-primary float-right" data-toggle="modal" data-target="#exampleModalScrollable">Request Contribution</button>
     <button *ngIf="isOwnerAdmin && project.status == 'ongoing'" class="btn btn-primary float-right" data-toggle="modal" data-target="#CreateModal">
         Add Resource Need
     </button>
@@ -204,6 +203,10 @@
                                     </button>
                                     <button class="btn btn-danger" (click)="deleteNeed(need)" title="Delete">
                                         <i class="pi pi-trash"></i>
+                                    </button>
+                                    <br/>
+                                    <button *ngIf="project.status=='ongoing'" class="btn btn-dark" data-toggle="modal" data-target="#exampleModalScrollable">
+                                        Contribute
                                     </button>
                                     <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
                                         <div class="modal-dialog" role="document">

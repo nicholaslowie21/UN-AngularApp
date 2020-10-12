@@ -37,11 +37,18 @@ export class ProjectDetailsComponent implements OnInit {
   KPIs: any;
   updateForm: any = {};
 
+  image: any;
   imgString: any;
 
   admins: any;
   host: any;
   contributors: any;
+
+  projPosts: any;
+  updatePost: any = {};
+
+  newComment: any;
+  allComments: any;
 
   constructor(private route: ActivatedRoute, private projectService: ProjectService, private userService: UserService,
     private tokenStorageService: TokenStorageService, private messageService: MessageService) { }
@@ -132,13 +139,21 @@ export class ProjectDetailsComponent implements OnInit {
       }
     );
 
-    await this.projectService.getProjectContributors({ id: this.projectId}).toPromise().then(
+    await this.projectService.getProjectContributors({ id: this.projectId }).toPromise().then(
       response => {
         console.log(JSON.stringify(response));
         this.contributors = response.data.contributors;
       }
     );
     console.log(this.contributors.length);
+
+    await this.projectService.getProjectPosts({ id: this.projectId}).toPromise().then(
+      response => {
+        console.log(JSON.stringify(response));
+        this.projPosts = response.data.projectPosts;
+      }
+    );
+    console.log(this.projPosts);
 
   }
 
@@ -229,11 +244,16 @@ export class ProjectDetailsComponent implements OnInit {
         window.location.reload();
       },
       err => {
-        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+        this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: err.error.msg });
         this.errorMsg = err.error.msg;
         console.log(this.errorMsg);
       }
     );
+  }
+
+  formatDate(date): any {
+    let formattedDate = new Date(date).toUTCString();
+    return formattedDate.substring(5, formattedDate.length-13);
   }
 
   getForm(kid: string, ktitle: string, kdesc: string, kcompletion: number): void {
@@ -243,6 +263,16 @@ export class ProjectDetailsComponent implements OnInit {
       title: ktitle,
       desc: kdesc,
       completion: kcompletion
+    }
+  }
+
+  getPost(pid: string, ptitle: string, pdesc: string, pimg: string): void {
+    console.log(pid + " " + ptitle + " " + pdesc + " " + pimg);
+    this.updatePost = {
+      id: pid,
+      title: ptitle,
+      desc: pdesc,
+      imgPath: pimg
     }
   }
 
@@ -262,7 +292,7 @@ export class ProjectDetailsComponent implements OnInit {
         window.location.reload();
       },
       err => {
-        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+        this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: err.error.msg });
         this.errorMsg = err.error.msg;
         console.log(this.errorMsg);
       }
@@ -274,11 +304,11 @@ export class ProjectDetailsComponent implements OnInit {
     this.projectService.deleteKPI({ id: kid }).subscribe(
       response => {
         console.log(JSON.stringify(response));
-        this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'KPI deleted!'});
+        this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'KPI deleted!' });
         this.ngOnInit();
       },
       err => {
-        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+        this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: err.error.msg });
         console.log(err.error.msg);
       }
     );
@@ -309,6 +339,134 @@ export class ProjectDetailsComponent implements OnInit {
     } else {
       return;
     }
+  }
+
+  selectImage(event) {
+    if (event.target.files.length > 0) {
+      const file = event.target.files[0];
+      this.image = file;
+      console.log(this.image);
+    }
+  }
+
+  onPost(): void {
+    const formPost = {
+      id: this.projectId,
+      title: this.form.title,
+      desc: this.form.desc,
+      img: this.image
+    }
+    console.log(formPost);
+
+    /**this.projectService.createProjectPost(formPost).subscribe(
+      response => {
+        console.log(JSON.stringify(response));
+        this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Post Created!' });
+        window.location.reload();
+      },
+      err => {
+        this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: err.error.msg });
+        this.errorMsg = err.error.msg;
+        console.log(this.errorMsg);
+      }
+    ); **/
+  }
+
+  onUpdatePost(): void {
+    const formUpdatePost = {
+      id: this.updatePost.id,
+      title: this.updatePost.title,
+      desc: this.updatePost.desc,
+      img: this.updatePost.imgPath
+    }
+    console.log(formUpdatePost);
+
+    this.projectService.updateProjectPost(formUpdatePost).subscribe(
+      response => {
+        console.log(JSON.stringify(response));
+        this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Post Updated!' });
+        window.location.reload();
+      },
+      err => {
+        this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: err.error.msg });
+        this.errorMsg = err.error.msg;
+        console.log(this.errorMsg);
+      }
+    );
+  }
+
+  confirmDeletePost(id: string): void {
+    let r = confirm("Are you sure you want to delete this KPI?");
+    if (r == true) {
+      this.deletePost(id);
+    } else {
+      return;
+    }
+  }
+
+  deletePost(pid: string): void {
+    console.log(pid);
+    this.projectService.deleteProjectPost({ id: pid }).subscribe(
+      response => {
+        console.log(JSON.stringify(response));
+        this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Post deleted!' });
+        this.ngOnInit();
+      },
+      err => {
+        this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: err.error.msg });
+        console.log(err.error.msg);
+      }
+    );
+  }
+
+  addComment(pid: string): void {
+    console.log(this.newComment + " " + pid);
+    
+    const formAddComment = {
+      id: pid,
+      comment: this.newComment
+    }
+    console.log(formAddComment);
+
+    this.projectService.createPostComment(formAddComment).subscribe(
+      response => {
+        console.log(JSON.stringify(response));
+        this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Comment Added!' });
+        window.location.reload();
+      },
+      err => {
+        this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: err.error.msg });
+        this.errorMsg = err.error.msg;
+        console.log(this.errorMsg);
+      }
+    );
+  }
+
+  getComments(pid: string): void {
+    this.projectService.getPostComment({id: pid}).subscribe(
+      res => { this.allComments = res.data.postComments}
+    );
+  }
+
+  confirmDelCom(pid: string): void {
+    let r = confirm("Are you sure you want to delete this comment?");
+    if (r == true) {
+      this.deleteComment(pid);
+    } else {
+      return;
+    }
+  }
+
+  deleteComment(pid: string): void {
+   
+      this.projectService.deletePostComment({id: pid}).subscribe(
+        response => {
+          console.log(JSON.stringify(response));
+          this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Comment Deleted!' });
+          window.location.reload();
+        }
+      );
+    
   }
 
 }

@@ -159,4 +159,49 @@ export class ProjectService {
   getNewsFeed(): Observable<any> {
     return this.http.get(API_URL + '/accountNewsFeed');
   }
+
+  createProjectPost(data): Observable<any> {
+    return this.http.post(API_URL + '/createPost', {
+      projectId: data.id,
+      title: data.title,
+      desc: data.desc,
+      postImg: data.img
+    }, httpOptions)
+  }
+
+  getProjectPosts(data): Observable<any> {
+    return this.http.get(API_URL + '/posts?projectId=' + data.id);
+  }
+
+  updateProjectPost(data): Observable<any> {
+    return this.http.post(API_URL + '/updatePost', {
+      postId: data.id,
+      title: data.title,
+      desc: data.desc,
+      postImg: data.img
+    }, httpOptions)
+  }
+
+  deleteProjectPost(data): Observable<any> {
+    return this.http.post(API_URL + '/deletePost', {
+      postId: data.id
+    }, httpOptions);
+  }
+
+  createPostComment(data): Observable<any> {
+    return this.http.post(API_URL + '/createPostComment', {
+      postId: data.id,
+      comment: data.comment
+    }, httpOptions)
+  }
+
+  getPostComment(data): Observable<any> {
+    return this.http.get(API_URL + '/comments?postId=' + data.id);
+  }
+
+  deletePostComment(data): Observable<any> {
+    return this.http.post(API_URL + '/deletePostComment', {
+      commentId: data.id
+    }, httpOptions);
+  }
 }
