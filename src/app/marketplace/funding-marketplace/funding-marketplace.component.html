@@ -23,6 +23,9 @@
                             </ng-template>
                         </p-multiSelect>
 
+                        <p-dropdown [options]="countryOptions" [(ngModel)]="filterKeyCountry" placeholder="Filter By Country" (onChange)="onFilterCountry($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                        
+
                         <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyItem" placeholder="Sort By Date" (onChange)="onSortChangeItem($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
                         <span class="p-input-icon-left p-mb-2 p-mb-md-0">
                             <i class="pi pi-search"></i>

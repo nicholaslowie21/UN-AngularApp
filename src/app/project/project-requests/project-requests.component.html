@@ -83,7 +83,8 @@
                                         <div>{{ia.desc}}</div>
                                         Offered by {{ia.requesterName}} at {{formatDate(ia.createdAt)}}
                                         <br>
-                                        For {{ia.needTitle}}
+                                        For {{ia.needTitle}} <br>
+                                        Accepted at {{formatDate(ia.updatedAt)}}
                                     </div>
                                     <div class="col-3">
                                         <div class="float-right">
@@ -124,7 +125,8 @@
                                         <div>{{id.desc}}</div>
                                         Offered by {{id.requesterName}} at {{formatDate(id.createdAt)}}
                                         <br>
-                                        For {{id.needTitle}}
+                                        For {{id.needTitle}} <br>
+                                        Declined at {{formatDate(id.updatedAt)}}
                                     </div>
                                     <div class="col-3">
                                         <div class="float-right">
@@ -162,8 +164,8 @@
                                         <br>
                                         For {{ic.needTitle}} <br>
                                         Cancelled at {{formatDate(ic.updatedAt)}}
-                                        <span *ngIf="ic.cancelType == 'project'">by this project.</span>
-                                        <span *ngIf="ic.cancelType == 'contributor'">by {{ic.requesterName}}.</span>
+                                        <span *ngIf="ic.cancelType == 'project'">by this project</span>
+                                        <span *ngIf="ic.cancelType == 'contributor'">by {{ic.requesterName}}</span>
                                     </div>
                                     <div class="col-3">
                                         <div class="float-right">
@@ -183,5 +185,174 @@
     </div>
     <div class="col-6">
         <h5>Outgoing Requests</h5>
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" id="oPending-tab" data-toggle="tab" href="#oPending" role="tab" aria-controls="oPending" aria-selected="true">Pending</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="oAccepted-tab" data-toggle="tab" href="#oAccepted" role="tab" aria-controls="oAccepted" aria-selected="false">Accepted</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="oDeclined-tab" data-toggle="tab" href="#oDeclined" role="tab" aria-controls="oDeclined" aria-selected="false">Declined</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="oCancelled-tab" data-toggle="tab" href="#oCancelled" role="tab" aria-controls="oCancelled" aria-selected="false">Cancelled</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="oPending" role="tabpanel" aria-labelledby="oPending-tab">
+                <div class="card">
+                    <p-dataView #op [value]="oPending" [paginator]="true" [rows]="9" filterBy="title" layout="list">
+                        <ng-template pTemplate="header">
+                            <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                                <p-dropdown [options]="filterNeedOptions" placeholder="Filter by resource need" (onChange)="ipfilterByNeed($event, [(outPen)])"
+                                    styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                            </div>
+                        </ng-template>
+                        <ng-template let-op pTemplate="listItem">
+                            <div class="p-col-12">
+                                <div class="row p-3">
+                                    <div class="col-9">
+                                        <div class="product-name">
+                                            <a href="/resource/resourceDetails?id={{op.resourceId}}&type={{op.resType}}">{{op.resourceTitle}}</a>
+                                        </div>
+                                        <div>{{op.desc}}</div>
+                                        Submitted at {{formatDate(op.createdAt)}}
+                                        <br>
+                                        For {{op.needTitle}}
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="float-right">
+                                            <div class="float-right">
+                                                <i class="pi pi-tag product-category-icon"></i>
+                                                <span class="{{op.resType}}type rounded-sm text-white">&nbsp;{{op.resType}}&nbsp;</span>
+                                            </div>
+                                            <br>
+                                            <div class="mt-md-2">
+                                                <button class="btn btn-danger float-right" title="Cancel" (click)="cancelResReq(op.id)"><i class="pi pi-times"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </p-dataView>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="oAccepted" role="tabpanel" aria-labelledby="iAccepted-tab">
+                <div class="card">
+                    <p-dataView #oa [value]="oAccepted" [paginator]="true" [rows]="9" filterBy="title" layout="list">
+                        <ng-template pTemplate="header">
+                            <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                                <p-dropdown [options]="filterNeedOptions" placeholder="Filter by resource need" (onChange)="ipfilterByNeed($event, [(outAcc)])"
+                                    styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                            </div>
+                        </ng-template>
+                        <ng-template let-oa pTemplate="listItem">
+                            <div class="p-col-12">
+                                <div class="row p-3">
+                                    <div class="col-9">
+                                        <div class="product-name">
+                                            <a href="/resource/resourceDetails?id={{oa.resourceId}}&type={{oa.resType}}">{{oa.resourceTitle}}</a>
+                                        </div>
+                                        <div>{{oa.desc}}</div>
+                                        Submitted at {{formatDate(oa.createdAt)}}
+                                        <br>
+                                        For {{oa.needTitle}} <br>
+                                        Accepted at {{formatDate(oa.updatedAt)}}
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="float-right">
+                                            <div class="float-right">
+                                                <i class="pi pi-tag product-category-icon"></i>
+                                                <span class="{{oa.resType}}type rounded-sm text-white">&nbsp;{{oa.resType}}&nbsp;</span>
+                                            </div>
+                                            <br>
+                                            <div class="mt-md-2">
+                                                <button class="btn btn-danger float-right" title="Cancel" (click)="cancelResReq(oa.id)"><i class="pi pi-times"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </p-dataView>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="oDeclined" role="tabpanel" aria-labelledby="oDeclined-tab">
+                <div class="card">
+                    <p-dataView #od [value]="oDeclined" [paginator]="true" [rows]="9" filterBy="title" layout="list">
+                        <ng-template pTemplate="header">
+                            <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                                <p-dropdown [options]="filterNeedOptions" placeholder="Filter by resource need" (onChange)="ipfilterByNeed($event, [(outDec)])"
+                                    styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                            </div>
+                        </ng-template>
+                        <ng-template let-od pTemplate="listItem">
+                            <div class="p-col-12">
+                                <div class="row p-3">
+                                    <div class="col-9">
+                                        <div class="product-name">
+                                            <a href="/resource/resourceDetails?id={{od.resourceId}}&type={{od.resType}}">{{od.resourceTitle}}</a>
+                                        </div>
+                                        <div>{{od.desc}}</div>
+                                        Submitted at {{formatDate(od.createdAt)}}
+                                        <br>
+                                        For {{od.needTitle}} <br>
+                                        Declined at {{formatDate(od.updatedAt)}}
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="float-right">
+                                            <div class="float-right">
+                                                <i class="pi pi-tag product-category-icon"></i>
+                                                <span class="{{od.resType}}type rounded-sm text-white">&nbsp;{{od.resType}}&nbsp;</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </p-dataView>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="oCancelled" role="tabpanel" aria-labelledby="oCancelled-tab">
+                <div class="card">
+                    <p-dataView #oc [value]="oCancelled" [paginator]="true" [rows]="9" filterBy="title" layout="list">
+                        <ng-template pTemplate="header">
+                            <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                                <p-dropdown [options]="filterNeedOptions" placeholder="Filter by resource need" (onChange)="ipfilterByNeed($event, [(outCan)])"
+                                    styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                            </div>
+                        </ng-template>
+                        <ng-template let-oc pTemplate="listItem">
+                            <div class="p-col-12">
+                                <div class="row p-3">
+                                    <div class="col-9">
+                                        <div class="product-name">
+                                            <a href="/resource/resourceDetails?id={{oc.resourceId}}&type={{oc.resType}}">{{oc.resourceTitle}}</a>
+                                        </div>
+                                        <div>{{oc.desc}}</div>
+                                        Submitted at {{formatDate(oc.createdAt)}}
+                                        <br>
+                                        For {{oc.needTitle}} <br>
+                                        Cancelled at {{formatDate(oc.updatedAt)}}
+                                        <span *ngIf="oc.cancelType == 'project'">by this project</span>
+                                        <span *ngIf="oc.cancelType == 'contributor'">by resource owner</span>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="float-right">
+                                            <div class="float-right">
+                                                <i class="pi pi-tag product-category-icon"></i>
+                                                <span class="{{oc.resType}}type rounded-sm text-white">&nbsp;{{oc.resType}}&nbsp;</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </p-dataView>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

@@ -20,6 +20,11 @@ export class ProjectRequestsComponent implements OnInit {
   inDec = 'id';
   inCan = 'ic';
 
+  outPen = 'op';
+  outAcc = 'oa';
+  outDec = 'od';
+  outCan = 'oc';
+
   iPending = [];
   iAccepted = [];
   iDeclined = [];
@@ -79,6 +84,7 @@ export class ProjectRequestsComponent implements OnInit {
     await this.marketplaceService.viewProjOutgoingResReq({reqStatus: 'cancelled', id: this.projectId}).toPromise().then(
       res => this.oCancelled = res.data.projectPageResourceReqs
     );
+    console.log(this.oCancelled)
   }
 
   formatDate(date): any {
@@ -121,6 +127,34 @@ export class ProjectRequestsComponent implements OnInit {
         }
       }
       this.iCancelled = arr;
+    } else if(type[0] === 'op') {
+      for(var i=0; i<this.oPending.length; i++) {
+        if(this.oPending[i].needId == value) {
+          arr.push(this.oPending[i]);
+        }
+      }
+      this.oPending = arr;
+    } else if(type[0] === 'oa') {
+      for(var i=0; i<this.oAccepted.length; i++) {
+        if(this.oAccepted[i].needId == value) {
+          arr.push(this.oAccepted[i]);
+        }
+      }
+      this.oAccepted = arr;
+    } else if(type[0] === 'od') {
+      for(var i=0; i<this.oDeclined.length; i++) {
+        if(this.oDeclined[i].needId == value) {
+          arr.push(this.oDeclined[i]);
+        }
+      }
+      this.oDeclined = arr;
+    } else if(type[0] === 'oc') {
+      for(var i=0; i<this.oCancelled.length; i++) {
+        if(this.oCancelled[i].needId == value) {
+          arr.push(this.oCancelled[i]);
+        }
+      }
+      this.oCancelled = arr;
     }
     
   }
@@ -180,6 +214,23 @@ export class ProjectRequestsComponent implements OnInit {
     let r = confirm("Are you sure you want to cancel this request?");
     if (r == true) {
       this.marketplaceService.cancelProjectReq({id: reqId}).subscribe(
+        res => {
+          this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Request cancelled!' });
+          this.loadData();
+        },
+        err => {
+          this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: err.error.msg });
+        }
+      )
+    } else {
+      return;
+    }
+  }
+
+  cancelResReq(reqId): void {
+    let r = confirm("Are you sure you want to cancel this request?");
+    if (r == true) {
+      this.marketplaceService.cancelResourceReq({id: reqId}).subscribe(
         res => {
           this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Request cancelled!' });
           this.loadData();
