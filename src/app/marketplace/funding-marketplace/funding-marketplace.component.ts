@@ -74,20 +74,21 @@ export class FundingMarketplaceComponent implements OnInit {
         }  
       }
     }
+
+    this.projects = arr;
+
       let arr2 = [];
       if(this.filterKeyCountry.length > 0) {
         if(this.filterKeyCountry == 'All') {
-          arr2 = arr;
+          arr2 = this.projects;
         } else {
-          for(var m=0; m<arr.length; m++) {
-            if(arr[m].country == this.filterKeyCountry) {
-              arr2.push(arr[m]);
+          for(var m=0; m<this.projects.length; m++) {
+            if(this.projects[m].country == this.filterKeyCountry) {
+              arr2.push(this.projects[m]);
             }
           }
         }
         this.projects = arr2;
-      } else {
-        this.projects = arr;
       }
   }
 
