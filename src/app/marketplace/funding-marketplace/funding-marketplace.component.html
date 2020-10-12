@@ -2,121 +2,162 @@
 
 <p-toast key="toastMsg" [baseZIndex]="100"></p-toast>
 
-<p-dataView #dv [value]="projects" [paginator]="true" [rows]="9" filterBy="title"
-                [sortField]="sortField" [sortOrder]="sortOrder" layout="grid">
-                <ng-template pTemplate="header">
-                    <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+<div class="card">
+    <p-dataView #dv [value]="projects" [paginator]="true" [rows]="9" filterBy="title" [sortField]="sortField"
+        [sortOrder]="sortOrder" layout="grid">
+        <ng-template pTemplate="header">
+            <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                <p-multiSelect [options]="sdgOption" defaultLabel="All SDGs" [(ngModel)]="selectedSDGs"
+                    (onChange)="onSDGChange($event)" optionLabel="name">
+                    <ng-template let-value pTemplate="selectedItems">
+                        <div class="country-item" style="display: inline-flex;" *ngFor="let option of selectedSDGs">
+                            <span class="sdg sdg{{option.number}} mr-md-1">{{option.number}}</span>
+                        </div>
+                        <div *ngIf="!selectedSDGs || selectedSDGs.length === 0" class="country-placeholder">
+                            Select SDGs
+                        </div>
+                    </ng-template>
+                    <ng-template let-country pTemplate="item">
+                        <div class="country-item">
+                            <div>{{country.value.name}}</div>
+                        </div>
+                    </ng-template>
+                </p-multiSelect>
 
-                        <p-multiSelect [options]="sdgOption" defaultLabel="All SDGs" [(ngModel)]="selectedSDGs" (onChange)="onSDGChange($event)" optionLabel="name">
-                            <ng-template let-value pTemplate="selectedItems">
-                                <div class="country-item" style="display: inline-flex;" *ngFor="let option of selectedSDGs">
-                                    <span class="sdg sdg{{option.number}} mr-md-1">{{option.number}}</span>
-                                </div>
-                                <div *ngIf="!selectedSDGs || selectedSDGs.length === 0" class="country-placeholder">
-                                    Select SDGs
-                                </div>
-                            </ng-template>
-                            <ng-template let-country pTemplate="item">
-                                <div class="country-item">
-                                    <div>{{country.value.name}}</div>
-                                </div>
-                            </ng-template>
-                        </p-multiSelect>
+                <p-dropdown [options]="countryOptions" [(ngModel)]="filterKeyCountry" placeholder="Filter By Country"
+                    (onChange)="onFilterCountry($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
 
-                        <p-dropdown [options]="countryOptions" [(ngModel)]="filterKeyCountry" placeholder="Filter By Country" (onChange)="onFilterCountry($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
-                        
-
-                        <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyItem" placeholder="Sort By Date" (onChange)="onSortChangeItem($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
-                        <span class="p-input-icon-left p-mb-2 p-mb-md-0">
-                            <i class="pi pi-search"></i>
-                            <input type="search" pInputText placeholder="Search Project by Title" (input)="dv.filter($event.target.value)">
-                        </span>
+                <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyItem" placeholder="Sort By Date"
+                    (onChange)="onSortChangeItem($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                <span class="p-input-icon-left p-mb-2 p-mb-md-0">
+                    <i class="pi pi-search"></i>
+                    <input type="search" pInputText placeholder="Search Project by Title"
+                        (input)="dv.filter($event.target.value)">
+                </span>
+            </div>
+        </ng-template>
+        <ng-template let-proj pTemplate="gridItem">
+            <div class="p-col-12 p-md-3">
+                <div class="product-grid-item card pt-2 pl-3 pr-3 pb-2">
+                    <div class="product-grid-item-top">
+                        <span class="product-category">{{proj.country}}</span>
+                        <span class="float-right small">{{formatDate(proj.createdAt)}}</span>
                     </div>
-                </ng-template>
-                <ng-template let-proj pTemplate="gridItem">
-                    <div class="p-col-12 p-md-3">
-                        <div class="product-grid-item card pt-2 pl-3 pr-3 pb-2">
-                            <div class="product-grid-item-top">
-                                <span class="product-category">{{proj.country}}</span>
-                                <span class="float-right small">{{formatDate(proj.createdAt)}}</span>
-                            </div>
-                            <div>
-                                <img *ngIf="proj.imgPath.length == 0" src="../../../assets/img/team.jpg" class="img-fluid" style="width: 215px; height: 150px; object-fit: cover;" [alt]="proj.title"/>
-                                <img *ngIf="proj.imgPath.length != 0" src="https://localhost:8080{{proj.imgPath}}" class="img-fluid" style="width: 215px; height: 150px; object-fit: cover;" [alt]="proj.title"/>
-                                <div class="product-name"><a href="/project/projectDetails?id={{proj.id}}">{{proj.title}}</a></div>
-                                <div class="mb-md-1">{{proj.fundingTitle}}</div>
-                                
-                                <span>${{proj.receivedSum}} raised</span>
-                                <span class="float-right">{{calculateProgress(proj.total, proj.receivedSum)}}%</span>
-                                <p-progressBar [value]="calculateProgress(proj.total, proj.receivedSum)" [style]="{'height':'6px'}"></p-progressBar>
-                                Target: ${{proj.total}}
-                                <span class="float-right mt-md-2"><span *ngFor="let sdg of proj.SDGs" class="sdg sdg{{sdg}} small">{{sdg}}</span></span>
-                                <br>
-                                Pending: ${{proj.pendingSum}}
-                            </div>
-                            <div class="product-grid-item-bottom">
-                                <button pButton type="button" label="Donate" class="p-button-sm p-button-rounded mt-md-2"
-                                    data-toggle="modal" data-target="#DonateModal" (click)=getForm(proj)></button>
-                                <div class="modal fade" id="DonateModal" tabindex="-1" role="dialog" aria-labelledby="donateModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-lg" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="donateModalLabel">Donate</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <img *ngIf="projForm.imgPath.length == 0" class="img-fluid" src="../../../assets/img/team.jpg" style="height: 300px; width: 800px; object-fit: cover;">
-                                                <img *ngIf="projForm.imgPath.length > 0" class="img-fluid" src="https://localhost:8080{{projForm.imgPath}}" style="height: 300px; width: 800px; object-fit: cover;">
-                                                <br>
-                                                <h5 class="mt-md-2" style="display: inline-block;"><a href="/project/projectDetails?id={{projForm.id}}">{{projForm.title}}</a></h5> ({{projForm.country}})
-                                                <span class="float-right medium mt-md-2">SDGs:&nbsp;<span *ngFor="let sdg of projForm.SDGs" class="sdg sdg{{sdg}}">{{sdg}}</span></span>    
-                                                <div class="medium">
-                                                        created by
-                                                        <img *ngIf="projForm.ownerImg.length == 0" src="../../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle" style="height: 40px; width: 40px; object-fit: cover;">
-                                                        <img *ngIf="projForm.ownerImg.length > 0" src="https://localhost:8080{{projForm.ownerImg}}" class="img-fluid rounded-circle" style="height: 40px; width: 40px; object-fit: cover;">
+                    <div>
+                        <img *ngIf="proj.imgPath.length == 0" src="../../../assets/img/team.jpg" class="img-fluid"
+                            style="width: 215px; height: 150px; object-fit: cover;" [alt]="proj.title" />
+                        <img *ngIf="proj.imgPath.length != 0" src="https://localhost:8080{{proj.imgPath}}"
+                            class="img-fluid" style="width: 215px; height: 150px; object-fit: cover;"
+                            [alt]="proj.title" />
+                        <div class="product-name"><a href="/project/projectDetails?id={{proj.id}}">{{proj.title}}</a>
+                        </div>
+                        <div class="mb-md-1">{{proj.fundingTitle}}</div>
 
-                                                        <div *ngIf="projForm.ownerType == 'user'" style="display: inline-block;" class="ml-md-2">
-                                                            <a href="/profile?username={{projForm.ownerUsername}}&userType=individual">{{projForm.ownerName}}</a>
-                                                        </div>
-                                                        <div *ngIf="projForm.ownerType != 'user'" style="display: inline-block;" class="ml-md-2">
-                                                            <a href="/profile?username={{projForm.ownerUsername}}&userType=institution">{{projForm.ownerName}}</a>
-                                                        </div>
-                                                        at {{formatDate(projForm.createdAt)}}
-                                                    </div>
-                                            
-                                                <h6>{{projForm.fundingTitle}}</h6>
-                                                {{projForm.fundingDesc}}
-                                                <br>
+                        <span>${{proj.receivedSum}} raised</span>
+                        <span class="float-right">{{calculateProgress(proj.total, proj.receivedSum)}}%</span>
+                        <p-progressBar [value]="calculateProgress(proj.total, proj.receivedSum)"
+                            [style]="{'height':'6px'}">
+                        </p-progressBar>
+                        Remaining: ${{proj.total - proj.receivedSum - proj.pendingSum}}
+                        <span class="float-right mt-md-2"><span *ngFor="let sdg of proj.SDGs"
+                                class="sdg sdg{{sdg}} small">{{sdg}}</span></span>
+                    </div>
+                    <div class="product-grid-item-bottom">
+                        <button pButton type="button" label="Donate" class="p-button-sm p-button-rounded mt-md-2"
+                            data-toggle="modal" data-target="#DonateModal" (click)=getForm(proj)></button>
+                        <div class="modal fade" id="DonateModal" tabindex="-1" role="dialog"
+                            aria-labelledby="donateModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="donateModalLabel">Donate to {{projForm.title}}</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <img *ngIf="projForm.imgPath.length == 0" class="img-fluid"
+                                            src="../../../assets/img/team.jpg"
+                                            style="height: 300px; width: 800px; object-fit: cover;">
+                                        <img *ngIf="projForm.imgPath.length > 0" class="img-fluid"
+                                            src="https://localhost:8080{{projForm.imgPath}}"
+                                            style="height: 300px; width: 800px; object-fit: cover;">
+                                        <br>
+                                        <h5 class="mt-md-2" style="display: inline-block;"><a
+                                                href="/project/projectDetails?id={{projForm.id}}">{{projForm.title}}</a>
+                                        </h5> ({{projForm.country}})
+                                        <span class="float-right medium mt-md-2">SDGs:&nbsp;<span
+                                                *ngFor="let sdg of projForm.SDGs"
+                                                class="sdg sdg{{sdg}}">{{sdg}}</span></span>
+                                        <div class="medium">
+                                            created by
+                                            <img *ngIf="projForm.ownerImg.length == 0"
+                                                src="../../../assets/img/profilePic_Placeholder.png"
+                                                class="img-fluid rounded-circle"
+                                                style="height: 40px; width: 40px; object-fit: cover;">
+                                            <img *ngIf="projForm.ownerImg.length > 0"
+                                                src="https://localhost:8080{{projForm.ownerImg}}"
+                                                class="img-fluid rounded-circle"
+                                                style="height: 40px; width: 40px; object-fit: cover;">
+
+                                            <div *ngIf="projForm.ownerType == 'user'" style="display: inline-block;"
+                                                class="ml-md-2">
+                                                <a
+                                                    href="/profile?username={{projForm.ownerUsername}}&userType=individual">{{projForm.ownerName}}</a>
+                                            </div>
+                                            <div *ngIf="projForm.ownerType != 'user'" style="display: inline-block;"
+                                                class="ml-md-2">
+                                                <a
+                                                    href="/profile?username={{projForm.ownerUsername}}&userType=institution">{{projForm.ownerName}}</a>
+                                            </div>
+                                            at {{formatDate(projForm.createdAt)}}
+                                        </div>
+
+                                        <div class="row mt-md-3">
+                                            <div class="col-6">
+                                                <h6 class="m-0">{{projForm.fundingTitle}}</h6>
+                                                <div class="mb-md-3">{{projForm.fundingDesc}}</div>
 
                                                 <span>${{projForm.receivedSum}} raised</span>
-                                                <span class="float-right">{{calculateProgress(proj.targetSum, proj.receivedSum)}}%</span>
-                                                <p-progressBar [value]="calculateProgress(projForm.targetSum, projForm.receivedSum)" [style]="{'height':'6px'}"></p-progressBar>
-                                                Target: ${{projForm.targetSum}} |
-                                                Pending: ${{projForm.pendingSum}} |
+                                                <span
+                                                    class="float-right">{{calculateProgress(projForm.targetSum, projForm.receivedSum)}}%</span>
+                                                <p-progressBar
+                                                    [value]="calculateProgress(projForm.targetSum, projForm.receivedSum)"
+                                                    [style]="{'height':'6px'}"></p-progressBar>
+                                                Target Sum: ${{projForm.targetSum}} <br>
+                                                Pending Sum: ${{projForm.pendingSum}} <br>
                                                 Remaining Sum: ${{projForm.remainingSum}}
-                                                <br>
-                                                <h6 class="mt-md-3">Submit a request to donate</h6>
-                                                <form name="form" (ngSubmit)="f.form.valid && donate()" #f="ngForm" novalidate>
+                                            </div>
+                                            <div class="col-6">
+                                                <h6>Submit a request to donate</h6>
+                                                <form name="form" (ngSubmit)="f.form.valid && donate()" #f="ngForm"
+                                                    novalidate>
                                                     <div class="form-group row">
-                                                        <label for="moneySum" class="col-sm-3 col-form-label">Amount</label>
+                                                        <label for="moneySum"
+                                                            class="col-sm-4 col-form-label">Amount</label>
                                                         <div class="col-sm-8">
                                                             <div class="input-group">
                                                                 <div class="input-group-prepend">
                                                                     <div class="input-group-text">$</div>
                                                                 </div>
-                                                                <input type="text" class="form-control" name="moneySum" [(ngModel)]="projForm.amount" required #moneySum="ngModel" />
+                                                                <input type="text" class="form-control" name="moneySum"
+                                                                    [(ngModel)]="projForm.amount" required
+                                                                    #moneySum="ngModel" />
                                                             </div>
                                                         </div>
-                                                        <div class="alert-danger" *ngIf="f.submitted && moneySum.invalid">
-                                                            <div *ngIf="moneySum.errors.required">Amount is required</div>
+                                                        <div class="alert-danger"
+                                                            *ngIf="f.submitted && moneySum.invalid">
+                                                            <div *ngIf="moneySum.errors.required">Amount is required
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
-                                                        <label for="desc" class="col-sm-3 col-form-label">Description</label>
+                                                        <label for="desc"
+                                                            class="col-sm-4 col-form-label">Description</label>
                                                         <div class="col-sm-8">
-                                                            <input type="text" class="form-control" name="desc" [(ngModel)]="projForm.reqDesc" #desc="ngModel" />
+                                                            <textarea class="form-control" name="desc"
+                                                                [(ngModel)]="projForm.reqDesc" #desc="ngModel"
+                                                                rows="2"></textarea>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
@@ -130,5 +171,8 @@
                             </div>
                         </div>
                     </div>
-                </ng-template>
-            </p-dataView>
+                </div>
+            </div>
+        </ng-template>
+    </p-dataView>
+</div>
