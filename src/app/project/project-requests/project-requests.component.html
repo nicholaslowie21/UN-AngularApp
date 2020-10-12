@@ -77,9 +77,9 @@
                                 <div class="row p-3">
                                     <div class="col-9">
                                         <div class="product-name">
-                                            <a href="/resource/resourceDetails?id={{ia.resourceId}}&type={{ia.resType}}">{{ia.resourceTitle}}</a>
+                                            <a *ngIf="ia.resType != 'money'" href="/resource/resourceDetails?id={{ia.resourceId}}&type={{ia.resType}}">{{ia.resourceTitle}}</a>
+                                            <span *ngIf="ia.resType == 'money'">Fund: ${{ia.moneySum}}</span>
                                         </div>
-                                        <div *ngIf="ia.resType == 'money'">Amount: ${{ia.moneySum}}</div>
                                         <div>{{ia.desc}}</div>
                                         Offered by {{ia.requesterName}} at {{formatDate(ia.createdAt)}}
                                         <br>
@@ -121,7 +121,6 @@
                                         <div class="product-name">
                                             <a href="/resource/resourceDetails?id={{id.resourceId}}&type={{id.resType}}">{{id.resourceTitle}}</a>
                                         </div>
-                                        <div *ngIf="id.resType == 'money'">Amount: ${{id.moneySum}}</div>
                                         <div>{{id.desc}}</div>
                                         Offered by {{id.requesterName}} at {{formatDate(id.createdAt)}}
                                         <br>
@@ -156,9 +155,9 @@
                                 <div class="row p-3">
                                     <div class="col-9">
                                         <div class="product-name">
-                                            <a href="/resource/resourceDetails?id={{ic.resourceId}}&type={{ic.resType}}">{{ic.resourceTitle}}</a>
+                                            <a *ngIf="ic.resType != 'money'" href="/resource/resourceDetails?id={{ic.resourceId}}&type={{ic.resType}}">{{ic.resourceTitle}}</a>
+                                            <span *ngIf="ic.resType == 'money'">Fund: ${{ic.moneySum}}</span>
                                         </div>
-                                        <div *ngIf="ic.resType == 'money'">Amount: ${{ic.moneySum}}</div>
                                         <div>{{ic.desc}}</div>
                                         Offered by {{ic.requesterName}} at {{formatDate(ic.createdAt)}}
                                         <br>
