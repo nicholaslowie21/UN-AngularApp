@@ -3,6 +3,8 @@
         << Back to project</u>
 </a>
 
+<p-toast key="toastMsg" [baseZIndex]="100"></p-toast>
+
 <div class="row mt-md-2">
     <div class="col-6">
         <h5>Incoming Requests</h5>
@@ -26,7 +28,7 @@
                     <p-dataView #ip [value]="iPending" [paginator]="true" [rows]="9" filterBy="title" layout="list">
                         <ng-template pTemplate="header">
                             <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
-                                <p-dropdown [options]="filterNeedOptions" [(ngModel)]="ipfilterKeyNeed" placeholder="Select resource need" (onChange)="ipfilterByNeed($event, [(inPen)])"
+                                <p-dropdown [options]="filterNeedOptions" [(ngModel)]="ipfilterKeyNeed" placeholder="Filter by resource need" (onChange)="ipfilterByNeed($event, [(inPen)])"
                                     styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
                             </div>
                         </ng-template>
@@ -37,7 +39,7 @@
                                         <div class="product-name">
                                             <a href="/resource/resourceDetails?id={{ip.resourceId}}&type={{ip.resType}}">{{ip.resourceTitle}}</a>
                                         </div>
-                                        {{ip.desc}}<br>
+                                        <div>{{ip.desc}}</div>
                                         Offered by {{ip.requesterName}} at {{formatDate(ip.createdAt)}}
                                         <br>
                                         For {{ip.needTitle}}
@@ -50,8 +52,8 @@
                                             </div>
                                             <br>
                                             <div class="mt-md-2">
-                                                <button class="btn btn-success" title="Accept"><i class="pi pi-check"></i></button>
-                                                <button class="btn btn-danger" title="Decline"><i class="pi pi-times"></i></button>
+                                                <button class="btn btn-success" title="Accept" (click)="acceptProjReq(ip.id)"><i class="pi pi-check"></i></button>
+                                                <button class="btn btn-danger" title="Decline" (click)="declineProjReq(ip.id)"><i class="pi pi-times"></i></button>
                                             </div>
                                         </div>
                                     </div>
@@ -66,7 +68,7 @@
                     <p-dataView #ia [value]="iAccepted" [paginator]="true" [rows]="9" filterBy="title" layout="list">
                         <ng-template pTemplate="header">
                             <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
-                                <p-dropdown [options]="filterNeedOptions" [(ngModel)]="ipfilterKeyNeed" placeholder="Select resource need" (onChange)="ipfilterByNeed($event, [(inPen)])"
+                                <p-dropdown [options]="filterNeedOptions" placeholder="Filter by resource need" (onChange)="ipfilterByNeed($event, [(inAcc)])"
                                     styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
                             </div>
                         </ng-template>
@@ -77,7 +79,8 @@
                                         <div class="product-name">
                                             <a href="/resource/resourceDetails?id={{ia.resourceId}}&type={{ia.resType}}">{{ia.resourceTitle}}</a>
                                         </div>
-                                        {{ia.desc}}<br>
+                                        <div *ngIf="ia.resType == 'money'">Amount: ${{ia.moneySum}}</div>
+                                        <div>{{ia.desc}}</div>
                                         Offered by {{ia.requesterName}} at {{formatDate(ia.createdAt)}}
                                         <br>
                                         For {{ia.needTitle}}
@@ -86,12 +89,12 @@
                                         <div class="float-right">
                                             <div class="float-right">
                                                 <i class="pi pi-tag product-category-icon"></i>
-                                                <span class="{{ip.resType}}type rounded-sm text-white">&nbsp;{{ia.resType}}&nbsp;</span>
+                                                <span class="{{ia.resType}}type rounded-sm text-white">&nbsp;{{ia.resType}}&nbsp;</span>
                                             </div>
                                             <br>
                                             <div class="mt-md-2">
-                                                <button class="btn btn-success" title="Accept"><i class="pi pi-check"></i></button>
-                                                <button class="btn btn-danger" title="Decline"><i class="pi pi-times"></i></button>
+                                                <button class="btn btn-success" title="Complete" (click)="completeProjReq(ia.id)"><i class="pi pi-check"></i></button>
+                                                <button class="btn btn-danger" title="Cancel" (click)="cancelProjReq(ia.id)"><i class="pi pi-times"></i></button>
                                             </div>
                                         </div>
                                     </div>
@@ -103,10 +106,77 @@
             </div>
             <div class="tab-pane fade" id="iDeclined" role="tabpanel" aria-labelledby="iDeclined-tab">
                 <div class="card">
+                    <p-dataView #id [value]="iDeclined" [paginator]="true" [rows]="9" filterBy="title" layout="list">
+                        <ng-template pTemplate="header">
+                            <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                                <p-dropdown [options]="filterNeedOptions" placeholder="Filter by resource need" (onChange)="ipfilterByNeed($event, [(inDec)])"
+                                    styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                            </div>
+                        </ng-template>
+                        <ng-template let-id pTemplate="listItem">
+                            <div class="p-col-12">
+                                <div class="row p-3">
+                                    <div class="col-9">
+                                        <div class="product-name">
+                                            <a href="/resource/resourceDetails?id={{id.resourceId}}&type={{id.resType}}">{{id.resourceTitle}}</a>
+                                        </div>
+                                        <div *ngIf="id.resType == 'money'">Amount: ${{id.moneySum}}</div>
+                                        <div>{{id.desc}}</div>
+                                        Offered by {{id.requesterName}} at {{formatDate(id.createdAt)}}
+                                        <br>
+                                        For {{id.needTitle}}
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="float-right">
+                                            <div class="float-right">
+                                                <i class="pi pi-tag product-category-icon"></i>
+                                                <span class="{{id.resType}}type rounded-sm text-white">&nbsp;{{id.resType}}&nbsp;</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </p-dataView>
                 </div>
             </div>
             <div class="tab-pane fade" id="iCancelled" role="tabpanel" aria-labelledby="iCancelled-tab">
                 <div class="card">
+                    <p-dataView #ic [value]="iCancelled" [paginator]="true" [rows]="9" filterBy="title" layout="list">
+                        <ng-template pTemplate="header">
+                            <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                                <p-dropdown [options]="filterNeedOptions" placeholder="Filter by resource need" (onChange)="ipfilterByNeed($event, [(inCan)])"
+                                    styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                            </div>
+                        </ng-template>
+                        <ng-template let-ic pTemplate="listItem">
+                            <div class="p-col-12">
+                                <div class="row p-3">
+                                    <div class="col-9">
+                                        <div class="product-name">
+                                            <a href="/resource/resourceDetails?id={{ic.resourceId}}&type={{ic.resType}}">{{ic.resourceTitle}}</a>
+                                        </div>
+                                        <div *ngIf="ic.resType == 'money'">Amount: ${{ic.moneySum}}</div>
+                                        <div>{{ic.desc}}</div>
+                                        Offered by {{ic.requesterName}} at {{formatDate(ic.createdAt)}}
+                                        <br>
+                                        For {{ic.needTitle}} <br>
+                                        Cancelled at {{formatDate(ic.updatedAt)}}
+                                        <span *ngIf="ic.cancelType == 'project'">by this project.</span>
+                                        <span *ngIf="ic.cancelType == 'contributor'">by {{ic.requesterName}}.</span>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="float-right">
+                                            <div class="float-right">
+                                                <i class="pi pi-tag product-category-icon"></i>
+                                                <span class="{{ic.resType}}type rounded-sm text-white">&nbsp;{{ic.resType}}&nbsp;</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </p-dataView>
                 </div>
             </div>
         </div>

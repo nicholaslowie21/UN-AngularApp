@@ -16,6 +16,9 @@ export class ProjectRequestsComponent implements OnInit {
   resourceNeeds = [];
 
   inPen = 'ip';
+  inAcc = 'ia';
+  inDec = 'id';
+  inCan = 'ic';
 
   iPending = [];
   iAccepted = [];
@@ -28,7 +31,8 @@ export class ProjectRequestsComponent implements OnInit {
 
   filterNeedOptions = [];
 
-  constructor(private route: ActivatedRoute, private projectService: ProjectService, private marketplaceService: MarketplaceService) { }
+  constructor(private route: ActivatedRoute, private projectService: ProjectService, private marketplaceService: MarketplaceService,
+    private messageService: MessageService) { }
 
   async ngOnInit() {
     this.route.queryParams
@@ -41,6 +45,7 @@ export class ProjectRequestsComponent implements OnInit {
       res => this.resourceNeeds = res.data.resourceneeds
     )
 
+    this.filterNeedOptions.push({label: 'All', value: 'all'});
     for(var i=0; i<this.resourceNeeds.length; i++) {
       this.filterNeedOptions.push({label: this.resourceNeeds[i].title, value: this.resourceNeeds[i].id})
     }
@@ -49,14 +54,12 @@ export class ProjectRequestsComponent implements OnInit {
   }
 
   async loadData() {
-    console.log("START LOAD DATA")
     await this.marketplaceService.viewProjIncomingProjReq({reqStatus: 'pending', id: this.projectId}).toPromise().then(
       res => this.iPending = res.data.projectPageProjectReqs
     );
     await this.marketplaceService.viewProjIncomingProjReq({reqStatus: 'accepted', id: this.projectId}).toPromise().then(
       res => this.iAccepted = res.data.projectPageProjectReqs
     );
-    console.log(this.iAccepted)
     await this.marketplaceService.viewProjIncomingProjReq({reqStatus: 'declined', id: this.projectId}).toPromise().then(
       res => this.iDeclined = res.data.projectPageProjectReqs
     );
@@ -76,8 +79,6 @@ export class ProjectRequestsComponent implements OnInit {
     await this.marketplaceService.viewProjOutgoingResReq({reqStatus: 'cancelled', id: this.projectId}).toPromise().then(
       res => this.oCancelled = res.data.projectPageResourceReqs
     );
-
-    console.log("FINISH LOADING DATA")
   }
 
   formatDate(date): any {
@@ -86,23 +87,110 @@ export class ProjectRequestsComponent implements OnInit {
   }
 
   async ipfilterByNeed(event, type) {
-    console.log(typeof type[0]);
-    console.log(type[0] === 'ip')
     let value = event.value;
-    console.log(value)
     await this.loadData();
+    if(value == 'all') {
+      return;
+    }
     let arr = [];
     if(type[0] === 'ip') {
-      console.log("in if")
       for(var i=0; i<this.iPending.length; i++) {
         if(this.iPending[i].needId == value) {
-          console.log(this.iPending[i].needId)
           arr.push(this.iPending[i]);
         }
       }
       this.iPending = arr;
+    } else if(type[0] === 'ia') {
+      for(var i=0; i<this.iAccepted.length; i++) {
+        if(this.iAccepted[i].needId == value) {
+          arr.push(this.iAccepted[i]);
+        }
+      }
+      this.iAccepted = arr;
+    } else if(type[0] === 'id') {
+      for(var i=0; i<this.iDeclined.length; i++) {
+        if(this.iDeclined[i].needId == value) {
+          arr.push(this.iDeclined[i]);
+        }
+      }
+      this.iDeclined = arr;
+    } else if(type[0] === 'ic') {
+      for(var i=0; i<this.iCancelled.length; i++) {
+        if(this.iCancelled[i].needId == value) {
+          arr.push(this.iCancelled[i]);
+        }
+      }
+      this.iCancelled = arr;
     }
     
+  }
+
+  acceptProjReq(reqId): void {
+    let r = confirm("Are you sure you want to accept this request?");
+    if (r == true) {
+      this.marketplaceService.acceptProjectReq({id: reqId}).subscribe(
+        res => {
+          this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Request accepted!' });
+          this.loadData();
+        },
+        err => {
+          this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: err.error.msg });
+        }
+      )
+    } else {
+      return;
+    }
+  }
+
+  declineProjReq(reqId): void {
+    let r = confirm("Are you sure you want to decline this request?");
+    if (r == true) {
+      this.marketplaceService.declineProjectReq({id: reqId}).subscribe(
+        res => {
+          this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Request declined!' });
+          this.loadData();
+        },
+        err => {
+          this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: err.error.msg });
+        }
+      )
+    } else {
+      return;
+    }
+  }
+  
+  completeProjReq(reqId): void {
+    let r = confirm("Are you sure you want to complete this request?");
+    if (r == true) {
+      this.marketplaceService.completeProjectReq({id: reqId}).subscribe(
+        res => {
+          this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Request completed!' });
+          this.loadData();
+        },
+        err => {
+          this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: err.error.msg });
+        }
+      )
+    } else {
+      return;
+    }
+  }
+  
+  cancelProjReq(reqId): void {
+    let r = confirm("Are you sure you want to cancel this request?");
+    if (r == true) {
+      this.marketplaceService.cancelProjectReq({id: reqId}).subscribe(
+        res => {
+          this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Request cancelled!' });
+          this.loadData();
+        },
+        err => {
+          this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: err.error.msg });
+        }
+      )
+    } else {
+      return;
+    }
   }
 
 }
