@@ -77,6 +77,18 @@ export class MarketplaceService {
     return this.http.get(API_URL + '/accProjects?accountId=' + data.id + '&accountType=' + data.accountType);
   }
 
+  viewMyResOutgoingProjReq(data): Observable<any> {
+    return this.http.get(API_URL + '/myConsolidatedProjectReq?reqStatus='+data.reqStatus);
+  }
+
+  viewResOutgoingProjReq(data): Observable<any> {
+    return this.http.get(API_URL + '/resource/detail/projectReq?reqStatus='+data.reqStatus+'&resourceId='+data.id);
+  }
+
+  viewResIncomingResReq(data): Observable<any> {
+    return this.http.get(API_URL + '/resource/detail/resourceReq?reqStatus='+data.reqStatus+'&resourceId='+data.id+'&resType='+data.resType);
+  }
+
   viewProjIncomingProjReq(data): Observable<any> {
     return this.http.get(API_URL + '/project/projectReq?reqStatus='+data.reqStatus+'&projectId='+data.id);
   }
@@ -106,6 +118,30 @@ export class MarketplaceService {
   completeProjectReq(data): Observable<any> {
     return this.http.post(API_URL + '/complete/projectReq', {
       projectReqId: data.id
+    }, httpOptions);
+  }
+
+  acceptResourceReq(data): Observable<any> {
+    return this.http.post(API_URL + '/accept/resourceReq', {
+      resourceReqId: data.id
+    }, httpOptions);
+  }
+
+  declineResourceReq(data): Observable<any> {
+    return this.http.post(API_URL + '/decline/resourceReq', {
+      resourceReqId: data.id
+    }, httpOptions);
+  }
+
+  cancelResourceReq(data): Observable<any> {
+    return this.http.post(API_URL + '/cancel/resourceReq', {
+      resourceReqId: data.id
+    }, httpOptions);
+  }
+
+  completeResourceReq(data): Observable<any> {
+    return this.http.post(API_URL + '/complete/resourceReq', {
+      resourceReqId: data.id
     }, httpOptions);
   }
 
