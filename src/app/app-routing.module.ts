@@ -37,6 +37,8 @@ import { ResourceMarketplaceComponent } from './marketplace/resource-marketplace
 import { FundingMarketplaceComponent } from './marketplace/funding-marketplace/funding-marketplace.component';
 import { ProjectRequestsComponent } from './project/project-requests/project-requests.component';
 import { MyRequestsComponent } from './my-requests/my-requests.component';
+import { DiscoverWeeklyComponent } from './discover-weekly/discover-weekly.component';
+import { RewardOfferingComponent } from './reward/reward-offering/reward-offering.component';
 
 const routes: Routes = [
   { path: 'landing', component: LandingComponent},
@@ -88,8 +90,14 @@ const routes: Routes = [
       { path: 'funding', component: FundingMarketplaceComponent}
     ]
   },
+  { path: 'reward', canActivate: [AuthGuardService],
+    children: [
+      { path: 'offering', component: RewardOfferingComponent }
+    ]
+  },
   { path: 'shareProfile', component: ShareProfilePageComponent},
   { path: 'myRequests', component: MyRequestsComponent},
+  { path: 'discover-weekly', component: DiscoverWeeklyComponent},
   { path: '', redirectTo: 'home', pathMatch: 'full'}
 ];
 

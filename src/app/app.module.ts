@@ -64,6 +64,8 @@ import { ResourceMarketplaceComponent } from './marketplace/resource-marketplace
 import { FundingMarketplaceComponent } from './marketplace/funding-marketplace/funding-marketplace.component';
 import { ProjectRequestsComponent } from './project/project-requests/project-requests.component';
 import { MyRequestsComponent } from './my-requests/my-requests.component';
+import { DiscoverWeeklyComponent } from './discover-weekly/discover-weekly.component';
+import { RewardOfferingComponent } from './reward/reward-offering/reward-offering.component';
 
 @NgModule({
   declarations: [
@@ -103,7 +105,9 @@ import { MyRequestsComponent } from './my-requests/my-requests.component';
     ResourceMarketplaceComponent,
     FundingMarketplaceComponent,
     ProjectRequestsComponent,
-    MyRequestsComponent
+    MyRequestsComponent,
+    DiscoverWeeklyComponent,
+    RewardOfferingComponent
   ],
   imports: [
     BrowserModule,
