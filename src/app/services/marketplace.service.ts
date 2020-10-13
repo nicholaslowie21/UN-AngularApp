@@ -78,7 +78,7 @@ export class MarketplaceService {
   }
 
   viewMyResOutgoingProjReq(data): Observable<any> {
-    return this.http.get(API_URL + '/myConsolidatedProjectReq?reqStatus='+data.reqStatus);
+    return this.http.get(API_URL + '/myConsolidatedProjectReq?reqStatus='+ data.reqStatus);
   }
 
   viewResOutgoingProjReq(data): Observable<any> {

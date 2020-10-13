@@ -60,6 +60,13 @@ export class ResourceDetailsComponent implements OnInit {
   resourceNeeds: any[];
   selectedResourceNeedId: any;
 
+  pendingResourceReqs: any[];
+  acceptedResourceReqs: any[];
+  pendingProjectReqs: any[];
+  acceptedProjectReqs: any[];
+  declinedProjectReqs: any[];
+  cancelledProjectReqs: any[];
+
   constructor(private route: ActivatedRoute, private tokenStorageService: TokenStorageService, 
     private userService: UserService, private institutionService: InstitutionService, private projectService: ProjectService,
     private resourceService: ResourceService, private marketplaceService: MarketplaceService, private messageService: MessageService) { }
@@ -74,6 +81,7 @@ export class ResourceDetailsComponent implements OnInit {
     
     if (this.type == 'item') {
       await this.resourceService.viewItemDetails({id: this.id}).toPromise().then(res => {this.resource = res.data.item; this.owner = res.data.owner});
+      
     } else if (this.type == 'manpower') {
       await this.resourceService.viewManpowerDetails({id: this.id}).toPromise().then(res => {this.resource = res.data.manpower; this.owner = res.data.owner});
     } else if (this.type == 'venue') {
@@ -127,6 +135,21 @@ export class ResourceDetailsComponent implements OnInit {
     // retrieve current user's projects
     await this.marketplaceService.getUserProjects({id: this.tokenStorageService.getUser().id, accountType: this.tokenStorageService.getAccountType()}).toPromise().then(
       res => this.myProjects = res.data.theProjects
+    );
+    // console.log(this.myProjects.length);
+
+    // retrieve pending and accepted resource requests
+    await this.marketplaceService.viewResIncomingResReq({reqStatus: 'pending', id: this.id, resType: this.type}).toPromise().then(
+      res => {this.pendingResourceReqs = res.data.resourceResourceReqs}
+    );
+    await this.marketplaceService.viewResIncomingResReq({reqStatus: 'accepted', id: this.id, resType: this.type}).toPromise().then(
+      res => {this.acceptedResourceReqs = res.data.resourceResourceReqs}
+    );
+    await this.marketplaceService.viewResOutgoingProjReq({reqStatus: 'pending', id: this.id}).toPromise().then(
+      res => {this.pendingProjectReqs = res.data.resourceProjectReqs}
+    );
+    await this.marketplaceService.viewResOutgoingProjReq({reqStatus: 'accepted', id: this.id}).toPromise().then(
+      res => {this.acceptedProjectReqs = res.data.resourceProjectReqs}
     );
 
   }
@@ -369,6 +392,74 @@ export class ResourceDetailsComponent implements OnInit {
         this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
       }
     );
+  }
+
+  acceptResourceReq(reqId): void {
+    let r = confirm("Are you sure you want to accept this request?");
+    if (r == true) {
+    this.marketplaceService.acceptResourceReq({id: reqId}).subscribe(
+      response => {
+        this.messageService.add({key:'toastMsg', severity:'success', summary:'Success', detail:'Resource request accepted!'});
+        window.location.reload();
+      }, 
+      err => {
+        this.messageService.add({key:'toastMsg', severity:'error', summary:'Error', detail:err.error.msg});
+      }
+    );
+  } else {
+    return;
+  }
+  }
+
+  declineResourceReq(reqId): void {
+    let r = confirm("Are you sure you want to decline this request?");
+    if (r == true) {
+      this.marketplaceService.declineResourceReq({id: reqId}).subscribe(
+        response => {
+          this.messageService.add({key:'toastMsg', severity:'success', summary:'Success', detail:'Resource request declined!'});
+          window.location.reload();
+        }, 
+        err => {
+          this.messageService.add({key:'toastMsg', severity:'error', summary:'Error', detail:err.error.msg});
+        }
+      );
+    } else {
+      return;
+    }
+  }
+
+  cancelProjectReq(reqId): void {
+    let r = confirm("Are you sure you want to cancel this request?");
+    if (r == true) {
+      this.marketplaceService.cancelProjectReq({id: reqId}).subscribe(
+        response => {
+          this.messageService.add({key:'toastMsg', severity:'success', summary:'Success', detail:'Project request cancelled!'});
+          window.location.reload();
+        }, 
+        err => {
+          this.messageService.add({key:'toastMsg', severity:'error', summary:'Error', detail:err.error.msg});
+        }
+      );
+    } else {
+      return;
+    }
+  }
+
+  cancelResourceReq(reqId): void {
+    let r = confirm("Are you sure you want to cancel this request?");
+    if (r == true) {
+      this.marketplaceService.cancelResourceReq({id: reqId}).subscribe(
+        response => {
+          this.messageService.add({key:'toastMsg', severity:'success', summary:'Success', detail:'Resource request cancelled!'});
+          window.location.reload();
+        }, 
+        err => {
+          this.messageService.add({key:'toastMsg', severity:'error', summary:'Error', detail:err.error.msg});
+        }
+      );
+    } else {
+      return;
+    }
   }
 
   // below is all code for venue images galleria
