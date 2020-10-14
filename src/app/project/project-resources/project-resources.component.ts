@@ -58,6 +58,9 @@ export class ProjectResourcesComponent implements OnInit {
   finalNeed = '';
   finalRes = '';
 
+  tempNeed: any;
+  tempType: any;
+
   constructor(private route: ActivatedRoute, private projectService: ProjectService,
     private tokenStorageService: TokenStorageService, private messageService: MessageService,
     private resourceService: ResourceService, private marketplaceService: MarketplaceService) { }
@@ -520,5 +523,23 @@ export class ProjectResourcesComponent implements OnInit {
       );
     }
 
+  }
+
+  setReqParams(needId: string, type: string): void {
+    this.tempNeed = needId;
+    this.tempType = type;
+    console.log("needId: " + this.tempNeed + ", type: " + this.tempType);
+  }
+
+  checkMp(type: string): boolean {
+    if(type == "manpower") {
+      if(this.userType == "institution") {
+        return false;
+      } else if(this.userType == "individual") {
+        return true;
+      }
+    } else {
+      return true;
+    }
   }
 }

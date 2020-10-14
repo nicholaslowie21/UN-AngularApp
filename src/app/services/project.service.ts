@@ -160,26 +160,16 @@ export class ProjectService {
     return this.http.get(API_URL + '/accountNewsFeed');
   }
 
-  createProjectPost(data): Observable<any> {
-    return this.http.post(API_URL + '/createPost', {
-      projectId: data.id,
-      title: data.title,
-      desc: data.desc,
-      postImg: data.img
-    }, httpOptions)
+  createProjectPost(formData): Observable<any> {
+    return this.http.post(API_URL + '/createPost', formData);
   }
 
   getProjectPosts(data): Observable<any> {
     return this.http.get(API_URL + '/posts?projectId=' + data.id);
   }
 
-  updateProjectPost(data): Observable<any> {
-    return this.http.post(API_URL + '/updatePost', {
-      postId: data.id,
-      title: data.title,
-      desc: data.desc,
-      postImg: data.img
-    }, httpOptions)
+  updateProjectPost(formData): Observable<any> {
+    return this.http.post(API_URL + '/updatePost', formData);
   }
 
   deleteProjectPost(data): Observable<any> {

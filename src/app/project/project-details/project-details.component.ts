@@ -49,6 +49,7 @@ export class ProjectDetailsComponent implements OnInit {
 
   newComment: any;
   allComments: any;
+  tempId: any;
 
   constructor(private route: ActivatedRoute, private projectService: ProjectService, private userService: UserService,
     private tokenStorageService: TokenStorageService, private messageService: MessageService) { }
@@ -350,42 +351,61 @@ export class ProjectDetailsComponent implements OnInit {
   }
 
   onPost(): void {
-    const formPost = {
+    /**const formPost = {
       id: this.projectId,
       title: this.form.title,
       desc: this.form.desc,
       img: this.image
     }
-    console.log(formPost);
+    console.log(formPost); **/
+    
+    const formData = new FormData();
+    formData.append("projectId", this.projectId);
+    formData.append("title", this.form.title);
+    formData.append("desc", this.form.desc);
+    formData.append("postImg", this.image);
 
-    /**this.projectService.createProjectPost(formPost).subscribe(
+    console.log(this.image);
+    //console.log(JSON.stringify (formData));
+
+    this.projectService.createProjectPost(formData).subscribe(
       response => {
         console.log(JSON.stringify(response));
         this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Post Created!' });
         window.location.reload();
+        //this.ngOnInit();
       },
       err => {
         this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: err.error.msg });
         this.errorMsg = err.error.msg;
         console.log(this.errorMsg);
       }
-    ); **/
+    );
   }
 
   onUpdatePost(): void {
-    const formUpdatePost = {
+    /**const formUpdatePost = {
       id: this.updatePost.id,
       title: this.updatePost.title,
       desc: this.updatePost.desc,
       img: this.updatePost.imgPath
     }
-    console.log(formUpdatePost);
+    console.log(formUpdatePost); **/
 
-    this.projectService.updateProjectPost(formUpdatePost).subscribe(
+    const formData = new FormData();
+    formData.append("postId", this.updatePost.id);
+    formData.append("title", this.updatePost.title);
+    formData.append("desc", this.updatePost.desc);
+    formData.append("postImg", this.image);
+
+    console.log(this.image);
+
+    this.projectService.updateProjectPost(formData).subscribe(
       response => {
         console.log(JSON.stringify(response));
         this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Post Updated!' });
         window.location.reload();
+        //this.ngOnInit();
       },
       err => {
         this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: err.error.msg });
@@ -396,7 +416,7 @@ export class ProjectDetailsComponent implements OnInit {
   }
 
   confirmDeletePost(id: string): void {
-    let r = confirm("Are you sure you want to delete this KPI?");
+    let r = confirm("Are you sure you want to delete this post?");
     if (r == true) {
       this.deletePost(id);
     } else {
@@ -419,11 +439,11 @@ export class ProjectDetailsComponent implements OnInit {
     );
   }
 
-  addComment(pid: string): void {
-    console.log(this.newComment + " " + pid);
+  addComment(): void {
+    console.log(this.newComment + " " + this.tempId);
     
     const formAddComment = {
-      id: pid,
+      id: this.tempId,
       comment: this.newComment
     }
     console.log(formAddComment);
@@ -446,6 +466,8 @@ export class ProjectDetailsComponent implements OnInit {
     this.projectService.getPostComment({id: pid}).subscribe(
       res => { this.allComments = res.data.postComments}
     );
+    this.tempId = pid;
+    console.log(this.tempId);
   }
 
   confirmDelCom(pid: string): void {
@@ -466,7 +488,13 @@ export class ProjectDetailsComponent implements OnInit {
           window.location.reload();
         }
       );
-    
+  }
+
+  myComment(aId: string): boolean {
+    if(this.userId == aId) {
+      return true;
+    }
+    return false;
   }
 
 }

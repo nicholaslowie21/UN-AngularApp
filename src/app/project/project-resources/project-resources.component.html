@@ -16,7 +16,7 @@
 
 <div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle"
     aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalScrollableTitle">Request to Contribute</h5>
@@ -194,18 +194,19 @@
                                     <i class="pi pi-tag product-category-icon"></i>
                                     <span class="{{need.type}}type rounded-sm text-white">&nbsp;{{need.type}}&nbsp;</span>
                                 </div>
-                                <div *ngIf="isOwnerAdmin && project.status == 'ongoing'" class="mt-md-2 float-right">
-                                    <button class="btn btn-success" (click)="markCompleteNeed(need)" title="Mark as complete">
+                                <div *ngIf="project.status == 'ongoing'" class="mt-md-2 float-right">
+                                    <button *ngIf=isOwnerAdmin class="btn btn-success" (click)="markCompleteNeed(need)" title="Mark as complete">
                                         <i class="pi pi-check"></i>
                                     </button>
-                                    <button class="btn btn-primary" data-toggle="modal" data-target="#EditModal" (click)=getForm(need) title="Edit">
+                                    <button *ngIf=isOwnerAdmin class="btn btn-primary" data-toggle="modal" data-target="#EditModal" (click)=getForm(need) title="Edit">
                                         <i class="pi pi-pencil"></i>
                                     </button>
-                                    <button class="btn btn-danger" (click)="deleteNeed(need)" title="Delete">
+                                    <button *ngIf=isOwnerAdmin class="btn btn-danger" (click)="deleteNeed(need)" title="Delete">
                                         <i class="pi pi-trash"></i>
                                     </button>
                                     <br/>
-                                    <button *ngIf="project.status=='ongoing'" class="btn btn-dark" data-toggle="modal" data-target="#exampleModalScrollable">
+                                    <button *ngIf=checkMp(need.type) class="btn btn-dark float-right" data-toggle="modal" data-target="#exampleModalScrollable"
+                                    (click)=setReqParams(need.id,need.type)>
                                         Contribute
                                     </button>
                                     <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
