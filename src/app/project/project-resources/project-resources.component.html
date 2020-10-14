@@ -4,6 +4,7 @@
 </a>
 
 <h2 class="mt-md-2">Project Resources
+    <button *ngIf="project.status=='ongoing'" class="btn btn-primary float-right" data-toggle="modal" data-target="#exampleModalScrollable">Request Contribution</button>
     <button *ngIf="isOwnerAdmin && project.status == 'ongoing'" class="btn btn-primary float-right" data-toggle="modal" data-target="#CreateModal">
         Add Resource Need
     </button>
