@@ -35,7 +35,7 @@
                         <ng-template let-ip pTemplate="listItem">
                             <div class="p-col-12">
                                 <div class="row p-3">
-                                    <div class="col-9">
+                                    <div class="col-8">
                                         <div class="product-name">
                                             <a href="/resource/resourceDetails?id={{ip.resourceId}}&type={{ip.resType}}">{{ip.resourceTitle}}</a>
                                         </div>
@@ -44,18 +44,16 @@
                                         <br>
                                         For {{ip.needTitle}}
                                     </div>
-                                    <div class="col-3">
-                                        <div class="float-right">
+                                    <div class="col-4">
                                             <div class="float-right">
                                                 <i class="pi pi-tag product-category-icon"></i>
                                                 <span class="{{ip.resType}}type rounded-sm text-white">&nbsp;{{ip.resType}}&nbsp;</span>
                                             </div>
                                             <br>
-                                            <div class="mt-md-2">
+                                            <div class="mt-md-2 float-right">
                                                 <button class="btn btn-success" title="Accept" (click)="acceptProjReq(ip.id)"><i class="pi pi-check"></i></button>
                                                 <button class="btn btn-danger" title="Decline" (click)="declineProjReq(ip.id)"><i class="pi pi-times"></i></button>
                                             </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -75,7 +73,7 @@
                         <ng-template let-ia pTemplate="listItem">
                             <div class="p-col-12">
                                 <div class="row p-3">
-                                    <div class="col-9">
+                                    <div class="col-8">
                                         <div class="product-name">
                                             <a *ngIf="ia.resType != 'money'" href="/resource/resourceDetails?id={{ia.resourceId}}&type={{ia.resType}}">{{ia.resourceTitle}}</a>
                                             <span *ngIf="ia.resType == 'money'">Fund: ${{ia.moneySum}}</span>
@@ -86,18 +84,16 @@
                                         For {{ia.needTitle}} <br>
                                         Accepted at {{formatDate(ia.updatedAt)}}
                                     </div>
-                                    <div class="col-3">
-                                        <div class="float-right">
+                                    <div class="col-4">
                                             <div class="float-right">
                                                 <i class="pi pi-tag product-category-icon"></i>
                                                 <span class="{{ia.resType}}type rounded-sm text-white">&nbsp;{{ia.resType}}&nbsp;</span>
                                             </div>
                                             <br>
-                                            <div class="mt-md-2">
+                                            <div class="mt-md-2 float-right">
                                                 <button class="btn btn-success" title="Complete" (click)="completeProjReq(ia.id)"><i class="pi pi-check"></i></button>
                                                 <button class="btn btn-danger" title="Cancel" (click)="cancelProjReq(ia.id)"><i class="pi pi-times"></i></button>
                                             </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -117,7 +113,7 @@
                         <ng-template let-id pTemplate="listItem">
                             <div class="p-col-12">
                                 <div class="row p-3">
-                                    <div class="col-9">
+                                    <div class="col-8">
                                         <div class="product-name">
                                             <a href="/resource/resourceDetails?id={{id.resourceId}}&type={{id.resType}}">{{id.resourceTitle}}</a>
                                         </div>
@@ -127,13 +123,11 @@
                                         For {{id.needTitle}} <br>
                                         Declined at {{formatDate(id.updatedAt)}}
                                     </div>
-                                    <div class="col-3">
-                                        <div class="float-right">
+                                    <div class="col-4">
                                             <div class="float-right">
                                                 <i class="pi pi-tag product-category-icon"></i>
                                                 <span class="{{id.resType}}type rounded-sm text-white">&nbsp;{{id.resType}}&nbsp;</span>
                                             </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -153,7 +147,7 @@
                         <ng-template let-ic pTemplate="listItem">
                             <div class="p-col-12">
                                 <div class="row p-3">
-                                    <div class="col-9">
+                                    <div class="col-8">
                                         <div class="product-name">
                                             <a *ngIf="ic.resType != 'money'" href="/resource/resourceDetails?id={{ic.resourceId}}&type={{ic.resType}}">{{ic.resourceTitle}}</a>
                                             <span *ngIf="ic.resType == 'money'">Fund: ${{ic.moneySum}}</span>
@@ -166,13 +160,11 @@
                                         <span *ngIf="ic.cancelType == 'project'">by this project</span>
                                         <span *ngIf="ic.cancelType == 'contributor'">by {{ic.requesterName}}</span>
                                     </div>
-                                    <div class="col-3">
-                                        <div class="float-right">
+                                    <div class="col-4">
                                             <div class="float-right">
                                                 <i class="pi pi-tag product-category-icon"></i>
                                                 <span class="{{ic.resType}}type rounded-sm text-white">&nbsp;{{ic.resType}}&nbsp;</span>
                                             </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -211,7 +203,7 @@
                         <ng-template let-op pTemplate="listItem">
                             <div class="p-col-12">
                                 <div class="row p-3">
-                                    <div class="col-9">
+                                    <div class="col-8">
                                         <div class="product-name">
                                             <a href="/resource/resourceDetails?id={{op.resourceId}}&type={{op.resType}}">{{op.resourceTitle}}</a>
                                         </div>
@@ -220,17 +212,15 @@
                                         <br>
                                         For {{op.needTitle}}
                                     </div>
-                                    <div class="col-3">
-                                        <div class="float-right">
+                                    <div class="col-4">
                                             <div class="float-right">
                                                 <i class="pi pi-tag product-category-icon"></i>
                                                 <span class="{{op.resType}}type rounded-sm text-white">&nbsp;{{op.resType}}&nbsp;</span>
                                             </div>
                                             <br>
-                                            <div class="mt-md-2">
+                                            <div class="mt-md-2 float-right">
                                                 <button class="btn btn-danger float-right" title="Cancel" (click)="cancelResReq(op.id)"><i class="pi pi-times"></i></button>
                                             </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -250,7 +240,7 @@
                         <ng-template let-oa pTemplate="listItem">
                             <div class="p-col-12">
                                 <div class="row p-3">
-                                    <div class="col-9">
+                                    <div class="col-8">
                                         <div class="product-name">
                                             <a href="/resource/resourceDetails?id={{oa.resourceId}}&type={{oa.resType}}">{{oa.resourceTitle}}</a>
                                         </div>
@@ -260,17 +250,15 @@
                                         For {{oa.needTitle}} <br>
                                         Accepted at {{formatDate(oa.updatedAt)}}
                                     </div>
-                                    <div class="col-3">
-                                        <div class="float-right">
+                                    <div class="col-4">
                                             <div class="float-right">
                                                 <i class="pi pi-tag product-category-icon"></i>
                                                 <span class="{{oa.resType}}type rounded-sm text-white">&nbsp;{{oa.resType}}&nbsp;</span>
                                             </div>
                                             <br>
-                                            <div class="mt-md-2">
+                                            <div class="mt-md-2 float-right">
                                                 <button class="btn btn-danger float-right" title="Cancel" (click)="cancelResReq(oa.id)"><i class="pi pi-times"></i></button>
                                             </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -290,7 +278,7 @@
                         <ng-template let-od pTemplate="listItem">
                             <div class="p-col-12">
                                 <div class="row p-3">
-                                    <div class="col-9">
+                                    <div class="col-8">
                                         <div class="product-name">
                                             <a href="/resource/resourceDetails?id={{od.resourceId}}&type={{od.resType}}">{{od.resourceTitle}}</a>
                                         </div>
@@ -300,13 +288,11 @@
                                         For {{od.needTitle}} <br>
                                         Declined at {{formatDate(od.updatedAt)}}
                                     </div>
-                                    <div class="col-3">
-                                        <div class="float-right">
+                                    <div class="col-4">
                                             <div class="float-right">
                                                 <i class="pi pi-tag product-category-icon"></i>
                                                 <span class="{{od.resType}}type rounded-sm text-white">&nbsp;{{od.resType}}&nbsp;</span>
                                             </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -326,7 +312,7 @@
                         <ng-template let-oc pTemplate="listItem">
                             <div class="p-col-12">
                                 <div class="row p-3">
-                                    <div class="col-9">
+                                    <div class="col-8">
                                         <div class="product-name">
                                             <a href="/resource/resourceDetails?id={{oc.resourceId}}&type={{oc.resType}}">{{oc.resourceTitle}}</a>
                                         </div>
@@ -338,13 +324,11 @@
                                         <span *ngIf="oc.cancelType == 'project'">by this project</span>
                                         <span *ngIf="oc.cancelType == 'contributor'">by resource owner</span>
                                     </div>
-                                    <div class="col-3">
-                                        <div class="float-right">
+                                    <div class="col-4">
                                             <div class="float-right">
                                                 <i class="pi pi-tag product-category-icon"></i>
                                                 <span class="{{oc.resType}}type rounded-sm text-white">&nbsp;{{oc.resType}}&nbsp;</span>
                                             </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
