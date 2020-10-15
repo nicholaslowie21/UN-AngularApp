@@ -20,6 +20,26 @@
                         </div>
                     </ng-template>
                 </p-multiSelect>
+
+                <p-dropdown [options]="countryOptions" [(ngModel)]="filterKeyCountry" placeholder="Filter By Country" (onChange)="onFilterCountry($event)"
+                    styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+
+                <!--p-multiSelect [options]="sdgOption" defaultLabel="All SDGs" [(ngModel)]="selectedSDGs" (onChange)="onSDGChange($event)"
+                    optionLabel="name">
+                    <ng-template let-value pTemplate="selectedItems">
+                        <div class="country-item" style="display: inline-flex;" *ngFor="let option of selectedSDGs">
+                            <span class="sdg sdg{{option.number}} mr-md-1">{{option.number}}</span>
+                        </div>
+                        <div *ngIf="!selectedSDGs || selectedSDGs.length === 0" class="country-placeholder">
+                            Select SDGs
+                        </div>
+                    </ng-template>
+                    <ng-template let-country pTemplate="item">
+                        <div class="country-item">
+                            <div>{{country.value.name}}</div>
+                        </div>
+                    </ng-template>
+                </p-multiSelect-->
                 <span class="p-input-icon-left p-mb-2 p-mb-md-0">
                     <i class="pi pi-search"></i>
                     <input type="search" pInputText placeholder="Search by Title" (input)="dv.filter($event.target.value)">
@@ -41,7 +61,9 @@
                             <a href="/project/resources?id={{project.id}}">{{project.title}}</a>
                         </div>
                         <div class="product-description">{{project.country}}</div>
-                        <div class="product-description text-secondary"><small>Created on: {{formatDate(project.createdAt)}}</small> </div>
+                        <div class="product-description text-secondary">
+                            <small>Created on: {{formatDate(project.createdAt)}}</small>
+                        </div>
                         <div *ngFor="let sdg of project.SDGs" style="display:inline-block;">
                             <button class="sdg sdg{{sdg}} mr-md-1">{{sdg}}</button>
                         </div>

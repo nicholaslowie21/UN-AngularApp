@@ -145,4 +145,8 @@ export class MarketplaceService {
     }, httpOptions);
   }
 
+  getResourceNeedSuggestion(data): Observable<any> {
+    return this.http.get(API_URL + '/suggestion/resource?needId=' + data.id);
+  }
+
 }

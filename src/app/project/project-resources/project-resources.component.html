@@ -4,7 +4,7 @@
 </a>
 
 <h2 class="mt-md-2">Project Resources
-    <button *ngIf="project.status=='ongoing'" class="btn btn-primary float-right" data-toggle="modal" data-target="#exampleModalScrollable">Request Contribution</button>
+    <!--button *ngIf="project.status=='ongoing'" class="btn btn-primary float-right" data-toggle="modal" data-target="#exampleModalScrollable">Request Contribution</button-->
     <button *ngIf="isOwnerAdmin && project.status == 'ongoing'" class="btn btn-primary float-right" data-toggle="modal" data-target="#CreateModal">
         Add Resource Need
     </button>
@@ -27,58 +27,72 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-6">
-                        <h5>Select resource need:</h5>
-                        <div *ngFor="let r of resourceNeeds; let i = index">
-                            <label>
-                                <input type="checkbox" name="needs" value="i" [checked]="needsMap[i]" (change)="updateCheckedNeeds(r.id, $event); isUpdateSuccessful=false"
-                                /> {{r.title}} <span class="{{r.type}}type rounded-sm text-white">&nbsp;{{r.type}}&nbsp;</span>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col-6">
+                    <div class="col-12">
                         <h5>Select your resource:</h5>
-                        <select class="form-control" name="type" [(ngModel)]="resourceType" required #type="ngModel">
+                        <!--select class="form-control" name="type" [(ngModel)]="resourceType" required #type="ngModel">
                             <option>Item</option>
                             <option>Knowledge</option>
                             <option *ngIf="userType == 'individual'">Manpower</option>
                             <option>Venue</option>
                         </select>
-                        <div *ngIf="resourceType=='Item'">
+                        <h6>{{tempType}}</h6-->
+                        <!--div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <input type="radio" aria-label="Radio button for following text input">
+                                </div>
+                            </div>
+                            <input type="text" class="form-control" aria-label="Text input with radio button">
+                        </div-->
+
+                        <div *ngIf="tempType=='item' && item.length != 0">
                             <div *ngFor="let it of item; let i = index">
                                 <label>
-                                    <input type="checkbox" name="res" value="i" [checked]="resMap[i]" (change)="updateCheckedRes(it.id, $event, resourceType); isUpdateSuccessful=false"
+                                    <input type="radio" name="res" value="i" [checked]="resMap[i]" (change)="updateCheckedRes(it.id, $event); isUpdateSuccessful=false"
                                     /> {{it.title}} ({{it.desc}})
                                 </label>
                             </div>
                         </div>
-                        <div *ngIf="resourceType=='Knowledge'">
+                        <div *ngIf="tempType=='item' && item.length== 0">
+                            You have no item resources. Create one now!
+                        </div>
+                        <div *ngIf="tempType=='knowledge' && knowledge.length != 0">
                             <div *ngFor="let kn of knowledge; let i = index">
                                 <label>
-                                    <input type="checkbox" name="res" value="i" [checked]="resMap[i]" (change)="updateCheckedRes(kn.id, $event, resourceType); isUpdateSuccessful=false"
+                                    <input type="radio" name="res" value="i" [checked]="resMap[i]" (change)="updateCheckedRes(kn.id, $event); isUpdateSuccessful=false"
                                     /> {{kn.title}} ({{kn.desc}})
                                 </label>
                             </div>
                         </div>
-                        <div *ngIf="resourceType=='Manpower'">
+                        <div *ngIf="tempType=='knowledge' && knowledge.length== 0">
+                            You have no knowledge resources. Create one now!
+                        </div>
+                        <div *ngIf="tempType=='manpower' && manpower.length != 0">
                             <div *ngFor="let mn of manpower; let i = index">
                                 <label>
-                                    <input type="checkbox" name="res" value="i" [checked]="resMap[i]" (change)="updateCheckedRes(mn.id, $event, resourceType); isUpdateSuccessful=false"
+                                    <input type="radio" name="res" value="i" [checked]="resMap[i]" (change)="updateCheckedRes(mn.id, $event); isUpdateSuccessful=false"
                                     /> {{mn.title}} ({{mn.desc}})
                                 </label>
                             </div>
                         </div>
-                        <div *ngIf="resourceType=='Venue'">
+                        <div *ngIf="tempType=='manpower' && manpower.length== 0">
+                            You have no manpower resources. Create one now!
+                        </div>
+                        <div *ngIf="tempType=='venue' && venue.length != 0">
                             <div *ngFor="let vn of venue; let i = index">
                                 <label>
-                                    <input type="checkbox" name="res" value="i" [checked]="resMap[i]" (change)="updateCheckedRes(vn.id, $event, resourceType); isUpdateSuccessful=false"
+                                    <input type="radio" name="res" value="i" [checked]="resMap[i]" (change)="updateCheckedRes(vn.id, $event); isUpdateSuccessful=false"
                                     /> {{vn.title}} ({{vn.desc}})
                                 </label>
                             </div>
                         </div>
+                        <div *ngIf="tempType=='venue' && venue.length== 0">
+                            You have no venue resources. Create one now!
+                        </div>
                     </div>
                 </div>
-                <div class="row">
+                <br>
+                <div *ngIf=checkBox class="row">
                     <div class="col-3">
                         Request Description:
                     </div>
@@ -87,7 +101,7 @@
                     </div>
                 </div>
                 <br>
-                <div class="form-group">
+                <div *ngIf=checkBox class="form-group">
                     <button class="btn btn-primary btn-block" (click)=onReqSubmit()>Create</button>
                 </div>
             </div>
@@ -110,13 +124,13 @@
                     <div class="form-group row">
                         <label for="type" class="col-sm-3 col-form-label">Resource Type</label>
                         <div class="col-sm-9">
-                          <select class="form-control" name="type" [(ngModel)]="form.resourceType" required #type="ngModel">
-                            <option value="item">Item</option>
-                            <option value="manpower">Manpower</option>
-                            <option value="venue">Venue</option>
-                            <option value="knowledge">Knowledge</option>
-                            <option value="money">Money</option>
-                          </select>
+                            <select class="form-control" name="type" [(ngModel)]="form.resourceType" required #type="ngModel">
+                                <option value="item">Item</option>
+                                <option value="manpower">Manpower</option>
+                                <option value="venue">Venue</option>
+                                <option value="knowledge">Knowledge</option>
+                                <option value="money">Money</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -160,10 +174,10 @@
 <div class="mt-md-2">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item">
-          <a class="nav-link active" id="need-tab" data-toggle="tab" href="#need" role="tab" aria-controls="need" aria-selected="true">Resource Needs</a>
+            <a class="nav-link active" id="need-tab" data-toggle="tab" href="#need" role="tab" aria-controls="need" aria-selected="true">Resource Needs</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" id="obtained-tab" data-toggle="tab" href="#obtained" role="tab" aria-controls="obtained" aria-selected="false">Resources Obtained</a>
+            <a class="nav-link" id="obtained-tab" data-toggle="tab" href="#obtained" role="tab" aria-controls="obtained" aria-selected="false">Resources Obtained</a>
         </li>
     </ul>
 
@@ -181,7 +195,7 @@
                                         styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
                                     <p-dropdown [options]="filterTypeOptions" [(ngModel)]="filterKeyNeedType" placeholder="Filter By Type" (onChange)="filterNeedsType($event)"
                                         styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
-            
+
                                     <span class="p-input-icon-left p-mb-2 p-mb-md-0">
                                         <i class="pi pi-search"></i>
                                         <input type="search" pInputText placeholder="Search by Title" (input)="mp.filter($event.target.value)">
@@ -198,7 +212,9 @@
                                             <div *ngIf="need.type == 'money'">Pending Sum: ${{need.pendingSum}},
                                                 <span *ngIf="need.type == 'money'">Received Sum: ${{need.receivedSum}}</span>
                                             </div>
-                                            <div *ngIf="need.type == 'money'">Remaining Sum Needed: ${{calculateRemaining(need.pendingSum, need.receivedSum, need.total)}}</div>
+                                            <div *ngIf="need.type == 'money'">Remaining Sum Needed: ${{calculateRemaining(need.pendingSum, need.receivedSum,
+                                                need.total)}}
+                                            </div>
                                             <span class="product-category">Completion: {{need.completion}}%</span>
                                         </div>
                                         <div class="col-3">
@@ -217,9 +233,14 @@
                                                     <i class="pi pi-trash"></i>
                                                 </button>
                                                 <br/>
-                                                <button *ngIf=checkMp(need.type) class="btn btn-dark float-right" data-toggle="modal" data-target="#exampleModalScrollable"
-                                                (click)=setReqParams(need.id,need.type)>
+                                                <button *ngIf=checkMp(need.type) style="width: 130px" class="btn btn-dark float-right" data-toggle="modal" data-target="#exampleModalScrollable"
+                                                    (click)=setReqParams(need.id,need.type)>
                                                     Contribute
+                                                </button>
+                                                <br>
+                                                <button *ngIf="isOwnerAdmin && need.type != 'money'" style="width: 130px" class="btn btn-info" (click)="getSuggestedRes(need.id, need.type)"
+                                                    title="Delete">
+                                                    Suggest
                                                 </button>
                                                 <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog" role="document">
@@ -306,7 +327,24 @@
                 </div>
                 <div class="col-5">
                     <!-- Can do the checking to display this -->
-                    Click on the 'Suggest' button on a resource need to see suggested resources!
+                    <div *ngIf=!checkClick>Click on the 'Suggest' button on a resource need to see suggested resources!</div>
+                    <h5 *ngIf=checkClick> Suggested Resources: </h5>
+                    <div *ngFor="let r of resNeedSuggestion">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <a href="/resource/resourceDetails?id={{r.id}}&type={{suggestedType}}">
+                                    <strong>{{r.title}} </strong>
+                                </a><br>
+                                <div *ngIf="suggestedType!='knowledge'">{{r.ownerName}} ({{r.ownerUsername}})<br></div>
+                                <small>{{r.desc}}</small>
+                                <br>
+                                <small>Last updated: {{formatDate(r.updatedAt)}}</small>
+                            </li>
+                        </ul>
+                    </div>
+                    <div *ngIf="checkClick && resNeedSuggestion.length==0">
+                        There are no suggested resources for now.
+                    </div>
                 </div>
             </div>
         </div>
@@ -373,7 +411,7 @@
             </div>
         </div>
     </div>
-    
-    
-    
+
+
+
 </div>

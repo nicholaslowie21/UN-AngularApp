@@ -5,6 +5,7 @@ import { TokenStorageService } from '../../services/token-storage.service';
 import { MessageService } from 'primeng/api';
 import { ResourceService } from '../../services/resource.service';
 import { MarketplaceService } from '../../services/marketplace.service';
+import { JsonpClientBackend } from '@angular/common/http';
 
 @Component({
   selector: 'app-project-resources',
@@ -57,9 +58,15 @@ export class ProjectResourcesComponent implements OnInit {
   isUpdateSuccessful = false;
   finalNeed = '';
   finalRes = '';
+  tempResId: any;
 
   tempNeed: any;
   tempType: any;
+  checkBox = true;
+
+  resNeedSuggestion: any;
+  checkClick = false;
+  suggestedType: any;
 
   constructor(private route: ActivatedRoute, private projectService: ProjectService,
     private tokenStorageService: TokenStorageService, private messageService: MessageService,
@@ -448,11 +455,11 @@ export class ProjectResourcesComponent implements OnInit {
     console.log(x);
   }
 
-  updateCheckedRes(x, event, y) {
-    this.resMap[x] = event.target.checked;
-    console.log(x);
-    this.typeMap = y;
-    console.log(y);
+  updateCheckedRes(x, event) {
+    //this.resMap[x] = event.target.checked;
+    //console.log(x);
+    this.tempResId = x;
+    console.log(this.tempResId);
   }
 
   clearLists(): void {
@@ -462,7 +469,7 @@ export class ProjectResourcesComponent implements OnInit {
   onReqSubmit(): void {
     //check for valid selection and description
 
-    console.log(this.needsMap);
+    /**console.log(this.needsMap);
     for (var x in this.needsMap) {
       if (this.needsMap[x]) {
         this.needsChecked.push(x);
@@ -503,25 +510,25 @@ export class ProjectResourcesComponent implements OnInit {
     console.log(this.reqDescription);
 
     if (this.needsChecked.length == 1 && this.resChecked.length == 1) {
-      const formReq = {
-        needId: this.finalNeed,
-        resourceId: this.finalRes,
-        resType: this.typeMap.toLowerCase(),
-        desc: this.reqDescription
-      }
+    } **/
 
-      console.log(formReq);
-
-      this.marketplaceService.createProjectRequest(formReq).subscribe(
-        response => {
-          this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Request created!' });
-          window.location.reload();
-        },
-        err => {
-          this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: err.error.msg });
-        }
-      );
+    const formReq = {
+      needId: this.tempNeed,
+      resourceId: this.tempResId,
+      resType: this.tempType,
+      desc: this.reqDescription
     }
+    console.log(formReq);
+
+    this.marketplaceService.createProjectRequest(formReq).subscribe(
+      response => {
+        this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Request created!' });
+        window.location.reload();
+      },
+      err => {
+        this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: err.error.msg });
+      }
+    );
 
   }
 
@@ -529,17 +536,58 @@ export class ProjectResourcesComponent implements OnInit {
     this.tempNeed = needId;
     this.tempType = type;
     console.log("needId: " + this.tempNeed + ", type: " + this.tempType);
+    if(this.tempType=="item") {
+      if(this.item.length==0) {
+        this.disableBox();
+      }
+    } else if(this.tempType=="manpower") {
+      if(this.manpower.length==0) {
+        this.disableBox();
+      }
+    } else if(this.tempType=="venue") {
+      if(this.venue.length==0) {
+        this.disableBox();
+      }
+    } else if(this.tempType=="knowledge") {
+      if(this.knowledge.length==0) {
+        this.disableBox();
+      }
+    }
   }
 
   checkMp(type: string): boolean {
-    if(type == "manpower") {
-      if(this.userType == "institution") {
+    if (type == "money") {
+      return false;
+    }
+    if (type == "manpower") {
+      if (this.userType == "institution") {
         return false;
-      } else if(this.userType == "individual") {
+      } else if (this.userType == "individual") {
         return true;
       }
     } else {
       return true;
     }
+  }
+
+  disableBox(): void {
+    this.checkBox = false;
+  }
+
+  getSuggestedRes(needId: string, type: string): void {
+    console.log(needId);
+    this.marketplaceService.getResourceNeedSuggestion({id: needId}).subscribe(
+      res => { this.resNeedSuggestion = res.data.suggestedResources;
+      console.log(JSON.stringify(res)) }
+    );
+    console.log(JSON.stringify(this.resNeedSuggestion));
+    this.checkClick = true;
+    this.suggestedType = type;
+    console.log(this.suggestedType);
+  }
+
+  formatDate(date): any {
+    let formattedDate = new Date(date).toUTCString();
+    return formattedDate.substring(5, formattedDate.length-13);
   }
 }
