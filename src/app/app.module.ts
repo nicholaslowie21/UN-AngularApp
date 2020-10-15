@@ -59,6 +59,8 @@ import {InputSwitchModule} from 'primeng/inputswitch';
 import {ProgressBarModule} from 'primeng/progressbar';
 import {GalleriaModule} from 'primeng/galleria';
 import {MultiSelectModule} from 'primeng/multiselect';
+import {CalendarModule} from 'primeng/calendar';
+
 import { ProjectMarketplaceComponent } from './marketplace/project-marketplace/project-marketplace.component';
 import { ResourceMarketplaceComponent } from './marketplace/resource-marketplace/resource-marketplace.component';
 import { FundingMarketplaceComponent } from './marketplace/funding-marketplace/funding-marketplace.component';
@@ -66,6 +68,7 @@ import { ProjectRequestsComponent } from './project/project-requests/project-req
 import { MyRequestsComponent } from './my-requests/my-requests.component';
 import { DiscoverWeeklyComponent } from './discover-weekly/discover-weekly.component';
 import { RewardOfferingComponent } from './reward/reward-offering/reward-offering.component';
+import { CreateRewardComponent } from './reward/create-reward/create-reward.component';
 
 @NgModule({
   declarations: [
@@ -107,7 +110,8 @@ import { RewardOfferingComponent } from './reward/reward-offering/reward-offerin
     ProjectRequestsComponent,
     MyRequestsComponent,
     DiscoverWeeklyComponent,
-    RewardOfferingComponent
+    RewardOfferingComponent,
+    CreateRewardComponent
   ],
   imports: [
     BrowserModule,
@@ -129,7 +133,8 @@ import { RewardOfferingComponent } from './reward/reward-offering/reward-offerin
     InputSwitchModule,
     ProgressBarModule,
     GalleriaModule,
-    MultiSelectModule
+    MultiSelectModule,
+    CalendarModule
   ],
   providers: [authInterceptorProviders, AuthGuardService],
   bootstrap: [AppComponent]
