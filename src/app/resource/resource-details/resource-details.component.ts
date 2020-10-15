@@ -67,6 +67,8 @@ export class ResourceDetailsComponent implements OnInit {
   declinedProjectReqs: any[];
   cancelledProjectReqs: any[];
 
+  suggestedProjects: any[];
+
   constructor(private route: ActivatedRoute, private tokenStorageService: TokenStorageService, 
     private userService: UserService, private institutionService: InstitutionService, private projectService: ProjectService,
     private resourceService: ResourceService, private marketplaceService: MarketplaceService, private messageService: MessageService) { }
@@ -150,6 +152,11 @@ export class ResourceDetailsComponent implements OnInit {
     );
     await this.marketplaceService.viewResOutgoingProjReq({reqStatus: 'accepted', id: this.id}).toPromise().then(
       res => {this.acceptedProjectReqs = res.data.resourceProjectReqs}
+    );
+
+    // retrieve suggested projects (resource needs) for this resource
+    await this.marketplaceService.getResourceNeedSuggestion({id: this.id, type: this.type}).toPromise().then(
+      res => {this.suggestedProjects = res.data.resourceneedSuggestion}
     );
 
   }
