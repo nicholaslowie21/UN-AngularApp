@@ -1,5 +1,9 @@
-<div *ngIf="projects.length == 0">
-    Discover weekly will be updated every Sunday.
+<h2>Discover Weekly</h2>
+<div class="mb-md-2">Freshly picked projects for you. Updates every Sunday.</div>
+
+<div *ngIf="projects.length == 0" class="alert alert-info">
+    Oh no, we are still working to pick projects that might interest you.<br>
+    Come back on Sunday to check them out!
 </div>
 <div *ngFor="let n of projects">
     <div class="card mb-md-2">
