@@ -1,1 +1,52 @@
-<p>discover-weekly works!</p>
+<div *ngIf="projects.length == 0">
+    Discover weekly will be updated every Sunday.
+</div>
+<div *ngFor="let n of projects">
+    <div class="card mb-md-2">
+        <div *ngIf="n.imgPath.length == 0">
+          <img class="card-img-top img-fluid" src="../../assets/img/team.jpg" 
+            alt="Project picture" style="height: 300px; object-fit: cover;">
+        </div>
+        <div *ngIf="n.imgPath.length > 0">
+          <img class="card-img-top img-fluid" src="https://localhost:8080{{n.imgPath}}" 
+            alt="Project picture" style="height: 300px; object-fit: cover;">
+        </div>
+        <div class="row p-2">
+          <div class="col-2">
+            <div *ngIf="n.hostImg.length == 0">
+              <div *ngIf="n.hostType == 'user'">
+                <a href="/profile?username={{n.hostUsername}}&userType=individual"><img class="img-fluid rounded-circle" src="../../assets/img/profilePic_Placeholder.png"
+                    alt="Profile picture" style="height: 60px; width: 60px; object-fit: cover;"></a>
+              </div>
+              <div *ngIf="n.hostType != 'user'">
+                <a href="/profile?username={{n.hostUsername}}&userType=institution"><img class="img-fluid rounded-circle" src="../../assets/img/profilePic_Placeholder.png"
+                    alt="Profile picture" style="height: 60px; width: 60px; object-fit: cover;"></a>
+              </div>
+            </div>
+            <div *ngIf="n.hostImg.length > 0">
+              <div *ngIf="n.hostType == 'user'">
+                <a href="/profile?username={{n.hostUsername}}&userType=individual"><img class="img-fluid rounded-circle" src="https://localhost:8080{{n.hostImg}}"
+                    alt="Profile picture" style="height: 60px; width: 60px; object-fit: cover;"></a>
+              </div>
+              <div *ngIf="n.hostType != 'user'">
+                <a href="/profile?username={{n.hostUsername}}&userType=institution"><img class="img-fluid rounded-circle" src="https://localhost:8080{{n.hostImg}}"
+                    alt="Profile picture" style="height: 60px; width: 60px; object-fit: cover;"></a>
+              </div>
+            </div>
+          </div>
+          <div class="col-10">
+            <h5><a href="/project/projectDetails?id={{n.id}}">{{n.title}}</a>
+              <span class="ml-md-2 text-secondary" style="font-size: small;">created at {{formatDate(n.createdAt)}}</span>
+            <div class="float-right">
+              <span style="font-size: small;">SDGs:&nbsp;</span>
+              <div *ngFor="let s of n.SDGs" style="display:inline-block;">
+                <span class="sdg sdg{{s}}" style="font-size: small;">{{s}}</span>
+              </div>
+            </div>
+          </h5>
+            <h6 class="p-text-nowrap p-text-truncate text-secondary" style="width: 28rem;">{{n.desc}}</h6>
+          </div>
+        </div>
+        
+      </div>
+</div>

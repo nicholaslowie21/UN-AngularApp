@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MarketplaceService } from '../services/marketplace.service';
 
 @Component({
   selector: 'app-discover-weekly',
@@ -7,9 +8,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DiscoverWeeklyComponent implements OnInit {
 
-  constructor() { }
+  projects = [];
 
-  ngOnInit(): void {
+  constructor(private marketplaceService: MarketplaceService) { }
+
+  async ngOnInit() {
+    await this.marketplaceService.getDiscoverWeekly().toPromise().then(
+      res => this.projects = res.data.discoverweekly
+    );
+    console.log(this.projects)
+  }
+
+  formatDate(date): any {
+    let formattedDate = new Date(date).toUTCString();
+    return formattedDate.substring(5, formattedDate.length-13);
   }
 
 }

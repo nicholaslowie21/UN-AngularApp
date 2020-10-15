@@ -145,4 +145,8 @@ export class MarketplaceService {
     }, httpOptions);
   }
 
+  getDiscoverWeekly(): Observable<any> {
+    return this.http.get(API_URL + '/discoverWeekly');
+  }
+
 }
