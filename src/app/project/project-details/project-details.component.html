@@ -209,10 +209,10 @@
                                     <small>Created at: {{formatDate(p.createdAt)}}</small>
                                 </h6>
                                 <h6 class="card-title text-left text-secondary">
-                                    <small>Last updated: {{formatDate(p.updatedAt)}}</small>
+                                    <small>Last updated: {{formatDate(p.updatedAt)}} by {{p.accountUsername}}</small>
                                 </h6>
 
-                                <a (click)=getComments(p.id) class="btn" data-toggle="modal" data-target="#commentModal"> View Comments</a>
+                                <button type="button" (click)=getComments(p.id) class="btn btn-link" data-toggle="modal" data-target="#commentModal"> View Comments</button>
                                 <!--div *ngFor="let c of allComments">
                                     <ul class="list-group">
                                         <li class="list-group-item">
@@ -257,7 +257,7 @@
                                     <ul class="list-group">
                                         <li class="list-group-item">
                                             <strong>{{c.accountUsername}}: </strong> {{c.comment}}
-                                            <a *ngIf=isOngoing&&myComment(c.accountId) class="btn btn-danger mb-3 text-white float-right" role="button" style="margin: 3px;"
+                                            <a *ngIf=isOngoing&&myComment(c.accountId) class="btn btn-light mb-3 float-right" role="button" style="margin: 3px;"
                                                 (click)=confirmDelCom(c.id)>
                                                 <i class="pi pi-trash"></i>
                                             </a>
@@ -272,7 +272,6 @@
                                     Add
                                 </a>
                                 <textarea class="form-control" name="comment" [(ngModel)]="newComment" required #comment="ngModel" rows="1" style="width: 85%"></textarea>
-
                             </div>
                         </div>
                     </div>
