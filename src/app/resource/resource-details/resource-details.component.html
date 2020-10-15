@@ -111,7 +111,7 @@
             </div>
             <div class="col-4 mt-md-1 text-light">
                 Last modified: {{formatDate(resource.updatedAt)}}
-                <button class="btn btn-light float-right">Suggest projects</button>
+                <button class="btn btn-light float-right" data-toggle="modal" data-target="#suggestModal">Suggest projects</button>
             </div>
         </div>
         <div class="row mt-md-1 p-2 bg-light">
@@ -181,10 +181,14 @@
                     <div class="card bg-light">
                         <div class="card-body">
                             <b>Project: <a href="/project/projectDetails?id={{req.projectId}}">{{req.projectTitle}}</a></b><br/>
-                            Description: {{req.desc}}<br/>
-                            Status: {{req.status}}<br/>
+                            <p *ngIf="req.desc.length != 0">
+                                Description: {{req.desc}}<br/>
+                            </p>
+                            <p *ngIf="req.desc.length == 0">
+                                Description: -<br/>
+                            </p>
                             Request accepted at: {{formatDate(req.updatedAt)}}<br/>
-                            <button *ngIf="req.status == 'accepted'" class="btn btn-danger float-right" type="button" (click)="cancelProjectReq(req.id)">
+                            <button class="btn btn-danger float-right" type="button" (click)="cancelProjectReq(req.id)">
                                 Cancel
                             </button>
                         </div>
@@ -232,10 +236,14 @@
                     <div class="card bg-light">
                         <div class="card-body">
                             <b>Project: <a href="/project/projectDetails?id={{req.projectId}}">{{req.projectTitle}}</a></b><br/>
-                            Description: {{req.desc}}<br/>
-                            Status: {{req.status}}<br/>
+                            <p *ngIf="req.desc.length != 0">
+                                Description: {{req.desc}}<br/>
+                            </p>
+                            <p *ngIf="req.desc.length == 0">
+                                Description: -<br/>
+                            </p>
                             Request accepted at: {{formatDate(req.updatedAt)}}<br/>
-                            <button *ngIf="req.status == 'accepted'" class="btn btn-danger float-right" type="button" (click)="cancelResourceReq(req.id)">
+                            <button class="btn btn-danger float-right" type="button" (click)="cancelResourceReq(req.id)">
                                 Cancel
                             </button>
                         </div>
@@ -347,6 +355,45 @@
                             <button class="btn btn-primary btn-block">Submit</button>
                         </div>
                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="suggestModal" tabindex="-1" role="dialog" aria-labelledby="suggestModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="suggestModalLabel">Suggested Projects</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Click on the project to view more details and request to contribute!<br/>
+                    <div *ngFor="let p of suggestedProjects">
+                        <div class="card bg-light">
+                            <div class="card-body">
+                              <div class="row">
+                                <div class="col-3">
+                                    <b>SDGs:</b><br/>
+                                    <div *ngIf="p.projectSDGs.length == 0" style="display:inline-block;">
+                                        -
+                                    </div>
+                                    <div *ngFor="let sdg of p.projectSDGs" style="display:inline-block;">
+                                        <button class="sdg sdg{{sdg}} mr-md-1">{{sdg}}</button>
+                                    </div>
+                                </div>
+                                <div class="col-9">
+                                    <b>Project: <a href="/project/projectDetails?id={{p.projectId}}">{{p.projectTitle}}</a></b><br/>
+                                    Resource need: {{p.title}}<br/>
+                                    Description: {{p.desc}}
+                                </div>
+                              </div>   
+                            </div>
+                        </div>
+                        
+                    </div>
                 </div>
             </div>
         </div>

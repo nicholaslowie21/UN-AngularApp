@@ -576,7 +576,7 @@ export class ProjectResourcesComponent implements OnInit {
 
   getSuggestedRes(needId: string, type: string): void {
     console.log(needId);
-    this.marketplaceService.getResourceNeedSuggestion({id: needId}).subscribe(
+    this.marketplaceService.getResourceSuggestion({id: needId}).subscribe(
       res => { this.resNeedSuggestion = res.data.suggestedResources;
       console.log(JSON.stringify(res)) }
     );
