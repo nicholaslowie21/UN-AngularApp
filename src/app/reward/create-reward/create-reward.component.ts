@@ -12,6 +12,7 @@ import { TokenStorageService } from '../../services/token-storage.service';
 export class CreateRewardComponent implements OnInit {
  
   isVerified = false;
+  isSuccessful = false;
   form: any = {};
   file: any;
   fileVerify: any;
@@ -63,7 +64,8 @@ export class CreateRewardComponent implements OnInit {
 
     this.rewardService.createReward(formData).subscribe(
       res => {
-        this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Reward offering created!' });
+        // this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Reward offering created!' });
+        this.isSuccessful = true;
       },
       err => {
         this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: err.error.msg });

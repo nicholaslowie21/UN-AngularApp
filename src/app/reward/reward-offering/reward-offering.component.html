@@ -13,10 +13,10 @@
                 [sortOrder]="sortOrder" layout="grid">
                 <ng-template pTemplate="header">
                     <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
-                        <p-dropdown [options]="filterStatusOptions" [(ngModel)]="filterKeyMpw" placeholder="Filter By Status"
+                        <!-- <p-dropdown [options]="filterStatusOptions" [(ngModel)]="filterKeyMpw" placeholder="Filter By Status"
                             (onChange)="filterManpowerStatus($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
                         <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyMpw" placeholder="Sort By Date"
-                            (onChange)="onSortChangeManpower($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                            (onChange)="onSortChangeManpower($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown> -->
                         <span class="p-input-icon-left p-mb-2 p-mb-md-0">
                             <i class="pi pi-search"></i>
                             <input type="search" pInputText placeholder="Search by Title" (input)="re.filter($event.target.value)">
@@ -28,32 +28,67 @@
                         <div class="product-grid-item card p-3">
                             <div class="product-grid-item-top">
                                 <div>
-                                    <i class="pi pi-tag product-category-icon"></i>
-                                    <span class="product-category rounded-sm">{{reward.minTier}}</span>
+                                    <span class="product-category">{{reward.country}}</span>
                                 </div>
                                 <span class="float-right">{{formatDate(reward.updatedAt)}}</span>
                             </div>
                             <div class="product-grid-item-content">
                                 <img *ngIf="reward.imgPath.length == 0" src="../../../assets/img/profilePic_Placeholder.png"
-                                    class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;" alt="Reward pic" />
+                                    class="img-fluid" style="width: 150px; height: 150px; object-fit: cover;" alt="Reward pic" />
                                 <img *ngIf="reward.imgPath.length != 0" src="https://localhost:8080{{reward.imgPath}}"
-                                    class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;" alt="Reward pic" />
-                                <div class="product-name">{{reward.title}}</div>
-                                <div class="product-description">{{reward.desc}}</div>
-                            </div>
-                            <div class="product-grid-item-bottom">
-                                Status: {{reward.status}}
-                                Country: {{reward.country}}
-                                End date: {{formatDate(reward.endDate)}}
-                                Point: {{reward.point}}
-                                Quota: {{reward.quota}}
-                                <br>
-                                <button class="btn btn-danger" *ngIf="reward.status == 'pending'" (click)="cancelReward(reward.id)">Cancel</button>
+                                    class="img-fluid" style="width: 150px; height: 150px; object-fit: cover;" alt="Reward pic" />
+                                <div class="product-name">
+                                    <button class="btn" data-toggle="modal" data-target="#ViewModal" (click)=getForm(reward)>
+                                        {{reward.title}}
+                                    </button>
+                                </div>
+                                <div class="product-description">
+                                    {{reward.status}}
+                                </div>
                             </div>
                         </div>
                     </div>
                 </ng-template>
             </p-dataView>
+
+            <div class="modal fade" id="ViewModal" tabindex="-1" role="dialog" aria-labelledby="ViewModal" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="ViewModal">View Reward Offering</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <span class="product-category">{{editForm.country}}</span>
+                            <span class="float-right">{{formatDate(editForm.createdAt)}}</span>
+                            <br>
+                            <img *ngIf="editForm.rewardImg.length == 0" src="../../../assets/img/profilePic_Placeholder.png"
+                                class="img-fluid" style="width: 500px; height: 200px; object-fit: cover;" alt="Reward pic" />
+                            <img *ngIf="editForm.rewardImg.length != 0" src="https://localhost:8080{{editForm.rewardImg}}"
+                                class="img-fluid" style="width: 500px; height: 200px; object-fit: cover;" alt="Reward pic" />
+                            <h5>{{editForm.title}}
+                                <span class="small float-right rounded-sm text-white" style="background-color: red;">&nbsp;Status: {{editForm.status}}&nbsp;</span>
+                            </h5>
+                            <div>{{editForm.desc}}</div>
+                            <br>
+                            <div class="row">
+                                <div class="col-6">
+                                    Point: {{editForm.point}} <br>
+                                    Tier: {{editForm.minTier}} <br>
+                                    Total claimed: {{editForm.claimedNum}}
+                                </div>
+                                <div class="col-6">
+                                    Quota: {{editForm.quota}} <br>
+                                    End Date: {{formatDate(editForm.endDate)}}
+                                </div>
+                            </div>
+                            <button class="btn btn-danger" *ngIf="editForm.status == 'pending'" (click)="cancelReward(editForm.id)">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
