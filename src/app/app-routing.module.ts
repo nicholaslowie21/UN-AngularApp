@@ -20,6 +20,7 @@ import { AdminUserManagementComponent } from './admin/admin-user-management/admi
 import { AdminUserManagementProfileComponent } from './admin/admin-user-management-profile/admin-user-management-profile.component';
 import { AdminVerificationComponent } from './admin/admin-verification/admin-verification.component';
 import { AdminRewardManagementComponent } from './admin/admin-reward-management/admin-reward-management.component';
+import { AdminCreateRewardComponent } from './admin/admin-create-reward/admin-create-reward.component';
 import { OthersProfileComponent } from './others-profile/others-profile.component';
 import { ShareProfilePageComponent } from './share-profile-page/share-profile-page.component';
 import { CreateProjectComponent } from './project/create-project/create-project.component';
@@ -64,6 +65,7 @@ const routes: Routes = [
       { path: 'user-management/profile', component: AdminUserManagementProfileComponent },
       { path: 'verification', component: AdminVerificationComponent },
       { path: 'reward', component: AdminRewardManagementComponent },
+      { path: 'create-reward', component: AdminCreateRewardComponent},
       { path: '', component: AdminHomeComponent, pathMatch: 'full'}
     ] 
   },
