@@ -70,6 +70,7 @@ import { DiscoverWeeklyComponent } from './discover-weekly/discover-weekly.compo
 import { RewardOfferingComponent } from './reward/reward-offering/reward-offering.component';
 import { CreateRewardComponent } from './reward/create-reward/create-reward.component';
 import { RewardMarketplaceComponent } from './reward/reward-marketplace/reward-marketplace.component';
+import { AdminRewardManagementComponent } from './admin/admin-reward-management/admin-reward-management.component';
 
 @NgModule({
   declarations: [
@@ -113,7 +114,8 @@ import { RewardMarketplaceComponent } from './reward/reward-marketplace/reward-m
     DiscoverWeeklyComponent,
     RewardOfferingComponent,
     CreateRewardComponent,
-    RewardMarketplaceComponent
+    RewardMarketplaceComponent,
+    AdminRewardManagementComponent
   ],
   imports: [
     BrowserModule,

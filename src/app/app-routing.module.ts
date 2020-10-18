@@ -19,6 +19,7 @@ import { AdminReportComponent } from './admin/admin-report/admin-report.componen
 import { AdminUserManagementComponent } from './admin/admin-user-management/admin-user-management.component';
 import { AdminUserManagementProfileComponent } from './admin/admin-user-management-profile/admin-user-management-profile.component';
 import { AdminVerificationComponent } from './admin/admin-verification/admin-verification.component';
+import { AdminRewardManagementComponent } from './admin/admin-reward-management/admin-reward-management.component';
 import { OthersProfileComponent } from './others-profile/others-profile.component';
 import { ShareProfilePageComponent } from './share-profile-page/share-profile-page.component';
 import { CreateProjectComponent } from './project/create-project/create-project.component';
@@ -62,6 +63,7 @@ const routes: Routes = [
       { path: 'user-management', component: AdminUserManagementComponent },
       { path: 'user-management/profile', component: AdminUserManagementProfileComponent },
       { path: 'verification', component: AdminVerificationComponent },
+      { path: 'reward', component: AdminRewardManagementComponent },
       { path: '', component: AdminHomeComponent, pathMatch: 'full'}
     ] 
   },

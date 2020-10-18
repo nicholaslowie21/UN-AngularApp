@@ -32,4 +32,29 @@ export class RewardService {
   getRewardOfferingDetail(data): Observable<any> {
     return this.http.get(API_URL + '/rewardOfferingDetail?rewardId=' + data.id);
   }
+
+  createRewardAdmin(formData): Observable<any> {
+    return this.http.post(API_URL + '/createReward', formData);
+  }
+
+  getRewardOfferingReq(data): Observable<any> {
+    return this.http.get(API_URL + '/allReward?status='+data.status);
+  }
+
+  validateReward(data): Observable<any> {
+    return this.http.post(API_URL + '/validateReward', {
+      rewardId: data.id,
+      action: data.action
+    }, httpOptions);
+  }
+
+  updateReward(formData): Observable<any> {
+    return this.http.post(API_URL + '/updateReward', formData);
+  }
+
+  deleteReward(data): Observable<any> {
+    return this.http.post(API_URL + '/deleteReward', {
+      rewardId: data.id
+    }, httpOptions);
+  }
 }
