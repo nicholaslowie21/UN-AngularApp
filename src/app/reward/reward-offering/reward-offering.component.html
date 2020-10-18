@@ -1,49 +1,59 @@
-<a href="/reward/create">Create Reward Offering</a>
+<h2>My Reward Offering
+    <span class="btn btn-primary float-right"><a class="text-white" href="/reward/create">Create Reward Offering</a></span>
+</h2>
 
-<div class="card">
-    <p-dataView #re [value]="rewards" [paginator]="true" [rows]="9" filterBy="title" [sortField]="sortField"
-        [sortOrder]="sortOrder" layout="grid">
-        <ng-template pTemplate="header">
-            <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
-                <p-dropdown [options]="filterStatusOptions" [(ngModel)]="filterKeyMpw" placeholder="Filter By Status"
-                    (onChange)="filterManpowerStatus($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
-                <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyMpw" placeholder="Sort By Date"
-                    (onChange)="onSortChangeManpower($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
-                <span class="p-input-icon-left p-mb-2 p-mb-md-0">
-                    <i class="pi pi-search"></i>
-                    <input type="search" pInputText placeholder="Search by Title" (input)="re.filter($event.target.value)">
-                </span>
-            </div>
-        </ng-template>
-        <ng-template let-reward pTemplate="gridItem">
-            <div class="p-col-12 p-md-4">
-                <div class="product-grid-item card p-3">
-                    <div class="product-grid-item-top">
-                        <div>
-                            <i class="pi pi-tag product-category-icon"></i>
-                            <span class="product-category rounded-sm">{{reward.minTier}}</span>
+<div class="row">
+    <div class="col-2">
+        <a href="/reward">Marketplace</a> <br>
+        My Reward Offering
+    </div>
+    <div class="col-10">
+        <div class="card">
+            <p-dataView #re [value]="rewards" [paginator]="true" [rows]="9" filterBy="title" [sortField]="sortField"
+                [sortOrder]="sortOrder" layout="grid">
+                <ng-template pTemplate="header">
+                    <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                        <p-dropdown [options]="filterStatusOptions" [(ngModel)]="filterKeyMpw" placeholder="Filter By Status"
+                            (onChange)="filterManpowerStatus($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                        <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyMpw" placeholder="Sort By Date"
+                            (onChange)="onSortChangeManpower($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                        <span class="p-input-icon-left p-mb-2 p-mb-md-0">
+                            <i class="pi pi-search"></i>
+                            <input type="search" pInputText placeholder="Search by Title" (input)="re.filter($event.target.value)">
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template let-reward pTemplate="gridItem">
+                    <div class="p-col-12 p-md-4">
+                        <div class="product-grid-item card p-3">
+                            <div class="product-grid-item-top">
+                                <div>
+                                    <i class="pi pi-tag product-category-icon"></i>
+                                    <span class="product-category rounded-sm">{{reward.minTier}}</span>
+                                </div>
+                                <span class="float-right">{{formatDate(reward.updatedAt)}}</span>
+                            </div>
+                            <div class="product-grid-item-content">
+                                <img *ngIf="reward.imgPath.length == 0" src="../../../assets/img/profilePic_Placeholder.png"
+                                    class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;" alt="Reward pic" />
+                                <img *ngIf="reward.imgPath.length != 0" src="https://localhost:8080{{reward.imgPath}}"
+                                    class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;" alt="Reward pic" />
+                                <div class="product-name">{{reward.title}}</div>
+                                <div class="product-description">{{reward.desc}}</div>
+                            </div>
+                            <div class="product-grid-item-bottom">
+                                Status: {{reward.status}}
+                                Country: {{reward.country}}
+                                End date: {{formatDate(reward.endDate)}}
+                                Point: {{reward.point}}
+                                Quota: {{reward.quota}}
+                                <br>
+                                <button class="btn btn-danger" *ngIf="reward.status == 'pending'" (click)="cancelReward(reward.id)">Cancel</button>
+                            </div>
                         </div>
-                        <span class="float-right">{{formatDate(reward.updatedAt)}}</span>
                     </div>
-                    <div class="product-grid-item-content">
-                        <img *ngIf="reward.imgPath.length == 0" src="../../../assets/img/profilePic_Placeholder.png"
-                            class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;" alt="Reward pic" />
-                        <img *ngIf="reward.imgPath.length != 0" src="https://localhost:8080{{reward.imgPath}}"
-                            class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;" alt="Reward pic" />
-                        <div class="product-name">{{reward.title}}</div>
-                        <div class="product-description">{{reward.desc}}</div>
-                    </div>
-                    <div class="product-grid-item-bottom">
-                        Status: {{reward.status}}
-                        Country: {{reward.country}}
-                        End date: {{formatDate(reward.endDate)}}
-                        Point: {{reward.point}}
-                        Quota: {{reward.quota}}
-                        <br>
-                        <button class="btn btn-danger" *ngIf="reward.status == 'pending'" (click)="cancelReward(reward.id)">Cancel</button>
-                    </div>
-                </div>
-            </div>
-        </ng-template>
-    </p-dataView>
+                </ng-template>
+            </p-dataView>
+        </div>
+    </div>
 </div>

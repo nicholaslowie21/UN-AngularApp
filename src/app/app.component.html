@@ -31,6 +31,18 @@
                       </div>
                     </div>
                   </li>
+                  <li class="nav-item">
+                    <div class="dropdown">
+                      <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMY" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        My Activity
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMY">
+                        <a class="dropdown-item" href="/project/myProjects?username={{username}}&type={{userType}}">My Projects</a>
+                        <a class="dropdown-item" href="/resource/myResources?username={{username}}&type={{userType}}">My Resources</a>
+                        <a class="dropdown-item" href="/myRequests">My Outgoing Requests</a>
+                      </div>
+                    </div>
+                  </li>
                   <li class="nav-item" *ngIf="showAdmin">
                     <div class="dropdown">
                       <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownAdmin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -41,18 +53,6 @@
                         <a class="dropdown-item" href="/admin/verification">Verification</a>
                         <a class="dropdown-item" href="/admin/user-management">User Management</a>
                         <a *ngIf="this.role == 'adminlead'" class="dropdown-item" href="/admin/admin-management">Admin Management</a>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="nav-item">
-                    <div class="dropdown">
-                      <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMY" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        My Activity
-                      </button>
-                      <div class="dropdown-menu" aria-labelledby="dropdownMY">
-                        <a class="dropdown-item" href="/project/myProjects?username={{username}}&type={{userType}}">My Projects</a>
-                        <a class="dropdown-item" href="/resource/myResources?username={{username}}&type={{userType}}">My Resources</a>
-                        <a class="dropdown-item" href="/myRequests">My Outgoing Requests</a>
                       </div>
                     </div>
                   </li>
