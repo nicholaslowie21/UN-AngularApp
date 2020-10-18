@@ -61,8 +61,6 @@ export class CreateRewardComponent implements OnInit {
     formData.append("endDate", this.form.date);
     formData.append("rewardFile", this.fileVerify);
 
-    console.log(formData.get("rewardImg"))
-
     this.rewardService.createReward(formData).subscribe(
       res => {
         this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Reward offering created!' });

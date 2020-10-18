@@ -1,3 +1,273 @@
 <h2>Reward Management
     <span class="btn btn-primary float-right"><a class="text-white" href="/admin/create-reward">Create New Reward</a></span>
 </h2>
+
+<p-toast key="toastMsg" [baseZIndex]="100"></p-toast>
+
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" id="pending-tab" data-toggle="tab" href="#pending" role="tab" aria-controls="pending" aria-selected="true">Pending</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="active-tab" data-toggle="tab" href="#open" role="tab" aria-controls="open" aria-selected="false">Active</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="rejected-tab" data-toggle="tab" href="#rejected" role="tab" aria-controls="rejected" aria-selected="false">Rejected</a>
+    </li>
+</ul>
+
+<div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="pending" role="tabpanel" aria-labelledby="pending-tab">
+        <div class="card">
+            <p-dataView #re [value]="pending" [paginator]="true" [rows]="9" filterBy="title" [sortField]="sortField"
+                [sortOrder]="sortOrder" layout="grid">
+                <ng-template pTemplate="header">
+                    <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                        <p-dropdown [options]="countryOptions" [(ngModel)]="filterKeyCountry" placeholder="Filter By Country"
+                            (onChange)="onFilterCountry($event , [(pp)])" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                        <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyMpw" placeholder="Sort By Date"
+                            (onChange)="onSortChangeManpower($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                        <span class="p-input-icon-left p-mb-2 p-mb-md-0">
+                            <i class="pi pi-search"></i>
+                            <input type="search" pInputText placeholder="Search by Title" (input)="re.filter($event.target.value)">
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template let-reward pTemplate="gridItem">
+                    <div class="p-col-12 p-md-4">
+                        <div class="product-grid-item card p-3">
+                            <div class="product-grid-item-top">
+                                <div>
+                                    <span class="product-category rounded-sm">{{reward.country}}</span>
+                                </div>
+                                <span class="float-right">{{formatDate(reward.createdAt)}}</span>
+                            </div>
+                            <div class="product-grid-item-content">
+                                <img *ngIf="reward.imgPath.length == 0" src="../../../assets/img/profilePic_Placeholder.png"
+                                    class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;" alt="Reward pic" />
+                                <img *ngIf="reward.imgPath.length != 0" src="https://localhost:8080{{reward.imgPath}}"
+                                    class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;" alt="Reward pic" />
+                                <div class="product-name">{{reward.title}}</div>
+                                <div class="product-description">{{reward.desc}}</div>
+                                Status: {{reward.status}}
+                                Tier: {{reward.minTier}}
+                                End date: {{formatDate(reward.endDate)}}
+                                Point: {{reward.point}}
+                                Quota: {{reward.quota}}
+                            </div>
+                            <div class="product-grid-item-bottom">
+                                <button class="btn btn-danger" (click)="rejectReq(reward.id)">Reject</button>
+                                <button class="btn btn-success" (click)="approveReq(reward.id)">Approve</button>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-dataView>
+        </div>
+    </div>
+    <div class="tab-pane fade" id="open" role="tabpanel" aria-labelledby="open-tab">
+        <div class="card">
+            <p-dataView #op [value]="open" [paginator]="true" [rows]="9" filterBy="title" [sortField]="sortField"
+                [sortOrder]="sortOrder" layout="grid">
+                <ng-template pTemplate="header">
+                    <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                        <p-dropdown [options]="countryOptions" [(ngModel)]="filterKeyCountryOpen" placeholder="Filter By Country"
+                            (onChange)="onFilterCountry($event, [(oo)])" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                        <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyMpw" placeholder="Sort By Date"
+                            (onChange)="onSortChangeManpower($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                        <span class="p-input-icon-left p-mb-2 p-mb-md-0">
+                            <i class="pi pi-search"></i>
+                            <input type="search" pInputText placeholder="Search by Title" (input)="op.filter($event.target.value)">
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template let-reward pTemplate="gridItem">
+                    <div class="p-col-12 p-md-4">
+                        <div class="product-grid-item card p-3">
+                            <div class="product-grid-item-top">
+                                <div>
+                                    <i class="pi pi-tag product-category-icon"></i>
+                                    <span class="product-category rounded-sm">{{reward.minTier}}</span>
+                                </div>
+                                <span class="float-right">{{formatDate(reward.createdAt)}}</span>
+                            </div>
+                            <div class="product-grid-item-content">
+                                <img *ngIf="reward.imgPath.length == 0" src="../../../assets/img/profilePic_Placeholder.png"
+                                    class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;" alt="Reward pic" />
+                                <img *ngIf="reward.imgPath.length != 0" src="https://localhost:8080{{reward.imgPath}}"
+                                    class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;" alt="Reward pic" />
+                                <div class="product-name">{{reward.title}}</div>
+                                <div class="product-description">{{reward.desc}}</div>
+                                Status: {{reward.status}}
+                                Country: {{reward.country}}
+                                End date: {{formatDate(reward.endDate)}}
+                                Point: {{reward.point}}
+                                Quota: {{reward.quota}}
+                            </div>
+                            <div class="product-grid-item-bottom">
+                                <button class="btn btn-primary" data-toggle="modal" data-target="#EditModal" (click)=getForm(reward) title="Edit">
+                                    <i class="pi pi-pencil"></i>
+                                </button>
+                                <button class="btn btn-danger" (click)="deleteReward(reward.id)">
+                                    <i class="pi pi-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-dataView>
+
+            <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editModalLabel">Edit Reward</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form name="form" (ngSubmit)="f.form.valid && updateReward()" #f="ngForm" novalidate>
+                                <div class="form-group row">
+                                    <label for="title" class="col-sm-3 col-form-label">Title</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="title" [(ngModel)]="editForm.title" required #title="ngModel" />
+                                    </div>
+                                    <div class="alert-danger" *ngIf="f.submitted && title.invalid">
+                                        <div *ngIf="title.errors.required">Title is required</div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="desc" class="col-sm-3 col-form-label">Description</label>
+                                    <div class="col-sm-9">
+                                        <textarea class="form-control" name="desc" [(ngModel)]="editForm.desc" #desc="ngModel" rows="3"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="country" class="col-sm-3 col-form-label">Country</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" name="country" [(ngModel)]="editForm.country" required #country="ngModel">
+                                        <option *ngFor="let c of countries" value={{c}}>{{c}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="alert-danger" *ngIf="f.submitted && country.invalid">
+                                        <div *ngIf="country.errors.required">Country is required</div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="point" class="col-sm-3 col-form-label">Point</label>
+                                    <div class="col-sm-9">
+                                        <input type="number" class="form-control" name="point" [(ngModel)]="editForm.point" required min="0"
+                                            #point="ngModel" />
+                                    </div>
+                                    <div class="alert-danger" *ngIf="f.submitted && point.invalid">
+                                        <div *ngIf="point.errors.required">Point is required</div>
+                                        <div *ngIf="point.errors.min">
+                                            Point cannot be below 0
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="quota" class="col-sm-3 col-form-label">Quota</label>
+                                    <div class="col-sm-9">
+                                        <input type="number" class="form-control" name="quota" [(ngModel)]="editForm.quota" required min="0"
+                                            #quota="ngModel" />
+                                    </div>
+                                    <div class="alert-danger" *ngIf="f.submitted && quota.invalid">
+                                        <div *ngIf="quota.errors.required">Quota is required</div>
+                                        <div *ngIf="quota.errors.min">
+                                            Quota cannot be below 0
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="tier" class="col-sm-3 col-form-label">Tier</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" name="tier" [(ngModel)]="editForm.minTier" required #tier="ngModel">
+                                            <option>gold</option>
+                                            <option>silver</option>
+                                            <option>bronze</option>
+                                        </select>
+                                    </div>
+                                    <div class="alert-danger" *ngIf="f.submitted && tier.invalid">
+                                        <div *ngIf="tier.errors.required">Tier is required</div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="endDate" class="col-sm-3 col-form-label">End Date</label>
+                                    <div class="col-sm-9">
+                                        <p-calendar name="date" [(ngModel)]="editForm.endDate" dateFormat="yy-mm-dd" [showIcon]="true" [minDate]="minimumDate"
+                                        [monthNavigator]="true" [yearNavigator]="true" yearRange="2020:2025" [style]="{'height':'40px'}" required #date="ngModel"></p-calendar>
+                                    </div>
+                                    <div class="alert-danger" *ngIf="f.submitted && date.invalid">
+                                        <div *ngIf="date.errors.required">End date is required</div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="file" class="col-sm-3 col-form-label">Image</label>
+                                    <form class="col-sm-9">
+                                    <input type="file" name="file" (change)="selectImage($event)" />
+                                    </form>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary btn-block">Update</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tab-pane fade" id="rejected" role="tabpanel" aria-labelledby="rejected-tab">
+        <div class="card">
+            <p-dataView #rj [value]="rejected" [paginator]="true" [rows]="9" filterBy="title" [sortField]="sortField"
+                [sortOrder]="sortOrder" layout="grid">
+                <ng-template pTemplate="header">
+                    <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                        <p-dropdown [options]="countryOptions" [(ngModel)]="filterKeyCountryRej" placeholder="Filter By Country"
+                            (onChange)="onFilterCountry($event, [(rr)])" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                        <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyMpw" placeholder="Sort By Date"
+                            (onChange)="onSortChangeManpower($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                        <span class="p-input-icon-left p-mb-2 p-mb-md-0">
+                            <i class="pi pi-search"></i>
+                            <input type="search" pInputText placeholder="Search by Title" (input)="rj.filter($event.target.value)">
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template let-reward pTemplate="gridItem">
+                    <div class="p-col-12 p-md-4">
+                        <div class="product-grid-item card p-3">
+                            <div class="product-grid-item-top">
+                                <div>
+                                    <i class="pi pi-tag product-category-icon"></i>
+                                    <span class="product-category rounded-sm">{{reward.minTier}}</span>
+                                </div>
+                                <span class="float-right">{{formatDate(reward.createdAt)}}</span>
+                            </div>
+                            <div class="product-grid-item-content">
+                                <img *ngIf="reward.imgPath.length == 0" src="../../../assets/img/profilePic_Placeholder.png"
+                                    class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;" alt="Reward pic" />
+                                <img *ngIf="reward.imgPath.length != 0" src="https://localhost:8080{{reward.imgPath}}"
+                                    class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;" alt="Reward pic" />
+                                <div class="product-name">{{reward.title}}</div>
+                                <div class="product-description">{{reward.desc}}</div>
+                            </div>
+                            <div class="product-grid-item-bottom">
+                                Status: {{reward.status}}
+                                Country: {{reward.country}}
+                                End date: {{formatDate(reward.endDate)}}
+                                Point: {{reward.point}}
+                                Quota: {{reward.quota}}
+                                <br>
+                                <button class="btn btn-danger" (click)="rejectReq(reward.id)">Edit</button>
+                                <button class="btn btn-success" (click)="approveReq(reward.id)">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-dataView>
+        </div>
+    </div>
+</div>
+
