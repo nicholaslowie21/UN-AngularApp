@@ -59,7 +59,7 @@ export class MyProjectsComponent implements OnInit {
       this.isOwner = true;
     }
 
-    if (this.loggedInUser.isVerified == "true" || this.loggedInUser.isVerified) {
+    if (this.loggedInUser.isVerified == "true" || this.loggedInUser.isVerified == true) {
       this.isVerified = true;
     }
 
