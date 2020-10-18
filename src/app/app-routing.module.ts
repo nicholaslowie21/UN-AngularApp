@@ -40,6 +40,7 @@ import { MyRequestsComponent } from './my-requests/my-requests.component';
 import { DiscoverWeeklyComponent } from './discover-weekly/discover-weekly.component';
 import { RewardOfferingComponent } from './reward/reward-offering/reward-offering.component';
 import { CreateRewardComponent } from './reward/create-reward/create-reward.component';
+import { RewardMarketplaceComponent } from './reward/reward-marketplace/reward-marketplace.component';
 
 const routes: Routes = [
   { path: 'landing', component: LandingComponent},
@@ -94,7 +95,8 @@ const routes: Routes = [
   { path: 'reward', canActivate: [AuthGuardService],
     children: [
       { path: 'offering', component: RewardOfferingComponent },
-      { path: 'create', component: CreateRewardComponent }
+      { path: 'create', component: CreateRewardComponent },
+      { path: '', component: RewardMarketplaceComponent, pathMatch: 'full'}
     ]
   },
   { path: 'shareProfile', component: ShareProfilePageComponent},

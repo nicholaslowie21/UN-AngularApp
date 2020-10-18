@@ -69,6 +69,7 @@ import { MyRequestsComponent } from './my-requests/my-requests.component';
 import { DiscoverWeeklyComponent } from './discover-weekly/discover-weekly.component';
 import { RewardOfferingComponent } from './reward/reward-offering/reward-offering.component';
 import { CreateRewardComponent } from './reward/create-reward/create-reward.component';
+import { RewardMarketplaceComponent } from './reward/reward-marketplace/reward-marketplace.component';
 
 @NgModule({
   declarations: [
@@ -111,7 +112,8 @@ import { CreateRewardComponent } from './reward/create-reward/create-reward.comp
     MyRequestsComponent,
     DiscoverWeeklyComponent,
     RewardOfferingComponent,
-    CreateRewardComponent
+    CreateRewardComponent,
+    RewardMarketplaceComponent
   ],
   imports: [
     BrowserModule,
