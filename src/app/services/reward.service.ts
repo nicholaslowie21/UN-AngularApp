@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 const API_URL = 'https://localhost:8080/api/reward';
+const base_url = 'https://localhost:8080';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -56,5 +57,9 @@ export class RewardService {
     return this.http.post(API_URL + '/deleteReward', {
       rewardId: data.id
     }, httpOptions);
+  }
+
+  getAttachmentFile(filePath): Observable<any> {
+    return this.http.get(base_url+filePath, {responseType: 'blob'});
   }
 }
