@@ -13,12 +13,16 @@
         << Back to project</u>
 </a>
 
-<h2 class="mt-md-2">Project Resources
+<a href="/project/requests?id={{projectId}}" class="float-right">
+    <u>See Project Requests >></u>
+</a>
+
+<h3 class="mt-md-2">Project Resources
     <!--button *ngIf="project.status=='ongoing'" class="btn btn-primary float-right" data-toggle="modal" data-target="#exampleModalScrollable">Request Contribution</button-->
     <button *ngIf="isOwnerAdmin && project.status == 'ongoing'" class="btn btn-primary float-right" data-toggle="modal" data-target="#CreateModal">
         Add Resource Need
     </button>
-</h2>
+</h3>
 {{project.title}} (code: {{project.code}})
 <br/> Overall Need Progress:
 <p-progressBar [value]="progress"></p-progressBar>
@@ -452,11 +456,12 @@
                                                 </div>
                                             </div>
                                             <div *ngIf="cb.contributorType == 'institution'">
-                                                <h5>
+                                                <div>
                                                     <a href="/profile?username={{cb.contributorUsername}}&userType=institution" target="_blank">
-                                                        {{cb.contributorName}}</a>
+                                                        <b>{{cb.contributorName}}</b>
+                                                    </a>
                                                     <span style="font-size: small;">({{cb.contributorUsername}})</span>
-                                                </h5>
+                                                </div>
                                             </div>
                                             <div>Contributed to {{cb.needTitle}}</div>
                                             <div>Rating: {{cb.rating}}</div>
