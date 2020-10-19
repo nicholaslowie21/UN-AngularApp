@@ -391,7 +391,7 @@
                         </p-dataView>
                     </div>
                 </div>
-                <div class="col-5">
+                <div class="col-5" *ngIf="isOwnerAdmin">
                     <!-- Can do the checking to display this -->
                     <div *ngIf=!checkClick>Click on the 'Suggest' button on a resource need to see suggested resources!</div>
                     <div class="sticky">
@@ -413,11 +413,11 @@
                                 </li>
                             </ul>
                         </div>
+                        <div *ngIf="checkClick && resNeedSuggestion.length==0">
+                            There are no suggested resources for now.
+                        </div>
                     </div>
 
-                    <div *ngIf="checkClick && resNeedSuggestion.length==0">
-                        There are no suggested resources for now.
-                    </div>
                 </div>
             </div>
         </div>
