@@ -56,6 +56,7 @@ export class ResourceDetailsComponent implements OnInit {
   form: any = {};
   myProjects: any[];
   selectedProjectId: any;
+  projectSelected: boolean = false;
   filterKeyProject = 'Select a Project';
   resourceNeeds: any[];
   selectedResourceNeedId: any;
@@ -68,6 +69,7 @@ export class ResourceDetailsComponent implements OnInit {
   cancelledProjectReqs: any[];
 
   suggestedProjects: any[];
+  autogenerateYes: boolean = false;
 
   constructor(private route: ActivatedRoute, private tokenStorageService: TokenStorageService, 
     private userService: UserService, private institutionService: InstitutionService, private projectService: ProjectService,
@@ -321,40 +323,24 @@ export class ResourceDetailsComponent implements OnInit {
     window.location.reload();
   }
 
-  updateSelectedProject(event) {
+  async updateSelectedProject(event) {
     this.selectedProjectId = event.target.value;
+    this.projectSelected = true;
     console.log(this.selectedProjectId);
-    this.projectService.getProjectResourceNeeds({id: this.selectedProjectId}).subscribe(
+    await this.projectService.getProjectResourceNeeds({id: this.selectedProjectId}).toPromise().then(
       res => this.resourceNeeds = res.data.resourceneeds
     );
-    // filter resource needs is currently buggy
-    // this.filterResourceNeeds();
+    this.filterResourceNeeds();
   }
 
   // show only resource needs of the same type as the one being requested
   filterResourceNeeds(): void {
     let arr = [];
-    console.log(this.type);
-    if (this.type == 'item') {
-      for (let i = 0; i < this.resourceNeeds.length; i++) {
-        if (this.resourceNeeds[i].type == 'item') {
-          arr.push(this.resourceNeeds[i]);
-        }
-      }
-    } else if (this.type == 'manpower') {
-      for (let i = 0; i < this.resourceNeeds.length; i++) {
-        if (this.resourceNeeds[i].type == 'manpower') {
-          arr.push(this.resourceNeeds[i]);
-        }
-      }
-    } else if (this.type == 'venue') {
-      for (let i = 0; i < this.resourceNeeds.length; i++) {
-        if (this.resourceNeeds[i].type == 'venue') {
-          arr.push(this.resourceNeeds[i]);
-        }
+    for (let i = 0; i < this.resourceNeeds.length; i++) {  
+      if (this.resourceNeeds[i].type == this.type && this.resourceNeeds[i].completion != 100) {
+        arr.push(this.resourceNeeds[i]);
       }
     }
-    console.log(arr.length);
     this.resourceNeeds = arr;
   }
 
@@ -362,43 +348,85 @@ export class ResourceDetailsComponent implements OnInit {
     this.selectedResourceNeedId = event.target.value;
   }
 
+  updateAutogenerate(event) {
+    this.autogenerateYes = event.target.checked;
+  }
+
   // for requesting non-knowledge resource
   onSubmit(): void {
-    const formCreate = {
-      needId: this.selectedResourceNeedId,
-      resourceId: this.id,
-      resType: this.type,
-      desc: this.form.desc
-    };
+    if (this.autogenerateYes) {
+      // auto-generate resource need
+      const formCreate = {
+        resourceId: this.id,
+        projectId: this.selectedProjectId,
+        resType: this.type,
+        desc: this.form.desc
+      };
+      this.marketplaceService.requestResourceAuto(formCreate).subscribe(
+        response => {
+          this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Resource request and resource need created!'});
+          window.location.reload();
+        }, 
+        err => {
+          this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+        }
+      );
+    } else {
+      // submit request for selected resource need
+      const formCreate = {
+        needId: this.selectedResourceNeedId,
+        resourceId: this.id,
+        resType: this.type,
+        desc: this.form.desc
+      };
 
-    this.marketplaceService.requestResource(formCreate).subscribe(
-      response => {
-        this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Resource request created!'});
-        window.location.reload();
-      }, 
-      err => {
-        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
-      }
-    );
+      this.marketplaceService.requestResource(formCreate).subscribe(
+        response => {
+          this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Resource request created!'});
+          window.location.reload();
+        }, 
+        err => {
+          this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+        }
+      );
+    }
   }
 
   // for requesting knowledge resource
   onSubmitKnowledge(): void {
-    const formCreate = {
-      needId: this.selectedResourceNeedId,
-      resourceId: this.id,
-      desc: this.form.desc
-    };
+    if (this.autogenerateYes) {
+      // auto-generate resource need
+      const formCreate = {
+        resourceId: this.id,
+        projectId: this.selectedProjectId,
+        desc: this.form.desc
+      };
+      this.marketplaceService.useKnowledgeResourceAuto(formCreate).subscribe(
+        response => {
+          this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Resource request and resource need created!'});
+          window.location.reload();
+        }, 
+        err => {
+          this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+        }
+      );
+    } else {
+      const formCreate = {
+        needId: this.selectedResourceNeedId,
+        resourceId: this.id,
+        desc: this.form.desc
+      };
 
-    this.marketplaceService.useKnowledgeResource(formCreate).subscribe(
-      response => {
-        this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Resource request created!'});
-        window.location.reload();
-      }, 
-      err => {
-        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
-      }
-    );
+      this.marketplaceService.useKnowledgeResource(formCreate).subscribe(
+        response => {
+          this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Resource request created!'});
+          window.location.reload();
+        }, 
+        err => {
+          this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+        }
+      );
+    }
   }
 
   acceptResourceReq(reqId): void {
