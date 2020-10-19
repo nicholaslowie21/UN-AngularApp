@@ -42,6 +42,9 @@ export class FundingMarketplaceComponent implements OnInit {
   countryOptions = [];
   filterKeyCountry = '';
 
+  sortOptions: any = [];
+  sortKeyDate = '';
+
   constructor(private marketplaceService: MarketplaceService, private messageService: MessageService) { }
 
   async ngOnInit() {
@@ -52,6 +55,11 @@ export class FundingMarketplaceComponent implements OnInit {
     for(var i=0; i<this.countries.length; i++) {
       this.countryOptions.push({label: this.countries[i], value: this.countries[i]});
     }
+
+    this.sortOptions = [
+      {label: 'Date Newest to Oldest', value: '!createdAt'},
+      {label: 'Date Oldest to Newest', value: 'createdAt'}
+    ];
   }
 
   async onSDGChange(event) {
@@ -90,6 +98,8 @@ export class FundingMarketplaceComponent implements OnInit {
         }
         this.projects = arr2;
       }
+
+    this.sortKeyDate = '';
   }
 
   async onFilterCountry(event) {
@@ -124,6 +134,20 @@ export class FundingMarketplaceComponent implements OnInit {
         }  
       }
       this.projects = arr2;
+    }
+    this.sortKeyDate = '';
+  }
+
+  onSortChangeDate(event) {
+    console.log(this.sortKeyDate)
+    let value = event.value;
+    if (value.indexOf('!') === 0) {
+        this.sortOrder = -1;
+        this.sortField = value.substring(1, value.length);
+    }
+    else {
+        this.sortOrder = 1;
+        this.sortField = value;
     }
   }
 
