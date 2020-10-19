@@ -194,4 +194,11 @@ export class ProjectService {
       commentId: data.id
     }, httpOptions);
   }
+
+  updateContributionRating(data): Observable<any> {
+    return this.http.post(API_URL + '/updateContributionRating', {
+      contributionId: data.id,
+      theRating: data.rating
+    }, httpOptions);
+  }
 }

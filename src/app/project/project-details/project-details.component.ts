@@ -50,6 +50,7 @@ export class ProjectDetailsComponent implements OnInit {
   newComment: any;
   allComments: any;
   tempId: any;
+  checkComment = false;
 
   constructor(private route: ActivatedRoute, private projectService: ProjectService, private userService: UserService,
     private tokenStorageService: TokenStorageService, private messageService: MessageService) { }
@@ -462,12 +463,22 @@ export class ProjectDetailsComponent implements OnInit {
     );
   }
 
-  getComments(pid: string): void {
-    this.projectService.getPostComment({id: pid}).subscribe(
-      res => { this.allComments = res.data.postComments}
+  async getComments(pid: string) {
+    await this.projectService.getPostComment({id: pid}).toPromise().then(
+      res => { 
+        console.log(JSON.stringify(res));
+        this.allComments = res.data.postComments}
     );
     this.tempId = pid;
     console.log(this.tempId);
+
+    if(this.allComments.length==0) {
+      this.checkComment = false;
+      console.log("length 0");
+    } else {
+      this.checkComment = true;
+      console.log("length not 0");
+    }
   }
 
   confirmDelCom(pid: string): void {

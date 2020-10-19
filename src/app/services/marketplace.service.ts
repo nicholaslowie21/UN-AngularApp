@@ -141,7 +141,8 @@ export class MarketplaceService {
 
   completeResourceReq(data): Observable<any> {
     return this.http.post(API_URL + '/complete/resourceReq', {
-      resourceReqId: data.id
+      resourceReqId: data.id,
+      theRating: data.rating
     }, httpOptions);
   }
 

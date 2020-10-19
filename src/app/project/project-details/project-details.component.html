@@ -234,9 +234,9 @@
                                 <textarea class="form-control" name="comment" [(ngModel)]="newComment" required #comment="ngModel" rows="1" style="width: 85%"></textarea-->
 
                             </div>
-                            <div class="card-body col border-dark">
+                            <!-- <div class="card-body col border-dark">
 
-                            </div>
+                            </div> -->
 
                         </div>
                     </div>
@@ -253,6 +253,9 @@
                                 </button>
                             </div>
                             <div class="modal-body">
+                                <div *ngIf=!checkComment>
+                                    There are no comments for this post
+                                </div>
                                 <div *ngFor="let c of allComments">
                                     <ul class="list-group">
                                         <li class="list-group-item">
@@ -269,7 +272,7 @@
                                 </div>
                                 <br>
                                 <a class="btn btn-primary mb-3 text-white float-right" role="button" style="margin: 3px;" (click)=addComment()>
-                                    Add
+                                    Post
                                 </a>
                                 <textarea class="form-control" name="comment" [(ngModel)]="newComment" required #comment="ngModel" rows="1" style="width: 85%"></textarea>
                             </div>

@@ -10,16 +10,16 @@
         <h5>Incoming Requests</h5>
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item">
-              <a class="nav-link active" id="iPending-tab" data-toggle="tab" href="#iPending" role="tab" aria-controls="iPending" aria-selected="true">Pending</a>
+                <a class="nav-link active" id="iPending-tab" data-toggle="tab" href="#iPending" role="tab" aria-controls="iPending" aria-selected="true">Pending</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" id="iAccepted-tab" data-toggle="tab" href="#iAccepted" role="tab" aria-controls="iAccepted" aria-selected="false">Accepted</a>
+                <a class="nav-link" id="iAccepted-tab" data-toggle="tab" href="#iAccepted" role="tab" aria-controls="iAccepted" aria-selected="false">Accepted</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" id="iDeclined-tab" data-toggle="tab" href="#iDeclined" role="tab" aria-controls="iDeclined" aria-selected="false">Declined</a>
+                <a class="nav-link" id="iDeclined-tab" data-toggle="tab" href="#iDeclined" role="tab" aria-controls="iDeclined" aria-selected="false">Declined</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" id="iCancelled-tab" data-toggle="tab" href="#iCancelled" role="tab" aria-controls="iCancelled" aria-selected="false">Cancelled</a>
+                <a class="nav-link" id="iCancelled-tab" data-toggle="tab" href="#iCancelled" role="tab" aria-controls="iCancelled" aria-selected="false">Cancelled</a>
             </li>
         </ul>
         <div class="tab-content" id="myTabContent">
@@ -41,19 +41,22 @@
                                         </div>
                                         <div>{{ip.desc}}</div>
                                         Offered by {{ip.requesterName}} at {{formatDate(ip.createdAt)}}
-                                        <br>
-                                        For {{ip.needTitle}}
+                                        <br> For {{ip.needTitle}}
                                     </div>
                                     <div class="col-4">
-                                            <div class="float-right">
-                                                <i class="pi pi-tag product-category-icon"></i>
-                                                <span class="{{ip.resType}}type rounded-sm text-white">&nbsp;{{ip.resType}}&nbsp;</span>
-                                            </div>
-                                            <br>
-                                            <div class="mt-md-2 float-right">
-                                                <button class="btn btn-success" title="Accept" (click)="acceptProjReq(ip.id)"><i class="pi pi-check"></i></button>
-                                                <button class="btn btn-danger" title="Decline" (click)="declineProjReq(ip.id)"><i class="pi pi-times"></i></button>
-                                            </div>
+                                        <div class="float-right">
+                                            <i class="pi pi-tag product-category-icon"></i>
+                                            <span class="{{ip.resType}}type rounded-sm text-white">&nbsp;{{ip.resType}}&nbsp;</span>
+                                        </div>
+                                        <br>
+                                        <div class="mt-md-2 float-right">
+                                            <button class="btn btn-success" title="Accept" (click)="acceptProjReq(ip.id)">
+                                                <i class="pi pi-check"></i>
+                                            </button>
+                                            <button class="btn btn-danger" title="Decline" (click)="declineProjReq(ip.id)">
+                                                <i class="pi pi-times"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -80,25 +83,83 @@
                                         </div>
                                         <div>{{ia.desc}}</div>
                                         Offered by {{ia.requesterName}} at {{formatDate(ia.createdAt)}}
-                                        <br>
-                                        For {{ia.needTitle}} <br>
-                                        Accepted at {{formatDate(ia.updatedAt)}}
+                                        <br> For {{ia.needTitle}}
+                                        <br> Accepted at {{formatDate(ia.updatedAt)}}
                                     </div>
                                     <div class="col-4">
-                                            <div class="float-right">
-                                                <i class="pi pi-tag product-category-icon"></i>
-                                                <span class="{{ia.resType}}type rounded-sm text-white">&nbsp;{{ia.resType}}&nbsp;</span>
-                                            </div>
-                                            <br>
-                                            <div class="mt-md-2 float-right">
-                                                <button class="btn btn-success" title="Complete" (click)="completeProjReq(ia.id)"><i class="pi pi-check"></i></button>
-                                                <button class="btn btn-danger" title="Cancel" (click)="cancelProjReq(ia.id)"><i class="pi pi-times"></i></button>
-                                            </div>
+                                        <div class="float-right">
+                                            <i class="pi pi-tag product-category-icon"></i>
+                                            <span class="{{ia.resType}}type rounded-sm text-white">&nbsp;{{ia.resType}}&nbsp;</span>
+                                        </div>
+                                        <br>
+                                        <div class="mt-md-2 float-right">
+                                            <button class="btn btn-success" title="Complete" data-toggle="modal" data-target="#completeModal" (click)="getForm(ia)">
+                                                <i class="pi pi-check"></i>
+                                            </button>
+                                            <button class="btn btn-danger" title="Cancel" (click)="cancelProjReq(ia.id)">
+                                                <i class="pi pi-times"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </ng-template>
                     </p-dataView>
+                    <div class="modal fade" id="completeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Complete and Rate Contribution</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+
+                                    <form name="form" (ngSubmit)="f.form.valid && completeProjReq()" #f="ngForm" novalidate>
+                                        <div class="form-group row">
+                                            <label for="title" class="col-sm-5 col-form-label">Resource Need:</label>
+                                            <div class="col-sm-7">
+                                                <input readonly type="text" class="form-control" name="title" [(ngModel)]="checkForm.needTitle" required #title="ngModel"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="desc" class="col-sm-5 col-form-label">Resource Provided:</label>
+                                            <div class="col-sm-7">
+                                                <input readonly type="text" class="form-control" name="desc" [(ngModel)]="checkForm.resTitle" #desc="ngModel" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="desc" class="col-sm-5 col-form-label">Resource Owner:</label>
+                                            <div class="col-sm-7">
+                                                <input readonly type="text" class="form-control" name="owner" [(ngModel)]="checkForm.user" #owner="ngModel" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="rating" class="col-sm-5 col-form-label">Rating:</label>
+                                            <div class="col-sm-7">
+                                                <select class="form-control" name="rating" [(ngModel)]="cRating" required #rating="ngModel">
+                                                    <option value="" selected hidden>Choose...</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                </select>
+                                                <div class="alert-danger" *ngIf="f.submitted && rating.invalid">
+                                                    <div *ngIf="rating.errors.required">Rating is required</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <button class="btn btn-primary btn-block">Complete</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="tab-pane fade" id="iDeclined" role="tabpanel" aria-labelledby="iDeclined-tab">
@@ -119,15 +180,14 @@
                                         </div>
                                         <div>{{id.desc}}</div>
                                         Offered by {{id.requesterName}} at {{formatDate(id.createdAt)}}
-                                        <br>
-                                        For {{id.needTitle}} <br>
-                                        Declined at {{formatDate(id.updatedAt)}}
+                                        <br> For {{id.needTitle}}
+                                        <br> Declined at {{formatDate(id.updatedAt)}}
                                     </div>
                                     <div class="col-4">
-                                            <div class="float-right">
-                                                <i class="pi pi-tag product-category-icon"></i>
-                                                <span class="{{id.resType}}type rounded-sm text-white">&nbsp;{{id.resType}}&nbsp;</span>
-                                            </div>
+                                        <div class="float-right">
+                                            <i class="pi pi-tag product-category-icon"></i>
+                                            <span class="{{id.resType}}type rounded-sm text-white">&nbsp;{{id.resType}}&nbsp;</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -154,17 +214,16 @@
                                         </div>
                                         <div>{{ic.desc}}</div>
                                         Offered by {{ic.requesterName}} at {{formatDate(ic.createdAt)}}
-                                        <br>
-                                        For {{ic.needTitle}} <br>
-                                        Cancelled at {{formatDate(ic.updatedAt)}}
+                                        <br> For {{ic.needTitle}}
+                                        <br> Cancelled at {{formatDate(ic.updatedAt)}}
                                         <span *ngIf="ic.cancelType == 'project'">by this project</span>
                                         <span *ngIf="ic.cancelType == 'contributor'">by {{ic.requesterName}}</span>
                                     </div>
                                     <div class="col-4">
-                                            <div class="float-right">
-                                                <i class="pi pi-tag product-category-icon"></i>
-                                                <span class="{{ic.resType}}type rounded-sm text-white">&nbsp;{{ic.resType}}&nbsp;</span>
-                                            </div>
+                                        <div class="float-right">
+                                            <i class="pi pi-tag product-category-icon"></i>
+                                            <span class="{{ic.resType}}type rounded-sm text-white">&nbsp;{{ic.resType}}&nbsp;</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -174,20 +233,21 @@
             </div>
         </div>
     </div>
+
     <div class="col-6">
         <h5>Outgoing Requests</h5>
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item">
-              <a class="nav-link active" id="oPending-tab" data-toggle="tab" href="#oPending" role="tab" aria-controls="oPending" aria-selected="true">Pending</a>
+                <a class="nav-link active" id="oPending-tab" data-toggle="tab" href="#oPending" role="tab" aria-controls="oPending" aria-selected="true">Pending</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" id="oAccepted-tab" data-toggle="tab" href="#oAccepted" role="tab" aria-controls="oAccepted" aria-selected="false">Accepted</a>
+                <a class="nav-link" id="oAccepted-tab" data-toggle="tab" href="#oAccepted" role="tab" aria-controls="oAccepted" aria-selected="false">Accepted</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" id="oDeclined-tab" data-toggle="tab" href="#oDeclined" role="tab" aria-controls="oDeclined" aria-selected="false">Declined</a>
+                <a class="nav-link" id="oDeclined-tab" data-toggle="tab" href="#oDeclined" role="tab" aria-controls="oDeclined" aria-selected="false">Declined</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" id="oCancelled-tab" data-toggle="tab" href="#oCancelled" role="tab" aria-controls="oCancelled" aria-selected="false">Cancelled</a>
+                <a class="nav-link" id="oCancelled-tab" data-toggle="tab" href="#oCancelled" role="tab" aria-controls="oCancelled" aria-selected="false">Cancelled</a>
             </li>
         </ul>
         <div class="tab-content" id="myTabContent">
@@ -209,18 +269,19 @@
                                         </div>
                                         <div>{{op.desc}}</div>
                                         Submitted at {{formatDate(op.createdAt)}}
-                                        <br>
-                                        For {{op.needTitle}}
+                                        <br> For {{op.needTitle}}
                                     </div>
                                     <div class="col-4">
-                                            <div class="float-right">
-                                                <i class="pi pi-tag product-category-icon"></i>
-                                                <span class="{{op.resType}}type rounded-sm text-white">&nbsp;{{op.resType}}&nbsp;</span>
-                                            </div>
-                                            <br>
-                                            <div class="mt-md-2 float-right">
-                                                <button class="btn btn-danger float-right" title="Cancel" (click)="cancelResReq(op.id)"><i class="pi pi-times"></i></button>
-                                            </div>
+                                        <div class="float-right">
+                                            <i class="pi pi-tag product-category-icon"></i>
+                                            <span class="{{op.resType}}type rounded-sm text-white">&nbsp;{{op.resType}}&nbsp;</span>
+                                        </div>
+                                        <br>
+                                        <div class="mt-md-2 float-right">
+                                            <button class="btn btn-danger float-right" title="Cancel" (click)="cancelResReq(op.id)">
+                                                <i class="pi pi-times"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -246,19 +307,20 @@
                                         </div>
                                         <div>{{oa.desc}}</div>
                                         Submitted at {{formatDate(oa.createdAt)}}
-                                        <br>
-                                        For {{oa.needTitle}} <br>
-                                        Accepted at {{formatDate(oa.updatedAt)}}
+                                        <br> For {{oa.needTitle}}
+                                        <br> Accepted at {{formatDate(oa.updatedAt)}}
                                     </div>
                                     <div class="col-4">
-                                            <div class="float-right">
-                                                <i class="pi pi-tag product-category-icon"></i>
-                                                <span class="{{oa.resType}}type rounded-sm text-white">&nbsp;{{oa.resType}}&nbsp;</span>
-                                            </div>
-                                            <br>
-                                            <div class="mt-md-2 float-right">
-                                                <button class="btn btn-danger float-right" title="Cancel" (click)="cancelResReq(oa.id)"><i class="pi pi-times"></i></button>
-                                            </div>
+                                        <div class="float-right">
+                                            <i class="pi pi-tag product-category-icon"></i>
+                                            <span class="{{oa.resType}}type rounded-sm text-white">&nbsp;{{oa.resType}}&nbsp;</span>
+                                        </div>
+                                        <br>
+                                        <div class="mt-md-2 float-right">
+                                            <button class="btn btn-danger float-right" title="Cancel" (click)="cancelResReq(oa.id)">
+                                                <i class="pi pi-times"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -284,15 +346,14 @@
                                         </div>
                                         <div>{{od.desc}}</div>
                                         Submitted at {{formatDate(od.createdAt)}}
-                                        <br>
-                                        For {{od.needTitle}} <br>
-                                        Declined at {{formatDate(od.updatedAt)}}
+                                        <br> For {{od.needTitle}}
+                                        <br> Declined at {{formatDate(od.updatedAt)}}
                                     </div>
                                     <div class="col-4">
-                                            <div class="float-right">
-                                                <i class="pi pi-tag product-category-icon"></i>
-                                                <span class="{{od.resType}}type rounded-sm text-white">&nbsp;{{od.resType}}&nbsp;</span>
-                                            </div>
+                                        <div class="float-right">
+                                            <i class="pi pi-tag product-category-icon"></i>
+                                            <span class="{{od.resType}}type rounded-sm text-white">&nbsp;{{od.resType}}&nbsp;</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -318,17 +379,16 @@
                                         </div>
                                         <div>{{oc.desc}}</div>
                                         Submitted at {{formatDate(oc.createdAt)}}
-                                        <br>
-                                        For {{oc.needTitle}} <br>
-                                        Cancelled at {{formatDate(oc.updatedAt)}}
+                                        <br> For {{oc.needTitle}}
+                                        <br> Cancelled at {{formatDate(oc.updatedAt)}}
                                         <span *ngIf="oc.cancelType == 'project'">by this project</span>
                                         <span *ngIf="oc.cancelType == 'contributor'">by resource owner</span>
                                     </div>
                                     <div class="col-4">
-                                            <div class="float-right">
-                                                <i class="pi pi-tag product-category-icon"></i>
-                                                <span class="{{oc.resType}}type rounded-sm text-white">&nbsp;{{oc.resType}}&nbsp;</span>
-                                            </div>
+                                        <div class="float-right">
+                                            <i class="pi pi-tag product-category-icon"></i>
+                                            <span class="{{oc.resType}}type rounded-sm text-white">&nbsp;{{oc.resType}}&nbsp;</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

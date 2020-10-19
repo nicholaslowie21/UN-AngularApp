@@ -6,6 +6,7 @@ import { MessageService } from 'primeng/api';
 import { ResourceService } from '../../services/resource.service';
 import { MarketplaceService } from '../../services/marketplace.service';
 import { JsonpClientBackend } from '@angular/common/http';
+import { constants } from 'buffer';
 
 @Component({
   selector: 'app-project-resources',
@@ -13,6 +14,7 @@ import { JsonpClientBackend } from '@angular/common/http';
   styleUrls: ['./project-resources.component.css'],
   providers: [MessageService]
 })
+
 export class ProjectResourcesComponent implements OnInit {
 
   projectId: any;
@@ -67,6 +69,10 @@ export class ProjectResourcesComponent implements OnInit {
   resNeedSuggestion: any;
   checkClick = false;
   suggestedType: any;
+
+  contributionForm: any = {};
+  oldRating: any;
+  needForm: any = {};
 
   constructor(private route: ActivatedRoute, private projectService: ProjectService,
     private tokenStorageService: TokenStorageService, private messageService: MessageService,
@@ -570,6 +576,14 @@ export class ProjectResourcesComponent implements OnInit {
     }
   }
 
+  checkCompletion(complete: number): boolean {
+    if(complete==100){
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   disableBox(): void {
     this.checkBox = false;
   }
@@ -589,5 +603,76 @@ export class ProjectResourcesComponent implements OnInit {
   formatDate(date): any {
     let formattedDate = new Date(date).toUTCString();
     return formattedDate.substring(5, formattedDate.length-13);
+  }
+
+  getContributionForm(c): void {
+    this.contributionForm = {
+      id: c.contributionId,
+      rating: c.rating,
+      user: c.contributorName,
+      need: c.needTitle,
+      res: c.resourceTitle
+    }
+
+    this.oldRating = c.rating;
+    console.log(this.oldRating);
+  }
+
+  updateContributionRating(): void {
+    console.log("rating: " + this.contributionForm.rating);
+    //var x = this.contributionForm.rating;
+    //console.log("x: " + x);
+    if(this.oldRating == this.contributionForm.rating) {
+      this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: 'No change in rating' });
+      return;
+    } else {
+      const uRateForm = {
+        id: this.contributionForm.id,
+        rating: this.contributionForm.rating
+      }
+  
+      this.projectService.updateContributionRating(uRateForm).subscribe(
+        res => {
+          console.log(JSON.stringify(res));
+          this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Rating updated!' });
+          this.ngOnInit();
+          //window.location.reload();
+        },
+        err => {
+          this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: err.error.msg });
+        }
+      );
+    }
+  
+  }
+
+  getDonateForm(d): void {
+    this.needForm = {
+      id: d.id,
+      amount: '',
+      reqDesc: '',
+      targetSum: d.total,
+      pendingSum: d.pendingSum,
+      receivedSum: d.receivedSum,
+      remainingSum: (d.total-d.pendingSum-d.receivedSum)
+    }
+  }
+
+  donate(): void {
+    const formDonate = {
+      id: this.needForm.id,
+      desc: this.needForm.reqDesc || '',
+      moneySum: parseInt(this.needForm.amount)
+    }
+    console.log(formDonate)
+    this.marketplaceService.contributeMoney(formDonate).subscribe(
+      response => {
+        this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Your request to donate has been submitted!'});
+        window.location.reload();
+      },
+      err => {
+        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+      }
+    );
   }
 }
