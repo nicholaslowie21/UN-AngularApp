@@ -3,7 +3,7 @@
         position: -webkit-sticky;
         position: sticky;
         top: 28px;
-        padding: 50px;
+        padding: 40px;
         font-size: 17px;
     }
 </style>
@@ -250,7 +250,7 @@
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="need" role="tabpanel" aria-labelledby="need-tab">
             <div class="row">
-                <div class="col-7">
+                <div class="col-8">
                     <div class="card">
                         <p-dataView #mp [value]="resourceNeeds" [paginator]="true" [rows]="9" filterBy="title" [sortField]="sortFieldNeeds" [sortOrder]="sortOrderNeeds"
                             layout="list">
@@ -395,9 +395,7 @@
                         </p-dataView>
                     </div>
                 </div>
-                <div class="col-5" *ngIf="isOwnerAdmin">
-                    <!-- Can do the checking to display this -->
-                    
+                <div class="col-4" *ngIf="isOwnerAdmin">
                     <div class="sticky">
                         <div *ngIf=!checkClick class="alert alert-info">Click on the 'Suggest' button on a resource need to see suggested resources!</div>
                         <h5 *ngIf=checkClick> Suggested Resources: </h5>

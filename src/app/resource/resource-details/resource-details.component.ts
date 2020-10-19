@@ -360,7 +360,7 @@ export class ResourceDetailsComponent implements OnInit {
         resourceId: this.id,
         projectId: this.selectedProjectId,
         resType: this.type,
-        desc: this.form.desc
+        desc: this.form.desc || ''
       };
       this.marketplaceService.requestResourceAuto(formCreate).subscribe(
         response => {
@@ -377,7 +377,7 @@ export class ResourceDetailsComponent implements OnInit {
         needId: this.selectedResourceNeedId,
         resourceId: this.id,
         resType: this.type,
-        desc: this.form.desc
+        desc: this.form.desc || ''
       };
 
       this.marketplaceService.requestResource(formCreate).subscribe(
@@ -399,7 +399,7 @@ export class ResourceDetailsComponent implements OnInit {
       const formCreate = {
         resourceId: this.id,
         projectId: this.selectedProjectId,
-        desc: this.form.desc
+        desc: this.form.desc || ''
       };
       this.marketplaceService.useKnowledgeResourceAuto(formCreate).subscribe(
         response => {
@@ -414,7 +414,7 @@ export class ResourceDetailsComponent implements OnInit {
       const formCreate = {
         needId: this.selectedResourceNeedId,
         resourceId: this.id,
-        desc: this.form.desc
+        desc: this.form.desc || ''
       };
 
       this.marketplaceService.useKnowledgeResource(formCreate).subscribe(
