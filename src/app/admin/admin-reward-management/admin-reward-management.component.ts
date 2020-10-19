@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RewardService } from '../../services/reward.service';
 import { MessageService } from 'primeng/api';
-import * as moment from 'moment';
 import { saveAs } from 'file-saver';
 
 @Component({

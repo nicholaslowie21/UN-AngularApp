@@ -393,9 +393,9 @@
                 </div>
                 <div class="col-5" *ngIf="isOwnerAdmin">
                     <!-- Can do the checking to display this -->
-                    <div *ngIf=!checkClick>Click on the 'Suggest' button on a resource need to see suggested resources!</div>
+                    
                     <div class="sticky">
-
+                        <div *ngIf=!checkClick class="alert alert-info">Click on the 'Suggest' button on a resource need to see suggested resources!</div>
                         <h5 *ngIf=checkClick> Suggested Resources: </h5>
                         <div *ngFor="let r of resNeedSuggestion">
                             <ul class="list-group">
