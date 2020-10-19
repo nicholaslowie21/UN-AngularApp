@@ -1,3 +1,13 @@
+<style>
+    div.sticky {
+        position: -webkit-sticky;
+        position: sticky;
+        top: 28px;
+        padding: 50px;
+        font-size: 17px;
+    }
+</style>
+
 <a href="/project/projectDetails?id={{projectId}}">
     <u>
         << Back to project</u>
@@ -14,6 +24,50 @@
 <p-progressBar [value]="progress"></p-progressBar>
 
 <p-toast key="toastMsg" [baseZIndex]="100"></p-toast>
+
+<div class="modal fade" id="donateModal" tabindex="-1" role="dialog" aria-labelledby="donateModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="donateModalTitle">Donate</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h6>Remaining Sum: ${{needForm.remainingSum}}</h6>
+
+                <form name="form" (ngSubmit)="fb.form.valid && donate()" #fb="ngForm" novalidate>
+                    <div class="form-group row">
+                        <label for="moneySum" class="col-sm-4 col-form-label">Amount</label>
+                        <div class="col-sm-8">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">$</div>
+                                </div>
+                                <input type="text" class="form-control" name="moneySum" [(ngModel)]="needForm.amount" required #moneySum="ngModel" />
+                            </div>
+                        </div>
+                        <div class="alert-danger" *ngIf="fb.submitted && moneySum.invalid">
+                            <div *ngIf="moneySum.errors.required">Amount is required
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="desc" class="col-sm-4 col-form-label">Description</label>
+                        <div class="col-sm-8">
+                            <textarea class="form-control" name="desc" [(ngModel)]="needForm.reqDesc" #desc="ngModel" rows="2"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-block">Donate</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle"
     aria-hidden="true">
@@ -49,7 +103,9 @@
                             <div *ngFor="let it of item; let i = index">
                                 <label>
                                     <input type="radio" name="res" value="i" [checked]="resMap[i]" (change)="updateCheckedRes(it.id, $event); isUpdateSuccessful=false"
-                                    /> {{it.title}} ({{it.desc}})
+                                    /> {{it.title}}
+                                    <br>
+                                    <small>{{it.desc}}</small>
                                 </label>
                             </div>
                         </div>
@@ -60,7 +116,9 @@
                             <div *ngFor="let kn of knowledge; let i = index">
                                 <label>
                                     <input type="radio" name="res" value="i" [checked]="resMap[i]" (change)="updateCheckedRes(kn.id, $event); isUpdateSuccessful=false"
-                                    /> {{kn.title}} ({{kn.desc}})
+                                    /> {{kn.title}}
+                                    <br>
+                                    <small> {{kn.desc}}</small>
                                 </label>
                             </div>
                         </div>
@@ -71,7 +129,9 @@
                             <div *ngFor="let mn of manpower; let i = index">
                                 <label>
                                     <input type="radio" name="res" value="i" [checked]="resMap[i]" (change)="updateCheckedRes(mn.id, $event); isUpdateSuccessful=false"
-                                    /> {{mn.title}} ({{mn.desc}})
+                                    /> {{mn.title}}
+                                    <br>
+                                    <small>{{mn.desc}} </small>
                                 </label>
                             </div>
                         </div>
@@ -82,7 +142,9 @@
                             <div *ngFor="let vn of venue; let i = index">
                                 <label>
                                     <input type="radio" name="res" value="i" [checked]="resMap[i]" (change)="updateCheckedRes(vn.id, $event); isUpdateSuccessful=false"
-                                    /> {{vn.title}} ({{vn.desc}})
+                                    /> {{vn.title}}
+                                    <br>
+                                    <small>{{vn.desc}}</small>
                                 </label>
                             </div>
                         </div>
@@ -93,16 +155,16 @@
                 </div>
                 <br>
                 <div *ngIf=checkBox class="row">
-                    <div class="col-3">
+                    <div class="col-12">
                         Request Description:
-                    </div>
-                    <div class="col-9">
+                        <br>
                         <textarea class="form-control" name="reqDesc" [(ngModel)]="reqDescription" required #reqDesc="ngModel" rows="3" cols="60"></textarea>
                     </div>
+
                 </div>
                 <br>
                 <div *ngIf=checkBox class="form-group">
-                    <button class="btn btn-primary btn-block" (click)=onReqSubmit()>Create</button>
+                    <button class="btn btn-primary btn-block" (click)=onReqSubmit()>Submit</button>
                 </div>
             </div>
         </div>
@@ -233,13 +295,17 @@
                                                     <i class="pi pi-trash"></i>
                                                 </button>
                                                 <br/>
-                                                <button *ngIf=checkMp(need.type) style="width: 130px" class="btn btn-dark float-right" data-toggle="modal" data-target="#exampleModalScrollable"
-                                                    (click)=setReqParams(need.id,need.type)>
+                                                <button *ngIf="need.type == 'money'&&checkCompletion(need.completion)" style="width: 130px" class="btn btn-dark float-right"
+                                                    data-toggle="modal" data-target="#donateModal" (click)=getDonateForm(need)>
+                                                    Donate
+                                                </button>
+                                                <button *ngIf="checkMp(need.type)&&checkCompletion(need.completion)" style="width: 130px" class="btn btn-dark float-right"
+                                                    data-toggle="modal" data-target="#exampleModalScrollable" (click)=setReqParams(need.id,need.type)>
                                                     Contribute
                                                 </button>
                                                 <br>
-                                                <button *ngIf="isOwnerAdmin && need.type != 'money'" style="width: 130px" class="btn btn-info" (click)="getSuggestedRes(need.id, need.type)"
-                                                    title="Delete">
+                                                <button *ngIf="isOwnerAdmin && need.type != 'money'&& checkCompletion(need.completion)" style="width: 130px" class="btn btn-info"
+                                                    (click)="getSuggestedRes(need.id, need.type)" title="Delete">
                                                     Suggest
                                                 </button>
                                                 <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
@@ -328,20 +394,27 @@
                 <div class="col-5">
                     <!-- Can do the checking to display this -->
                     <div *ngIf=!checkClick>Click on the 'Suggest' button on a resource need to see suggested resources!</div>
-                    <h5 *ngIf=checkClick> Suggested Resources: </h5>
-                    <div *ngFor="let r of resNeedSuggestion">
-                        <ul class="list-group">
-                            <li class="list-group-item">
-                                <a href="/resource/resourceDetails?id={{r.id}}&type={{suggestedType}}">
-                                    <strong>{{r.title}} </strong>
-                                </a><br>
-                                <div *ngIf="suggestedType!='knowledge'">{{r.ownerName}} ({{r.ownerUsername}})<br></div>
-                                <small>{{r.desc}}</small>
-                                <br>
-                                <small>Last updated: {{formatDate(r.updatedAt)}}</small>
-                            </li>
-                        </ul>
+                    <div class="sticky">
+
+                        <h5 *ngIf=checkClick> Suggested Resources: </h5>
+                        <div *ngFor="let r of resNeedSuggestion">
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <a href="/resource/resourceDetails?id={{r.id}}&type={{suggestedType}}">
+                                        <strong>{{r.title}} </strong>
+                                    </a>
+                                    <br>
+                                    <div *ngIf="suggestedType!='knowledge'">{{r.ownerName}} ({{r.ownerUsername}})
+                                        <br>
+                                    </div>
+                                    <small>{{r.desc}}</small>
+                                    <br>
+                                    <small>Last updated: {{formatDate(r.updatedAt)}}</small>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
+
                     <div *ngIf="checkClick && resNeedSuggestion.length==0">
                         There are no suggested resources for now.
                     </div>
@@ -386,6 +459,7 @@
                                                 </h5>
                                             </div>
                                             <div>Contributed to {{cb.needTitle}}</div>
+                                            <div>Rating: {{cb.rating}}</div>
                                         </div>
                                         <div class="col-4">
                                             <div class="float-right">
@@ -393,6 +467,7 @@
                                                 <span class="{{cb.resType}}type rounded-sm text-white">&nbsp;{{cb.resType}}&nbsp;</span>
                                             </div>
                                             <br/>
+
                                             <button *ngIf="isOwnerAdmin && project.status == 'ongoing'" class="btn btn-danger mt-md-2 float-right" (click)="deleteObtained(cb)"
                                                 title="Delete">
                                                 <i class="pi pi-trash"></i>
@@ -401,11 +476,72 @@
                                                 title="Delete">
                                                 <i class="pi pi-trash"></i>
                                             </button>
+                                            <button *ngIf="isOwnerAdmin && project.status == 'ongoing'" class="btn btn-secondary mt-md-2 float-right" data-toggle="modal"
+                                                data-target="#updateRatingModal" (click)="getContributionForm(cb)" title="Rating">
+                                                <i class="pi pi-star-o"></i>
+                                            </button>
+                                            <button *ngIf="isOwnerAdmin && project.status != 'ongoing'" class="btn btn-secondary mt-md-2 float-right disabled" title="Rating">
+                                                <i class="pi pi-star-o"></i>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
                             </ng-template>
                         </p-dataView>
+                        <div class="modal fade" id="updateRatingModal" tabindex="-1" role="dialog" aria-labelledby="updateRatingModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="updateRatingModalLabel">Update Contribution Rating</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form name="form" (ngSubmit)="fa.form.valid && updateContributionRating()" #fa="ngForm" novalidate>
+                                            <div class="form-group row">
+                                                <label for="title" class="col-sm-5 col-form-label">Resource Need:</label>
+                                                <div class="col-sm-7">
+                                                    <input readonly type="text" class="form-control" name="title" [(ngModel)]="contributionForm.need" required #title="ngModel"
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="desc" class="col-sm-5 col-form-label">Resource Provided:</label>
+                                                <div class="col-sm-7">
+                                                    <input readonly type="text" class="form-control" name="desc" [(ngModel)]="contributionForm.res" #desc="ngModel" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="desc" class="col-sm-5 col-form-label">Resource Owner:</label>
+                                                <div class="col-sm-7">
+                                                    <input readonly type="text" class="form-control" name="owner" [(ngModel)]="contributionForm.user" #owner="ngModel" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="rating" class="col-sm-5 col-form-label">Rating:</label>
+                                                <div class="col-sm-7">
+                                                    <select class="form-control" name="rating" [(ngModel)]="contributionForm.rating" required #rating="ngModel">
+                                                        <option value="" selected hidden>Choose...</option>
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                        <option value="5">5</option>
+                                                    </select>
+                                                    <div class="alert-danger" *ngIf="fa.submitted && rating.invalid">
+                                                        <div *ngIf="rating.errors.required">Rating is required</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <button class="btn btn-primary btn-block">Update</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

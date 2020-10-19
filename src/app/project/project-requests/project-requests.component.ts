@@ -36,6 +36,9 @@ export class ProjectRequestsComponent implements OnInit {
 
   filterNeedOptions = [];
 
+  checkForm: any = {};
+  cRating: any;
+
   constructor(private route: ActivatedRoute, private projectService: ProjectService, private marketplaceService: MarketplaceService,
     private messageService: MessageService) { }
 
@@ -193,8 +196,8 @@ export class ProjectRequestsComponent implements OnInit {
     }
   }
   
-  completeProjReq(reqId): void {
-    let r = confirm("Are you sure you want to complete this request?");
+  completeProjReq(): void {
+    /**let r = confirm("Are you sure you want to complete this request?");
     if (r == true) {
       this.marketplaceService.completeProjectReq({id: reqId}).subscribe(
         res => {
@@ -207,7 +210,24 @@ export class ProjectRequestsComponent implements OnInit {
       )
     } else {
       return;
+    } **/
+    console.log("check form: " + this.checkForm.user);
+    console.log("rating: " + this.cRating);
+    const rateForm = {
+      id: this.checkForm.id,
+      rating: this.cRating
     }
+    this.marketplaceService.completeProjectReq(rateForm).subscribe(
+      res => {
+        this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Request completed!' });
+        //this.loadData();
+        this.ngOnInit();
+      },
+      err => {
+        this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: err.error.msg });
+      }
+    );
+
   }
   
   cancelProjReq(reqId): void {
@@ -244,4 +264,12 @@ export class ProjectRequestsComponent implements OnInit {
     }
   }
 
+  getForm(accepted): void {
+    this.checkForm = {
+      id: accepted.id,
+      resTitle: accepted.resourceTitle,
+      needTitle: accepted.needTitle,
+      user: accepted.requesterName
+    }
+  }
 }
