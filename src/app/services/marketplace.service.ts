@@ -65,10 +65,27 @@ export class MarketplaceService {
     }, httpOptions);
   }
 
+  requestResourceAuto(data): Observable<any> {
+    return this.http.post(API_URL + '/auto/requestResource', {
+      resourceId: data.resourceId,
+      projectId: data.projectId,
+      resType: data.resType,
+      desc: data.desc
+    }, httpOptions);
+  }
+
   useKnowledgeResource(data): Observable<any> {
     return this.http.post(API_URL + '/useKnowledgeResource', {
       resourceId: data.resourceId,
       needId: data.needId,
+      desc: data.desc
+    }, httpOptions);
+  }
+
+  useKnowledgeResourceAuto(data): Observable<any> {
+    return this.http.post(API_URL + '/auto/useKnowledgeResource', {
+      resourceId: data.resourceId,
+      projectId: data.projectId,
       desc: data.desc
     }, httpOptions);
   }
