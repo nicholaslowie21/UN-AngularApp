@@ -119,52 +119,56 @@
                 </div>
             </h6>
         </div>
-        <div class="col-3 bg-primary text-white border-0" *ngIf=isIndividual>
-            <h6 *ngIf="isOwner" class="card-title text-left mt-md-3 center" style="margin: 15px">My Points: {{ user.points }}</h6>
-            <!-- <h6 class="card-title text-left mt-md-3 center" style="margin: 15px">My Affiliations:</h6> -->
-            <!-- Button trigger modal -->
-            <button type="button" class="btn btn-warning ml-md-2 mt-md-4" data-toggle="modal" data-target="#individualAffiliations">
-                See affiliated institutions
-            </button>
+        <div class="col-6">
+            <div class="row">
+                <div class="col-6 bg-primary text-white border-0" *ngIf="isIndividual && isOwner">
+                    <h6 class="card-title text-left mt-md-3">My Points: {{ user.points }}</h6>   
+                </div>
+                <div class="col-6 bg-primary text-white border-0" *ngIf="isIndividual && isOwner">
+                    <h6 class="card-title text-left mt-md-3">My Wallet: {{ user.wallet }}</h6>
+                </div>
+            </div>
+            <div class="row">
+                <button type="button" class="btn btn-warning ml-md-2 mt-md-4" data-toggle="modal" data-target="#individualAffiliations">
+                    See affiliated institutions
+                </button>
 
-            <!-- Modal -->
-            <div class="modal fade" id="individualAffiliations" tabindex="-1" role="dialog" aria-labelledby="individualAffiliationsTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title text-dark" id="exampleModalLongTitle">My Affiliations</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body text-dark">
-                            <div *ngIf="indAffiliations.length == 0">
-                                You have no affiliated institutions.
+                <!-- Modal -->
+                <div class="modal fade" id="individualAffiliations" tabindex="-1" role="dialog" aria-labelledby="individualAffiliationsTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title text-dark" id="exampleModalLongTitle">My Affiliations</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
                             </div>
-                            <div *ngFor="let a of indAffiliations">
-                                <div class="card">
-                                    <div class="row p-2">
-                                        <div class="col-3">
-                                            <img *ngIf="a.profilePic.length == 0" src="../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle" style="height: 90px; width: 90px; object-fit: cover;" alt="Profile pic">
-                                            <img *ngIf="a.profilePic.length > 0" src={{a.profilePic}} class="img-fluid rounded-circle" style="height: 90px; width: 90px; object-fit: cover;" alt="Profile pic">
-                                        </div>
-                                        <div class="col-9 mt-md-2">
-                                            <h5><a href="/profile?username={{a.username}}&userType=institution">{{a.name}}</a></h5>
-                                            {{a.username}}
+                            <div class="modal-body text-dark">
+                                <div *ngIf="indAffiliations.length == 0">
+                                    You have no affiliated institutions.
+                                </div>
+                                <div *ngFor="let a of indAffiliations">
+                                    <div class="card">
+                                        <div class="row p-2">
+                                            <div class="col-3">
+                                                <img *ngIf="a.profilePic.length == 0" src="../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle" style="height: 90px; width: 90px; object-fit: cover;" alt="Profile pic">
+                                                <img *ngIf="a.profilePic.length > 0" src={{a.profilePic}} class="img-fluid rounded-circle" style="height: 90px; width: 90px; object-fit: cover;" alt="Profile pic">
+                                            </div>
+                                            <div class="col-9 mt-md-2">
+                                                <h5><a href="/profile?username={{a.username}}&userType=institution">{{a.name}}</a></h5>
+                                                {{a.username}}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-3 bg-primary text-white border-0" *ngIf="isIndividual && isOwner">
-            <h6 class="card-title text-left mt-md-3" style="margin: 15px">My Wallet: {{ user.wallet }}</h6>
         </div>
     </div>
 </div>
@@ -201,7 +205,7 @@
                                         </div>
                                         <div class="card border-0" style="width:80%">
                                             <h5 class="card-title text-left mt-md-3" style="margin-left: 5%;"><a href="/project/projectDetails?id={{proj.id}}">{{proj.title}}</a></h5>
-                                            <h6 class="card-title text-left text-secondary mt-md-1 p-text-nowrap p-text-truncate" style="width: 23rem; margin-left: 5%;">{{proj.desc}} </h6>
+                                            <h6 class="card-title text-left text-secondary mt-md-1 p-text-nowrap p-text-truncate" style="width: 90%; margin-left: 5%;">{{proj.desc}} </h6>
                                         </div>
                                     </div>
                                 </li>
@@ -239,7 +243,7 @@
                                     </div>
                                     <div class="card border-0" style="width:80%">
                                         <h5 class="card-title text-left mt-md-3" style="margin-left: 5%;"><a href="/project/projectDetails?id={{project.id}}">{{project.title}}</a></h5>
-                                        <h6 class="card-title text-left text-secondary mt-md-1 p-text-nowrap p-text-truncate" style="width: 23rem; margin-left: 5%;">{{project.desc}} </h6>
+                                        <h6 class="card-title text-left text-secondary mt-md-1 p-text-nowrap p-text-truncate" style="width: 90%; margin-left: 5%;">{{project.desc}} </h6>
                                     </div>
                                 </div>
 
@@ -297,10 +301,10 @@
 
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active" id="personal-tab" data-toggle="tab" href="#personal" role="tab" aria-controls="personal" aria-selected="true">Personal Feed</a>
+                            <a class="nav-link active" id="personal-tab" data-toggle="tab" href="#personal" role="tab" aria-controls="personal" aria-selected="true">Feed</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="knowledge-tab" data-toggle="tab" href="#knowledge" role="tab" aria-controls="knowledge" aria-selected="false">Knowledge Resources</a>
+                            <a class="nav-link" id="knowledge-tab" data-toggle="tab" href="#knowledge" role="tab" aria-controls="knowledge" aria-selected="false">Knowledges</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" id="offer-tab" data-toggle="tab" href="#offer" role="tab" aria-controls="offer" aria-selected="false">Resource Offers</a>
@@ -343,7 +347,7 @@
                                             <li class="list-group-item">
                                                 <div class="card border-0">
                                                     <h5 class="card-title text-left mt-md-3" style="margin-left: 5%;"><a href="/resource/resourceDetails?id={{k.id}}&type=knowledge">{{k.title}}</a></h5>
-                                                    <h6 class="card-title text-left text-secondary mt-md-1 p-text-nowrap p-text-truncate" style="width: 28rem; margin-left: 5%;">{{k.desc}} </h6>
+                                                    <h6 class="card-title text-left text-secondary mt-md-1 p-text-nowrap p-text-truncate" style="width: 90%; margin-left: 5%;">{{k.desc}} </h6>
                                                 </div>
                                             </li>
                                         </ul>
@@ -401,7 +405,7 @@
                                                         <span class="ml-md-1 mr-md-2 {{ro.type}}type text-white rounded-sm" style="font-size: small;">&nbsp;{{ro.type}}&nbsp;</span>
                                                     </div>    
                                                 </h5>
-                                                <h6 class="card-title text-left text-secondary mt-md-1 p-text-nowrap p-text-truncate" style="width: 22rem; margin-left: 5%;">{{ro.desc}} </h6>
+                                                <h6 class="card-title text-left text-secondary mt-md-1 p-text-nowrap p-text-truncate" style="width: 90%; margin-left: 5%;">{{ro.desc}} </h6>
                                             </div>
                                         </div>
                                     </li>
