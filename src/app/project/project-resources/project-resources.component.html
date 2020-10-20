@@ -190,13 +190,16 @@
                     <div class="form-group row">
                         <label for="type" class="col-sm-3 col-form-label">Resource Type</label>
                         <div class="col-sm-8">
-                            <select class="form-control" name="type" [(ngModel)]="form.resourceType" required #type="ngModel">
+                            <select class="form-control" name="type" [(ngModel)]="form.resourceType" required #resourceType="ngModel">
                                 <option value="item">Item</option>
                                 <option value="manpower">Manpower</option>
                                 <option value="venue">Venue</option>
                                 <option value="knowledge">Knowledge</option>
                                 <option value="money">Money</option>
                             </select>
+                        </div>
+                        <div class="alert-danger" *ngIf="f.submitted && resourceType.invalid">
+                            <div *ngIf="resourceType.errors.required">Resource type is required</div>
                         </div>
                     </div>
                     <div class="form-group row">
