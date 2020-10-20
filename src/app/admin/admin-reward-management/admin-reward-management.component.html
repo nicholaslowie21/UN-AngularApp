@@ -38,12 +38,9 @@
                 </ng-template>
                 <ng-template let-reward pTemplate="gridItem">
                     <div class="p-col-12 p-md-3">
-                        <div class="product-grid-item card p-3">
+                        <div class="product-grid-item card p-2">
                             <div class="product-grid-item-top">
-                                <div>
-                                    <span class="product-category">{{reward.country}}</span>
-                                </div>
-                                <span class="float-right">{{formatDate(reward.createdAt)}}</span>
+                                <div class="small">Created at: {{formatDate(reward.createdAt)}}</div>
                             </div>
                             <div class="product-grid-item-content">
                                 <img *ngIf="reward.imgPath.length == 0" src="../../../assets/img/profilePic_Placeholder.png"
@@ -55,6 +52,7 @@
                                         {{reward.title}}
                                     </button>
                                 </div>
+                                <div>{{reward.country}}</div>
                             </div>
                         </div>
                     </div>
@@ -79,7 +77,7 @@
                             <img *ngIf="editForm.rewardImg.length != 0" src="https://localhost:8080{{editForm.rewardImg}}"
                                 class="img-fluid" style="width: 500px; height: 200px; object-fit: cover;" alt="Reward pic" />
                             <h5>{{editForm.title}}
-                                <span class="small float-right rounded-sm text-white" style="background-color: orange;">&nbsp;Status: {{editForm.status}}&nbsp;</span>
+                                <span class="small float-right">&nbsp;Status: <span class="pendingStatus rounded-pill text-white pl-2 pr-2">pending</span>&nbsp;</span>
                             </h5>
                             <div>{{editForm.desc}}</div>
                             <div>
@@ -132,12 +130,9 @@
                 </ng-template>
                 <ng-template let-reward pTemplate="gridItem">
                     <div class="p-col-12 p-md-3">
-                        <div class="product-grid-item card p-3">
+                        <div class="product-grid-item card p-2">
                             <div class="product-grid-item-top">
-                                <div>
-                                    <span class="product-category">{{reward.country}}</span>
-                                </div>
-                                <span class="float-right">{{formatDate(reward.createdAt)}}</span>
+                                <div class="small">Created at: {{formatDate(reward.createdAt)}}</div>
                             </div>
                             <div class="product-grid-item-content">
                                 <img *ngIf="reward.imgPath.length == 0" src="../../../assets/img/profilePic_Placeholder.png"
@@ -149,8 +144,7 @@
                                         {{reward.title}}
                                     </button>
                                 </div>
-                            </div>
-                            <div class="product-grid-item-bottom">
+                                <div>{{reward.country}}</div>
                             </div>
                         </div>
                     </div>
@@ -176,7 +170,7 @@
                                 <img *ngIf="editForm.rewardImg.length != 0" src="https://localhost:8080{{editForm.rewardImg}}"
                                     class="img-fluid" style="width: 500px; height: 200px; object-fit: cover;" alt="Reward pic" />
                                 <h5>{{editForm.title}}
-                                    <span class="small float-right rounded-sm text-white" style="background-color: orange;">&nbsp;Status: {{editForm.status}}&nbsp;</span>
+                                    <span class="small float-right">&nbsp;Status: <span class="activeStatus rounded-pill text-white pl-2 pr-2">active</span>&nbsp;</span>
                                 </h5>
                                 <div>{{editForm.desc}}</div>
                                 <div class="mt-md-2">
@@ -339,12 +333,9 @@
                 </ng-template>
                 <ng-template let-reward pTemplate="gridItem">
                     <div class="p-col-12 p-md-3">
-                        <div class="product-grid-item card p-3">
+                        <div class="product-grid-item card p-2">
                             <div class="product-grid-item-top">
-                                <div>
-                                    <span class="product-category">{{reward.country}}</span>
-                                </div>
-                                <span class="float-right">{{formatDate(reward.createdAt)}}</span>
+                                <div class="small">Created at: {{formatDate(reward.createdAt)}}</div>
                             </div>
                             <div class="product-grid-item-content">
                                 <img *ngIf="reward.imgPath.length == 0" src="../../../assets/img/profilePic_Placeholder.png"
@@ -355,6 +346,9 @@
                                     <button class="btn" data-toggle="modal" data-target="#ViewModalRej" (click)=getForm(reward)>
                                         {{reward.title}}
                                     </button>
+                                </div>
+                                <div>
+                                    {{reward.country}}
                                 </div>
                             </div>
                         </div>
@@ -380,7 +374,7 @@
                             <img *ngIf="editForm.rewardImg.length != 0" src="https://localhost:8080{{editForm.rewardImg}}"
                                 class="img-fluid" style="width: 500px; height: 200px; object-fit: cover;" alt="Reward pic" />
                             <h5>{{editForm.title}}
-                                <span class="small float-right rounded-sm text-white" style="background-color: red;">&nbsp;Status: {{editForm.status}}&nbsp;</span>
+                                <span class="small float-right">&nbsp;Status: <span class="rejectedStatus rounded-pill text-white pl-2 pr-2">rejected</span>&nbsp;</span> 
                             </h5>
                             <div>{{editForm.desc}}</div>
                             <div>
@@ -431,12 +425,9 @@
                 </ng-template>
                 <ng-template let-reward pTemplate="gridItem">
                     <div class="p-col-12 p-md-3">
-                        <div class="product-grid-item card p-3">
+                        <div class="product-grid-item card p-2">
                             <div class="product-grid-item-top">
-                                <div>
-                                    <span class="product-category">{{reward.country}}</span>
-                                </div>
-                                <span class="float-right">{{formatDate(reward.createdAt)}}</span>
+                                <div class="small">Created at: {{formatDate(reward.createdAt)}}</div>
                             </div>
                             <div class="product-grid-item-content">
                                 <img *ngIf="reward.imgPath.length == 0" src="../../../assets/img/profilePic_Placeholder.png"
@@ -448,6 +439,7 @@
                                         {{reward.title}}
                                     </button>
                                 </div>
+                                <div>{{reward.country}}</div>
                             </div>
                         </div>
                     </div>
@@ -472,7 +464,7 @@
                             <img *ngIf="editForm.rewardImg.length != 0" src="https://localhost:8080{{editForm.rewardImg}}"
                                 class="img-fluid" style="width: 500px; height: 200px; object-fit: cover;" alt="Reward pic" />
                             <h5>{{editForm.title}}
-                                <span class="small float-right rounded-sm text-white" style="background-color: red;">&nbsp;Status: {{editForm.status}}&nbsp;</span>
+                                <span class="small float-right">&nbsp;Status: <span class="expiredStatus rounded-pill pl-2 pr-2 text-white">expired</span>&nbsp;</span>
                             </h5>
                             <div>{{editForm.desc}}</div>
                             <div>
