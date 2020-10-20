@@ -44,8 +44,13 @@
                                             <a href="/resource/resourceDetails?id={{ip.resourceId}}&type={{ip.resType}}">{{ip.resourceTitle}}</a>
                                         </div>
                                         <div>{{ip.desc}}</div>
-                                        Offered by {{ip.requesterName}} at {{formatDate(ip.createdAt)}}
-                                        <br> For {{ip.needTitle}}
+                                        <div *ngIf="ip.ownerType == 'user'" class="mb-md-2">
+                                            Offered by <a href="/profile?username={{ip.requesterUsername}}&userType=individual">{{ip.requesterName}}</a> at {{formatDate(ip.createdAt)}}
+                                        </div>
+                                        <div *ngIf="ip.ownerType != 'user'" class="mb-md-2">
+                                            Offered by <a href="/profile?username={{ip.requesterUsername}}&userType=institution">{{ip.requesterName}}</a> at {{formatDate(ip.createdAt)}}
+                                        </div>
+                                        For <b>{{ip.needTitle}}</b>
                                     </div>
                                     <div class="col-4">
                                         <div class="float-right">
@@ -86,8 +91,13 @@
                                             <span *ngIf="ia.resType == 'money'">Fund: ${{ia.moneySum}}</span>
                                         </div>
                                         <div>{{ia.desc}}</div>
-                                        Offered by {{ia.requesterName}} at {{formatDate(ia.createdAt)}}
-                                        <br> For {{ia.needTitle}}
+                                        <div *ngIf="ia.ownerType == 'user'" class="mb-md-2">
+                                            Offered by <a href="/profile?username={{ia.requesterUsername}}&userType=individual">{{ia.requesterName}}</a> at {{formatDate(ia.createdAt)}}
+                                        </div>
+                                        <div *ngIf="ia.ownerType != 'user'" class="mb-md-2">
+                                            Offered by <a href="/profile?username={{ia.requesterUsername}}&userType=institution">{{ia.requesterName}}</a> at {{formatDate(ia.createdAt)}}
+                                        </div>
+                                        For <b>{{ia.needTitle}}</b>
                                         <br> Accepted at {{formatDate(ia.updatedAt)}}
                                     </div>
                                     <div class="col-4">
@@ -183,8 +193,13 @@
                                             <a href="/resource/resourceDetails?id={{id.resourceId}}&type={{id.resType}}">{{id.resourceTitle}}</a>
                                         </div>
                                         <div>{{id.desc}}</div>
-                                        Offered by {{id.requesterName}} at {{formatDate(id.createdAt)}}
-                                        <br> For {{id.needTitle}}
+                                        <div *ngIf="id.ownerType == 'user'" class="mb-md-2">
+                                            Offered by <a href="/profile?username={{id.requesterUsername}}&userType=individual">{{id.requesterName}}</a> at {{formatDate(id.createdAt)}}
+                                        </div>
+                                        <div *ngIf="id.ownerType != 'user'" class="mb-md-2">
+                                            Offered by <a href="/profile?username={{id.requesterUsername}}&userType=institution">{{id.requesterName}}</a> at {{formatDate(id.createdAt)}}
+                                        </div>
+                                        For <b>{{id.needTitle}}</b>
                                         <br> Declined at {{formatDate(id.updatedAt)}}
                                     </div>
                                     <div class="col-4">
@@ -217,8 +232,13 @@
                                             <span *ngIf="ic.resType == 'money'">Fund: ${{ic.moneySum}}</span>
                                         </div>
                                         <div>{{ic.desc}}</div>
-                                        Offered by {{ic.requesterName}} at {{formatDate(ic.createdAt)}}
-                                        <br> For {{ic.needTitle}}
+                                        <div *ngIf="ic.ownerType == 'user'" class="mb-md-2">
+                                            Offered by <a href="/profile?username={{ic.requesterUsername}}&userType=individual">{{ic.requesterName}}</a> at {{formatDate(ic.createdAt)}}
+                                        </div>
+                                        <div *ngIf="ic.ownerType != 'user'" class="mb-md-2">
+                                            Offered by <a href="/profile?username={{ic.requesterUsername}}&userType=institution">{{ic.requesterName}}</a> at {{formatDate(ic.createdAt)}}
+                                        </div>
+                                        For <b>{{ic.needTitle}}</b>
                                         <br> Cancelled at {{formatDate(ic.updatedAt)}}
                                         <span *ngIf="ic.cancelType == 'project'">by this project</span>
                                         <span *ngIf="ic.cancelType == 'contributor'">by {{ic.requesterName}}</span>
@@ -272,8 +292,8 @@
                                             <a href="/resource/resourceDetails?id={{op.resourceId}}&type={{op.resType}}">{{op.resourceTitle}}</a>
                                         </div>
                                         <div>{{op.desc}}</div>
-                                        Submitted at {{formatDate(op.createdAt)}}
-                                        <br> For {{op.needTitle}}
+                                        <div class="mb-md-2">Submitted at {{formatDate(op.createdAt)}}</div>
+                                        For <b>{{op.needTitle}}</b>
                                     </div>
                                     <div class="col-4">
                                         <div class="float-right">
@@ -310,8 +330,8 @@
                                             <a href="/resource/resourceDetails?id={{oa.resourceId}}&type={{oa.resType}}">{{oa.resourceTitle}}</a>
                                         </div>
                                         <div>{{oa.desc}}</div>
-                                        Submitted at {{formatDate(oa.createdAt)}}
-                                        <br> For {{oa.needTitle}}
+                                        <div class="mb-md-2">Submitted at {{formatDate(oa.createdAt)}}</div>
+                                        For <b>{{oa.needTitle}}</b>
                                         <br> Accepted at {{formatDate(oa.updatedAt)}}
                                     </div>
                                     <div class="col-4">
@@ -349,8 +369,8 @@
                                             <a href="/resource/resourceDetails?id={{od.resourceId}}&type={{od.resType}}">{{od.resourceTitle}}</a>
                                         </div>
                                         <div>{{od.desc}}</div>
-                                        Submitted at {{formatDate(od.createdAt)}}
-                                        <br> For {{od.needTitle}}
+                                        <div class="mb-md-2">Submitted at {{formatDate(od.createdAt)}}</div>
+                                        For <b>{{od.needTitle}}</b>
                                         <br> Declined at {{formatDate(od.updatedAt)}}
                                     </div>
                                     <div class="col-4">
@@ -382,8 +402,8 @@
                                             <a href="/resource/resourceDetails?id={{oc.resourceId}}&type={{oc.resType}}">{{oc.resourceTitle}}</a>
                                         </div>
                                         <div>{{oc.desc}}</div>
-                                        Submitted at {{formatDate(oc.createdAt)}}
-                                        <br> For {{oc.needTitle}}
+                                        <div class="mb-md-2">Submitted at {{formatDate(oc.createdAt)}}</div>
+                                        For <b>{{oc.needTitle}}</b>
                                         <br> Cancelled at {{formatDate(oc.updatedAt)}}
                                         <span *ngIf="oc.cancelType == 'project'">by this project</span>
                                         <span *ngIf="oc.cancelType == 'contributor'">by resource owner</span>

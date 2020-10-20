@@ -2,8 +2,8 @@
     div.sticky {
         position: -webkit-sticky;
         position: sticky;
-        top: 28px;
-        padding: 40px;
+        top: 50px;
+        padding: 30px;
         font-size: 17px;
     }
 </style>
@@ -189,7 +189,7 @@
                 <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
                     <div class="form-group row">
                         <label for="type" class="col-sm-3 col-form-label">Resource Type</label>
-                        <div class="col-sm-9">
+                        <div class="col-sm-8">
                             <select class="form-control" name="type" [(ngModel)]="form.resourceType" required #type="ngModel">
                                 <option value="item">Item</option>
                                 <option value="manpower">Manpower</option>
@@ -284,34 +284,22 @@
                                             <span class="product-category">Completion: {{need.completion}}%</span>
                                         </div>
                                         <div class="col-3">
-                                            <div class="float-right">
+                                            <div class="row">
                                                 <i class="pi pi-tag product-category-icon"></i>
                                                 <span class="{{need.type}}type rounded-sm text-white">&nbsp;{{need.type}}&nbsp;</span>
+                                            
                                             </div>
-                                            <div *ngIf="project.status == 'ongoing'" class="mt-md-2 float-right">
-                                                <button *ngIf="isOwnerAdmin" class="btn btn-success" (click)="markCompleteNeed(need)" title="Mark as complete">
+                                            <div *ngIf="isOwnerAdmin && project.status == 'ongoing'" class="row mt-md-2">
+                                                <button class="btn btn-success" (click)="markCompleteNeed(need)" title="Mark as complete">
                                                     <i class="pi pi-check"></i>
                                                 </button>
-                                                <button *ngIf="isOwnerAdmin" class="btn btn-primary" data-toggle="modal" data-target="#EditModal" (click)=getForm(need) title="Edit">
+                                                <button class="btn btn-primary" data-toggle="modal" data-target="#EditModal" (click)=getForm(need) title="Edit">
                                                     <i class="pi pi-pencil"></i>
                                                 </button>
-                                                <button *ngIf="isOwnerAdmin" class="btn btn-danger" (click)="deleteNeed(need)" title="Delete">
+                                                <button class="btn btn-danger" (click)="deleteNeed(need)" title="Delete">
                                                     <i class="pi pi-trash"></i>
                                                 </button>
-                                                <br/>
-                                                <button *ngIf="need.type == 'money'&&checkCompletion(need.completion)" style="width: 130px" class="btn btn-dark float-right"
-                                                    data-toggle="modal" data-target="#donateModal" (click)=getDonateForm(need)>
-                                                    Donate
-                                                </button>
-                                                <button *ngIf="checkMp(need.type)&&checkCompletion(need.completion)" style="width: 130px" class="btn btn-dark float-right"
-                                                    data-toggle="modal" data-target="#exampleModalScrollable" (click)=setReqParams(need.id,need.type)>
-                                                    Contribute
-                                                </button>
-                                                <br>
-                                                <button *ngIf="isOwnerAdmin && need.type != 'money'&& checkCompletion(need.completion)" style="width: 130px" class="btn btn-info"
-                                                    (click)="getSuggestedRes(need.id, need.type)" title="Delete">
-                                                    Suggest
-                                                </button>
+                                                
                                                 <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
@@ -377,7 +365,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div *ngIf="isOwnerAdmin && project.status != 'ongoing'" class="mt-md-2 float-right">
+                                            <div *ngIf="isOwnerAdmin && project.status != 'ongoing'" class="mt-md-2 row">
                                                 <button class="btn btn-success" disabled title="Mark as complete">
                                                     <i class="pi pi-check"></i>
                                                 </button>
@@ -386,6 +374,21 @@
                                                 </button>
                                                 <button class="btn btn-danger" disabled title="Delete">
                                                     <i class="pi pi-trash"></i>
+                                                </button>
+                                            </div>
+                                            <div class="row">
+                                                <button *ngIf="need.type == 'money'&&checkCompletion(need.completion)" style="width: 130px" class="btn btn-dark"
+                                                    data-toggle="modal" data-target="#donateModal" (click)=getDonateForm(need)>
+                                                    Donate
+                                                </button>
+                                                <button *ngIf="checkMp(need.type)&&checkCompletion(need.completion)" style="width: 130px" class="btn btn-dark float-right"
+                                                    data-toggle="modal" data-target="#exampleModalScrollable" (click)=setReqParams(need.id,need.type)>
+                                                    Contribute
+                                                </button>
+                                                <br>
+                                                <button *ngIf="isOwnerAdmin && need.type != 'money'&& checkCompletion(need.completion)" style="width: 130px" class="btn btn-info"
+                                                    (click)="getSuggestedRes(need.id, need.type)" title="Delete">
+                                                    Suggest
                                                 </button>
                                             </div>
                                         </div>
@@ -406,7 +409,14 @@
                                         <strong>{{r.title}} </strong>
                                     </a>
                                     <br>
-                                    <div *ngIf="suggestedType!='knowledge'">{{r.ownerName}} ({{r.ownerUsername}})
+                                    <div *ngIf="suggestedType!='knowledge'">
+                                        <span *ngIf="r.ownerImg.length == 0">
+                                            <img src="../../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle" style="width: 30px; height: 30px; object-fit: cover;">
+                                        </span>
+                                        <span *ngIf="r.ownerImg.length > 0">
+                                            <img src="https://localhost:8080{{r.ownerImg}}" class="img-fluid rounded-circle" style="width: 30px; height: 30px; object-fit: cover;">
+                                        </span>
+                                        <h6 style="display: inline-block;" class="ml-md-1">{{r.ownerName}}</h6>
                                         <br>
                                     </div>
                                     <small>{{r.desc}}</small>
