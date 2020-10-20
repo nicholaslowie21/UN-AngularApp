@@ -1,3 +1,24 @@
+.rejected {
+    background-color: rgb(224, 11, 11);
+    color: white;
+}
+
+.active {
+    background-color: rgb(83, 207, 10);
+    color: white;
+}
+
+.pending {
+    background-color: rgb(235, 141, 33);
+    color: white;
+}
+
+.expired {
+    background-color: rgb(163, 161, 158);
+    color: white;
+}
+
+
 .p-dropdown {
     width: 14rem;
     font-weight: normal;
@@ -60,7 +81,6 @@
 }
 
 .product-grid-item {
-    margin: .5em;
     border: 1px solid #dee2e6;
 }
 

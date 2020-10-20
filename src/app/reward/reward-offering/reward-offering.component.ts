@@ -13,6 +13,7 @@ export class RewardOfferingComponent implements OnInit {
   rewards = [];
   sortOrder: number;
   sortField: string;
+  filterStatusOptions = [];
 
   editForm: any = {rewardImg: ''};
 
@@ -23,11 +24,35 @@ export class RewardOfferingComponent implements OnInit {
       res => this.rewards = res.data.rewards
     );
     console.log(this.rewards);
+
+    this.filterStatusOptions = [
+      { label: 'All', value: 'all' },
+      { label: 'Pending', value: 'pending' },
+      { label: 'Active', value: 'open' },
+      { label: 'Expired', value: 'close' },
+      { label: 'Rejected', value: 'rejected'}
+    ]
   }
 
   formatDate(date): any {
     let formattedDate = new Date(date).toUTCString();
     return formattedDate.substring(5, formattedDate.length-13);
+  }
+
+  async filterStatus(event) {
+    let value = event.value;
+    let arr = [];
+    await this.ngOnInit();
+    if(value == 'all') {
+      arr = this.rewards;
+    } else {
+      for(var i=0; i<this.rewards.length; i++) {
+        if(this.rewards[i].status == value) {
+          arr.push(this.rewards[i]);
+        }
+      }
+    }
+    this.rewards = arr;
   }
 
   getForm(reward): void {
