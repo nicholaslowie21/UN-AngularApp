@@ -134,7 +134,8 @@ export class MarketplaceService {
 
   completeProjectReq(data): Observable<any> {
     return this.http.post(API_URL + '/complete/projectReq', {
-      projectReqId: data.id
+      projectReqId: data.id,
+      theRating: data.rating
     }, httpOptions);
   }
 

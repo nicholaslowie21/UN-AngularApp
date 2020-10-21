@@ -675,4 +675,17 @@ export class ProjectResourcesComponent implements OnInit {
       }
     );
   }
+
+  clickRating(x, event) {
+    this.contributionForm.rating = x;
+    console.log(this.contributionForm.rating);
+  }
+
+  checkNum(x: number): boolean {
+    if(this.contributionForm.rating == x) {
+      return true;
+    } else {
+      return false;
+    } 
+  }
 }

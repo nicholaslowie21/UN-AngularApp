@@ -9,7 +9,7 @@
 }
 
 .product-description {
-    margin: 0 0 1rem 0;
+    margin: 0 0 7% 0;
 }
 
 .product-category-icon {
@@ -62,7 +62,7 @@
 .product-grid-item {
     margin: .5em;
     border: 1px solid #dee2e6;
-    height: 290px;
+    height: 315px;
 }
 
 .product-grid-item >
