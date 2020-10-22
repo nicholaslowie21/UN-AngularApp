@@ -159,6 +159,8 @@ export class ProjectRequestsComponent implements OnInit {
       }
       this.oCancelled = arr;
     }
+
+    console.log("rating: " + this.cRating);
     
   }
 
@@ -272,4 +274,37 @@ export class ProjectRequestsComponent implements OnInit {
       user: accepted.requesterName
     }
   }
+
+  getFormB(accepted): void {
+    this.checkForm = {
+      id: accepted.id,
+      resTitle: accepted.resourceTitle,
+      needTitle: accepted.needTitle
+    }
+    console.log(this.checkForm.id);
+  }
+
+  clickRating(x, event) {
+    this.cRating = x;
+    console.log(this.cRating);
+  }
+
+  completeResReq(): void {
+    console.log("check form: " + this.checkForm.resTitle);
+    console.log("rating: " + this.cRating);
+    const rateForm = {
+      id: this.checkForm.id,
+      rating: this.cRating
+    }
+    this.marketplaceService.completeResourceReq(rateForm).subscribe(
+      res => {
+        this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Request completed!' });
+        this.ngOnInit();
+      },
+      err => {
+        this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: err.error.msg });
+      }
+    );
+  }
+
 }
