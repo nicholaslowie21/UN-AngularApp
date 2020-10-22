@@ -204,6 +204,7 @@ export class FundingMarketplaceComponent implements OnInit {
         // this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Your request to donate has been submitted!'});
         
         this.projForm.pendingSum = this.projForm.pendingSum + parseInt(this.projForm.amount);
+        this.projForm.remainingSum = this.projForm.targetSum - this.projForm.pendingSum - this.projForm.receivedSum;
         this.isSuccessful = true;
         // this.ngOnInit();
         // window.location.reload();
