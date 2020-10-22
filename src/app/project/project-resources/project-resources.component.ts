@@ -532,9 +532,10 @@ export class ProjectResourcesComponent implements OnInit {
 
     this.marketplaceService.createProjectRequest(formReq).subscribe(
       response => {
-        this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Request created!' });
+        // this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Request created!' });
         this.isContributeSuccessful = true;
-        this.ngOnInit();
+        this.reqDescription = '';
+        // this.ngOnInit();
         // window.location.reload();
       },
       err => {
@@ -693,5 +694,9 @@ export class ProjectResourcesComponent implements OnInit {
     } else {
       return false;
     } 
+  }
+
+  closeModal() {
+    this.ngOnInit();
   }
 }
