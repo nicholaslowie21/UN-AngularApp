@@ -29,34 +29,43 @@
                 </button>
             </div>
             <div class="modal-body">
-                <h6>Remaining Sum: ${{needForm.remainingSum}}</h6>
+                <div *ngIf=!isDonateSuccessful>
+                    <h6>Remaining Sum: ${{needForm.remainingSum}}</h6>
 
-                <form name="form" (ngSubmit)="fb.form.valid && donate()" #fb="ngForm" novalidate>
-                    <div class="form-group row">
-                        <label for="moneySum" class="col-sm-4 col-form-label">Amount</label>
-                        <div class="col-sm-8">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text">$</div>
+                    <form name="form" (ngSubmit)="fb.form.valid && donate()" #fb="ngForm" novalidate>
+                        <div class="form-group row">
+                            <label for="moneySum" class="col-sm-4 col-form-label">Amount</label>
+                            <div class="col-sm-8">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">$</div>
+                                    </div>
+                                    <input type="text" class="form-control" name="moneySum" [(ngModel)]="needForm.amount" required #moneySum="ngModel" />
                                 </div>
-                                <input type="text" class="form-control" name="moneySum" [(ngModel)]="needForm.amount" required #moneySum="ngModel" />
+                            </div>
+                            <div class="alert-danger" *ngIf="fb.submitted && moneySum.invalid">
+                                <div *ngIf="moneySum.errors.required">Amount is required
+                                </div>
                             </div>
                         </div>
-                        <div class="alert-danger" *ngIf="fb.submitted && moneySum.invalid">
-                            <div *ngIf="moneySum.errors.required">Amount is required
+                        <div class="form-group row">
+                            <label for="desc" class="col-sm-4 col-form-label">Description</label>
+                            <div class="col-sm-8">
+                                <textarea class="form-control" name="desc" [(ngModel)]="needForm.reqDesc" #desc="ngModel" rows="2"></textarea>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="desc" class="col-sm-4 col-form-label">Description</label>
-                        <div class="col-sm-8">
-                            <textarea class="form-control" name="desc" [(ngModel)]="needForm.reqDesc" #desc="ngModel" rows="2"></textarea>
+                        <div class="form-group">
+                            <button class="btn btn-primary btn-block">Donate</button>
                         </div>
+                    </form>
+                </div>
+                <div *ngIf="isDonateSuccessful">
+                    <div class="alert alert-success">
+                        Your donation is submitted successfully!
+                        <br> Check your request status under
+                        <a href="/myRequests">My Outgoing Requests</a>
                     </div>
-                    <div class="form-group">
-                        <button class="btn btn-primary btn-block">Donate</button>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
@@ -139,7 +148,7 @@
                             <br>
                             <textarea class="form-control" name="reqDesc" [(ngModel)]="reqDescription" required #reqDesc="ngModel" rows="3" cols="60"></textarea>
                         </div>
-    
+
                     </div>
                     <br>
                     <div *ngIf=checkBox class="form-group">
@@ -148,8 +157,9 @@
                 </div>
                 <div *ngIf="isContributeSuccessful">
                     <div class="alert alert-success">
-                        Your request is submitted successfully!<br>
-                        Check your request status under <a href="/myRequests">My Outgoing Requests</a>
+                        Your request is submitted successfully!
+                        <br> Check your request status under
+                        <a href="/myRequests">My Outgoing Requests</a>
                     </div>
                 </div>
             </div>
@@ -272,7 +282,7 @@
                                             <div class="row">
                                                 <i class="pi pi-tag product-category-icon"></i>
                                                 <span class="{{need.type}}type rounded-sm text-white">&nbsp;{{need.type}}&nbsp;</span>
-                                            
+
                                             </div>
                                             <div *ngIf="isOwnerAdmin && project.status == 'ongoing'" class="row mt-md-2">
                                                 <button class="btn btn-success" (click)="markCompleteNeed(need)" title="Mark as complete">
@@ -284,7 +294,7 @@
                                                 <button class="btn btn-danger" (click)="deleteNeed(need)" title="Delete">
                                                     <i class="pi pi-trash"></i>
                                                 </button>
-                                                
+
                                                 <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
@@ -362,8 +372,8 @@
                                                 </button>
                                             </div>
                                             <div class="row">
-                                                <button *ngIf="need.type == 'money'&&checkCompletion(need.completion)" style="width: 130px" class="btn btn-dark"
-                                                    data-toggle="modal" data-target="#donateModal" (click)=getDonateForm(need)>
+                                                <button *ngIf="need.type == 'money'&&checkCompletion(need.completion)" style="width: 130px" class="btn btn-dark" data-toggle="modal"
+                                                    data-target="#donateModal" (click)=getDonateForm(need)>
                                                     Donate
                                                 </button>
                                                 <button *ngIf="checkMp(need.type)&&checkCompletion(need.completion)" style="width: 130px" class="btn btn-dark float-right"
@@ -456,8 +466,10 @@
                                                     <span style="font-size: small;">({{cb.contributorUsername}})</span>
                                                 </div>
                                             </div>
-                                            <div>Contributed to <b>{{cb.needTitle}}</b></div>
-                                            <div>Rating: 
+                                            <div>Contributed to
+                                                <b>{{cb.needTitle}}</b>
+                                            </div>
+                                            <div>Rating:
                                                 <div *ngFor="let starIcon of [].constructor(cb.rating)" style="display: inline-block;">
                                                     <i class="pi pi-star" style="color: #FD4;"></i>
                                                 </div>
@@ -500,44 +512,50 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <form name="form" (ngSubmit)="fa.form.valid && updateContributionRating()" #fa="ngForm" novalidate>
-                                            <div class="form-group row">
-                                                <label for="title" class="col-sm-5 col-form-label">Resource Need:</label>
-                                                <div class="col-sm-7">
-                                                    <input readonly type="text" class="form-control" name="title" [(ngModel)]="contributionForm.need" required #title="ngModel"
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label for="desc" class="col-sm-5 col-form-label">Resource Provided:</label>
-                                                <div class="col-sm-7">
-                                                    <input readonly type="text" class="form-control" name="desc" [(ngModel)]="contributionForm.res" #desc="ngModel" />
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label for="desc" class="col-sm-5 col-form-label">Resource Owner:</label>
-                                                <div class="col-sm-7">
-                                                    <input readonly type="text" class="form-control" name="owner" [(ngModel)]="contributionForm.user" #owner="ngModel" />
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label for="rating" class="col-sm-5 col-form-label">Rating:</label>
-                                                <div class="col-sm-7">
-                                                    <div class="stars">
-                                                        <form action="">
-                                                            <input class="star star-5" value="5" id="star-5" [checked]="checkNum(5)" type="radio" name="star" (change)="clickRating(5, $event)" />
-                                                            <label class="star star-5" for="star-5"></label>
-                                                            <input class="star star-4" value="4" id="star-4" [checked]="checkNum(4)" type="radio" name="star" (change)="clickRating(4, $event)" />
-                                                            <label class="star star-4" for="star-4"></label>
-                                                            <input class="star star-3" value="3" id="star-3" [checked]="checkNum(3)" type="radio" name="star" (change)="clickRating(3, $event)" />
-                                                            <label class="star star-3" for="star-3"></label>
-                                                            <input class="star star-2" value="2" id="star-2" [checked]="checkNum(2)" type="radio" name="star" (change)="clickRating(2, $event)" />
-                                                            <label class="star star-2" for="star-2"></label>
-                                                            <input class="star star-1" value="1" id="star-1" [checked]="checkNum(1)" type="radio" name="star" (change)="clickRating(1, $event)" />
-                                                            <label class="star star-1" for="star-1"></label>
-                                                        </form>
+                                        <div *ngIf="!isURated">
+                                            <form name="form" (ngSubmit)="fa.form.valid && updateContributionRating()" #fa="ngForm" novalidate>
+                                                <div class="form-group row">
+                                                    <label for="title" class="col-sm-5 col-form-label">Resource Need:</label>
+                                                    <div class="col-sm-7">
+                                                        <input readonly type="text" class="form-control" name="title" [(ngModel)]="contributionForm.need" required #title="ngModel"
+                                                        />
                                                     </div>
-                                                    <!--select class="form-control" name="rating" [(ngModel)]="contributionForm.rating" required #rating="ngModel">
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="desc" class="col-sm-5 col-form-label">Resource Provided:</label>
+                                                    <div class="col-sm-7">
+                                                        <input readonly type="text" class="form-control" name="desc" [(ngModel)]="contributionForm.res" #desc="ngModel" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="desc" class="col-sm-5 col-form-label">Resource Owner:</label>
+                                                    <div class="col-sm-7">
+                                                        <input readonly type="text" class="form-control" name="owner" [(ngModel)]="contributionForm.user" #owner="ngModel" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="rating" class="col-sm-5 col-form-label">Rating:</label>
+                                                    <div class="col-sm-7">
+                                                        <div class="stars">
+                                                            <form action="">
+                                                                <input class="star star-5" value="5" id="star-5" [checked]="checkNum(5)" type="radio" name="star" (change)="clickRating(5, $event)"
+                                                                />
+                                                                <label class="star star-5" for="star-5"></label>
+                                                                <input class="star star-4" value="4" id="star-4" [checked]="checkNum(4)" type="radio" name="star" (change)="clickRating(4, $event)"
+                                                                />
+                                                                <label class="star star-4" for="star-4"></label>
+                                                                <input class="star star-3" value="3" id="star-3" [checked]="checkNum(3)" type="radio" name="star" (change)="clickRating(3, $event)"
+                                                                />
+                                                                <label class="star star-3" for="star-3"></label>
+                                                                <input class="star star-2" value="2" id="star-2" [checked]="checkNum(2)" type="radio" name="star" (change)="clickRating(2, $event)"
+                                                                />
+                                                                <label class="star star-2" for="star-2"></label>
+                                                                <input class="star star-1" value="1" id="star-1" [checked]="checkNum(1)" type="radio" name="star" (change)="clickRating(1, $event)"
+                                                                />
+                                                                <label class="star star-1" for="star-1"></label>
+                                                            </form>
+                                                        </div>
+                                                        <!--select class="form-control" name="rating" [(ngModel)]="contributionForm.rating" required #rating="ngModel">
                                                         <option value="" selected hidden>Choose...</option>
                                                         <option value="1">1</option>
                                                         <option value="2">2</option>
@@ -548,12 +566,18 @@
                                                     <div class="alert-danger" *ngIf="fa.submitted && rating.invalid">
                                                         <div *ngIf="rating.errors.required">Rating is required</div>
                                                     </div-->
+                                                    </div>
                                                 </div>
+                                                <div class="form-group">
+                                                    <button class="btn btn-primary btn-block">Update</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div *ngIf="isURated">
+                                            <div class="alert alert-success">
+                                                Contribution rating has been updated!
                                             </div>
-                                            <div class="form-group">
-                                                <button class="btn btn-primary btn-block">Update</button>
-                                            </div>
-                                        </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

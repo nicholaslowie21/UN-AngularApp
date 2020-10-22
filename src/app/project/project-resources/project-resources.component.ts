@@ -75,6 +75,8 @@ export class ProjectResourcesComponent implements OnInit {
   needForm: any = {};
 
   isContributeSuccessful = false;
+  isDonateSuccessful = false;
+  isURated = false;
 
   constructor(private route: ActivatedRoute, private projectService: ProjectService,
     private tokenStorageService: TokenStorageService, private messageService: MessageService,
@@ -623,6 +625,7 @@ export class ProjectResourcesComponent implements OnInit {
 
     this.oldRating = c.rating;
     console.log(this.oldRating);
+    this.isURated = false;
   }
 
   updateContributionRating(): void {
@@ -641,7 +644,8 @@ export class ProjectResourcesComponent implements OnInit {
       this.projectService.updateContributionRating(uRateForm).subscribe(
         res => {
           console.log(JSON.stringify(res));
-          this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Rating updated!' });
+          //this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Rating updated!' });
+          this.isURated = true;
           this.ngOnInit();
           //window.location.reload();
         },
@@ -674,8 +678,10 @@ export class ProjectResourcesComponent implements OnInit {
     console.log(formDonate)
     this.marketplaceService.contributeMoney(formDonate).subscribe(
       response => {
-        this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Your request to donate has been submitted!'});
-        window.location.reload();
+        //this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Your request to donate has been submitted!'});
+        //window.location.reload();
+        this.isDonateSuccessful = true;
+        this.ngOnInit();
       },
       err => {
         this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});

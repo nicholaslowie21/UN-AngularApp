@@ -45,12 +45,15 @@
                                         </div>
                                         <div>{{ip.desc}}</div>
                                         <div *ngIf="ip.ownerType == 'user'" class="mb-md-2">
-                                            Offered by <a href="/profile?username={{ip.requesterUsername}}&userType=individual">{{ip.requesterName}}</a> at {{formatDate(ip.createdAt)}}
+                                            Offered by
+                                            <a href="/profile?username={{ip.requesterUsername}}&userType=individual">{{ip.requesterName}}</a> at {{formatDate(ip.createdAt)}}
                                         </div>
                                         <div *ngIf="ip.ownerType != 'user'" class="mb-md-2">
-                                            Offered by <a href="/profile?username={{ip.requesterUsername}}&userType=institution">{{ip.requesterName}}</a> at {{formatDate(ip.createdAt)}}
+                                            Offered by
+                                            <a href="/profile?username={{ip.requesterUsername}}&userType=institution">{{ip.requesterName}}</a> at {{formatDate(ip.createdAt)}}
                                         </div>
-                                        For <b>{{ip.needTitle}}</b>
+                                        For
+                                        <b>{{ip.needTitle}}</b>
                                     </div>
                                     <div class="col-4">
                                         <div class="float-right">
@@ -92,12 +95,15 @@
                                         </div>
                                         <div>{{ia.desc}}</div>
                                         <div *ngIf="ia.ownerType == 'user'" class="mb-md-2">
-                                            Offered by <a href="/profile?username={{ia.requesterUsername}}&userType=individual">{{ia.requesterName}}</a> at {{formatDate(ia.createdAt)}}
+                                            Offered by
+                                            <a href="/profile?username={{ia.requesterUsername}}&userType=individual">{{ia.requesterName}}</a> at {{formatDate(ia.createdAt)}}
                                         </div>
                                         <div *ngIf="ia.ownerType != 'user'" class="mb-md-2">
-                                            Offered by <a href="/profile?username={{ia.requesterUsername}}&userType=institution">{{ia.requesterName}}</a> at {{formatDate(ia.createdAt)}}
+                                            Offered by
+                                            <a href="/profile?username={{ia.requesterUsername}}&userType=institution">{{ia.requesterName}}</a> at {{formatDate(ia.createdAt)}}
                                         </div>
-                                        For <b>{{ia.needTitle}}</b>
+                                        For
+                                        <b>{{ia.needTitle}}</b>
                                         <br> Accepted at {{formatDate(ia.updatedAt)}}
                                     </div>
                                     <div class="col-4">
@@ -130,44 +136,45 @@
                                 </div>
                                 <div class="modal-body">
 
-                                    <form name="form" (ngSubmit)="f.form.valid && completeProjReq()" #f="ngForm" novalidate>
-                                        <div class="form-group row">
-                                            <label for="title" class="col-sm-5 col-form-label">Resource Need:</label>
-                                            <div class="col-sm-7">
-                                                <input readonly type="text" class="form-control" name="title" [(ngModel)]="checkForm.needTitle" required #title="ngModel"
-                                                />
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="desc" class="col-sm-5 col-form-label">Resource Provided:</label>
-                                            <div class="col-sm-7">
-                                                <input readonly type="text" class="form-control" name="desc" [(ngModel)]="checkForm.resTitle" #desc="ngModel" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="desc" class="col-sm-5 col-form-label">Resource Owner:</label>
-                                            <div class="col-sm-7">
-                                                <input readonly type="text" class="form-control" name="owner" [(ngModel)]="checkForm.user" #owner="ngModel" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="rating" class="col-sm-4 col-form-label">Rating:</label>
-                                            <div class="col-sm-7">
-                                                <div class="stars">
-                                                    <form action="">
-                                                        <input class="star star-5" value="5" id="star-5" type="radio" name="star" (change)="clickRating(5, $event)" />
-                                                        <label class="star star-5" for="star-5"></label>
-                                                        <input class="star star-4" value="4" id="star-4" type="radio" name="star" (change)="clickRating(4, $event)" />
-                                                        <label class="star star-4" for="star-4"></label>
-                                                        <input class="star star-3" value="3" id="star-3" type="radio" name="star" (change)="clickRating(3, $event)" />
-                                                        <label class="star star-3" for="star-3"></label>
-                                                        <input class="star star-2" value="2" id="star-2" type="radio" name="star" (change)="clickRating(2, $event)" />
-                                                        <label class="star star-2" for="star-2"></label>
-                                                        <input class="star star-1" value="1" id="star-1" type="radio" name="star" (change)="clickRating(1, $event)" />
-                                                        <label class="star star-1" for="star-1"></label>
-                                                    </form>
+                                    <div *ngIf=!isRated>
+                                        <form name="form" (ngSubmit)="f.form.valid && completeProjReq()" #f="ngForm" novalidate>
+                                            <div class="form-group row">
+                                                <label for="title" class="col-sm-5 col-form-label">Resource Need:</label>
+                                                <div class="col-sm-7">
+                                                    <input readonly type="text" class="form-control" name="title" [(ngModel)]="checkForm.needTitle" required #title="ngModel"
+                                                    />
                                                 </div>
-                                                <!--select class="form-control" name="rating" [(ngModel)]="cRating" required #rating="ngModel">
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="desc" class="col-sm-5 col-form-label">Resource Provided:</label>
+                                                <div class="col-sm-7">
+                                                    <input readonly type="text" class="form-control" name="desc" [(ngModel)]="checkForm.resTitle" #desc="ngModel" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="desc" class="col-sm-5 col-form-label">Resource Owner:</label>
+                                                <div class="col-sm-7">
+                                                    <input readonly type="text" class="form-control" name="owner" [(ngModel)]="checkForm.user" #owner="ngModel" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="rating" class="col-sm-4 col-form-label">Rating:</label>
+                                                <div class="col-sm-7">
+                                                    <div class="stars">
+                                                        <form action="">
+                                                            <input class="star star-5" value="5" id="star-5" type="radio" name="star" (change)="clickRating(5, $event)" />
+                                                            <label class="star star-5" for="star-5"></label>
+                                                            <input class="star star-4" value="4" id="star-4" type="radio" name="star" (change)="clickRating(4, $event)" />
+                                                            <label class="star star-4" for="star-4"></label>
+                                                            <input class="star star-3" value="3" id="star-3" type="radio" name="star" (change)="clickRating(3, $event)" />
+                                                            <label class="star star-3" for="star-3"></label>
+                                                            <input class="star star-2" value="2" id="star-2" type="radio" name="star" (change)="clickRating(2, $event)" />
+                                                            <label class="star star-2" for="star-2"></label>
+                                                            <input class="star star-1" value="1" id="star-1" type="radio" name="star" (change)="clickRating(1, $event)" />
+                                                            <label class="star star-1" for="star-1"></label>
+                                                        </form>
+                                                    </div>
+                                                    <!--select class="form-control" name="rating" [(ngModel)]="cRating" required #rating="ngModel">
                                                     <option value="" selected hidden>Choose...</option>
                                                     <option value="1">1</option>
                                                     <option value="2">2</option>
@@ -178,12 +185,20 @@
                                                 <div class="alert-danger" *ngIf="f.submitted && rating.invalid">
                                                     <div *ngIf="rating.errors.required">Rating is required</div>
                                                 </div-->
+                                                </div>
                                             </div>
+                                            <div class="form-group">
+                                                <button class="btn btn-primary btn-block">Complete</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div *ngIf=isRated>
+                                        <div class="alert alert-success">
+                                            Contribution has been completed!
+                                            <br> Update the contribution rating under
+                                            <a href="/project/resources?id={{projectId}}">Project Resources</a>
                                         </div>
-                                        <div class="form-group">
-                                            <button class="btn btn-primary btn-block">Complete</button>
-                                        </div>
-                                    </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -208,12 +223,15 @@
                                         </div>
                                         <div>{{id.desc}}</div>
                                         <div *ngIf="id.ownerType == 'user'" class="mb-md-2">
-                                            Offered by <a href="/profile?username={{id.requesterUsername}}&userType=individual">{{id.requesterName}}</a> at {{formatDate(id.createdAt)}}
+                                            Offered by
+                                            <a href="/profile?username={{id.requesterUsername}}&userType=individual">{{id.requesterName}}</a> at {{formatDate(id.createdAt)}}
                                         </div>
                                         <div *ngIf="id.ownerType != 'user'" class="mb-md-2">
-                                            Offered by <a href="/profile?username={{id.requesterUsername}}&userType=institution">{{id.requesterName}}</a> at {{formatDate(id.createdAt)}}
+                                            Offered by
+                                            <a href="/profile?username={{id.requesterUsername}}&userType=institution">{{id.requesterName}}</a> at {{formatDate(id.createdAt)}}
                                         </div>
-                                        For <b>{{id.needTitle}}</b>
+                                        For
+                                        <b>{{id.needTitle}}</b>
                                         <br> Declined at {{formatDate(id.updatedAt)}}
                                     </div>
                                     <div class="col-4">
@@ -247,12 +265,15 @@
                                         </div>
                                         <div>{{ic.desc}}</div>
                                         <div *ngIf="ic.ownerType == 'user'" class="mb-md-2">
-                                            Offered by <a href="/profile?username={{ic.requesterUsername}}&userType=individual">{{ic.requesterName}}</a> at {{formatDate(ic.createdAt)}}
+                                            Offered by
+                                            <a href="/profile?username={{ic.requesterUsername}}&userType=individual">{{ic.requesterName}}</a> at {{formatDate(ic.createdAt)}}
                                         </div>
                                         <div *ngIf="ic.ownerType != 'user'" class="mb-md-2">
-                                            Offered by <a href="/profile?username={{ic.requesterUsername}}&userType=institution">{{ic.requesterName}}</a> at {{formatDate(ic.createdAt)}}
+                                            Offered by
+                                            <a href="/profile?username={{ic.requesterUsername}}&userType=institution">{{ic.requesterName}}</a> at {{formatDate(ic.createdAt)}}
                                         </div>
-                                        For <b>{{ic.needTitle}}</b>
+                                        For
+                                        <b>{{ic.needTitle}}</b>
                                         <br> Cancelled at {{formatDate(ic.updatedAt)}}
                                         <span *ngIf="ic.cancelType == 'project'">by this project</span>
                                         <span *ngIf="ic.cancelType == 'contributor'">by {{ic.requesterName}}</span>
@@ -306,7 +327,7 @@
                                             <a href="/resource/resourceDetails?id={{op.resourceId}}&type={{op.resType}}">{{op.resourceTitle}}</a>
                                         </div>
                                         <div>{{op.desc}}</div>
-                                        <div class="mb-md-2">Submitted to 
+                                        <div class="mb-md-2">Submitted to
                                             <span *ngIf="op.resourceOwnerType == 'user'">
                                                 <a href="/profile?username={{op.resourceOwnerUsername}}&userType=individual">{{op.resourceOwnerName}}</a>
                                             </span>
@@ -314,7 +335,8 @@
                                                 <a href="/profile?username={{op.resourceOwnerUsername}}&userType=institution">{{op.resourceOwnerName}}</a>
                                             </span>
                                             at {{formatDate(op.createdAt)}}</div>
-                                        For <b>{{op.needTitle}}</b>
+                                        For
+                                        <b>{{op.needTitle}}</b>
                                     </div>
                                     <div class="col-4">
                                         <div class="float-right">
@@ -359,7 +381,8 @@
                                                 <a href="/profile?username={{oa.resourceOwnerUsername}}&userType=institution">{{oa.resourceOwnerName}}</a>
                                             </span>
                                             at {{formatDate(oa.createdAt)}}</div>
-                                        For <b>{{oa.needTitle}}</b>
+                                        For
+                                        <b>{{oa.needTitle}}</b>
                                         <br> Accepted at {{formatDate(oa.updatedAt)}}
                                     </div>
                                     <div class="col-4">
@@ -391,43 +414,52 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <form name="form" (ngSubmit)="f.form.valid && completeResReq()" #f="ngForm" novalidate>
-                                        <div class="form-group row">
-                                            <label for="title" class="col-sm-5 col-form-label">Resource Need:</label>
-                                            <div class="col-sm-7">
-                                                <input readonly type="text" class="form-control" name="title" [(ngModel)]="checkForm.needTitle" required #title="ngModel"
-                                                />
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="desc" class="col-sm-5 col-form-label">Resource Provided:</label>
-                                            <div class="col-sm-7">
-                                                <input readonly type="text" class="form-control" name="desc" [(ngModel)]="checkForm.resTitle" #desc="ngModel" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="rating" class="col-sm-4 col-form-label">Rating:</label>
-                                            <div class="col-sm-7">
-                                                <div class="stars">
-                                                    <form action="">
-                                                        <input class="star star-5" value="5" id="star-10" type="radio" name="star" (change)="clickRating(5, $event)" />
-                                                        <label class="star star-5" for="star-10"></label>
-                                                        <input class="star star-4" value="4" id="star-9" type="radio" name="star" (change)="clickRating(4, $event)" />
-                                                        <label class="star star-4" for="star-9"></label>
-                                                        <input class="star star-3" value="3" id="star-8" type="radio" name="star" (change)="clickRating(3, $event)" />
-                                                        <label class="star star-3" for="star-8"></label>
-                                                        <input class="star star-2" value="2" id="star-7" type="radio" name="star" (change)="clickRating(2, $event)" />
-                                                        <label class="star star-2" for="star-7"></label>
-                                                        <input class="star star-1" value="1" id="star-6" type="radio" name="star" (change)="clickRating(1, $event)" />
-                                                        <label class="star star-1" for="star-6"></label>
-                                                    </form>
+                                    <div *ngIf=!isORated>
+                                        <form name="form" (ngSubmit)="f.form.valid && completeResReq()" #f="ngForm" novalidate>
+                                            <div class="form-group row">
+                                                <label for="title" class="col-sm-5 col-form-label">Resource Need:</label>
+                                                <div class="col-sm-7">
+                                                    <input readonly type="text" class="form-control" name="title" [(ngModel)]="checkForm.needTitle" required #title="ngModel"
+                                                    />
                                                 </div>
                                             </div>
+                                            <div class="form-group row">
+                                                <label for="desc" class="col-sm-5 col-form-label">Resource Provided:</label>
+                                                <div class="col-sm-7">
+                                                    <input readonly type="text" class="form-control" name="desc" [(ngModel)]="checkForm.resTitle" #desc="ngModel" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="rating" class="col-sm-4 col-form-label">Rating:</label>
+                                                <div class="col-sm-7">
+                                                    <div class="stars">
+                                                        <form action="">
+                                                            <input class="star star-5" value="5" id="star-10" type="radio" name="star" (change)="clickRating(5, $event)" />
+                                                            <label class="star star-5" for="star-10"></label>
+                                                            <input class="star star-4" value="4" id="star-9" type="radio" name="star" (change)="clickRating(4, $event)" />
+                                                            <label class="star star-4" for="star-9"></label>
+                                                            <input class="star star-3" value="3" id="star-8" type="radio" name="star" (change)="clickRating(3, $event)" />
+                                                            <label class="star star-3" for="star-8"></label>
+                                                            <input class="star star-2" value="2" id="star-7" type="radio" name="star" (change)="clickRating(2, $event)" />
+                                                            <label class="star star-2" for="star-7"></label>
+                                                            <input class="star star-1" value="1" id="star-6" type="radio" name="star" (change)="clickRating(1, $event)" />
+                                                            <label class="star star-1" for="star-6"></label>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <button class="btn btn-primary btn-block">Complete</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div *ngIf=isORated>
+                                        <div class="alert alert-success">
+                                            Contribution has been completed!
+                                            <br> Update the contribution rating under
+                                            <a href="/project/resources?id={{projectId}}">Project Resources</a>
                                         </div>
-                                        <div class="form-group">
-                                            <button class="btn btn-primary btn-block">Complete</button>
-                                        </div>
-                                    </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -459,7 +491,8 @@
                                                 <a href="/profile?username={{od.resourceOwnerUsername}}&userType=institution">{{od.resourceOwnerName}}</a>
                                             </span>
                                             at {{formatDate(od.createdAt)}}</div>
-                                        For <b>{{od.needTitle}}</b>
+                                        For
+                                        <b>{{od.needTitle}}</b>
                                         <br> Declined at {{formatDate(od.updatedAt)}}
                                     </div>
                                     <div class="col-4">
@@ -497,9 +530,10 @@
                                             </span>
                                             <span *ngIf="oc.resourceOwnerType == 'institution'">
                                                 <a href="/profile?username={{oc.resourceOwnerUsername}}&userType=institution">{{oc.resourceOwnerName}}</a>
-                                            </span> 
+                                            </span>
                                             at {{formatDate(oc.createdAt)}}</div>
-                                        For <b>{{oc.needTitle}}</b>
+                                        For
+                                        <b>{{oc.needTitle}}</b>
                                         <br> Cancelled at {{formatDate(oc.updatedAt)}}
                                         <span *ngIf="oc.cancelType == 'project'">by this project</span>
                                         <span *ngIf="oc.cancelType == 'contributor'">by resource owner</span>

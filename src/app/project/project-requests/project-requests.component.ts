@@ -38,11 +38,14 @@ export class ProjectRequestsComponent implements OnInit {
 
   checkForm: any = {};
   cRating: any;
+  isRated = false;
+  isORated = false;
 
   constructor(private route: ActivatedRoute, private projectService: ProjectService, private marketplaceService: MarketplaceService,
     private messageService: MessageService) { }
 
   async ngOnInit() {
+    //this.isRated = false;
     this.route.queryParams
       .subscribe(params => {
         this.projectId = params.id;
@@ -221,8 +224,9 @@ export class ProjectRequestsComponent implements OnInit {
     }
     this.marketplaceService.completeProjectReq(rateForm).subscribe(
       res => {
-        this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Request completed!' });
+        //this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Request completed!' });
         //this.loadData();
+        this.isRated = true;
         this.ngOnInit();
       },
       err => {
@@ -273,6 +277,7 @@ export class ProjectRequestsComponent implements OnInit {
       needTitle: accepted.needTitle,
       user: accepted.requesterName
     }
+    this.isRated = false;
   }
 
   getFormB(accepted): void {
@@ -282,6 +287,7 @@ export class ProjectRequestsComponent implements OnInit {
       needTitle: accepted.needTitle
     }
     console.log(this.checkForm.id);
+    this.isORated = false;
   }
 
   clickRating(x, event) {
@@ -298,7 +304,8 @@ export class ProjectRequestsComponent implements OnInit {
     }
     this.marketplaceService.completeResourceReq(rateForm).subscribe(
       res => {
-        this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Request completed!' });
+        //this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Request completed!' });
+        this.isORated = true;
         this.ngOnInit();
       },
       err => {
