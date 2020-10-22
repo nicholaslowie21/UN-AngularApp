@@ -306,7 +306,14 @@
                                             <a href="/resource/resourceDetails?id={{op.resourceId}}&type={{op.resType}}">{{op.resourceTitle}}</a>
                                         </div>
                                         <div>{{op.desc}}</div>
-                                        <div class="mb-md-2">Submitted at {{formatDate(op.createdAt)}}</div>
+                                        <div class="mb-md-2">Submitted to 
+                                            <span *ngIf="op.resourceOwnerType == 'user'">
+                                                <a href="/profile?username={{op.resourceOwnerUsername}}&userType=individual">{{op.resourceOwnerName}}</a>
+                                            </span>
+                                            <span *ngIf="op.resourceOwnerType == 'institution'">
+                                                <a href="/profile?username={{op.resourceOwnerUsername}}&userType=institution">{{op.resourceOwnerName}}</a>
+                                            </span>
+                                            at {{formatDate(op.createdAt)}}</div>
                                         For <b>{{op.needTitle}}</b>
                                     </div>
                                     <div class="col-4">
@@ -344,7 +351,14 @@
                                             <a href="/resource/resourceDetails?id={{oa.resourceId}}&type={{oa.resType}}">{{oa.resourceTitle}}</a>
                                         </div>
                                         <div>{{oa.desc}}</div>
-                                        <div class="mb-md-2">Submitted at {{formatDate(oa.createdAt)}}</div>
+                                        <div class="mb-md-2">Submitted to
+                                            <span *ngIf="oa.resourceOwnerType == 'user'">
+                                                <a href="/profile?username={{oa.resourceOwnerUsername}}&userType=individual">{{oa.resourceOwnerName}}</a>
+                                            </span>
+                                            <span *ngIf="oa.resourceOwnerType == 'institution'">
+                                                <a href="/profile?username={{oa.resourceOwnerUsername}}&userType=institution">{{oa.resourceOwnerName}}</a>
+                                            </span>
+                                            at {{formatDate(oa.createdAt)}}</div>
                                         For <b>{{oa.needTitle}}</b>
                                         <br> Accepted at {{formatDate(oa.updatedAt)}}
                                     </div>
@@ -437,7 +451,14 @@
                                             <a href="/resource/resourceDetails?id={{od.resourceId}}&type={{od.resType}}">{{od.resourceTitle}}</a>
                                         </div>
                                         <div>{{od.desc}}</div>
-                                        <div class="mb-md-2">Submitted at {{formatDate(od.createdAt)}}</div>
+                                        <div class="mb-md-2">Submitted to
+                                            <span *ngIf="od.resourceOwnerType == 'user'">
+                                                <a href="/profile?username={{od.resourceOwnerUsername}}&userType=individual">{{od.resourceOwnerName}}</a>
+                                            </span>
+                                            <span *ngIf="od.resourceOwnerType == 'institution'">
+                                                <a href="/profile?username={{od.resourceOwnerUsername}}&userType=institution">{{od.resourceOwnerName}}</a>
+                                            </span>
+                                            at {{formatDate(od.createdAt)}}</div>
                                         For <b>{{od.needTitle}}</b>
                                         <br> Declined at {{formatDate(od.updatedAt)}}
                                     </div>
@@ -470,7 +491,14 @@
                                             <a href="/resource/resourceDetails?id={{oc.resourceId}}&type={{oc.resType}}">{{oc.resourceTitle}}</a>
                                         </div>
                                         <div>{{oc.desc}}</div>
-                                        <div class="mb-md-2">Submitted at {{formatDate(oc.createdAt)}}</div>
+                                        <div class="mb-md-2">Submitted to
+                                            <span *ngIf="oc.resourceOwnerType == 'user'">
+                                                <a href="/profile?username={{oc.resourceOwnerUsername}}&userType=individual">{{oc.resourceOwnerName}}</a>
+                                            </span>
+                                            <span *ngIf="oc.resourceOwnerType == 'institution'">
+                                                <a href="/profile?username={{oc.resourceOwnerUsername}}&userType=institution">{{oc.resourceOwnerName}}</a>
+                                            </span> 
+                                            at {{formatDate(oc.createdAt)}}</div>
                                         For <b>{{oc.needTitle}}</b>
                                         <br> Cancelled at {{formatDate(oc.updatedAt)}}
                                         <span *ngIf="oc.cancelType == 'project'">by this project</span>

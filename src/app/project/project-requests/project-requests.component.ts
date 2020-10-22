@@ -87,7 +87,7 @@ export class ProjectRequestsComponent implements OnInit {
     await this.marketplaceService.viewProjOutgoingResReq({reqStatus: 'cancelled', id: this.projectId}).toPromise().then(
       res => this.oCancelled = res.data.projectPageResourceReqs
     );
-    console.log(this.oCancelled)
+    console.log(this.oPending)
   }
 
   formatDate(date): any {
