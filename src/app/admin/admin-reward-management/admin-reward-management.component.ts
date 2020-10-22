@@ -119,8 +119,10 @@ export class AdminRewardManagementComponent implements OnInit {
   }
 
   formatDate(date): any {
-    let formattedDate = new Date(date).toUTCString();
-    return formattedDate.substring(5, formattedDate.length-13);
+    // let formattedDate = new Date(date).toUTCString();
+    let formattedDate = new Date(date).toDateString();
+    return formattedDate.substring(4, formattedDate.length);
+    // return formattedDate.substring(5, formattedDate.length-13);
   }
 
   getForm(reward): void {
@@ -220,7 +222,8 @@ export class AdminRewardManagementComponent implements OnInit {
     this.rewardService.updateReward(formData).subscribe(
       res => {
         this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Reward updated!' });
-        window.location.reload();
+        this.isEdit = false;
+        // window.location.reload();
       },
       err => {
         this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: err.error.msg });
