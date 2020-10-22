@@ -47,7 +47,7 @@
             </div>
         </ng-template>
         <ng-template let-project pTemplate="gridItem">
-            <div class="p-col-12 p-md-3">
+            <div class="p-col-12 p-md-4">
                 <div class="product-grid-item card p-3">
                     <div class="product-grid-item-top">
 
@@ -57,11 +57,11 @@
                             [alt]="project.title" />
                         <img *ngIf="project.imgPath.length != 0" src="https://localhost:8080{{project.imgPath}}" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;"
                             [alt]="project.title" />
-                        <div class="product-name">
+                        <div class="product-name" style="height: 23%;">
                             <a href="/project/resources?id={{project.id}}">{{project.title}}</a>
                         </div>
-                        <div class="product-description">{{project.country}}</div>
-                        <div class="product-description text-secondary">
+                        <div>{{project.country}}</div>
+                        <div class="text-secondary mb-md-1">
                             <small>Created on: {{formatDate(project.createdAt)}}</small>
                         </div>
                         <div *ngFor="let sdg of project.SDGs" style="display:inline-block;">

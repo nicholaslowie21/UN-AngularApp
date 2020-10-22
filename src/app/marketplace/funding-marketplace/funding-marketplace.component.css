@@ -73,6 +73,10 @@
     justify-content: space-between;
 }
 
+.product-grid-item-content {
+    text-align: center;
+}
+
 .product-grid-item > .img {
     width: 75%;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);

@@ -43,11 +43,13 @@
                         <span class="float-right small">{{formatDate(proj.createdAt)}}</span>
                     </div>
                     <div>
-                        <img *ngIf="proj.imgPath.length == 0" src="../../../assets/img/team.jpg" class="img-fluid"
-                            style="width: 230px; height: 150px; object-fit: cover;" [alt]="proj.title" />
-                        <img *ngIf="proj.imgPath.length != 0" src="https://localhost:8080{{proj.imgPath}}"
-                            class="img-fluid" style="width: 230px; height: 150px; object-fit: cover;"
-                            [alt]="proj.title" />
+                        <div class="product-grid-item-content">
+                            <img *ngIf="proj.imgPath.length == 0" src="../../../assets/img/team.jpg" class="img-fluid"
+                                style="width: 230px; height: 150px; object-fit: cover;" [alt]="proj.title" />
+                            <img *ngIf="proj.imgPath.length != 0" src="https://localhost:8080{{proj.imgPath}}"
+                                class="img-fluid" style="width: 230px; height: 150px; object-fit: cover;"
+                                [alt]="proj.title" />
+                        </div>
                         <div class="product-name"><a href="/project/projectDetails?id={{proj.id}}">{{proj.title}}</a>
                         </div>
                         <div class="mb-md-1">{{proj.fundingTitle}}</div>
