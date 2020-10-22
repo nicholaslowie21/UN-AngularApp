@@ -32,7 +32,7 @@
                     </div>
                 </ng-template>
                 <ng-template let-item pTemplate="gridItem">
-                    <div class="p-col-12 p-md-3">
+                    <div class="p-col-12 p-md-4">
                         <div class="product-grid-item card p-3">
                             <div class="product-grid-item-top">
                                 <div>
@@ -51,8 +51,6 @@
                             </div>
                             <div class="product-grid-item-bottom">
                                 <button (click)="setResourceId(item.id); setResourceType('item')" class="btn btn-primary btn-success" data-toggle="modal" data-target="#requestModal">Request</button>
-                                <!-- <button *ngIf="!isOwner" pButton type="button" label="Request" 
-                                    class="p-button-sm p-button-rounded p-button-success float-right"></button> -->
                             </div>
                         </div>
                     </div>
@@ -95,8 +93,6 @@
                             </div>
                             <div class="product-grid-item-bottom">
                                 <button (click)="setResourceId(manpower.id); setResourceType('manpower')" class="btn btn-primary btn-success" data-toggle="modal" data-target="#requestModal">Request</button>
-                                <!-- <button *ngIf="!isOwner" pButton type="button" label="Request" 
-                                    class="p-button-sm p-button-rounded p-button-success float-right"></button> -->
                             </div>
                         </div>
                     </div>
@@ -139,8 +135,6 @@
                             </div>
                             <div class="product-grid-item-bottom">
                                 <button (click)="setResourceId(venue.id); setResourceType('venue')" class="btn btn-primary btn-success" data-toggle="modal" data-target="#requestModal">Request</button>
-                                <!-- <button *ngIf="!isOwner" pButton type="button" label="Request" 
-                                    class="p-button-sm p-button-rounded p-button-success float-right"></button> -->
                             </div>
                         </div>
                     </div>
@@ -168,6 +162,11 @@
                                 <select class="form-control" name="project" [(ngModel)]="selectedProjectId" required #project="ngModel" (click)="updateSelectedProject($event)">
                                     <option *ngFor="let p of myProjects" value={{p.id}}>{{p.title}}</option>
                                 </select>
+                                <div class="alert-danger" *ngIf="f.submitted && project.invalid">
+                                    <div *ngIf="project.errors.required">
+                                        No project selected. Please select a project!
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <!-- if the selected project currently doesn't have a corresponding resource need -->
@@ -181,8 +180,9 @@
                         <div class="form-group row" *ngIf= "!autogenerateYes">
                             <label for="resourceNeed" class="col-sm-3 col-form-label">Select Resource Need</label>
                             <div class="col-sm-9">
-                                <select class="form-control" name="resourceNeed" [(ngModel)]="selectedResourceNeedId" required #resourceNeed="ngModel" (click)="updateSelectedResourceNeed($event)">
-                                    <option *ngFor="let r of resourceNeeds" value={{r.id}} placeholder="Select resource need">{{r.title}}</option>
+                                <p *ngIf="projectSelected && resourceNeeds.length == 0">There are no {{type}} resource needs for this project.</p>
+                                <select *ngIf="projectSelected && resourceNeeds.length != 0" class="form-control" name="resourceNeed" [(ngModel)]="selectedResourceNeedId" required #resourceNeed="ngModel" (click)="updateSelectedResourceNeed($event)">
+                                    <option *ngFor="let r of resourceNeeds" value={{r.id}}>{{r.title}}</option>
                                 </select>
                             </div>
                         </div>
@@ -190,7 +190,7 @@
                         <div class="form-group row">
                             <label for="desc" class="col-sm-3 col-form-label">Description</label>
                             <div class="col-sm-9">
-                                <textarea class="form-control" name="desc" [(ngModel)]="form.desc" required #desc="ngModel" rows="3"></textarea>
+                                <textarea class="form-control" name="desc" [(ngModel)]="form.desc" #desc="ngModel" rows="3"></textarea>
                             </div>
                             <div class="alert-danger" *ngIf="f.submitted && desc.invalid">
                                 <div *ngIf="desc.errors.required">Description is required</div>
@@ -225,17 +225,20 @@
                                     <i class="pi pi-tag product-category-icon"></i>
                                     <span class="product-category knowledgetype rounded-sm text-white"> Knowledge&nbsp;</span>
                                 </div>
-                                <!-- <span class="float-right">{{formatDate(knowledge.updatedAt)}}</span> -->
                             </div>
                             <div class="product-grid-item-content">
-                                <div class="product-name"><a href="/resource/resourceDetails?id={{knowledge.id}}&type=knowledge">{{knowledge.title}}</a></div>
+                                <div class="product-name"><a href="/resource/resourceDetails?id={{knowledge.id}}&type=knowledge">{{knowledge.title}}</a></div><br/>
+                                <div class="product-description text-secondary" *ngIf="60 >= knowledge.desc.length">
+                                    {{knowledge.desc}}
+                                </div>
+                                <div class="product-description text-secondary" *ngIf="knowledge.desc.length > 60">
+                                    {{knowledge.desc.substring(0, 30)}}...
+                                </div>
                                 <div class="product-description text-secondary">
                                     <small>Last updated: {{formatDate(knowledge.updatedAt)}}</small>
                                 </div>
                             </div>
                             <div class="product-grid-item-bottom">
-                                <!-- <button *ngIf="!isOwner" pButton type="button" label="Use in My Project" 
-                                    class="p-button-sm p-button-rounded p-button-success float-right"></button> -->
                                 <button (click)="setResourceId(knowledge.id); setResourceType('knowledge')" class="btn btn-primary btn-success" data-toggle="modal" data-target="#useKnowledgeModal">Use in My Project</button>
                             </div>
                         </div>
@@ -252,7 +255,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form name="form" (ngSubmit)="f.form.valid && onSubmitKnowledge()" #f="ngForm" novalidate>
+                            <form name="form" (ngSubmit)="fs.form.valid && onSubmitKnowledge()" #fs="ngForm" novalidate>
                                 This will notify the owner(s) of the knowledge resource that you have used their knowledge in your project.<br/><br/>
                                 <!-- show current user's projects and get them to choose one -->
                                 <div class="form-group row">
@@ -261,6 +264,11 @@
                                         <select class="form-control" name="project" [(ngModel)]="selectedProjectId" required #project="ngModel" (click)="updateSelectedProject($event)">
                                             <option *ngFor="let p of myProjects" value={{p.id}}>{{p.title}}</option>
                                         </select>
+                                        <div class="alert-danger" *ngIf="fs.submitted && project.invalid">
+                                            <div *ngIf="project.errors.required">
+                                                No project selected. Please select a project!
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <!-- if the selected project currently doesn't have a corresponding resource need -->
@@ -283,10 +291,7 @@
                                 <div class="form-group row">
                                     <label for="desc" class="col-sm-3 col-form-label">Description</label>
                                     <div class="col-sm-9">
-                                        <textarea class="form-control" name="desc" [(ngModel)]="form.desc" required #desc="ngModel" rows="3"></textarea>
-                                    </div>
-                                    <div class="alert-danger" *ngIf="f.submitted && desc.invalid">
-                                        <div *ngIf="desc.errors.required">Description is required</div>
+                                        <textarea class="form-control" name="desc" [(ngModel)]="form.desc" #desc="ngModel" rows="3"></textarea>
                                     </div>
                                 </div>
                                 <div class="form-group">

@@ -45,6 +45,7 @@ export class ResourceMarketplaceComponent implements OnInit {
   selectedResourceId: any;
   selectedResourceType: any;
   resourceNeeds: any[];
+  projectSelected: boolean = false;
   selectedProjectId: any;
   selectedResourceNeedId: any;
   autogenerateYes: boolean = false;
@@ -139,6 +140,7 @@ export class ResourceMarketplaceComponent implements OnInit {
     }
     
     this.items = arr;
+    this.sortKeyItem = '';
   }
 
   async filterCountryMpws(event) {
@@ -156,6 +158,7 @@ export class ResourceMarketplaceComponent implements OnInit {
     }
     
     this.manpowers = arr;
+    this.sortKeyMpw = '';
   }
 
   async filterCountryVens(event) {
@@ -173,6 +176,7 @@ export class ResourceMarketplaceComponent implements OnInit {
     }
     
     this.venues = arr;
+    this.sortKeyVen = '';
   }
 
   formatDate(date): any {
@@ -190,40 +194,24 @@ export class ResourceMarketplaceComponent implements OnInit {
     console.log(this.selectedResourceType);
   }
 
-  updateSelectedProject(event) {
+  async updateSelectedProject(event) {
     this.selectedProjectId = event.target.value;
+    this.projectSelected = true;
     console.log(this.selectedProjectId);
-    this.projectService.getProjectResourceNeeds({id: this.selectedProjectId}).subscribe(
+    await this.projectService.getProjectResourceNeeds({id: this.selectedProjectId}).toPromise().then(
       res => this.resourceNeeds = res.data.resourceneeds
     );
-    // filter resource needs is currently buggy
-    // this.filterResourceNeeds();
+    this.filterResourceNeeds();
   }
 
   // show only resource needs of the same type as the one being requested
   filterResourceNeeds(): void {
     let arr = [];
-    console.log(this.selectedResourceType);
-    if (this.selectedResourceType == 'item') {
-      for (let i = 0; i < this.resourceNeeds.length; i++) {
-        if (this.resourceNeeds[i].type == 'item') {
-          arr.push(this.resourceNeeds[i]);
-        }
-      }
-    } else if (this.selectedResourceType == 'manpower') {
-      for (let i = 0; i < this.resourceNeeds.length; i++) {
-        if (this.resourceNeeds[i].type == 'manpower') {
-          arr.push(this.resourceNeeds[i]);
-        }
-      }
-    } else if (this.selectedResourceType == 'venue') {
-      for (let i = 0; i < this.resourceNeeds.length; i++) {
-        if (this.resourceNeeds[i].type == 'venue') {
-          arr.push(this.resourceNeeds[i]);
-        }
+    for (let i = 0; i < this.resourceNeeds.length; i++) {  
+      if (this.resourceNeeds[i].type == this.selectedResourceType && this.resourceNeeds[i].completion != 100) {
+        arr.push(this.resourceNeeds[i]);
       }
     }
-    console.log(arr.length);
     this.resourceNeeds = arr;
   }
 
@@ -243,11 +231,11 @@ export class ResourceMarketplaceComponent implements OnInit {
         resourceId: this.selectedResourceId,
         projectId: this.selectedProjectId,
         resType: this.selectedResourceType,
-        desc: this.form.desc
+        desc: this.form.desc || ''
       };
       this.marketplaceService.requestResourceAuto(formCreate).subscribe(
         response => {
-          this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Resource request and resource need created!'});
+          this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Resource request and resource need created!'})
           window.location.reload();
         }, 
         err => {
@@ -281,7 +269,7 @@ export class ResourceMarketplaceComponent implements OnInit {
       const formCreate = {
         resourceId: this.selectedResourceId,
         projectId: this.selectedProjectId,
-        desc: this.form.desc
+        desc: this.form.desc || ''
       };
       this.marketplaceService.useKnowledgeResourceAuto(formCreate).subscribe(
         response => {
