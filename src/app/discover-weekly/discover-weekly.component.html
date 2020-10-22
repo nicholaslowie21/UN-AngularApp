@@ -17,7 +17,7 @@
         </div>
         <div class="row p-2">
           <div class="col-2">
-            <div *ngIf="n.hostImg.length == 0">
+            <div *ngIf="n.hostImg.length == 0" class="pl-2">
               <div *ngIf="n.hostType == 'user'">
                 <a href="/profile?username={{n.hostUsername}}&userType=individual"><img class="img-fluid rounded-circle" src="../../assets/img/profilePic_Placeholder.png"
                     alt="Profile picture" style="height: 60px; width: 60px; object-fit: cover;"></a>
@@ -27,7 +27,7 @@
                     alt="Profile picture" style="height: 60px; width: 60px; object-fit: cover;"></a>
               </div>
             </div>
-            <div *ngIf="n.hostImg.length > 0">
+            <div *ngIf="n.hostImg.length > 0" class="pl-2">
               <div *ngIf="n.hostType == 'user'">
                 <a href="/profile?username={{n.hostUsername}}&userType=individual"><img class="img-fluid rounded-circle" src="https://localhost:8080{{n.hostImg}}"
                     alt="Profile picture" style="height: 60px; width: 60px; object-fit: cover;"></a>
