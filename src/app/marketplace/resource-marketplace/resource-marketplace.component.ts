@@ -247,7 +247,7 @@ export class ResourceMarketplaceComponent implements OnInit {
         needId: this.selectedResourceNeedId,
         resourceId: this.selectedResourceId,
         resType: this.selectedResourceType,
-        desc: this.form.desc
+        desc: this.form.desc || ''
       };
 
       this.marketplaceService.requestResource(formCreate).subscribe(
@@ -284,7 +284,7 @@ export class ResourceMarketplaceComponent implements OnInit {
       const formCreate = {
         needId: this.selectedResourceNeedId,
         resourceId: this.selectedResourceId,
-        desc: this.form.desc
+        desc: this.form.desc || ''
       };
 
       this.marketplaceService.useKnowledgeResource(formCreate).subscribe(

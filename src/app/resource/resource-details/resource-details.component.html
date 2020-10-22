@@ -411,7 +411,8 @@
                                 <div class="col-9">
                                     <b>Project: <a href="/project/projectDetails?id={{p.projectId}}">{{p.projectTitle}}</a></b><br/>
                                     Resource need: {{p.title}}<br/>
-                                    Description: {{p.desc}}
+                                    Description: <span *ngIf="p.desc.length == 0">-</span>
+                                    <span *ngIf="p.desc.length > 0">{{p.desc}}</span>
                                 </div>
                               </div>   
                             </div>
