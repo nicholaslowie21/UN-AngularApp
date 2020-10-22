@@ -13,6 +13,7 @@ export class FundingMarketplaceComponent implements OnInit {
   projects = [];
   projForm: any = {imgPath: '', ownerType: '', ownerImg: ''};
   form: any = {};
+  isSuccessful = false;
 
   sortField: string;
   sortOrder: number;
@@ -60,6 +61,8 @@ export class FundingMarketplaceComponent implements OnInit {
       {label: 'Date Newest to Oldest', value: '!createdAt'},
       {label: 'Date Oldest to Newest', value: 'createdAt'}
     ];
+
+    this.isSuccessful = false;
   }
 
   async onSDGChange(event) {
@@ -155,7 +158,8 @@ export class FundingMarketplaceComponent implements OnInit {
     if(received == 0) {
       return 0;
     }
-    return parseFloat((received*100/total).toFixed(2));
+    // return parseFloat((received*100/total).toFixed(2));
+    return parseInt((received*100/total).toFixed(2));
   }
 
   formatDate(date): any {
@@ -197,13 +201,21 @@ export class FundingMarketplaceComponent implements OnInit {
     console.log(formDonate)
     this.marketplaceService.contributeMoney(formDonate).subscribe(
       response => {
-        this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Your request to donate has been submitted!'});
-        window.location.reload();
+        // this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Your request to donate has been submitted!'});
+        
+        this.projForm.pendingSum = this.projForm.pendingSum + parseInt(this.projForm.amount);
+        this.isSuccessful = true;
+        // this.ngOnInit();
+        // window.location.reload();
       },
       err => {
         this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
       }
     );
+  }
+
+  closeModal(): void {
+    this.ngOnInit();
   }
 
 }

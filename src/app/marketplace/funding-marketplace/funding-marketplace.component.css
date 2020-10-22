@@ -4,7 +4,7 @@
 }
 
 .product-name {
-    font-size: 1.5rem;
+    font-size: 1rem;
     font-weight: 700;
 }
 
@@ -62,7 +62,7 @@
 .product-grid-item {
     /* margin: .4em; */
     border: 1px solid #dee2e6;
-    height: 25rem;
+    height: 100%;
 }
 
 .product-grid-item >
