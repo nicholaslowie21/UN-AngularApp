@@ -164,6 +164,7 @@ export class ProjectResourcesComponent implements OnInit {
     console.log(JSON.stringify(this.contributions));
 
     this.isContributeSuccessful = false;
+    this.isDonateSuccessful = false;
   }
 
   calculateProgress(): void {
@@ -681,7 +682,7 @@ export class ProjectResourcesComponent implements OnInit {
         //this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Your request to donate has been submitted!'});
         //window.location.reload();
         this.isDonateSuccessful = true;
-        this.ngOnInit();
+        // this.ngOnInit();
       },
       err => {
         this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
