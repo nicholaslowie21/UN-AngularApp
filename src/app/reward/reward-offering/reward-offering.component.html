@@ -43,6 +43,7 @@
                                     <span *ngIf="reward.status == 'pending'" class="rounded-pill pl-2 pr-2 pending">pending</span>
                                     <span *ngIf="reward.status == 'close'" class="rounded-pill pl-2 pr-2 expired">expired</span>
                                     <span *ngIf="reward.status == 'rejected'" class="rounded-pill pl-2 pr-2 rejected">rejected</span>
+                                    <span *ngIf="reward.status == 'canceled'" class="rounded-pill pl-2 pr-2 cancelled">cancelled</span>
                                 </div>
                             </div>
                         </div>
@@ -73,6 +74,7 @@
                                     <span *ngIf="editForm.status == 'pending'" class="rounded-pill pl-2 pr-2 pending">pending</span>
                                     <span *ngIf="editForm.status == 'close'" class="rounded-pill pl-2 pr-2 expired">expired</span>
                                     <span *ngIf="editForm.status == 'rejected'" class="rounded-pill pl-2 pr-2 rejected">rejected</span>
+                                    <span *ngIf="editForm.status == 'canceled'" class="rounded-pill pl-2 pr-2 cancelled">cancelled</span>
                                     &nbsp;
                                 </span>
                             </h5>
@@ -89,7 +91,7 @@
                                     End Date: {{formatDate(editForm.endDate)}}
                                 </div>
                             </div>
-                            <button class="btn btn-danger" *ngIf="editForm.status == 'pending'" (click)="cancelReward(editForm.id)">Cancel</button>
+                            <button class="btn btn-danger" *ngIf="editForm.status == 'pending'" (click)="cancelReward(editForm.id)">Cancel Offering</button>
                         </div>
                     </div>
                 </div>
