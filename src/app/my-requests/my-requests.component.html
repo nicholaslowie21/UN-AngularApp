@@ -1,4 +1,4 @@
-<h2>My Outgoing Project Requests</h2>
+<h2>My Outgoing Requests</h2>
 
 <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item">
@@ -16,15 +16,60 @@
 </ul>
 <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="pending" role="tabpanel" aria-labelledby="pending-tab">
-      <p-dropdown [options]="filterTypeOptions" [(ngModel)]="filterKeyTypePending" placeholder="Filter By Type" (onChange)="filterPendingReqs($event)"
-        styleClass="p-mb-2 p-mb-md-0"></p-dropdown><br/>
-      <div *ngIf="pendingProjectReqs.length == 0">You have no pending project requests.</div>
-      <div *ngIf="pendingProjectReqs.length != 0">
-        You have {{pendingProjectReqs.length}} pending project request(s):<br/>
-        <div *ngFor="let req of pendingProjectReqs">
-          <div class="card bg-light" style="width: 80%">
-            <div class="card-body">
-              <div class="row">
+      <div class="card">
+        <p-dataView #dv [value]="pendingProjectReqs" [paginator]="true" [rows]="9" filterBy="title" layout="list">
+          <ng-template pTemplate="header">
+            <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+              <p-dropdown [options]="filterTypeOptions" [(ngModel)]="filterKeyTypePending" placeholder="Filter By Type" (onChange)="filterPendingReqs($event)"
+                styleClass="p-mb-2 p-mb-md-0"></p-dropdown><br/>
+            </div>
+          </ng-template>
+          <ng-template let-req pTemplate="listItem">
+            <div class="p-col-12">
+              <div class="row p-2">
+                <div class="col-2">
+                  <i class="pi pi-tag product-category-icon"></i>
+                  <span class="{{req.resType}}type rounded-sm text-white">&nbsp;{{req.resType}}&nbsp;</span>
+                </div>
+                <div class="col-4">
+                  <div class="req-name" *ngIf="req.resType != 'money'">Your resource: <a href="/resource/resourceDetails?id={{req.resourceId}}&type={{req.resType}}">{{req.resourceTitle}}</a></div>
+                  <div class="req-name" *ngIf="req.resType == 'money'">Your resource: Funds of ${{req.moneySum}}</div>
+                </div>
+                <div class="col-4">
+                    <div class="req-name">You requested to contribute to: <a href="/project/projectDetails?id={{req.projectId}}">{{req.projectTitle}}</a></div>
+                </div>
+                <div class="col-2">
+                  Request sent at:<br/>
+                  {{formatDate(req.createdAt)}}<br/><br/>
+                </div>
+                <div class="col-2"></div>
+                <div class="col-8">
+                  <p *ngIf="req.desc.length != 0">Description: {{req.desc}} This is a really really really long description to show that this takes up the space of both columns above it<br/></p>
+                  <p *ngIf="req.desc.length == 0">Description: -<br/></p>
+                </div>
+                <div class="col-2 d-flex flex-column">
+                  <button class="btn btn-danger align-self-end mt-auto" type="button" (click)="cancelProjectReq(req.id)">
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </p-dataView>
+      </div>
+    </div>
+    <div class="tab-pane fade" id="accepted" role="tabpanel" aria-labelledby="accepted-tab">
+      <div class="card">
+        <p-dataView #dv [value]="acceptedProjectReqs" [paginator]="true" [rows]="9" filterBy="title" layout="list">
+          <ng-template pTemplate="header">
+            <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+              <p-dropdown [options]="filterTypeOptions" [(ngModel)]="filterKeyTypeAccepted" placeholder="Filter By Type" (onChange)="filterAcceptedReqs($event)"
+                styleClass="p-mb-2 p-mb-md-0"></p-dropdown><br/>
+            </div>
+          </ng-template>
+          <ng-template let-req pTemplate="listItem">
+            <div class="p-col-12">
+              <div class="row p-2">
                 <div class="col-2">
                   <i class="pi pi-tag product-category-icon"></i>
                   <span class="{{req.resType}}type rounded-sm text-white">&nbsp;{{req.resType}}&nbsp;</span>
@@ -41,129 +86,96 @@
                   <p *ngIf="req.desc.length == 0">Description: -<br/></p>
                 </div>
                 <div class="col-3 d-flex flex-column">
-                  Request sent at:<br/>
-                  {{formatDate(req.createdAt)}}<br/><br/>
+                  Request accepted at:<br/>
+                  {{formatDate(req.updatedAt)}}<br/>
                   <button class="btn btn-danger align-self-end mt-auto" type="button" (click)="cancelProjectReq(req.id)">
                     Cancel
                   </button>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="tab-pane fade" id="accepted" role="tabpanel" aria-labelledby="accepted-tab">
-      <p-dropdown [options]="filterTypeOptions" [(ngModel)]="filterKeyTypeAccepted" placeholder="Filter By Type" (onChange)="filterAcceptedReqs($event)"
-        styleClass="p-mb-2 p-mb-md-0"></p-dropdown><br/>
-      <div *ngIf="acceptedProjectReqs.length == 0">You have no accepted project requests.</div>
-      <div *ngIf="acceptedProjectReqs.length != 0">
-        You have {{acceptedProjectReqs.length}} accepted project request(s):<br/>
-        <div *ngFor="let req of acceptedProjectReqs">
-            <div class="card bg-light" style="width: 80%">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-2">
-                      <i class="pi pi-tag product-category-icon"></i>
-                      <span class="{{req.resType}}type rounded-sm text-white">&nbsp;{{req.resType}}&nbsp;</span>
-                    </div>
-                    <div class="col-7">
-                      <p><b>Project: <a href="/project/projectDetails?id={{req.projectId}}">{{req.projectTitle}}</a></b></p>
-                      <p *ngIf="req.resType != 'money'">
-                        <b>Your resource: <a href="/resource/resourceDetails?id={{req.resourceId}}&type={{req.resType}}">{{req.resourceTitle}}</a></b><br/>
-                      </p>
-                      <p *ngIf="req.resType == 'money'">
-                        <b>Your resource:</b> Funds of ${{req.moneySum}}
-                      </p>
-                      <p *ngIf="req.desc.length != 0">Description: {{req.desc}}<br/></p>
-                      <p *ngIf="req.desc.length == 0">Description: -<br/></p>
-                    </div>
-                    <div class="col-3 d-flex flex-column">
-                      Request accepted at:<br/>
-                      {{formatDate(req.updatedAt)}}<br/>
-                      <button class="btn btn-danger align-self-end mt-auto" type="button" (click)="cancelProjectReq(req.id)">
-                        Cancel
-                      </button>
-                    </div>
-                  </div>   
-                </div>
-            </div>
-        </div>
+          </ng-template>
+        </p-dataView>
       </div>
     </div>
     <div class="tab-pane fade" id="declined" role="tabpanel" aria-labelledby="declined-tab">
-      <p-dropdown [options]="filterTypeOptions" [(ngModel)]="filterKeyTypeDeclined" placeholder="Filter By Type" (onChange)="filterDeclinedReqs($event)"
-        styleClass="p-mb-2 p-mb-md-0"></p-dropdown><br/>
-      <div *ngIf="declinedProjectReqs.length == 0">You have no declined project requests.</div>
-      <div *ngIf="declinedProjectReqs.length != 0">
-        You have {{declinedProjectReqs.length}} declined project request(s):<br/>
-        <div *ngFor="let req of declinedProjectReqs">
-            <div class="card bg-light" style="width: 80%">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-2">
-                      <i class="pi pi-tag product-category-icon"></i>
-                      <span class="{{req.resType}}type rounded-sm text-white">&nbsp;{{req.resType}}&nbsp;</span>
-                    </div>
-                    <div class="col-7">
-                      <p><b>Project: <a href="/project/projectDetails?id={{req.projectId}}">{{req.projectTitle}}</a></b></p>
-                      <p *ngIf="req.resType != 'money'">
-                        <b>Your resource: <a href="/resource/resourceDetails?id={{req.resourceId}}&type={{req.resType}}">{{req.resourceTitle}}</a></b><br/>
-                      </p>
-                      <p *ngIf="req.resType == 'money'">
-                        <b>Your resource:</b> Funds of ${{req.moneySum}}
-                      </p>
-                      <p *ngIf="req.desc.length != 0">Description: {{req.desc}}<br/></p>
-                      <p *ngIf="req.desc.length == 0">Description: -<br/></p>
-                    </div>
-                    <div class="col-3 d-flex flex-column">
-                      Request declined at:<br/>
-                      {{formatDate(req.updatedAt)}}<br/><br/>
-                    </div>
-                  </div>
-                </div>
+      <div class="card">
+        <p-dataView #dv [value]="declinedProjectReqs" [paginator]="true" [rows]="9" filterBy="title" layout="list">
+          <ng-template pTemplate="header">
+            <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+              <p-dropdown [options]="filterTypeOptions" [(ngModel)]="filterKeyTypeDeclined" placeholder="Filter By Type" (onChange)="filterDeclinedReqs($event)"
+                styleClass="p-mb-2 p-mb-md-0"></p-dropdown><br/>
             </div>
-        </div>
+          </ng-template>
+          <ng-template let-req pTemplate="listItem">
+            <div class="p-col-12">
+              <div class="row p-2">
+                <div class="col-2">
+                  <i class="pi pi-tag product-category-icon"></i>
+                  <span class="{{req.resType}}type rounded-sm text-white">&nbsp;{{req.resType}}&nbsp;</span>
+                </div>
+                <div class="col-7">
+                  <p><b>Project: <a href="/project/projectDetails?id={{req.projectId}}">{{req.projectTitle}}</a></b></p>
+                  <p *ngIf="req.resType != 'money'">
+                    <b>Your resource: <a href="/resource/resourceDetails?id={{req.resourceId}}&type={{req.resType}}">{{req.resourceTitle}}</a></b><br/>
+                  </p>
+                  <p *ngIf="req.resType == 'money'">
+                    <b>Your resource:</b> Funds of ${{req.moneySum}}
+                  </p>
+                  <p *ngIf="req.desc.length != 0">Description: {{req.desc}}<br/></p>
+                  <p *ngIf="req.desc.length == 0">Description: -<br/></p>
+                </div>
+                <div class="col-3 d-flex flex-column">
+                  Request declined at:<br/>
+                  {{formatDate(req.updatedAt)}}<br/>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </p-dataView>
       </div>
     </div>
     <div class="tab-pane fade" id="cancelled" role="tabpanel" aria-labelledby="cancelled-tab">
-      <p-dropdown [options]="filterTypeOptions" [(ngModel)]="filterKeyTypeCancelled" placeholder="Filter By Type" (onChange)="filterCancelledReqs($event)"
-        styleClass="p-mb-2 p-mb-md-0"></p-dropdown><br/>
-      <div *ngIf="cancelledProjectReqs.length == 0">You have no cancelled project requests.</div>
-      <div *ngIf="cancelledProjectReqs.length != 0">
-        You have {{cancelledProjectReqs.length}} cancelled project request(s):<br/>
-        <div *ngFor="let req of cancelledProjectReqs">
-            <div class="card bg-light" style="width: 80%">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-2">
-                      <i class="pi pi-tag product-category-icon"></i>
-                      <span class="{{req.resType}}type rounded-sm text-white">&nbsp;{{req.resType}}&nbsp;</span>
-                    </div>
-                    <div class="col-7">
-                      <p><b>Project: <a href="/project/projectDetails?id={{req.projectId}}">{{req.projectTitle}}</a></b></p>
-                      <p *ngIf="req.resType != 'money'">
-                        <b>Your resource: <a href="/resource/resourceDetails?id={{req.resourceId}}&type={{req.resType}}">{{req.resourceTitle}}</a></b><br/>
-                      </p>
-                      <p *ngIf="req.resType == 'money'">
-                        <b>Your resource:</b> Funds of ${{req.moneySum}}
-                      </p>
-                      <p *ngIf="req.desc.length != 0">Description: {{req.desc}}<br/></p>
-                      <p *ngIf="req.desc.length == 0">Description: -<br/></p>
-                    </div>
-                    <div class="col-3 d-flex flex-column">
-                      Request cancelled at:<br/>
-                      {{formatDate(req.updatedAt)}}<br/>
-                      <p *ngIf="req.cancelType == 'project'">
-                        Cancelled by: project
-                      </p>
-                      <p *ngIf="req.cancelType == 'contributor'">
-                        Cancelled by: you
-                      </p>
-                    </div>
-                </div>
+      <div class="card">
+        <p-dataView #dv [value]="cancelledProjectReqs" [paginator]="true" [rows]="9" filterBy="title" layout="list">
+          <ng-template pTemplate="header">
+            <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+              <p-dropdown [options]="filterTypeOptions" [(ngModel)]="filterKeyTypeCancelled" placeholder="Filter By Type" (onChange)="filterCancelledReqs($event)"
+                styleClass="p-mb-2 p-mb-md-0"></p-dropdown><br/>
             </div>
-        </div>
+          </ng-template>
+          <ng-template let-req pTemplate="listItem">
+            <div class="p-col-12">
+              <div class="row p-2">
+                <div class="col-2">
+                  <i class="pi pi-tag product-category-icon"></i>
+                  <span class="{{req.resType}}type rounded-sm text-white">&nbsp;{{req.resType}}&nbsp;</span>
+                </div>
+                <div class="col-7">
+                  <p><b>Project: <a href="/project/projectDetails?id={{req.projectId}}">{{req.projectTitle}}</a></b></p>
+                  <p *ngIf="req.resType != 'money'">
+                    <b>Your resource: <a href="/resource/resourceDetails?id={{req.resourceId}}&type={{req.resType}}">{{req.resourceTitle}}</a></b><br/>
+                  </p>
+                  <p *ngIf="req.resType == 'money'">
+                    <b>Your resource:</b> Funds of ${{req.moneySum}}
+                  </p>
+                  <p *ngIf="req.desc.length != 0">Description: {{req.desc}}<br/></p>
+                  <p *ngIf="req.desc.length == 0">Description: -<br/></p>
+                </div>
+                <div class="col-3 d-flex flex-column">
+                  Request cancelled at:<br/>
+                  {{formatDate(req.updatedAt)}}<br/>
+                  <p *ngIf="req.cancelType == 'project'">
+                    Cancelled by: project
+                  </p>
+                  <p *ngIf="req.cancelType == 'contributor'">
+                    Cancelled by: you
+                  </p>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </p-dataView>
       </div>
     </div>
 </div>
