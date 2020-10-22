@@ -1,7 +1,7 @@
 <h2>{{user.name}}'s Resources
     <a *ngIf="isOwner" href="/resource/createResource" class="btn btn-primary float-right">Create New Resource</a>
 </h2>
-<a href="/myRequests" class="btn btn-primary float-right">My Outgoing Project Requests</a>
+<a *ngIf="isOwner" href="/myRequests" class="btn btn-primary float-right">My Outgoing Project Requests</a>
 
 <p-toast key="toastMsg" [baseZIndex]="100"></p-toast>
 
@@ -54,13 +54,7 @@
                             <div class="product-grid-item-bottom">
                                 <span *ngIf="isOwner" class="product-category">{{item.status}}</span>
                                 <p-inputSwitch *ngIf="isOwner" [ngModel]="checkStatus(item)" (onChange)="handleChangeItem($event, item)"></p-inputSwitch>
-                                <!-- <button *ngIf="item.status == 'active'" pButton type="button" label="Deactivate" (click)="deactivateItem(item)"
-                                    class="p-button-sm p-button-rounded p-button-danger float-right"></button>
-
-                                <button *ngIf="item.status == 'inactive'" pButton type="button" label="Activate" (click)="activateItem(item)"
-                                    class="p-button-sm p-button-rounded p-button-success float-right"></button> -->
-                                <button *ngIf="!isOwner" pButton type="button" label="Request" 
-                                    class="p-button-sm p-button-rounded p-button-success float-right"></button>
+                                
                             </div>
                         </div>
                     </div>
