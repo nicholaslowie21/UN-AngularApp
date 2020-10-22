@@ -74,6 +74,8 @@ export class ProjectResourcesComponent implements OnInit {
   oldRating: any;
   needForm: any = {};
 
+  isContributeSuccessful = false;
+
   constructor(private route: ActivatedRoute, private projectService: ProjectService,
     private tokenStorageService: TokenStorageService, private messageService: MessageService,
     private resourceService: ResourceService, private marketplaceService: MarketplaceService) { }
@@ -158,6 +160,8 @@ export class ProjectResourcesComponent implements OnInit {
     this.calculateProgress();
     console.log(this.resourceNeeds);
     console.log(JSON.stringify(this.contributions));
+
+    this.isContributeSuccessful = false;
   }
 
   calculateProgress(): void {
@@ -529,7 +533,9 @@ export class ProjectResourcesComponent implements OnInit {
     this.marketplaceService.createProjectRequest(formReq).subscribe(
       response => {
         this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Request created!' });
-        window.location.reload();
+        this.isContributeSuccessful = true;
+        this.ngOnInit();
+        // window.location.reload();
       },
       err => {
         this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: err.error.msg });

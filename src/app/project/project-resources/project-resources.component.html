@@ -74,91 +74,83 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div class="row">
-                    <div class="col-12">
-                        <h5>Select your resource:</h5>
-                        <!--select class="form-control" name="type" [(ngModel)]="resourceType" required #type="ngModel">
-                            <option>Item</option>
-                            <option>Knowledge</option>
-                            <option *ngIf="userType == 'individual'">Manpower</option>
-                            <option>Venue</option>
-                        </select>
-                        <h6>{{tempType}}</h6-->
-                        <!--div class="input-group">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text">
-                                    <input type="radio" aria-label="Radio button for following text input">
+                <div *ngIf="!isContributeSuccessful">
+                    <div class="row">
+                        <div class="col-12">
+                            <h5>Select your resource:</h5>
+                            <div *ngIf="tempType=='item' && item.length != 0">
+                                <div *ngFor="let it of item; let i = index">
+                                    <label>
+                                        <input type="radio" name="res" value="i" [checked]="resMap[i]" (change)="updateCheckedRes(it.id, $event); isUpdateSuccessful=false"
+                                        /> {{it.title}}
+                                        <br>
+                                        <small>{{it.desc}}</small>
+                                    </label>
                                 </div>
                             </div>
-                            <input type="text" class="form-control" aria-label="Text input with radio button">
-                        </div-->
-
-                        <div *ngIf="tempType=='item' && item.length != 0">
-                            <div *ngFor="let it of item; let i = index">
-                                <label>
-                                    <input type="radio" name="res" value="i" [checked]="resMap[i]" (change)="updateCheckedRes(it.id, $event); isUpdateSuccessful=false"
-                                    /> {{it.title}}
-                                    <br>
-                                    <small>{{it.desc}}</small>
-                                </label>
+                            <div *ngIf="tempType=='item' && item.length== 0">
+                                You have no item resources. Create one now!
                             </div>
-                        </div>
-                        <div *ngIf="tempType=='item' && item.length== 0">
-                            You have no item resources. Create one now!
-                        </div>
-                        <div *ngIf="tempType=='knowledge' && knowledge.length != 0">
-                            <div *ngFor="let kn of knowledge; let i = index">
-                                <label>
-                                    <input type="radio" name="res" value="i" [checked]="resMap[i]" (change)="updateCheckedRes(kn.id, $event); isUpdateSuccessful=false"
-                                    /> {{kn.title}}
-                                    <br>
-                                    <small> {{kn.desc}}</small>
-                                </label>
+                            <div *ngIf="tempType=='knowledge' && knowledge.length != 0">
+                                <div *ngFor="let kn of knowledge; let i = index">
+                                    <label>
+                                        <input type="radio" name="res" value="i" [checked]="resMap[i]" (change)="updateCheckedRes(kn.id, $event); isUpdateSuccessful=false"
+                                        /> {{kn.title}}
+                                        <br>
+                                        <small> {{kn.desc}}</small>
+                                    </label>
+                                </div>
                             </div>
-                        </div>
-                        <div *ngIf="tempType=='knowledge' && knowledge.length== 0">
-                            You have no knowledge resources. Create one now!
-                        </div>
-                        <div *ngIf="tempType=='manpower' && manpower.length != 0">
-                            <div *ngFor="let mn of manpower; let i = index">
-                                <label>
-                                    <input type="radio" name="res" value="i" [checked]="resMap[i]" (change)="updateCheckedRes(mn.id, $event); isUpdateSuccessful=false"
-                                    /> {{mn.title}}
-                                    <br>
-                                    <small>{{mn.desc}} </small>
-                                </label>
+                            <div *ngIf="tempType=='knowledge' && knowledge.length== 0">
+                                You have no knowledge resources. Create one now!
                             </div>
-                        </div>
-                        <div *ngIf="tempType=='manpower' && manpower.length== 0">
-                            You have no manpower resources. Create one now!
-                        </div>
-                        <div *ngIf="tempType=='venue' && venue.length != 0">
-                            <div *ngFor="let vn of venue; let i = index">
-                                <label>
-                                    <input type="radio" name="res" value="i" [checked]="resMap[i]" (change)="updateCheckedRes(vn.id, $event); isUpdateSuccessful=false"
-                                    /> {{vn.title}}
-                                    <br>
-                                    <small>{{vn.desc}}</small>
-                                </label>
+                            <div *ngIf="tempType=='manpower' && manpower.length != 0">
+                                <div *ngFor="let mn of manpower; let i = index">
+                                    <label>
+                                        <input type="radio" name="res" value="i" [checked]="resMap[i]" (change)="updateCheckedRes(mn.id, $event); isUpdateSuccessful=false"
+                                        /> {{mn.title}}
+                                        <br>
+                                        <small>{{mn.desc}} </small>
+                                    </label>
+                                </div>
                             </div>
-                        </div>
-                        <div *ngIf="tempType=='venue' && venue.length== 0">
-                            You have no venue resources. Create one now!
+                            <div *ngIf="tempType=='manpower' && manpower.length== 0">
+                                You have no manpower resources. Create one now!
+                            </div>
+                            <div *ngIf="tempType=='venue' && venue.length != 0">
+                                <div *ngFor="let vn of venue; let i = index">
+                                    <label>
+                                        <input type="radio" name="res" value="i" [checked]="resMap[i]" (change)="updateCheckedRes(vn.id, $event); isUpdateSuccessful=false"
+                                        /> {{vn.title}}
+                                        <br>
+                                        <small>{{vn.desc}}</small>
+                                    </label>
+                                </div>
+                            </div>
+                            <div *ngIf="tempType=='venue' && venue.length== 0">
+                                You have no venue resources. Create one now!
+                            </div>
                         </div>
                     </div>
-                </div>
-                <br>
-                <div *ngIf=checkBox class="row">
-                    <div class="col-12">
-                        Request Description:
-                        <br>
-                        <textarea class="form-control" name="reqDesc" [(ngModel)]="reqDescription" required #reqDesc="ngModel" rows="3" cols="60"></textarea>
+                    <br>
+                    <div *ngIf=checkBox class="row">
+                        <div class="col-12">
+                            Request Description:
+                            <br>
+                            <textarea class="form-control" name="reqDesc" [(ngModel)]="reqDescription" required #reqDesc="ngModel" rows="3" cols="60"></textarea>
+                        </div>
+    
                     </div>
-
+                    <br>
+                    <div *ngIf=checkBox class="form-group">
+                        <button class="btn btn-primary btn-block" (click)=onReqSubmit()>Submit</button>
+                    </div>
                 </div>
-                <br>
-                <div *ngIf=checkBox class="form-group">
-                    <button class="btn btn-primary btn-block" (click)=onReqSubmit()>Submit</button>
+                <div *ngIf="isContributeSuccessful">
+                    <div class="alert alert-success">
+                        Your request is submitted successfully!<br>
+                        Check your request status under <a href="/myRequests">My Outgoing Requests</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -464,8 +456,12 @@
                                                     <span style="font-size: small;">({{cb.contributorUsername}})</span>
                                                 </div>
                                             </div>
-                                            <div>Contributed to {{cb.needTitle}}</div>
-                                            <div>Rating: {{cb.rating}}</div>
+                                            <div>Contributed to <b>{{cb.needTitle}}</b></div>
+                                            <div>Rating: 
+                                                <div *ngFor="let starIcon of [].constructor(cb.rating)" style="display: inline-block;">
+                                                    <i class="pi pi-star" style="color: #FD4;"></i>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="col-4">
                                             <div class="float-right">
