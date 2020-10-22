@@ -50,9 +50,8 @@
                                 class="img-fluid" style="width: 230px; height: 150px; object-fit: cover;"
                                 [alt]="proj.title" />
                         </div>
-                        <div class="product-name"><a href="/project/projectDetails?id={{proj.id}}">{{proj.title}}</a>
-                        </div>
-                        <div class="mb-md-1">{{proj.fundingTitle}}</div>
+                        <div class="product-name">{{proj.fundingTitle}}</div>
+                        <div class="mb-md-1"><a href="/project/projectDetails?id={{proj.id}}">{{proj.title}}</a></div>
 
                         <span>${{proj.receivedSum}} raised</span>
                         <span class="float-right">{{calculateProgress(proj.total, proj.receivedSum)}}%</span>
