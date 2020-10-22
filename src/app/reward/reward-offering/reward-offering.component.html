@@ -28,7 +28,7 @@
                         <div class="product-grid-item card p-2">
                                 
                             <div class="product-grid-item-content">
-                                <img *ngIf="reward.imgPath.length == 0" src="../../../assets/img/profilePic_Placeholder.png"
+                                <img *ngIf="reward.imgPath.length == 0" src="../../../assets/img/rewardPlaceholder.png"
                                     class="img-fluid" style="width: 150px; height: 150px; object-fit: cover;" alt="Reward pic" />
                                 <img *ngIf="reward.imgPath.length != 0" src="https://localhost:8080{{reward.imgPath}}"
                                     class="img-fluid" style="width: 150px; height: 150px; object-fit: cover;" alt="Reward pic" />
@@ -64,7 +64,7 @@
                             <span class="product-category">{{editForm.country}}</span>
                             <span class="float-right">{{formatDate(editForm.createdAt)}}</span>
                             <br>
-                            <img *ngIf="editForm.rewardImg.length == 0" src="../../../assets/img/profilePic_Placeholder.png"
+                            <img *ngIf="editForm.rewardImg.length == 0" src="../../../assets/img/rewardPlaceholder.png"
                                 class="img-fluid" style="width: 500px; height: 200px; object-fit: cover;" alt="Reward pic" />
                             <img *ngIf="editForm.rewardImg.length != 0" src="https://localhost:8080{{editForm.rewardImg}}"
                                 class="img-fluid" style="width: 500px; height: 200px; object-fit: cover;" alt="Reward pic" />
