@@ -216,7 +216,7 @@
                     <div class="card bg-light">
                         <div class="card-body">
                             <b>Project: <a href="/project/projectDetails?id={{req.projectId}}">{{req.projectTitle}}</a></b><br/>
-                            Description: {{req.desc}}
+                            Description: {{req.desc}} <br>
                             Request received at: {{formatDate(req.createdAt)}}<br/>
                             <br/><br/>
                             <button class="btn btn-danger float-right ml-2" type="button" (click)="declineResourceReq(req.id)">
