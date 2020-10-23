@@ -50,7 +50,7 @@
                                 </div>
                             </div>
                             <div class="product-grid-item-bottom">
-                                <button (click)="setResourceId(item.id); setResourceType('item')" class="btn btn-primary btn-success" data-toggle="modal" data-target="#requestModal">Request</button>
+                                <button *ngIf="item.ownerUsername != loggedInUsername" (click)="setResourceId(item.id); setResourceType('item')" class="btn btn-primary btn-success" data-toggle="modal" data-target="#requestModal">Request</button>
                             </div>
                         </div>
                     </div>
@@ -92,7 +92,7 @@
                                 </div>
                             </div>
                             <div class="product-grid-item-bottom">
-                                <button (click)="setResourceId(manpower.id); setResourceType('manpower')" class="btn btn-primary btn-success" data-toggle="modal" data-target="#requestModal">Request</button>
+                                <button *ngIf="manpower.ownerUsername != loggedInUsername" (click)="setResourceId(manpower.id); setResourceType('manpower')" class="btn btn-primary btn-success" data-toggle="modal" data-target="#requestModal">Request</button>
                             </div>
                         </div>
                     </div>
@@ -134,7 +134,7 @@
                                 </div>
                             </div>
                             <div class="product-grid-item-bottom">
-                                <button (click)="setResourceId(venue.id); setResourceType('venue')" class="btn btn-primary btn-success" data-toggle="modal" data-target="#requestModal">Request</button>
+                                <button *ngIf="venue.ownerUsername != loggedInUsername" (click)="setResourceId(venue.id); setResourceType('venue')" class="btn btn-primary btn-success" data-toggle="modal" data-target="#requestModal">Request</button>
                             </div>
                         </div>
                     </div>
@@ -247,7 +247,7 @@
                                 </div>
                             </div>
                             <div class="product-grid-item-bottom">
-                                <button (click)="setResourceId(knowledge.id); setResourceType('knowledge')" class="btn btn-primary btn-success" data-toggle="modal" data-target="#useKnowledgeModal">Use in My Project</button>
+                                <button *ngIf="knowledge.ownerUsername != loggedInUsername" (click)="setResourceId(knowledge.id); setResourceType('knowledge')" class="btn btn-primary btn-success" data-toggle="modal" data-target="#useKnowledgeModal">Use in My Project</button>
                             </div>
                         </div>
                     </div>

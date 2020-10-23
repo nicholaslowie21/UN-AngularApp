@@ -53,6 +53,8 @@ export class ResourceMarketplaceComponent implements OnInit {
   isRequestSuccessful = false;
   isUseKnowledgeSuccessful = false;
 
+  loggedInUsername: any;
+
   constructor(private route: ActivatedRoute, private marketplaceService: MarketplaceService, private messageService: MessageService, private projectService: ProjectService, private tokenStorageService: TokenStorageService) { }
 
   async ngOnInit() {
@@ -81,6 +83,8 @@ export class ResourceMarketplaceComponent implements OnInit {
 
     this.isRequestSuccessful = false;
     this.isUseKnowledgeSuccessful = false;
+
+    this.loggedInUsername = this.tokenStorageService.getUser().username;
   }
   
   onSortChangeItem(event) {
