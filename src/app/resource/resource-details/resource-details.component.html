@@ -261,121 +261,137 @@
         <button class="btn btn-primary" data-toggle="modal" data-target="#useKnowledgeModal">Use in My Project</button>
     </div>
 
-    <div class="modal fade" id="requestModal" tabindex="-1" role="dialog" aria-labelledby="requestModalLabel" aria-hidden="true">
+    <div class="modal fade" data-backdrop="static" id="requestModal" tabindex="-1" role="dialog" aria-labelledby="requestModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="requestModalLabel">Request Resource</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" (click)="closeModal()" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
-                        <!-- show current user's projects and get them to choose one -->
-                        <div class="form-group row">
-                            <label for="project" class="col-sm-3 col-form-label">Select Project</label>
-                            <div class="col-sm-9">
-                                <select class="form-control" name="project" [(ngModel)]="selectedProjectId" required #project="ngModel" (click)="updateSelectedProject($event)">
-                                    <option *ngFor="let p of myProjects" value={{p.id}}>{{p.title}}</option>
-                                </select>
-                                <div class="alert-danger" *ngIf="f.submitted && project.invalid">
-                                    <div *ngIf="project.errors.required">
-                                        No project selected. Please select a project!
+                    <div *ngIf="!isRequestSuccessful">
+                        <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+                            <!-- show current user's projects and get them to choose one -->
+                            <div class="form-group row">
+                                <label for="project" class="col-sm-3 col-form-label">Select Project</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control" name="project" [(ngModel)]="selectedProjectId" required #project="ngModel" (click)="updateSelectedProject($event)">
+                                        <option *ngFor="let p of myProjects" value={{p.id}}>{{p.title}}</option>
+                                    </select>
+                                    <div class="alert-danger" *ngIf="f.submitted && project.invalid">
+                                        <div *ngIf="project.errors.required">
+                                            No project selected. Please select a project!
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- if the selected project currently doesn't have a corresponding resource need -->
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="autogenerate" [checked]="autogenerateYes" (change)="updateAutogenerate($event);">
-                            <label class="form-check-label" for="autogenerate">
-                                I don't have a resource need for this yet, auto-generate it for me
-                            </label>
-                        </div><br/>
-                        <!-- show resource needs of selected project and get user to choose one -->
-                        <div class="form-group row" *ngIf= "!autogenerateYes">
-                            <label for="resourceNeed" class="col-sm-3 col-form-label">Select Resource Need</label>
-                            <div class="col-sm-9">
-                                <p *ngIf="projectSelected && resourceNeeds.length == 0">There are no {{type}} resource needs for this project.</p>
-                                <select *ngIf="projectSelected && resourceNeeds.length != 0" class="form-control" name="resourceNeed" [(ngModel)]="selectedResourceNeedId" required #resourceNeed="ngModel" (click)="updateSelectedResourceNeed($event)">
-                                    <option *ngFor="let r of resourceNeeds" value={{r.id}}>{{r.title}}</option>
-                                </select>
+                            <!-- if the selected project currently doesn't have a corresponding resource need -->
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="autogenerate" [checked]="autogenerateYes" (change)="updateAutogenerate($event);">
+                                <label class="form-check-label" for="autogenerate">
+                                    I don't have a resource need for this yet, auto-generate it for me
+                                </label>
+                            </div><br/>
+                            <!-- show resource needs of selected project and get user to choose one -->
+                            <div class="form-group row" *ngIf= "!autogenerateYes">
+                                <label for="resourceNeed" class="col-sm-3 col-form-label">Select Resource Need</label>
+                                <div class="col-sm-9">
+                                    <p *ngIf="projectSelected && resourceNeeds.length == 0">There are no {{type}} resource needs for this project.</p>
+                                    <select *ngIf="projectSelected && resourceNeeds.length != 0" class="form-control" name="resourceNeed" [(ngModel)]="selectedResourceNeedId" required #resourceNeed="ngModel" (click)="updateSelectedResourceNeed($event)">
+                                        <option *ngFor="let r of resourceNeeds" value={{r.id}}>{{r.title}}</option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <!-- input description for resource request -->
-                        <div class="form-group row">
-                            <label for="desc" class="col-sm-3 col-form-label">Description (optional)</label>
-                            <div class="col-sm-9">
-                                <textarea class="form-control" name="desc" [(ngModel)]="form.desc" #desc="ngModel" rows="3"></textarea>
+                            <!-- input description for resource request -->
+                            <div class="form-group row">
+                                <label for="desc" class="col-sm-3 col-form-label">Description (optional)</label>
+                                <div class="col-sm-9">
+                                    <textarea class="form-control" name="desc" [(ngModel)]="form.desc" #desc="ngModel" rows="3"></textarea>
+                                </div>
                             </div>
+                            <div class="form-group">
+                                <button class="btn btn-primary btn-block">Request</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div *ngIf="isRequestSuccessful">
+                        <div class="alert alert-success">
+                            Your request has been submitted successfully! <br>
+                            Check your request status on your project requests page > Outgoing Requests
                         </div>
-                        <div class="form-group">
-                            <button class="btn btn-primary btn-block">Request</button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="useKnowledgeModal" tabindex="-1" role="dialog" aria-labelledby="useKnowledgeModal" aria-hidden="true">
+    <div class="modal fade" data-backdrop="static" id="useKnowledgeModal" tabindex="-1" role="dialog" aria-labelledby="useKnowledgeModal" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="useKnowledgeModalLabel">Use Knowledge Resource</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" (click)="closeModal()" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form name="form" (ngSubmit)="fs.form.valid && onSubmitKnowledge()" #fs="ngForm" novalidate>
-                        This will notify the owner(s) of the knowledge resource that you have used their knowledge resource in your project.<br/><br/>
-                        <!-- show current user's projects and get them to choose one -->
-                        <div class="form-group row">
-                            <label for="project" class="col-sm-3 col-form-label">Select Project</label>
-                            <div class="col-sm-9">
-                                <select class="form-control" name="project" [(ngModel)]="selectedProjectId" required #project="ngModel" (click)="updateSelectedProject($event)">
-                                    <option *ngFor="let p of myProjects" value={{p.id}}>{{p.title}}</option>
-                                </select>
-                                <div *ngIf="selectedProject">
-                                    You have selected {{selectedProject}}
-                                </div>
-                                <div class="alert-danger" *ngIf="fs.submitted && project.invalid">
-                                    <div *ngIf="project.errors.required">
-                                        No project selected. Please select a project!
+                    <div *ngIf="!isRequestSuccessful">
+                        <form name="form" (ngSubmit)="fs.form.valid && onSubmitKnowledge()" #fs="ngForm" novalidate>
+                            This will notify the owner(s) of the knowledge resource that you have used their knowledge resource in your project.<br/><br/>
+                            <!-- show current user's projects and get them to choose one -->
+                            <div class="form-group row">
+                                <label for="project" class="col-sm-3 col-form-label">Select Project</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control" name="project" [(ngModel)]="selectedProjectId" required #project="ngModel" (click)="updateSelectedProject($event)">
+                                        <option *ngFor="let p of myProjects" value={{p.id}}>{{p.title}}</option>
+                                    </select>
+                                    <div *ngIf="selectedProject">
+                                        You have selected {{selectedProject}}
+                                    </div>
+                                    <div class="alert-danger" *ngIf="fs.submitted && project.invalid">
+                                        <div *ngIf="project.errors.required">
+                                            No project selected. Please select a project!
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- if the selected project currently doesn't have a corresponding resource need -->
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="autogenerate" [checked]="autogenerateYes" (change)="updateAutogenerate($event);">
-                            <label class="form-check-label" for="autogenerate">
-                                I don't have a resource need for this yet, auto-generate it for me
-                            </label>
-                        </div><br/>
-                        <!-- show resource needs of selected project and get user to choose one -->
-                        <div class="form-group row" *ngIf= "!autogenerateYes">
-                            <label for="resourceNeed" class="col-sm-3 col-form-label">Select Resource Need:</label>
-                            <p *ngIf="projectSelected && resourceNeeds.length == 0">There are no {{type}} resource needs for this project.</p>
-                            <div class="col-sm-9">
-                                <select *ngIf="projectSelected && resourceNeeds.length != 0" class="form-control" name="resourceNeed" [(ngModel)]="selectedResourceNeedId" required #resourceNeed="ngModel" (click)="updateSelectedResourceNeed($event)">
-                                    <option *ngFor="let r of resourceNeeds" value={{r.id}}>{{r.title}}</option>
-                                </select>
+                            <!-- if the selected project currently doesn't have a corresponding resource need -->
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="autogenerate" [checked]="autogenerateYes" (change)="updateAutogenerate($event);">
+                                <label class="form-check-label" for="autogenerate">
+                                    I don't have a resource need for this yet, auto-generate it for me
+                                </label>
+                            </div><br/>
+                            <!-- show resource needs of selected project and get user to choose one -->
+                            <div class="form-group row" *ngIf= "!autogenerateYes">
+                                <label for="resourceNeed" class="col-sm-3 col-form-label">Select Resource Need:</label>
+                                <p *ngIf="projectSelected && resourceNeeds.length == 0">There are no {{type}} resource needs for this project.</p>
+                                <div class="col-sm-9">
+                                    <select *ngIf="projectSelected && resourceNeeds.length != 0" class="form-control" name="resourceNeed" [(ngModel)]="selectedResourceNeedId" required #resourceNeed="ngModel" (click)="updateSelectedResourceNeed($event)">
+                                        <option *ngFor="let r of resourceNeeds" value={{r.id}}>{{r.title}}</option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <!-- input description for resource request -->
-                        <div class="form-group row">
-                            <label for="desc" class="col-sm-3 col-form-label">Description (optional)</label>
-                            <div class="col-sm-9">
-                                <textarea class="form-control" name="desc" [(ngModel)]="form.desc" #desc="ngModel" rows="3"></textarea>
+                            <!-- input description for resource request -->
+                            <div class="form-group row">
+                                <label for="desc" class="col-sm-3 col-form-label">Description (optional)</label>
+                                <div class="col-sm-9">
+                                    <textarea class="form-control" name="desc" [(ngModel)]="form.desc" #desc="ngModel" rows="3"></textarea>
+                                </div>
                             </div>
+                            <div class="form-group">
+                                <button class="btn btn-primary btn-block">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div *ngIf="isRequestSuccessful">
+                        <div class="alert alert-success">
+                            You have successfully used this knowledge for your project! <br>
+                            The resource has been listed under your project resources > Resources Obtained.
                         </div>
-                        <div class="form-group">
-                            <button class="btn btn-primary btn-block">Submit</button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>

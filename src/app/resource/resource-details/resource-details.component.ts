@@ -71,6 +71,8 @@ export class ResourceDetailsComponent implements OnInit {
   suggestedProjects: any[];
   autogenerateYes: boolean = false;
 
+  isRequestSuccessful = false;
+
   constructor(private route: ActivatedRoute, private tokenStorageService: TokenStorageService, 
     private userService: UserService, private institutionService: InstitutionService, private projectService: ProjectService,
     private resourceService: ResourceService, private marketplaceService: MarketplaceService, private messageService: MessageService) { }
@@ -161,6 +163,7 @@ export class ResourceDetailsComponent implements OnInit {
       res => {this.suggestedProjects = res.data.resourceneedSuggestion}
     );
 
+    this.isRequestSuccessful = false;
   }
 
   checkStatus(): boolean {
@@ -364,8 +367,9 @@ export class ResourceDetailsComponent implements OnInit {
       };
       this.marketplaceService.requestResourceAuto(formCreate).subscribe(
         response => {
-          this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Resource request and resource need created!'});
-          window.location.reload();
+          // this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Resource request and resource need created!'});
+          // window.location.reload();
+          this.isRequestSuccessful = true;
         }, 
         err => {
           this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
@@ -382,8 +386,9 @@ export class ResourceDetailsComponent implements OnInit {
 
       this.marketplaceService.requestResource(formCreate).subscribe(
         response => {
-          this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Resource request created!'});
-          window.location.reload();
+          // this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Resource request created!'});
+          // window.location.reload();
+          this.isRequestSuccessful = true;
         }, 
         err => {
           this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
@@ -403,8 +408,9 @@ export class ResourceDetailsComponent implements OnInit {
       };
       this.marketplaceService.useKnowledgeResourceAuto(formCreate).subscribe(
         response => {
-          this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Resource request and resource need created!'});
-          window.location.reload();
+          // this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Resource request and resource need created!'});
+          // window.location.reload();
+          this.isRequestSuccessful = true;
         }, 
         err => {
           this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
@@ -419,8 +425,9 @@ export class ResourceDetailsComponent implements OnInit {
 
       this.marketplaceService.useKnowledgeResource(formCreate).subscribe(
         response => {
-          this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Resource request created!'});
-          window.location.reload();
+          // this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Resource request created!'});
+          // window.location.reload();
+          this.isRequestSuccessful = true;
         }, 
         err => {
           this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
@@ -572,6 +579,13 @@ export class ResourceDetailsComponent implements OnInit {
 
   fullScreenIcon() {
     return `pi ${this.fullscreen ? 'pi-window-minimize' : 'pi-window-maximize'}`;
+  }
+
+  closeModal(): void {
+    this.ngOnInit();
+    this.selectedProjectId = '';
+    this.form.desc = '';
+    this.selectedResourceNeedId = '';
   }
 
 }
