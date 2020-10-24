@@ -57,7 +57,7 @@
                             [alt]="project.title" />
                         <img *ngIf="project.imgPath.length != 0" src="https://localhost:8080{{project.imgPath}}" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;"
                             [alt]="project.title" />
-                        <div class="product-name" style="height: 23%;">
+                        <div class="product-name">
                             <a href="/project/resources?id={{project.id}}">{{project.title}}</a>
                         </div>
                         <div>{{project.country}}</div>
