@@ -71,13 +71,13 @@ export class MyProjectsComponent implements OnInit {
     ];
 
     if(this.type == 'individual') {
-      this.userService.getCurrentProjects({ id: this.userId }).subscribe(
+      await this.userService.getCurrentProjects({ id: this.userId }).toPromise().then(
         response => {
           this.currProj = response.data.currProjects;
         }
       );
   
-      this.userService.getPastProjects({ id: this.userId }).subscribe(
+      await this.userService.getPastProjects({ id: this.userId }).toPromise().then(
         response => {
           this.pastProj = response.data.pastProjects;
         }
@@ -112,8 +112,8 @@ export class MyProjectsComponent implements OnInit {
         }
       }
     } else if (value == 'contributor') {
-      let isAdmin = false;
       for (var i = 0; i < this.currProj.length; i++) {
+        let isAdmin = false;
         if (this.currProj[i].host != this.user.id) {
           for (var j = 0; j < this.currProj[i].admins.length; j++) {
             if (this.currProj[i].admins[j] == this.user.id) {
@@ -152,8 +152,8 @@ export class MyProjectsComponent implements OnInit {
         }
       }
     } else if (value == 'contributor') {
-      let isAdmin = false;
       for (var i = 0; i < this.pastProj.length; i++) {
+        let isAdmin = false;
         if (this.pastProj[i].host != this.user.id) {
           for (var j = 0; j < this.pastProj[i].admins.length; j++) {
             if (this.pastProj[i].admins[j] == this.user.id) {
