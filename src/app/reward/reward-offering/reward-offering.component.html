@@ -68,6 +68,7 @@
                                 class="img-fluid" style="width: 500px; height: 200px; object-fit: cover;" alt="Reward pic" />
                             <img *ngIf="editForm.rewardImg.length != 0" src="https://localhost:8080{{editForm.rewardImg}}"
                                 class="img-fluid" style="width: 500px; height: 200px; object-fit: cover;" alt="Reward pic" />
+                            <br/><br/>
                             <h5>{{editForm.title}}
                                 <span class="small float-right">&nbsp;Status: 
                                     <span *ngIf="editForm.status == 'open'" class="rounded-pill pl-2 pr-2 active">active</span>
@@ -83,7 +84,7 @@
                             <div class="row">
                                 <div class="col-6">
                                     Point: {{editForm.point}} <br>
-                                    Tier: {{editForm.minTier}} <br>
+                                    Tier: <span class="rounded-pill pl-2 pr-2 {{editForm.minTier}}">{{editForm.minTier}}</span><br>
                                     Total claimed: {{editForm.claimedNum}}
                                 </div>
                                 <div class="col-6">

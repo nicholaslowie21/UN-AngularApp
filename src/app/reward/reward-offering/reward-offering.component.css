@@ -1,3 +1,18 @@
+.gold {
+    background-color: rgb(205, 157, 25);
+    color: white;
+}
+
+.silver {
+    background-color: rgb(170, 170, 170);
+    color: white;
+}
+
+.bronze {
+    background-color: rgb(185, 114, 45);
+    color: white;
+}
+
 .rejected {
     background-color: rgb(224, 11, 11);
     color: white;

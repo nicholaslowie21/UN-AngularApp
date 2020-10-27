@@ -5,6 +5,74 @@
         <a href="/reward/offering">My Reward Offering</a>
     </div>
     <div class="col-10">
-        To be developed in SR4
+        <div class="card">
+            <p-dataView #re [value]="rewards" [paginator]="true" [rows]="9" filterBy="title" [sortField]="sortField" [sortOrder]="sortOrder" layout="grid">
+                <ng-template pTemplate="header">
+                    <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                        <p-dropdown [options]="sortOptions" [(ngModel)]="sortKey" placeholder="Sort By End Date" (onChange)="onSortChange($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                        <p-dropdown [options]="countryOptions" [(ngModel)]="filterKeyCountry" placeholder="Filter By Country" (onChange)="filterCountry($event)"
+                            styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                        <span class="p-input-icon-left p-mb-2 p-mb-md-0">
+                            <i class="pi pi-search"></i>
+                            <input type="search" pInputText placeholder="Search by Title" (input)="re.filter($event.target.value)">
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template let-reward pTemplate="gridItem">
+                    <div class="p-col-12 p-md-4">
+                        <div class="product-grid-item card p-2">
+                            <div class="product-grid-item-content">
+                                <img *ngIf="reward.imgPath.length == 0" src="../../../assets/img/rewardPlaceholder.png"
+                                    class="img-fluid" style="width: 150px; height: 150px; object-fit: cover;" alt="Reward pic" />
+                                <img *ngIf="reward.imgPath.length != 0" src="https://localhost:8080{{reward.imgPath}}"
+                                    class="img-fluid" style="width: 150px; height: 150px; object-fit: cover;" alt="Reward pic" />
+                                <div class="product-name">
+                                    <button class="btn" data-toggle="modal" data-target="#ViewModal" (click)=setCurrentReward(reward)>
+                                        {{reward.title}}
+                                    </button>
+                                </div>
+                                <div class="small mb-md-1">End Date: {{formatDate(reward.endDate)}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-dataView>
+
+            <div class="modal fade" id="ViewModal" tabindex="-1" role="dialog" aria-labelledby="ViewModal" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="ViewModal">Reward Details</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <span class="product-category">{{currentReward.country}}</span>
+                            <br>
+                            <img *ngIf="currentReward.rewardImg.length == 0" src="../../../assets/img/rewardPlaceholder.png"
+                                class="img-fluid" style="width: 500px; height: 200px; object-fit: cover;" alt="Reward pic" />
+                            <img *ngIf="currentReward.rewardImg.length != 0" src="https://localhost:8080{{currentReward.rewardImg}}"
+                                class="img-fluid" style="width: 500px; height: 200px; object-fit: cover;" alt="Reward pic" />
+                            <br/><br/>
+                            <h5>{{currentReward.title}}</h5>
+                            <div>{{currentReward.desc}}</div>
+                            <br>
+                            <div class="row">
+                                <div class="col-6">
+                                    Point: {{currentReward.point}} <br>
+                                    Tier: <span class="rounded-pill pl-2 pr-2 {{currentReward.minTier}}">{{currentReward.minTier}}</span><br>
+                                    Total claimed: {{currentReward.claimedNum}}
+                                </div>
+                                <div class="col-6">
+                                    Quota: {{currentReward.quota}} <br>
+                                    End Date: {{formatDate(currentReward.endDate)}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
