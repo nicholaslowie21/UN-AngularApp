@@ -47,7 +47,7 @@
                             </div>
                             <div class="product-grid-item-content">
                                 <img *ngIf="item.imgPath.length == 0" src="../../../assets/img/item.png" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;" [alt]="item.title"/>
-                                <img *ngIf="item.imgPath.length != 0" src="https://localhost:8080{{item.imgPath}}" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;" [alt]="item.title"/>
+                                <img *ngIf="item.imgPath.length != 0" src="https://localhost:8080{{item.imgPath[0]}}" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;" [alt]="item.title"/>
                                 <div class="product-name"><a href="/resource/resourceDetails?id={{item.id}}&type=item">{{item.title}}</a></div>
                                 <div class="product-description">{{item.country}}</div>
                             </div>

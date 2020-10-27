@@ -28,7 +28,7 @@ export class EditResourceDetailsComponent implements OnInit {
   errorMsgUploadPic = '';
   // array of 10 booleans for max 10 pics
   toBeDeleted: boolean[] = [false, false, false, false, false, false, false, false, false, false];
-  isDeleteVenuePicSuccessful;
+  isDeleteItemVenuePicSuccessful;
   errorMsgDeletePic = '';
 
   attachmentPath: any;
@@ -58,7 +58,7 @@ export class EditResourceDetailsComponent implements OnInit {
   venueImgFileNames: any[];
 
   // for venue images galleria
-  venueImages: any[];
+  itemVenueImages: any[];
   showThumbnails: boolean;
   fullscreen: boolean = false;
   activeIndex: number = 0;
@@ -91,15 +91,19 @@ export class EditResourceDetailsComponent implements OnInit {
     );
     
     if (this.type == 'item') {
-      await this.resourceService.viewItemDetails({id: this.id}).toPromise().then(res => {this.resource = res.data.item});
+      await this.resourceService.viewItemDetails({id: this.id}).toPromise().then(res => {this.resource = res.data.item, this.itemVenueImages = res.data.item.imgPath});
+      for (let i = 0; i < this.itemVenueImages.length; i++) {
+        this.itemVenueImages[i] = "https://localhost:8080" + this.itemVenueImages[i];
+      }
+      this.generateFilenames();
     } else if (this.type == 'manpower') {
       await this.resourceService.viewManpowerDetails({id: this.id}).toPromise().then(res => {this.resource = res.data.manpower});
     } else if (this.type == 'venue') {
-      await this.resourceService.viewVenueDetails({id: this.id}).toPromise().then(res => {this.resource = res.data.venue, this.venueImages = res.data.venue.imgPath});
-      for (let i = 0; i < this.venueImages.length; i++) {
-        this.venueImages[i] = "https://localhost:8080" + this.venueImages[i];
+      await this.resourceService.viewVenueDetails({id: this.id}).toPromise().then(res => {this.resource = res.data.venue, this.itemVenueImages = res.data.venue.imgPath});
+      for (let i = 0; i < this.itemVenueImages.length; i++) {
+        this.itemVenueImages[i] = "https://localhost:8080" + this.itemVenueImages[i];
       }
-      console.log(this.venueImages);
+      console.log(this.itemVenueImages);
       this.generateFilenames();
       console.log(this.venueImgFileNames);
       // this.emptyPlaceholder = new Array(10 - this.resource.imgPath.length);
@@ -139,35 +143,35 @@ export class EditResourceDetailsComponent implements OnInit {
     }
   }
 
-  onSubmitItemImage(): void {
-    if (this.itemImage == null) {
-      this.errorMsgUploadPic = 'Choose a file!';
-      this.isUploadItemPicSuccessful = false;
-      return;
-    }
+  // onSubmitItemImage(): void {
+  //   if (this.itemImage == null) {
+  //     this.errorMsgUploadPic = 'Choose a file!';
+  //     this.isUploadItemPicSuccessful = false;
+  //     return;
+  //   }
 
-    const formData = new FormData();
-    formData.append("itemId", this.id);
-    formData.append("itemPic", this.itemImage);
+  //   const formData = new FormData();
+  //   formData.append("itemId", this.id);
+  //   formData.append("itemPic", this.itemImage);
 
-    this.resourceService.uploadItemPicture(formData).subscribe(
-      response => {
-        this.isUploadItemPicSuccessful = true;
-        this.reloadPage();
-      },
-      err => {
-        this.errorMsgUploadPic = err.error.msg;
-        this.isUploadItemPicSuccessful = false;
-      }
-    )
-  }
+  //   this.resourceService.uploadItemPicture(formData).subscribe(
+  //     response => {
+  //       this.isUploadItemPicSuccessful = true;
+  //       this.reloadPage();
+  //     },
+  //     err => {
+  //       this.errorMsgUploadPic = err.error.msg;
+  //       this.isUploadItemPicSuccessful = false;
+  //     }
+  //   )
+  // }
 
   updateCheckedImages(x, event) {
     this.toBeDeleted[x] = event.target.checked;
     console.log(x);
   }
 
-  deleteVenueImages() {
+  deleteImages() {
     var indexToDelete = [];
     for (let i = 0; i < this.toBeDeleted.length; i++) {
       if (this.toBeDeleted[i]) {
@@ -177,18 +181,31 @@ export class EditResourceDetailsComponent implements OnInit {
     // if no pictures selected, alert user
     if (indexToDelete.length == 0) {
       this.errorMsgDeletePic = "No picture selected!";
-      this.isDeleteVenuePicSuccessful = false;
+      this.isDeleteItemVenuePicSuccessful = false;
     } else {
-      this.resourceService.deleteVenuePicture({venueId: this.resource.id, indexes: indexToDelete}).subscribe(
-        response => {
-          this.isDeleteVenuePicSuccessful = true;
-          this.reloadPage();
-        },
-        err => {
-          this.errorMsgDeletePic = err.error.msg;
-          this.isDeleteVenuePicSuccessful = false;
-        }
-      )
+      if(this.type == 'item') {
+        this.resourceService.deleteItemPicture({itemId: this.resource.id, indexes: indexToDelete}).subscribe(
+          response => {
+            this.isDeleteItemVenuePicSuccessful = true;
+            this.reloadPage();
+          },
+          err => {
+            this.errorMsgDeletePic = err.error.msg;
+            this.isDeleteItemVenuePicSuccessful = false;
+          }
+        );
+      } else if(this.type == 'venue') {
+        this.resourceService.deleteVenuePicture({venueId: this.resource.id, indexes: indexToDelete}).subscribe(
+          response => {
+            this.isDeleteItemVenuePicSuccessful = true;
+            this.reloadPage();
+          },
+          err => {
+            this.errorMsgDeletePic = err.error.msg;
+            this.isDeleteItemVenuePicSuccessful = false;
+          }
+        );
+      }
     }
   }
 
@@ -196,7 +213,7 @@ export class EditResourceDetailsComponent implements OnInit {
     this.toBeAdded = event.target.files;
   }
 
-  onSubmitVenueImages(): void {
+  onSubmitItemVenueImages(): void {
     if (this.toBeAdded.length == 0) {
       this.errorMsgUploadPic = 'Choose a file!';
       this.isUploadVenuePicSuccessful = false;
@@ -204,21 +221,37 @@ export class EditResourceDetailsComponent implements OnInit {
     }
 
     const formData = new FormData();
-    formData.append("venueId", this.id);
-    for (let i = 0; i < this.toBeAdded.length; i++) {
-      formData.append("venuePics", this.toBeAdded[i]);
-    }
-
-    this.resourceService.uploadVenuePicture(formData).subscribe(
-      response => {
-        this.isUploadVenuePicSuccessful = true;
-        this.reloadPage();
-      },
-      err => {
-        this.errorMsgUploadPic = err.error.msg;
-        this.isUploadVenuePicSuccessful = false;
+    if(this.type == 'venue') {
+      formData.append("venueId", this.id);
+      for (let i = 0; i < this.toBeAdded.length; i++) {
+        formData.append("venuePics", this.toBeAdded[i]);
       }
-    )
+      this.resourceService.uploadVenuePicture(formData).subscribe(
+        response => {
+          this.isUploadVenuePicSuccessful = true;
+          this.reloadPage();
+        },
+        err => {
+          this.errorMsgUploadPic = err.error.msg;
+          this.isUploadVenuePicSuccessful = false;
+        }
+      );
+    } else if(this.type == 'item') {
+      formData.append("itemId", this.id);
+      for (let i = 0; i < this.toBeAdded.length; i++) {
+        formData.append("itemPics", this.toBeAdded[i]);
+      }
+      this.resourceService.uploadItemPicture(formData).subscribe(
+        response => {
+          this.isUploadVenuePicSuccessful = true;
+          this.reloadPage();
+        },
+        err => {
+          this.errorMsgUploadPic = err.error.msg;
+          this.isUploadVenuePicSuccessful = false;
+        }
+      );
+    }
   }
 
   selectAttachment(event) {
@@ -440,8 +473,8 @@ export class EditResourceDetailsComponent implements OnInit {
   }
 
   generateFilenames(): void {
-    for (let i = 0; i < this.venueImages.length; i++) {
-      var currFileName = this.venueImages[i];
+    for (let i = 0; i < this.itemVenueImages.length; i++) {
+      var currFileName = this.itemVenueImages[i];
       this.startIndexFound = false;
       var startIndex = 0;
       var endIndex = 0;

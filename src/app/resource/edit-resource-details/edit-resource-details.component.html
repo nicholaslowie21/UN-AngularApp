@@ -8,10 +8,10 @@
 <div *ngIf="stillOwner()">
     <div class="row">
         <div class="col-8">
-            <h1 class="h1">
+            <h3>
                 Edit Resource Details
                 <a class="btn btn-primary float-right" href="/resource/resourceDetails?id={{id}}&type={{type}}">Back to Resource details</a>
-            </h1>
+            </h3>
             <br/>
         </div>
     </div>
@@ -23,46 +23,16 @@
             #f="ngForm"
             novalidate
             >
-                <!-- display and update pic for Item Resource -->
-                <div class="form-group" *ngIf="type == 'item'">
-                    <h3>Resource Image</h3>
-                    <div *ngIf="resource.imgPath.length > 0">
-                        <img
-                        src="https://localhost:8080{{resource.imgPath}}"
-                        class="img-thumbnail img-fluid"
-                        style="width: 200px; height: 200px; object-fit: cover;"
-                        alt="Item Resource picture"
-                        />
-                    </div>
+                <!-- display and update pics for Item and Venue Resource -->
+                <div class="form-group" *ngIf="type == 'venue' || type == 'item'">
+                    <h4>Resource Images</h4>
                     <div *ngIf="resource.imgPath.length == 0">
-                        <img
-                        src="../../assets/img/item.png"
-                        class="rounded-circle img-fluid"
-                        style="width: 200px; height: 200px; object-fit: cover;"
-                        alt="Item Resource picture"
-                        />
-                    </div>
-                    <br/>
-                    <form>
-                        <label>Upload an image to replace the current one:</label><br/>
-                        <input type="file" name="itemImage" (change)="selectItemImage($event)" />
-                        <button type="submit" (click)="onSubmitItemImage()">Upload</button>
-                    </form>
-                    <div class="alert alert-warning" *ngIf="errorMsgUploadPic && !isUploadItemPicSuccessful">
-                        Upload picture failed!<br />{{ errorMsgUploadPic }}
-                    </div>
-                    <br/>
-                </div>
-        
-                <!-- display and update pics for Venue Resource -->
-                <div class="form-group" *ngIf="type == 'venue'">
-                    <h3>Resource Images</h3>
-                    <div *ngIf="resource.imgPath.length == 0">
-                        Currently no images of venue
+                        Currently no images of <span *ngIf="type == 'venue'">venue</span>
+                        <span *ngIf="type == 'item'">item</span>
                     </div>
                     <div *ngIf="resource.imgPath.length > 0">
                         <!-- advanced galleria version -->
-                        <p-galleria #galleria [(value)]="venueImages" [responsiveOptions]="responsiveOptions" [(activeIndex)]="activeIndex" [numVisible]="5" [containerStyle]="{'max-width':'640px'}" [containerClass]="galleriaClass()" [showThumbnails]="showThumbnails"
+                        <p-galleria #galleria [(value)]="itemVenueImages" [responsiveOptions]="responsiveOptions" [(activeIndex)]="activeIndex" [numVisible]="5" [containerStyle]="{'max-width':'640px'}" [containerClass]="galleriaClass()" [showThumbnails]="showThumbnails"
                             [showItemNavigators]="true" [showItemNavigatorsOnHover]="true" [circular]="true" [autoPlay]="true" [transitionInterval]="3000"> 
                             <ng-template pTemplate="item" let-item>
                                 <img [src]="item" [ngStyle]="{'width': !fullscreen ? '100%' : '', 'display': !fullscreen ? 'block' : ''}" />
@@ -75,8 +45,8 @@
                             <ng-template pTemplate="footer" let-item>
                                 <div class="custom-galleria-footer">
                                     <button type="button" pButton icon="pi pi-list" (click)="onThumbnailButtonClick()"></button>
-                                    <span *ngIf="venueImages"  class="title-container">
-                                        <span>{{activeIndex + 1}}/{{venueImages.length}}</span>
+                                    <span *ngIf="itemVenueImages"  class="title-container">
+                                        <span>{{activeIndex + 1}}/{{itemVenueImages.length}}</span>
                                         <span class="title">Picture {{activeIndex + 1}}</span>
                                         <!-- <span class="title">{{venueImgFileNames[activeIndex]}}</span> -->
                                     </span>
@@ -137,11 +107,11 @@
                         </div> -->
                     </div>
                     <br/>
-                    <p>You may select multiple pictures of the venue to upload, up to 10 pictures.<br/>
-                    Uploading pictures will add to the existing set of pictures.</p>
+                    <p>You may select multiple images to upload, up to 10 images.<br/>
+                    Uploading images will add to the existing set of images.</p>
                     <form action="/multiple-upload" method="POST" enctype="multipart/form-data">
                         <input type="file" multiple (change)="selectImages($event)">
-                        <button type="submit" (click)="onSubmitVenueImages()" class="btn btn-primary">Upload</button>
+                        <button type="submit" (click)="onSubmitItemVenueImages()" class="btn btn-primary">Upload</button>
                     </form>
                     <div class="alert alert-warning" *ngIf="errorMsgUploadPic && !isUploadVenuePicSuccessful">
                         Upload picture failed!<br />{{ errorMsgUploadPic }}
@@ -151,7 +121,7 @@
                         
                         <div class="form-group card-deck">
                             <div class="card border-light">
-                                Select pictures to delete:
+                                Select images to delete:
                             </div>
                             <div class="card border-light">
                                 <div class="form-check" *ngFor="let img of resource.imgPath; let i = index">
@@ -162,18 +132,18 @@
                                 </div>
                             </div>
                             <div class="card border-light">
-                                <button type="submit" (click)="deleteVenueImages()" class="btn btn-danger mt-auto d-flex align-self-start">Delete</button>
+                                <button type="submit" (click)="deleteImages()" class="btn btn-danger mt-auto d-flex align-self-start">Delete</button>
                             </div>
                         </div>
                     </form>
-                    <div class="alert alert-warning" *ngIf="errorMsgDeletePic && !isDeleteVenuePicSuccessful">
+                    <div class="alert alert-warning" *ngIf="errorMsgDeletePic && !isDeleteItemVenuePicSuccessful">
                         {{ errorMsgDeletePic }}
                     </div>
                     <br/>
                 </div>
                 
                 <!-- edit resource details -->
-                <h3>Resource Details</h3>
+                <h4>Resource Details</h4>
                 <div class="form-group row">
                     <label for="title" class="col-sm-2 col-form-label">Title</label>
                     <div class="col-sm-10">

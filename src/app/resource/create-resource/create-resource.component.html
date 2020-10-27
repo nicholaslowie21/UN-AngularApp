@@ -93,7 +93,14 @@
         <div class="alert-danger" *ngIf="f.submitted && country.invalid">
             <div *ngIf="country.errors.required">Country is required</div>
         </div>
-    </div>
+      </div>
+      <div class="form-group row" *ngIf="resourceType == 'Item' || resourceType == 'Venue'">
+        <label for="Images" class="col-sm-4 col-form-label">Image</label>
+        <form class="col-sm-8" action="/multiple-upload" method="POST" enctype="multipart/form-data">
+          You may select multiple images to upload, up to 10 images
+          <input type="file" multiple (change)="selectImages($event)">
+        </form>
+      </div>
       <div class="form-group">
         <button type="submit" class="btn btn-primary btn-block">Create</button>
       </div>
@@ -104,7 +111,7 @@
     </form>
     <div class="alert alert-success" *ngIf="isSuccessful">
       {{ resourceType }} Resource successfully created!<br/>
-      You can view and edit the new {{ resourceType }} Resource <a href="/resource/myResources?username={{user.username}}&type={{userType}}">here</a>
+      You can view and edit the new {{ resourceType }} Resource <a [href]="getLink()">here</a>
     </div>
   </div>
 </div>

@@ -44,12 +44,8 @@ export class ResourceService {
     return this.http.get(API_URL + '/institution/venue?institutionId=' + data.id);
   }
 
-  createItem(data): Observable<any> {
-    return this.http.post(API_URL + '/createItem', {
-      title: data.title,
-      desc: data.desc,
-      country: data.country
-    }, httpOptions);
+  createItem(formData): Observable<any> {
+    return this.http.post(API_URL + '/createItem', formData);
   }
 
   updateItem(data): Observable<any> {
@@ -66,13 +62,13 @@ export class ResourceService {
       formData);
   }
 
-  createVenue(data): Observable<any> {
-    return this.http.post(API_URL + '/createVenue', {
-      title: data.title,
-      desc: data.desc,
-      address: data.address,
-      country: data.country
-    }, httpOptions);
+  deleteItemPicture(formData): Observable<any> {
+    return this.http.post(API_URL + '/deleteItemPicture', 
+      formData);
+  }
+
+  createVenue(formData): Observable<any> {
+    return this.http.post(API_URL + '/createVenue', formData);
   }
 
   updateVenue(data): Observable<any> {

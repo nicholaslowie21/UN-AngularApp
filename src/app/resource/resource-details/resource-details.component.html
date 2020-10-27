@@ -4,17 +4,17 @@
 
 <div *ngIf="!isDeleted && resource.status !== 'deleted'" class="row">
     <div class="col-8">
-        <div *ngIf="type == 'item'">
+        <!-- <div *ngIf="type == 'item'">
             <img *ngIf="resource.imgPath.length == 0" src="../../../assets/img/{{type}}.png" class="img-fluid" height="200" width="300" [alt]="resource.title"/>
             <img *ngIf="resource.imgPath.length != 0" src="https://localhost:8080{{resource.imgPath}}" class="img-fluid" height="200" width="300" [alt]="resource.title"/>
-        </div>
-        <div *ngIf="type == 'venue'">
+        </div> -->
+        <div *ngIf="type == 'venue' || type == 'item'">
             <!-- <p-carousel *ngIf="resource.imgPath.length > 0" [value]="resource.imgPath">
                 <ng-template let-img pTemplate="item">
                     <img src="https://localhost:8080{{img}}" class="img-fluid" style="width: 500px; height:400px; object-fit: cover;">
                 </ng-template>
             </p-carousel> -->
-            <p-galleria #galleria [(value)]="venueImages" [responsiveOptions]="responsiveOptions" [(activeIndex)]="activeIndex" [numVisible]="5" [containerStyle]="{'max-width':'640px'}" [containerClass]="galleriaClass()" [showThumbnails]="showThumbnails"
+            <p-galleria #galleria [(value)]="itemVenueImages" [responsiveOptions]="responsiveOptions" [(activeIndex)]="activeIndex" [numVisible]="5" [containerStyle]="{'max-width':'640px'}" [containerClass]="galleriaClass()" [showThumbnails]="showThumbnails"
                 [showItemNavigators]="true" [showItemNavigatorsOnHover]="true" [circular]="true" [autoPlay]="true" [transitionInterval]="3000"> 
                 <ng-template pTemplate="item" let-item>
                     <img [src]="item" [ngStyle]="{'width': !fullscreen ? '100%' : '', 'display': !fullscreen ? 'block' : ''}" />
@@ -27,8 +27,8 @@
                 <ng-template pTemplate="footer" let-item>
                     <div class="custom-galleria-footer">
                         <button type="button" pButton icon="pi pi-list" (click)="onThumbnailButtonClick()"></button>
-                        <span *ngIf="venueImages"  class="title-container">
-                            <span>{{activeIndex + 1}}/{{venueImages.length}}</span>
+                        <span *ngIf="itemVenueImages"  class="title-container">
+                            <span>{{activeIndex + 1}}/{{itemVenueImages.length}}</span>
                             <span class="title">Picture {{activeIndex+1}}</span>
                         </span>
                         <button type="button" pButton [icon]="fullScreenIcon()" (click)="toggleFullScreen()" class="fullscreen-button"></button>
@@ -36,7 +36,8 @@
                 </ng-template>
             </p-galleria>
             <div *ngIf="resource.imgPath.length == 0">
-                <img src="../../../assets/img/venue.png" class="img-fluid" style="width: 300px; height:300px; object-fit: cover;">
+                <img *ngIf="type == 'venue'" src="../../../assets/img/venue.png" class="img-fluid" style="width: 300px; height:300px; object-fit: cover;">
+                <img *ngIf="type == 'item'" src="../../../assets/img/item.png" class="img-fluid" style="width: 300px; height: 300px; object-fit: cover;">
             </div>
         </div>
         <div *ngIf="type == 'manpower'">

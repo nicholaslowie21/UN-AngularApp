@@ -32,7 +32,7 @@ export class ResourceDetailsComponent implements OnInit {
 
   checked = false;
 
-  venueImages = [];
+  itemVenueImages = [];
   showThumbnails: boolean;
   fullscreen: boolean = false;
   activeIndex: number = 0;
@@ -87,13 +87,15 @@ export class ResourceDetailsComponent implements OnInit {
     
     if (this.type == 'item') {
       await this.resourceService.viewItemDetails({id: this.id}).toPromise().then(res => {this.resource = res.data.item; this.owner = res.data.owner});
-      
+      for (let i = 0; i < this.resource.imgPath.length; i++) {
+        this.itemVenueImages[i] = "https://localhost:8080" + this.resource.imgPath[i];
+      }
     } else if (this.type == 'manpower') {
       await this.resourceService.viewManpowerDetails({id: this.id}).toPromise().then(res => {this.resource = res.data.manpower; this.owner = res.data.owner});
     } else if (this.type == 'venue') {
       await this.resourceService.viewVenueDetails({id: this.id}).toPromise().then(res => {this.resource = res.data.venue; this.owner = res.data.owner});
       for (let i = 0; i < this.resource.imgPath.length; i++) {
-        this.venueImages[i] = "https://localhost:8080" + this.resource.imgPath[i];
+        this.itemVenueImages[i] = "https://localhost:8080" + this.resource.imgPath[i];
       }
     } else if (this.type == 'knowledge') {
       await this.resourceService.viewKnowledgeDetails({id: this.id}).toPromise().then(
