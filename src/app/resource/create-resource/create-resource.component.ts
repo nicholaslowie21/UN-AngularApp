@@ -48,11 +48,13 @@ export class CreateResourceComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if(this.toBeAdded.length > 10) {
-      this.errorMessage = "You can only upload up to 10 images";
-      this.createFailed = true;
-      return;
-    }
+    if(this.toBeAdded != undefined) {
+      if(this.toBeAdded.length > 10) {
+        this.errorMessage = "You can only upload up to 10 images";
+        this.createFailed = true;
+        return;
+      }
+    } 
 
     const formData = new FormData();
     formData.append("title", this.form.title);
@@ -61,14 +63,16 @@ export class CreateResourceComponent implements OnInit {
     if(this.resourceType == 'Venue') {
       formData.append("address", this.form.address);
     }
-    for (let i = 0; i < this.toBeAdded.length; i++) {
-      if(this.resourceType == 'Item') {
-        formData.append("itemPics", this.toBeAdded[i]);
-      } else if(this.resourceType == 'Venue') {
-        formData.append("venuePics", this.toBeAdded[i]);
+    if(this.toBeAdded != undefined) {
+      for (let i = 0; i < this.toBeAdded.length; i++) {
+        if(this.resourceType == 'Item') {
+          formData.append("itemPics", this.toBeAdded[i]);
+        } else if(this.resourceType == 'Venue') {
+          formData.append("venuePics", this.toBeAdded[i]);
+        }
       }
     }
-
+    
     if (this.resourceType == 'Item') {
       // set country
       // this.form.country = this.currentCountry;
