@@ -11,98 +11,6 @@
 
 <div *ngIf="isVerified">
     <div *ngIf="!isSuccessful">
-        <!-- <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
-            <div class="form-group row">
-                <label for="title" class="col-sm-3 col-form-label">Title</label>
-                <div class="col-sm-5">
-                    <input type="text" class="form-control" name="title" [(ngModel)]="form.title" required #title="ngModel" />
-                </div>
-                <div class="alert-danger" *ngIf="f.submitted && title.invalid">
-                    <div *ngIf="title.errors.required">Title is required</div>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="desc" class="col-sm-3 col-form-label">Description</label>
-                <div class="col-sm-5">
-                    <textarea class="form-control" name="desc" [(ngModel)]="form.desc" #desc="ngModel" rows="3"></textarea>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="country" class="col-sm-3 col-form-label">Country</label>
-                <div class="col-sm-5">
-                    <select class="form-control" name="country" [(ngModel)]="currentCountry" required #country="ngModel">
-                    <option *ngFor="let c of countries" value={{c}}>{{c}}</option>
-                    </select>
-                </div>
-                <div class="alert-danger" *ngIf="f.submitted && country.invalid">
-                    <div *ngIf="country.errors.required">Country is required</div>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="point" class="col-sm-3 col-form-label">Point</label>
-                <div class="col-sm-8">
-                    <input type="number" class="form-control" name="point" [(ngModel)]="form.point" required min="0"
-                        #point="ngModel" />
-                </div>
-                <div class="alert-danger" *ngIf="f.submitted && point.invalid">
-                    <div *ngIf="point.errors.required">Point is required</div>
-                    <div *ngIf="point.errors.min">
-                        Point cannot be below 0
-                    </div>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="quota" class="col-sm-3 col-form-label">Quota</label>
-                <div class="col-sm-8">
-                    <input type="number" class="form-control" name="quota" [(ngModel)]="form.quota" required min="0"
-                        #quota="ngModel" />
-                </div>
-                <div class="alert-danger" *ngIf="f.submitted && quota.invalid">
-                    <div *ngIf="quota.errors.required">Quota is required</div>
-                    <div *ngIf="quota.errors.min">
-                        Quota cannot be below 0
-                    </div>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="tier" class="col-sm-3 col-form-label">Tier</label>
-                <div class="col-sm-8">
-                    <select class="form-control" name="tier" [(ngModel)]="form.tier" required #tier="ngModel">
-                        <option>gold</option>
-                        <option>silver</option>
-                        <option>bronze</option>
-                    </select>
-                </div>
-                <div class="alert-danger" *ngIf="f.submitted && tier.invalid">
-                    <div *ngIf="tier.errors.required">Tier is required</div>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="endDate" class="col-sm-3 col-form-label">End Date</label>
-                <div class="col-sm-8">
-                    <p-calendar name="date" [(ngModel)]="form.date" dateFormat="yy-mm-dd" [showIcon]="true" [minDate]="minimumDate"
-                    [monthNavigator]="true" [yearNavigator]="true" yearRange="2020:2025" required #date="ngModel"></p-calendar>
-                </div>
-                <div class="alert-danger" *ngIf="f.submitted && date.invalid">
-                    <div *ngIf="date.errors.required">End date is required</div>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="file" class="col-sm-3 col-form-label">Image</label>
-                <form class="col-sm-8">
-                <input type="file" name="file" (change)="selectImage($event)" />
-                </form>
-            </div>
-            <div class="form-group row">
-                <label for="file" class="col-sm-3 col-form-label">File for Verification</label>
-                <form class="col-sm-8">
-                <input type="file" name="fileVerify" (change)="selectFileVerify($event)" />
-                </form>
-            </div>
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary btn-block">Create</button>
-            </div>
-        </form> -->
         <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
             <div class="row">
                 <div class="col-6">
@@ -124,7 +32,7 @@
                     <div class="form-group row">
                         <label for="country" class="col-sm-3 col-form-label">Country</label>
                         <div class="col-sm-9">
-                            <select class="form-control" name="country" [(ngModel)]="form.country" required #country="ngModel">
+                            <select class="form-control" name="country" [(ngModel)]="currentCountry" required #country="ngModel">
                             <option *ngFor="let c of countries" value={{c}}>{{c}}</option>
                             </select>
                         </div>
