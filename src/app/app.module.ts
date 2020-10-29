@@ -72,6 +72,8 @@ import { CreateRewardComponent } from './reward/create-reward/create-reward.comp
 import { RewardMarketplaceComponent } from './reward/reward-marketplace/reward-marketplace.component';
 import { AdminRewardManagementComponent } from './admin/admin-reward-management/admin-reward-management.component';
 import { AdminCreateRewardComponent } from './admin/admin-create-reward/admin-create-reward.component';
+import { MyRewardsComponent } from './reward/my-rewards/my-rewards.component';
+import { AdminAnnouncementComponent } from './admin/admin-announcement/admin-announcement.component';
 
 @NgModule({
   declarations: [
@@ -117,7 +119,9 @@ import { AdminCreateRewardComponent } from './admin/admin-create-reward/admin-cr
     CreateRewardComponent,
     RewardMarketplaceComponent,
     AdminRewardManagementComponent,
-    AdminCreateRewardComponent
+    AdminCreateRewardComponent,
+    MyRewardsComponent,
+    AdminAnnouncementComponent
   ],
   imports: [
     BrowserModule,

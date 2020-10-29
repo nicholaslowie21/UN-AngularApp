@@ -21,7 +21,7 @@ import { AdminUserManagementProfileComponent } from './admin/admin-user-manageme
 import { AdminVerificationComponent } from './admin/admin-verification/admin-verification.component';
 import { AdminRewardManagementComponent } from './admin/admin-reward-management/admin-reward-management.component';
 import { AdminCreateRewardComponent } from './admin/admin-create-reward/admin-create-reward.component';
-import { OthersProfileComponent } from './others-profile/others-profile.component';
+import { AdminAnnouncementComponent } from './admin/admin-announcement/admin-announcement.component';
 import { ShareProfilePageComponent } from './share-profile-page/share-profile-page.component';
 import { CreateProjectComponent } from './project/create-project/create-project.component';
 import { EditProjectAdminComponent } from './project/edit-project-admin/edit-project-admin.component';
@@ -43,6 +43,7 @@ import { DiscoverWeeklyComponent } from './discover-weekly/discover-weekly.compo
 import { RewardOfferingComponent } from './reward/reward-offering/reward-offering.component';
 import { CreateRewardComponent } from './reward/create-reward/create-reward.component';
 import { RewardMarketplaceComponent } from './reward/reward-marketplace/reward-marketplace.component';
+import { MyRewardsComponent } from './reward/my-rewards/my-rewards.component';
 
 const routes: Routes = [
   { path: 'landing', component: LandingComponent},
@@ -53,7 +54,6 @@ const routes: Routes = [
   { path: 'signup', component: SignupComponent },
   { path: 'signup/institution', component: SignupInstitutionComponent },
   { path: 'editProfile', component: EditProfileComponent, canActivate: [AuthGuardService] },
-  // { path: 'ownProfile', component: OwnProfileComponent, canActivate: [AuthGuardService] },
   { path: 'profile', component: OwnProfileComponent },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuardService] },
   { path: 'institution/affiliation', component: AffiliationPageComponent, canActivate: [AuthGuardService] },
@@ -66,6 +66,7 @@ const routes: Routes = [
       { path: 'verification', component: AdminVerificationComponent },
       { path: 'reward', component: AdminRewardManagementComponent },
       { path: 'create-reward', component: AdminCreateRewardComponent},
+      { path: 'announcement', component: AdminAnnouncementComponent},
       { path: '', component: AdminHomeComponent, pathMatch: 'full'}
     ] 
   },
@@ -100,6 +101,7 @@ const routes: Routes = [
     children: [
       { path: 'offering', component: RewardOfferingComponent },
       { path: 'create', component: CreateRewardComponent },
+      { path: 'myRewards', component: MyRewardsComponent },
       { path: '', component: RewardMarketplaceComponent, pathMatch: 'full'}
     ]
   },
