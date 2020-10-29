@@ -13,6 +13,7 @@ import { MessageService } from 'primeng/api';
 export class ProjectRequestsComponent implements OnInit {
 
   projectId: any;
+  project: any;
   resourceNeeds = [];
 
   inPen = 'ip';
@@ -51,6 +52,10 @@ export class ProjectRequestsComponent implements OnInit {
         this.projectId = params.id;
       }
     );
+
+    await this.projectService.viewProject({ id: this.projectId }).toPromise().then(
+      res => this.project = res.data.targetProject
+    )
 
     await this.projectService.getProjectResourceNeeds({ id: this.projectId }).toPromise().then(
       res => this.resourceNeeds = res.data.resourceneeds
