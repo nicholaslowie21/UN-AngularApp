@@ -277,12 +277,10 @@
                             </div>
                         </div>
                         <br/>
-                        <div class="col-7">
+                        <div class="col-9">
                             Name: <a href="/profile?username={{owner.username}}&userType=institution">{{owner.name}}</a>
                             <br/>
                             Username: {{owner.username}}
-                        </div>
-                        <div class="col-2">
                             <button class="btn btn-danger float-right" (click)=deleteOwner(owner) title="Remove owner"><i class="pi pi-trash"></i></button>
                         </div>
                     </div>
@@ -310,12 +308,10 @@
                             </div>
                         </div>
                         <br/>
-                        <div class="col-7">
+                        <div class="col-9">
                             Name: <a href="/profile?username={{owner.username}}&userType=individual">{{owner.name}}</a>
                             <br/>
                             Username: {{owner.username}}
-                        </div>
-                        <div class="col-2">
                             <button class="btn btn-danger float-right" (click)=deleteOwner(owner) title="Remove owner"><i class="pi pi-trash"></i></button>
                         </div>
                     </div>
@@ -349,14 +345,42 @@
             <div *ngIf=isSearchSuccessful>
                 <div *ngFor="let user of searchResults">
                     <div class="card">
-                        <div class="card-body">
-                            <div class="row">
+                        <div class="card-body row">
+                            <div class="col-3">
+                                <div *ngIf="user.profilePic.length > 0">
+                                    <img
+                                    src={{user.profilePic}}
+                                    class="rounded-circle img-fluid"
+                                    style="object-fit: cover; height: 60px; width: 60px;"
+                                    alt="Profile picture"
+                                    />
+                                </div>
+                                <div *ngIf="user.profilePic.length == 0">
+                                    <img
+                                    src="../../../assets/img/profilePic_Placeholder.png"
+                                    class="rounded-circle img-fluid"
+                                    style="object-fit: cover; height: 60px; width: 60px;"
+                                    alt="Profile picture"
+                                    />
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="col-9">
+                                Name: {{user.name}} <br/>
+                                Username: {{user.username}}
+                                <div *ngIf="isUserOwner(user) || isInstitutionOwner(user)">
+                                    <p style="color: #19B5FE">Already a co-owner</p>
+                                </div>
+                                <div *ngIf="!isUserOwner(user) && !isInstitutionOwner(user)">
+                                    <button class="btn btn-primary" (click)=addOwner(user)>Add</button>
+                                </div>
+                            <!-- <div class="row">
                                 <div class="card border-0 col-3" style="width:20%">
                                     <div *ngIf="user.profilePic.length > 0">
                                         <img
                                         src={{user.profilePic}}
                                         class="rounded-circle img-fluid"
-                                        style="object-fit: cover;"
+                                        style="object-fit: cover; height: 60px; width: 60px;"
                                         alt="Profile picture"
                                         />
                                     </div>
@@ -364,7 +388,7 @@
                                         <img
                                         src="../../assets/img/profilePic_Placeholder.png"
                                         class="rounded-circle img-fluid"
-                                        style="object-fit: cover;"
+                                        style="object-fit: cover; height: 60px; width: 60px;"
                                         alt="Profile picture"
                                         />
                                     </div>
@@ -381,7 +405,7 @@
                                     <div *ngIf="!isUserOwner(user) && !isInstitutionOwner(user)">
                                         <button class="btn btn-primary float-right" (click)=addOwner(user)>Add</button>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>

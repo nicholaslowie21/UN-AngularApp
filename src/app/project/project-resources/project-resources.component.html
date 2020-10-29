@@ -267,7 +267,7 @@
                             <ng-template let-need pTemplate="listItem">
                                 <div class="p-col-12">
                                     <div class="row p-3">
-                                        <div class="col-9">
+                                        <div class="col-8">
                                             <div class="product-name">{{need.title}}</div>
                                             <div>{{need.desc}}</div>
                                             <div *ngIf="need.type == 'money'">Target Sum: ${{need.total}}</div>
@@ -279,7 +279,7 @@
                                             </div>
                                             <span class="product-category">Completion: {{need.completion}}%</span>
                                         </div>
-                                        <div class="col-3">
+                                        <div class="col-4">
                                             <div class="row">
                                                 <i class="pi pi-tag product-category-icon"></i>
                                                 <span class="{{need.type}}type rounded-sm text-white">&nbsp;{{need.type}}&nbsp;</span>

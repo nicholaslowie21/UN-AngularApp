@@ -29,9 +29,9 @@
                     </div>
                 </ng-template>
                 <ng-template let-product pTemplate="listItem">
-                    <div class="p-col-12">
-                        <div class="row p-2">
-                            <div class="col-1">
+                    <!-- <div class="p-col-12"> -->
+                        <!-- <div class="row p-2"> -->
+                            <div class="col-2">
                                 <div *ngIf="product.imgPath.length != 0">
                                     <img src="https://localhost:8080{{product.imgPath}}" style="margin: 15px; width: 50px; height: 50px; object-fit: cover;"
                                         alt="Profile picture">
@@ -40,7 +40,7 @@
                                     <img src="../../../assets/img/team.jpg" style="margin: 15px; width: 50px; height: 50px; object-fit: cover;" alt="Project picture">
                                 </div>
                             </div>
-                            <div class="col-8">
+                            <div class="col-7">
                                 <div class="product-name">{{product.title}}</div>
                                 <div class="product-description p-text-nowrap p-text-truncate" style="width: 90%">{{product.desc}}</div>
                             </div>
@@ -49,8 +49,8 @@
                                 <br/>
                                 <a class="mt-md-1 btn btn-primary float-right" href="/project/projectDetails?id={{product.id}}" role="button">View Project</a>
                             </div>
-                        </div>
-                    </div>
+                        <!-- </div> -->
+                    <!-- </div> -->
                 </ng-template>
             </p-dataView>
         </div>
