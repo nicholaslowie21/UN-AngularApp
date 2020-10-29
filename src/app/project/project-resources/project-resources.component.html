@@ -3,7 +3,7 @@
         << Back to project</u>
 </a>
 
-<a href="/project/requests?id={{projectId}}" class="float-right">
+<a *ngIf="isOwnerAdmin" href="/project/requests?id={{projectId}}" class="float-right">
     <u>See Project Requests >></u>
 </a>
 
