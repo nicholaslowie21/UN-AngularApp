@@ -31,6 +31,7 @@
                                         {{reward.title}}
                                     </button>
                                 </div>
+                                <span class="rounded-pill pl-2 pr-2 {{reward.minTier}}">{{reward.minTier}}</span><br>
                                 <div class="small mb-md-1">End Date: {{formatDate(reward.endDate)}}</div>
                             </div>
                         </div>
@@ -56,16 +57,20 @@
                                 class="img-fluid" style="width: 500px; height: 200px; object-fit: cover;" alt="Reward pic" />
                             <br/><br/>
                             <h5>{{currentReward.title}}</h5>
-                            <div>{{currentReward.desc}}</div>
-                            <br>
+                            <div>Description: {{currentReward.desc}}<br/></div>
+                            <div *ngIf="currentReward.sponsorType == 'user'">
+                                Offered by: <a href="/profile?username={{currentReward.accountUsername}}&userType=individual">{{currentReward.accountName}}</a>
+                            </div>
+                            <div *ngIf="currentReward.sponsorType == 'institution'">
+                                Offered by: <a href="/profile?username={{currentReward.accountUsername}}&userType=institution">{{currentReward.accountName}}</a>
+                            </div>
                             <div class="row">
                                 <div class="col-6">
                                     Point: {{currentReward.point}} <br>
                                     Tier: <span class="rounded-pill pl-2 pr-2 {{currentReward.minTier}}">{{currentReward.minTier}}</span><br>
-                                    Total claimed: {{currentReward.claimedNum}}
                                 </div>
                                 <div class="col-6">
-                                    Quota: {{currentReward.quota}} <br>
+                                    {{currentReward.remaining}}/{{currentReward.quota}} left<br>
                                     End Date: {{formatDate(currentReward.endDate)}}
                                 </div>
                             </div>
