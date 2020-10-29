@@ -23,7 +23,7 @@ export class RewardMarketplaceComponent implements OnInit {
   constructor(private rewardService: RewardService) { }
 
   async ngOnInit() {
-    await this.rewardService.getRewardOfferingReq({status: 'open'}).toPromise().then(
+    await this.rewardService.getRewardMarketplace().toPromise().then(
       res => this.rewards = res.data.rewards
     );
     console.log(this.rewards);
@@ -85,8 +85,14 @@ export class RewardMarketplaceComponent implements OnInit {
       endDate: reward.endDate.substring(0, 10),
       rewardImg: reward.imgPath,
       claimedNum: reward.claimedNum,
-      status: reward.status
+      remaining: 0,
+      status: reward.status,
+      sponsorId: reward.sponsorId,
+      sponsorType: reward.sponsorType,
+      accountName: reward.accountName,
+      accountUsername: reward.accountUsername
     };
+    this.currentReward.remaining = this.currentReward.quota - this.currentReward.claimedNum
     console.log(this.currentReward);
   }
 

@@ -62,4 +62,8 @@ export class RewardService {
   getAttachmentFile(filePath): Observable<any> {
     return this.http.get(base_url+filePath, {responseType: 'blob'});
   }
+
+  getRewardMarketplace(): Observable<any> {
+    return this.http.get(API_URL + '/marketplace');
+  }
 }
