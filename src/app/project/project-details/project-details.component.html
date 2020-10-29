@@ -81,10 +81,10 @@
                         <div class="row">
                             <div class="col-9 mt-md-1">Project Team:</div>
                             <div class="col-3">
-                                <a *ngIf=isOngoing&&isCreator href="/project/editAdmin?id={{project.id}}" role="button" style="height: 35px; width: 40px">
+                                <a *ngIf=isOngoing&&isCreator href="/project/editAdmin?id={{project.id}}" role="button">
                                     <button pButton class="p-button-rounded" icon="pi pi-user-edit"></button>
                                 </a>
-                                <a *ngIf=!isOngoing&&isCreator aria-disabled="true" role="button" style="height: 35px; width: 40px">
+                                <a *ngIf=!isOngoing&&isCreator aria-disabled="true" role="button">
                                     <button pButton disabled class="p-button-rounded" icon="pi pi-user-edit"></button>
                                 </a>
                             </div>
