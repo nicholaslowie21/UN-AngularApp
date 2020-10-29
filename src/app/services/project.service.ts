@@ -201,4 +201,18 @@ export class ProjectService {
       theRating: data.rating
     }, httpOptions);
   }
+
+  createProjectEvent(data):Observable<any> {
+    return this.http.post(API_URL + '/projectEvent', {
+      projectId: data.id,
+      title: data.title,
+      start: data.start,
+      end: data.end,
+      eventType: data.type
+    }, httpOptions);
+  }
+
+  getAllProjectEvents(data): Observable<any> {
+    return this.http.get(API_URL + '/all/events?projectId=' + data.id);
+  }
 }

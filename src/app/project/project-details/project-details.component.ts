@@ -1,9 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProjectService } from '../../services/project.service';
 import { UserService } from '../../services/user.service';
 import { TokenStorageService } from '../../services/token-storage.service';
 import { MessageService } from 'primeng/api';
+import { Calendar } from '@fullcalendar/core';
+import { FullCalendar } from 'primeng/fullcalendar';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import interactionPlugin from '@fullcalendar/interaction';
 
 @Component({
   selector: 'app-project-details',
@@ -52,8 +57,16 @@ export class ProjectDetailsComponent implements OnInit {
   tempId: any;
   checkComment = false;
 
+  calendarOn = false;
+  minimumDate = new Date();
+  events: any[];
+  options: any;
+  header: any;
+
   constructor(private route: ActivatedRoute, private projectService: ProjectService, private userService: UserService,
-    private tokenStorageService: TokenStorageService, private messageService: MessageService) { }
+    private tokenStorageService: TokenStorageService, private messageService: MessageService) {
+      const name = FullCalendar.name;
+     }
 
   async ngOnInit() {
     this.route.queryParams
@@ -149,7 +162,7 @@ export class ProjectDetailsComponent implements OnInit {
     );
     console.log(this.contributors.length);
 
-    await this.projectService.getProjectPosts({ id: this.projectId}).toPromise().then(
+    await this.projectService.getProjectPosts({ id: this.projectId }).toPromise().then(
       response => {
         console.log(JSON.stringify(response));
         this.projPosts = response.data.projectPosts;
@@ -157,6 +170,29 @@ export class ProjectDetailsComponent implements OnInit {
     );
     console.log(this.projPosts);
 
+    await this.projectService.getAllProjectEvents({ id: this.projectId }).toPromise().then(
+      response => {
+        console.log(JSON.stringify(response));
+        this.events = response.data.projectEvents;
+      }
+    );
+    console.log(this.events);
+    /**this.events = [{
+      "title": "Conference",
+      "start": "2020-10-11",
+      "end": "2020-10-13"
+    }]; **/
+
+    this.options = {
+      plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
+      header: {
+        left: 'prev,next today',
+        center: 'Project Schedule',
+        right: 'dayGridMonth,timeGridWeek,timeGridDay'
+      },
+      editable: true,
+      displayEventTime: false
+    };
   }
 
   async loadProject() {
@@ -255,7 +291,7 @@ export class ProjectDetailsComponent implements OnInit {
 
   formatDate(date): any {
     let formattedDate = new Date(date).toUTCString();
-    return formattedDate.substring(5, formattedDate.length-13);
+    return formattedDate.substring(5, formattedDate.length - 13);
   }
 
   getForm(kid: string, ktitle: string, kdesc: string, kcompletion: number): void {
@@ -359,7 +395,7 @@ export class ProjectDetailsComponent implements OnInit {
       img: this.image
     }
     console.log(formPost); **/
-    
+
     const formData = new FormData();
     formData.append("projectId", this.projectId);
     formData.append("title", this.form.title);
@@ -442,7 +478,7 @@ export class ProjectDetailsComponent implements OnInit {
 
   addComment(): void {
     console.log(this.newComment + " " + this.tempId);
-    
+
     const formAddComment = {
       id: this.tempId,
       comment: this.newComment
@@ -464,15 +500,16 @@ export class ProjectDetailsComponent implements OnInit {
   }
 
   async getComments(pid: string) {
-    await this.projectService.getPostComment({id: pid}).toPromise().then(
-      res => { 
+    await this.projectService.getPostComment({ id: pid }).toPromise().then(
+      res => {
         console.log(JSON.stringify(res));
-        this.allComments = res.data.postComments}
+        this.allComments = res.data.postComments
+      }
     );
     this.tempId = pid;
     console.log(this.tempId);
 
-    if(this.allComments.length==0) {
+    if (this.allComments.length == 0) {
       this.checkComment = false;
       console.log("length 0");
     } else {
@@ -491,21 +528,62 @@ export class ProjectDetailsComponent implements OnInit {
   }
 
   deleteComment(pid: string): void {
-   
-      this.projectService.deletePostComment({id: pid}).subscribe(
-        response => {
-          console.log(JSON.stringify(response));
-          this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Comment Deleted!' });
-          window.location.reload();
-        }
-      );
+
+    this.projectService.deletePostComment({ id: pid }).subscribe(
+      response => {
+        console.log(JSON.stringify(response));
+        this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Comment Deleted!' });
+        window.location.reload();
+      }
+    );
   }
 
   myComment(aId: string): boolean {
-    if(this.userId == aId) {
+    if (this.userId == aId) {
       return true;
     }
     return false;
   }
 
+  switchCalendarOn(): void {
+    this.calendarOn = true;
+  }
+
+  switchCalendarOff(): void {
+    this.calendarOn = false;
+  }
+
+  onEventPost(): void {
+    console.log(this.form);
+    console.log(this.projectId);
+    console.log(this.form.type.toLowerCase());
+    //console.log(new Date(this.form.endDate));
+    //console.log(new Date(this.form.startDate));
+    console.log(new Date(this.form.endDate) > new Date(this.form.startDate));
+    if (new Date(this.form.endDate) < new Date(this.form.startDate)) {
+      this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: "The start date is after the end date!" });
+    } else {
+      const formEvent = {
+        id: this.projectId,
+        title: this.form.title,
+        start: this.form.startDate,
+        end: this.form.endDate,
+        type: this.form.type.toLowerCase()
+      }
+
+      this.projectService.createProjectEvent(formEvent).subscribe(
+        response => {
+          console.log(JSON.stringify(response));
+          this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Event Added!' });
+          //this.ngOnInit();
+          window.location.reload();
+        },
+        err => {
+          this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: err.error.msg });
+          this.errorMsg = err.error.msg;
+          console.log(this.errorMsg);
+        }
+      );
+    }
+  }
 }

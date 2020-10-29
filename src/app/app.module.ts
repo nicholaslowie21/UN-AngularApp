@@ -60,6 +60,7 @@ import {ProgressBarModule} from 'primeng/progressbar';
 import {GalleriaModule} from 'primeng/galleria';
 import {MultiSelectModule} from 'primeng/multiselect';
 import {CalendarModule} from 'primeng/calendar';
+import {FullCalendarModule} from 'primeng/fullcalendar';
 
 import { ProjectMarketplaceComponent } from './marketplace/project-marketplace/project-marketplace.component';
 import { ResourceMarketplaceComponent } from './marketplace/resource-marketplace/resource-marketplace.component';
@@ -140,7 +141,8 @@ import { AdminCreateRewardComponent } from './admin/admin-create-reward/admin-cr
     ProgressBarModule,
     GalleriaModule,
     MultiSelectModule,
-    CalendarModule
+    CalendarModule,
+    FullCalendarModule
   ],
   providers: [authInterceptorProviders, AuthGuardService],
   bootstrap: [AppComponent]
