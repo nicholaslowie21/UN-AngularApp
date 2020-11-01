@@ -1,19 +1,23 @@
+<div>
 <a href="/project/projectDetails?id={{projectId}}">
-    <u>
-        << Back to project</u>
-</a>
+    <u>Project Details </u>
+</a> |
 
-<a *ngIf="isOwnerAdmin" href="/project/requests?id={{projectId}}" class="float-right">
-    <u>See Project Requests >></u>
-</a>
+Project Resources |
 
-<h3 class="mt-md-2">Project Resources
+<a *ngIf="isOwnerAdmin" href="/project/requests?id={{projectId}}">
+    <u>Project Requests</u>
+</a>
+</div>
+<div class="dropdown-divider"></div>
+
+<h4 class="mt-md-2">Project Resources
     <!--button *ngIf="project.status=='ongoing'" class="btn btn-primary float-right" data-toggle="modal" data-target="#exampleModalScrollable">Request Contribution</button-->
     <button *ngIf="isOwnerAdmin && project.status == 'ongoing'" class="btn btn-primary float-right" data-toggle="modal" data-target="#CreateModal">
         Add Resource Need
     </button>
-</h3>
-<h4>Project: {{project.title}}</h4>
+</h4>
+<h5>Project: {{project.title}}</h5>
 Overall Need Progress:
 <p-progressBar [value]="progress"></p-progressBar>
 

@@ -1,15 +1,19 @@
 <a href="/project/projectDetails?id={{projectId}}">
-    <u>
-        << Back to project</u>
-</a>
+    <u>Project Details</u>
+</a> |
 
-<a href="/project/resources?id={{projectId}}" class="float-right">
-    <u>See Project Resources >></u>
-</a>
+<a href="/project/resources?id={{projectId}}">
+    <u>Project Resources</u>
+</a> |
+
+Project Requests
+
+<div class="dropdown-divider"></div>
 
 <p-toast key="toastMsg" [baseZIndex]="100"></p-toast>
 
-<h4>Project: {{project.title}}</h4>
+<h4>Project Requests</h4>
+<h5>Project: {{project.title}}</h5>
 <div class="row mt-md-2">
     <div class="col-6">
         <h5>Incoming Requests</h5>
