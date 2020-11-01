@@ -49,8 +49,11 @@
         <ng-template let-project pTemplate="gridItem">
             <div class="p-col-12 p-md-4">
                 <div class="product-grid-item card p-3">
-                    <div class="product-grid-item-top">
-
+                    <div class="mb-md-2">
+                        <div *ngFor="let sdg of project.SDGs" style="display:inline-block;">
+                            <button class="sdg sdg{{sdg}} mr-md-1">{{sdg}}</button>
+                        </div>
+                        <span class="float-right">{{formatDate(project.createdAt)}}</span>
                     </div>
                     <div class="product-grid-item-content">
                         <img *ngIf="project.imgPath.length == 0" src="../../../assets/img/team.jpg" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;"
@@ -58,15 +61,13 @@
                         <img *ngIf="project.imgPath.length != 0" src="https://localhost:8080{{project.imgPath}}" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;"
                             [alt]="project.title" />
                         <div class="product-name">
-                            <a href="/project/resources?id={{project.id}}">{{project.title}}</a>
+                            <a href="/project/projectDetails?id={{project.id}}">{{project.title}}</a>
                         </div>
                         <div>{{project.country}}</div>
-                        <div class="text-secondary mb-md-1">
-                            <small>Created on: {{formatDate(project.createdAt)}}</small>
-                        </div>
-                        <div *ngFor="let sdg of project.SDGs" style="display:inline-block;">
-                            <button class="sdg sdg{{sdg}} mr-md-1">{{sdg}}</button>
-                        </div>
+                        
+                    </div>
+                    <div class="mt-md-3">
+                        <a class="btn btn-primary float-right" style="bottom: 0; right: 0; position: absolute;" href="/project/resources?id={{project.id}}">Contribute</a>
                     </div>
                 </div>
             </div>
