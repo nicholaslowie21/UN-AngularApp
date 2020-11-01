@@ -24,6 +24,8 @@ export class MyRequestsComponent implements OnInit {
   filterKeyTypeCancelled: '';
   filterTypeOptions: any[];
 
+  myProjectsLink = '';  
+
   constructor(private marketplaceService: MarketplaceService, private messageService: MessageService, private tokenStorageService: TokenStorageService) { }
 
   async ngOnInit() {
@@ -49,6 +51,15 @@ export class MyRequestsComponent implements OnInit {
     await this.marketplaceService.viewMyResOutgoingProjReq({reqStatus: 'cancelled'}).toPromise().then(
       res => {this.cancelledProjectReqs = res.data.projectReqs}
     );
+
+    let username = this.tokenStorageService.getUser().username;
+    this.myProjectsLink = "/project/myProjects?username="+username;
+
+    if(this.tokenStorageService.getAccountType() == 'user') {
+      this.myProjectsLink += "&type=individual";
+    } else {
+      this.myProjectsLink += "&type=institution";
+    }
   }
 
   formatDate(date): any {
