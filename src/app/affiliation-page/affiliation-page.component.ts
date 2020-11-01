@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { InstitutionService } from '../services/institution.service';
 import { TokenStorageService } from '../services/token-storage.service';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-affiliation-page',
@@ -11,13 +10,15 @@ import { Observable } from 'rxjs';
 })
 export class AffiliationPageComponent implements OnInit {
 
-  isInstitution: any;
+  institutionUsername: any;
+  institutionId: any;
+  isOwner = false;
   institution: any;
   file: any;
   isUploadSuccessful: any;
   errorMsgUpload = '';
 
-  members: any;
+  members: any = [];
   keyword = '';
   searchResults: any;
   isSearchSuccessful: any;
@@ -30,17 +31,27 @@ export class AffiliationPageComponent implements OnInit {
   errorMsgDel = '';
 
   constructor(private institutionService: InstitutionService, private tokenStorageService: TokenStorageService,
-      private http: HttpClient) { }
+    private route: ActivatedRoute) { }
 
-  ngOnInit(): void {
-    if (this.tokenStorageService.getAccountType() != "user") {
-      this.isInstitution = true;
-      this.institution = this.tokenStorageService.getUser();
-      this.institutionService.getAffiliatedUsers({id: this.institution.id}).subscribe(
-        response => {
-          this.members = response.data.members;
-        }
-      );
+  async ngOnInit() {
+    this.route.queryParams.subscribe(
+      params => {
+        this.institutionUsername = params.username;
+      }
+    );
+
+    await this.institutionService.viewInstitutionProfile({username: this.institutionUsername}).toPromise().then(
+      res => this.institutionId = res.data.targetInstitution.id
+    );
+
+    await this.institutionService.getAffiliatedUsers({id: this.institutionId}).toPromise().then(
+      response => {
+        this.members = response.data.members;
+      }
+    );
+
+    if (this.tokenStorageService.getUser().id == this.institutionId) {
+      this.isOwner = true;
     }
   }
 

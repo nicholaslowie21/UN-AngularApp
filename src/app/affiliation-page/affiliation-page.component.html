@@ -1,11 +1,10 @@
-<div *ngIf=isInstitution>
-    <h1>Affiliated users</h1>
-    <br/>
+
+    <h2>Affiliated users</h2>
     <div class="container">
         <div class="row">
             <div class="col-6">
                 <div *ngIf="members.length == 0">
-                    <p>You currently have no affiliated users.</p>
+                    <p>No affiliated user found</p>
                 </div>
 
                 <div *ngFor="let member of members">
@@ -30,20 +29,20 @@
                                 </div>
                             </div>
                             <br/>
-                            <div class="col-5">
+                            <div class="col-6">
                                 Name: <a href="/profile?username={{member.username}}&userType=individual">{{member.name}}</a>
                                 <br/>
                                 Username: {{member.username}}
                             </div>
-                            <div class="col-4">
-                                <button class="btn btn-danger float-right" (click)=deleteAffiliatedUser(member)>Delete</button>
+                            <div class="col-3">
+                                <button *ngIf="isOwner" class="btn btn-danger float-right" (click)=deleteAffiliatedUser(member)>Delete</button>
                             </div>
                         </div>
                     </div>
                 </div>
                 <br/>
             </div>
-            <div class="col">
+            <div *ngIf="isOwner" class="col">
                 <h4>Update affiliated users using CSV upload</h4>
                 <p>Every upload of a CSV file will replace your current list of affiliated users</p>
                 <a href="https://localhost:8080/file/memberCSVtemplate.csv">Download template</a>
@@ -125,8 +124,3 @@
             </div>
         </div>
     </div>
-</div>
-
-<div *ngIf=!isInstitution>
-    Log in with an institution account to access this page.
-</div>

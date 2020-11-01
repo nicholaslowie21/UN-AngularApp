@@ -50,6 +50,7 @@ export class OwnProfileComponent implements OnInit {
   item: any = [];
   venue: any = [];
   indAffiliations = [];
+  institutionAffiliations = [];
 
   resourceOffers = [];
   feed = [];
@@ -88,7 +89,12 @@ export class OwnProfileComponent implements OnInit {
             this.isVerified = true;
           }
         }
-      )
+      );
+      await this.institutionService.getAffiliatedUsers({id: this.user.id}).subscribe(
+        response => {
+          this.institutionAffiliations = response.data.members;
+        }
+      );
     }
 
     if(this.user.id == this.tokenStorageService.getUser().id) {
