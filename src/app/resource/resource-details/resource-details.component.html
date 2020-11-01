@@ -426,7 +426,7 @@
                                     </div>
                                 </div>
                                 <div class="col-9">
-                                    <b>Project: <a href="/project/projectDetails?id={{p.projectId}}">{{p.projectTitle}}</a></b><br/>
+                                    <b>Project: <a href="/project/resources?id={{p.projectId}}">{{p.projectTitle}}</a></b><br/>
                                     Resource need: {{p.title}}<br/>
                                     Description: <span *ngIf="p.desc.length == 0">-</span>
                                     <span *ngIf="p.desc.length > 0">{{p.desc}}</span>
