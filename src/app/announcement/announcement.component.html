@@ -1,0 +1,50 @@
+<h2>All Announcements</h2>
+
+<div class="card">
+    <p-dataView #dv [value]="announcements" [paginator]="true" [rows]="9" filterBy="title" [sortField]="sortField" [sortOrder]="sortOrder" layout="list">
+        <ng-template pTemplate="header">
+            <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                <span class="p-input-icon-left p-mb-2 p-mb-md-0">
+                    <i class="pi pi-search"></i>
+                    <input type="search" pInputText placeholder="Search by Title" (input)="dv.filter($event.target.value)">
+                </span>
+                <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyDate" placeholder="Sort By Date" (onChange)="onSortDate($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+            </div>
+        </ng-template>
+        <ng-template let-a pTemplate="listItem">
+            <div class="product-list-item">
+                <div class="col-9">
+                    <div class="product-name">{{a.title}}</div>
+                    <div class="product-description p-text-nowrap p-text-truncate" style="width: 70%">{{a.desc}}</div>
+                
+                </div>
+                <div class="col-3">
+                    <div class="float-right">Updated at {{formatDate(a.updatedAt)}}</div> <br>
+                    <button class="btn btn-primary float-right" data-toggle="modal" data-target="#viewAnnouncement" (click)="getAnnouncement(a)">
+                        View
+                    </button>
+                </div>
+            </div>
+        </ng-template>
+    </p-dataView>
+</div>
+
+<div class="modal fade" id="viewAnnouncement" tabindex="-1" role="dialog" aria-labelledby="viewAnnouncementLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewAnnouncementLabel">View Announcement</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h4>{{viewForm.title}}</h4>
+                <div class="text-justify">{{viewForm.desc}}</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -60,6 +60,7 @@ import {ProgressBarModule} from 'primeng/progressbar';
 import {GalleriaModule} from 'primeng/galleria';
 import {MultiSelectModule} from 'primeng/multiselect';
 import {CalendarModule} from 'primeng/calendar';
+import {EditorModule} from 'primeng/editor';
 
 import { ProjectMarketplaceComponent } from './marketplace/project-marketplace/project-marketplace.component';
 import { ResourceMarketplaceComponent } from './marketplace/resource-marketplace/resource-marketplace.component';
@@ -74,6 +75,7 @@ import { AdminRewardManagementComponent } from './admin/admin-reward-management/
 import { AdminCreateRewardComponent } from './admin/admin-create-reward/admin-create-reward.component';
 import { MyRewardsComponent } from './reward/my-rewards/my-rewards.component';
 import { AdminAnnouncementComponent } from './admin/admin-announcement/admin-announcement.component';
+import { AnnouncementComponent } from './announcement/announcement.component';
 
 @NgModule({
   declarations: [
@@ -121,7 +123,8 @@ import { AdminAnnouncementComponent } from './admin/admin-announcement/admin-ann
     AdminRewardManagementComponent,
     AdminCreateRewardComponent,
     MyRewardsComponent,
-    AdminAnnouncementComponent
+    AdminAnnouncementComponent,
+    AnnouncementComponent
   ],
   imports: [
     BrowserModule,
@@ -144,7 +147,8 @@ import { AdminAnnouncementComponent } from './admin/admin-announcement/admin-ann
     ProgressBarModule,
     GalleriaModule,
     MultiSelectModule,
-    CalendarModule
+    CalendarModule,
+    EditorModule
   ],
   providers: [authInterceptorProviders, AuthGuardService],
   bootstrap: [AppComponent]

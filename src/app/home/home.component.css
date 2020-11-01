@@ -1,0 +1,23 @@
+.announcement-title {
+    display: inline-block;
+    font-weight: 400;
+    color: #212529;
+    text-align: left;
+    vertical-align: middle;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    line-height: 1.5;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.announcement-title:focus {
+    outline: 0
+}
+
+.announcement-title:hover {
+    color: #19B5FE;
+}

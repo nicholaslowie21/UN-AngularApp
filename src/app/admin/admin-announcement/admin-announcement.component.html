@@ -1,1 +1,143 @@
-<p>admin-announcement works!</p>
+<h2>Announcement Management
+    <button class="btn btn-primary float-right" data-toggle="modal" data-target="#createAnnouncement">
+        Create New Announcement
+    </button>
+</h2>
+
+<div class="modal fade" data-backdrop="static" id="createAnnouncement" tabindex="-1" role="dialog" aria-labelledby="createAnnouncementLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createAnnouncementLabel">Create New Announcement</h5>
+                <button type="button" (click)="closeModal()" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div *ngIf="!isCreateSuccessful">
+                    <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+                        <label for="title">Title</label>
+                        <input type="text" class="form-control" name="title" [(ngModel)]="form.title" required #title="ngModel" />
+                                            
+                        <div class="alert-danger" *ngIf="f.submitted && title.invalid">
+                            <div *ngIf="title.errors.required">Title is required</div>
+                        </div>
+    
+                        <label for="desc">Content</label>
+                        <textarea class="form-control" [(ngModel)]="form.desc" name="desc" required #desc="ngModel" rows="5"></textarea>
+                        <!-- <p-editor [(ngModel)]="form.desc" name="desc" [style]="{'height':'320px'}" required #desc="ngModel">
+                            <p-header>
+                                <span class="ql-formats">
+                                    <button class="ql-bold" aria-label="Bold"></button>
+                                    <button class="ql-italic" aria-label="Italic"></button>
+                                    <button class="ql-underline" aria-label="Underline"></button>
+                                    <button class="ql-strike" aria-label="Strike"></button>
+                                </span>
+                                <span class="ql-formats">
+                                    <button class="ql-list" value="ordered"></button>
+                                    <button class="ql-list" value="bullet"></button>
+                                </span>
+                                <span class="ql-formats">
+                                    <button aria-label="Link" class="ql-link"></button>
+                                </span>
+                            </p-header>
+                        </p-editor> -->
+                        <div class="alert-danger" *ngIf="f.submitted && desc.invalid">
+                            <div *ngIf="desc.errors.required">Content is required</div>
+                        </div>
+                        <br>
+                        <button class="btn btn-primary btn-block">Create</button>
+                    </form>
+                </div>
+                <div *ngIf="isCreateSuccessful">
+                    <div class="alert alert-success">
+                        Announcement created successfully!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <p-dataView #dv [value]="announcements" [paginator]="true" [rows]="9" filterBy="title" [sortField]="sortField" [sortOrder]="sortOrder" layout="list">
+        <ng-template pTemplate="header">
+            <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                <span class="p-input-icon-left p-mb-2 p-mb-md-0">
+                    <i class="pi pi-search"></i>
+                    <input type="search" pInputText placeholder="Search by Title" (input)="dv.filter($event.target.value)">
+                </span>
+                <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyDate" placeholder="Sort By Date" (onChange)="onSortDate($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+            </div>
+        </ng-template>
+        <ng-template let-a pTemplate="listItem">
+            <div class="product-list-item">
+                <div class="col-9">
+                    <div class="product-name">{{a.title}}</div>
+                    <div class="product-description p-text-nowrap p-text-truncate" style="width: 70%">{{a.desc}}</div>
+                
+                </div>
+                <div class="col-3">
+                    <div class="float-right">Updated at {{formatDate(a.updatedAt)}}</div> <br>
+                    <button class="btn btn-primary float-right" data-toggle="modal" data-target="#viewAnnouncement" (click)="getAnnouncement(a)">
+                        View
+                    </button>
+                </div>
+            </div>
+        </ng-template>
+    </p-dataView>
+</div>
+
+<div class="modal fade" data-backdrop="static" id="viewAnnouncement" tabindex="-1" role="dialog" aria-labelledby="viewAnnouncementLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewAnnouncementLabel">View Announcement</h5>
+                <button type="button" (click)="closeModal()" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div *ngIf="!isEdit && !isDelSuccessful">
+                    <h4>{{viewForm.title}}</h4>
+                    <div class="text-justify">{{viewForm.desc}}</div>
+                </div>
+                <div *ngIf="isEdit">
+                    <form name="viewForm" (ngSubmit)="f.form.valid && onUpdate()" #f="ngForm" novalidate>
+                        <label for="title">Title</label>
+                        <input type="text" class="form-control" name="title" [(ngModel)]="viewForm.title" required #title="ngModel" />
+                                            
+                        <div class="alert-danger" *ngIf="f.submitted && title.invalid">
+                            <div *ngIf="title.errors.required">Title is required</div>
+                        </div>
+    
+                        <label for="desc">Content</label>
+                        <textarea class="form-control" [(ngModel)]="viewForm.desc" name="desc" required #desc="ngModel" rows="5"></textarea>
+                        
+                        <div class="alert-danger" *ngIf="f.submitted && desc.invalid">
+                            <div *ngIf="desc.errors.required">Content is required</div>
+                        </div>
+                    </form>
+                </div>
+                <div *ngIf="isDelSuccessful">
+                    <div class="alert alert-success">
+                        Announcement has been deleted.
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div *ngIf="!isEdit && !isDelSuccessful">
+                    <button class="btn btn-primary" (click)="clickEdit()"><i class="pi pi-pencil"></i>&nbsp;Edit</button>
+                    <button class="btn btn-danger ml-md-2" (click)="deleteAnnouncement()"><i class="pi pi-times"></i>&nbsp;Delete</button>
+                </div>
+                <div *ngIf="isEdit">
+                    <button class="btn btn-primary" (click)="onUpdate()">Update</button>
+                    <button class="btn btn-secondary ml-md-2" (click)="cancelEdit()">Cancel</button>
+                </div>
+                <div *ngIf="isDelSuccessful">
+                    <button type="button" class="btn btn-secondary" (click)="closeModal()" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

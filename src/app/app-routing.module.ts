@@ -44,6 +44,7 @@ import { RewardOfferingComponent } from './reward/reward-offering/reward-offerin
 import { CreateRewardComponent } from './reward/create-reward/create-reward.component';
 import { RewardMarketplaceComponent } from './reward/reward-marketplace/reward-marketplace.component';
 import { MyRewardsComponent } from './reward/my-rewards/my-rewards.component';
+import { AnnouncementComponent } from './announcement/announcement.component';
 
 const routes: Routes = [
   { path: 'landing', component: LandingComponent},
@@ -108,6 +109,7 @@ const routes: Routes = [
   { path: 'shareProfile', component: ShareProfilePageComponent},
   { path: 'myRequests', component: MyRequestsComponent},
   { path: 'discover-weekly', component: DiscoverWeeklyComponent},
+  { path: 'announcements', component: AnnouncementComponent},
   { path: '', redirectTo: 'home', pathMatch: 'full'}
 ];
 

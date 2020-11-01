@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TokenStorageService } from '../services/token-storage.service';
 import { ProjectService } from '../services/project.service';
+import { CommunicationService } from '../services/communication.service';
 
 @Component({
   selector: 'app-home',
@@ -13,8 +14,10 @@ export class HomeComponent implements OnInit {
   userType: any;
   
   newsFeed = [];
+  announcements = [];
+  viewAnn:any = {};
 
-  constructor(private tokenStorageService: TokenStorageService, private projectService: ProjectService) { }
+  constructor(private tokenStorageService: TokenStorageService, private projectService: ProjectService, private communicationService: CommunicationService) { }
 
   async ngOnInit() {
     this.user = this.tokenStorageService.getUser();
@@ -26,7 +29,11 @@ export class HomeComponent implements OnInit {
 
     await this.projectService.getNewsFeed().toPromise().then(
       res => this.newsFeed = res.data.newsfeeds
-    )
+    );
+
+    await this.communicationService.getAnnouncements().toPromise().then(
+      res => this.announcements = res.data.announcements
+    );
 
     console.log(this.newsFeed);
   }
@@ -34,6 +41,13 @@ export class HomeComponent implements OnInit {
   formatDate(date): any {
     let formattedDate = new Date(date).toUTCString();
     return formattedDate.substring(5, formattedDate.length-13);
+  }
+
+  getAnnouncement(a): void {
+    this.viewAnn = {
+      title: a.title,
+      desc: a.desc
+    };
   }
 
 }
