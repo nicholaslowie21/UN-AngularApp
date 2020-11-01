@@ -53,7 +53,7 @@ Overall Need Progress:
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="desc" class="col-sm-4 col-form-label">Description</label>
+                            <label for="desc" class="col-sm-4 col-form-label">Message</label>
                             <div class="col-sm-8">
                                 <textarea class="form-control" name="desc" [(ngModel)]="needForm.reqDesc" #desc="ngModel" rows="2"></textarea>
                             </div>
@@ -149,7 +149,7 @@ Overall Need Progress:
                     <br>
                     <div *ngIf=checkBox class="row">
                         <div class="col-12">
-                            Request Description:
+                            Request Message:
                             <br>
                             <textarea class="form-control" name="reqDesc" [(ngModel)]="reqDescription" required #reqDesc="ngModel" rows="3" cols="60"></textarea>
                         </div>
