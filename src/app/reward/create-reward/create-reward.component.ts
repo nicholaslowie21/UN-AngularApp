@@ -58,8 +58,9 @@ export class CreateRewardComponent implements OnInit {
     formData.append("point", this.form.point);
     formData.append("quota", this.form.quota);
     formData.append("minTier", this.form.tier);
+    formData.append("startDate", this.form.startDate);
+    formData.append("endDate", this.form.endDate);
     formData.append("rewardImg", this.file || '');
-    formData.append("endDate", this.form.date);
     formData.append("rewardFile", this.fileVerify);
 
     this.rewardService.createReward(formData).subscribe(

@@ -1,10 +1,22 @@
-<h2>Reward Marketplace</h2>
 <div class="row">
     <div class="col-2 bg-light p-2">
         <div class="mb-md-2">Marketplace</div>
-        <a href="/reward/offering">My Reward Offering</a>
+        <div class="mb-md-2"><a href="/reward/offering">My Reward Offering</a></div>
+        <div class="mb-md-2" *ngIf= "userType == 'user'"><a href="/reward/myRewards">My Rewards</a></div>
     </div>
+    
     <div class="col-10">
+        <div class="row">
+            <div class="col-9">
+                <h2>Reward Marketplace</h2>
+            </div>
+            <div class="col-3">
+                <p *ngIf="userType == 'user'">
+                    Your Tier: <span class="rounded-pill pl-2 pr-2 {{userTier}}">{{userTier}}</span><br>
+                    Your Wallet: {{wallet}}
+                </p>
+            </div>
+        </div>
         <div class="card">
             <p-dataView #re [value]="rewards" [paginator]="true" [rows]="9" filterBy="title" [sortField]="sortField" [sortOrder]="sortOrder" layout="grid">
                 <ng-template pTemplate="header">
@@ -12,6 +24,8 @@
                         <p-dropdown [options]="sortOptions" [(ngModel)]="sortKey" placeholder="Sort By End Date" (onChange)="onSortChange($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
                         <p-dropdown [options]="countryOptions" [(ngModel)]="filterKeyCountry" placeholder="Filter By Country" (onChange)="filterCountry($event)"
                             styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                        <!-- <p-dropdown [options]="countryOptions" [(ngModel)]="filterKeyCountry" placeholder="Minimum Tier" (onChange)="filterCountry($event)"
+                            styleClass="p-mb-2 p-mb-md-0"></p-dropdown> -->
                         <span class="p-input-icon-left p-mb-2 p-mb-md-0">
                             <i class="pi pi-search"></i>
                             <input type="search" pInputText placeholder="Search by Title" (input)="re.filter($event.target.value)">
@@ -21,7 +35,9 @@
                 <ng-template let-reward pTemplate="gridItem">
                     <div class="p-col-12 p-md-4">
                         <div class="product-grid-item card p-2">
-                            <div class="product-grid-item-content">
+                            <div class="product-grid-item-content mt-1 mr-1">
+                                <span class="rounded-pill pl-2 pr-2 {{reward.minTier}} float-left">{{reward.minTier}}</span>
+                                <div class="text-right">{{reward.point}} pts</div><br/>
                                 <img *ngIf="reward.imgPath.length == 0" src="../../../assets/img/rewardPlaceholder.png"
                                     class="img-fluid" style="width: 150px; height: 150px; object-fit: cover;" alt="Reward pic" />
                                 <img *ngIf="reward.imgPath.length != 0" src="https://localhost:8080{{reward.imgPath}}"
@@ -31,8 +47,10 @@
                                         {{reward.title}}
                                     </button>
                                 </div>
-                                <span class="rounded-pill pl-2 pr-2 {{reward.minTier}}">{{reward.minTier}}</span><br>
-                                <div class="small mb-md-1">End Date: {{formatDate(reward.endDate)}}</div>
+                                <div class="small mb-md-1">
+                                    Country: {{reward.country}}<br/>
+                                    End Date: {{formatDate(reward.endDate)}}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -49,28 +67,44 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <span class="product-category">{{currentReward.country}}</span>
-                            <br>
+                            <div *ngIf="isRedeemSuccessful">
+                                <div class="alert alert-success">
+                                    Reward has been redeemed. You may view the voucher in <a href="/reward/myRewards">My Rewards</a>.
+                                </div>
+                            </div>
+                            <div>
+                                <span class="product-category">{{currentReward.country}}</span>
+                                <span class="rounded-pill pl-2 pr-2 {{currentReward.minTier}} float-right">{{currentReward.minTier}}</span>
+                            </div>
                             <img *ngIf="currentReward.rewardImg.length == 0" src="../../../assets/img/rewardPlaceholder.png"
                                 class="img-fluid" style="width: 500px; height: 200px; object-fit: cover;" alt="Reward pic" />
                             <img *ngIf="currentReward.rewardImg.length != 0" src="https://localhost:8080{{currentReward.rewardImg}}"
                                 class="img-fluid" style="width: 500px; height: 200px; object-fit: cover;" alt="Reward pic" />
                             <br/><br/>
+                            <button *ngIf= "userType == 'user'" type="button" class="btn btn-success float-right" (click)="redeemReward(currentReward.id)">Redeem</button>
                             <h5>{{currentReward.title}}</h5>
                             <div>Description: {{currentReward.desc}}<br/></div>
-                            <div *ngIf="currentReward.sponsorType == 'user'">
-                                Offered by: <a href="/profile?username={{currentReward.accountUsername}}&userType=individual">{{currentReward.accountName}}</a>
+                            <div *ngIf="currentReward.sponsorType == 'external'">Offered by: external sponsor {{currentReward.externalName}}</div>
+                            <div *ngIf="currentReward.sponsorType != 'external'">Offered by:
+                                <img *ngIf="!currentReward.accountImgPath" src="../../../assets/img/profilePic_Placeholder.png"
+                                    class="img-fluid rounded-circle mr-md-2" style="width: 60px; height: 60px; object-fit: cover;" alt="Profile pic" />
+                                <img *ngIf="currentReward.accountImgPath" src="https://localhost:8080{{currentReward.accountImgPath}}"
+                                    class="img-fluid rounded-circle mr-md-2" style="width: 60px; height: 60px; object-fit: cover;" alt="Profile pic" />
+                                <span *ngIf="currentReward.sponsorType == 'user'">
+                                    <a href="/profile?username={{currentReward.accountUsername}}&userType=individual">{{currentReward.accountName}}</a>
+                                </span>
+                                <span *ngIf="currentReward.sponsorType == 'institution'">
+                                    <a href="/profile?username={{currentReward.accountUsername}}&userType=institution">{{currentReward.accountName}}</a>
+                                </span>
                             </div>
-                            <div *ngIf="currentReward.sponsorType == 'institution'">
-                                Offered by: <a href="/profile?username={{currentReward.accountUsername}}&userType=institution">{{currentReward.accountName}}</a>
-                            </div>
+                            <br/>
                             <div class="row">
                                 <div class="col-6">
-                                    Point: {{currentReward.point}} <br>
-                                    Tier: <span class="rounded-pill pl-2 pr-2 {{currentReward.minTier}}">{{currentReward.minTier}}</span><br>
+                                    Points needed: {{currentReward.point}} <br>
+                                    {{currentReward.remaining}} available<br>
                                 </div>
                                 <div class="col-6">
-                                    {{currentReward.remaining}}/{{currentReward.quota}} left<br>
+                                    Start Date: {{formatDate(currentReward.startDate)}}
                                     End Date: {{formatDate(currentReward.endDate)}}
                                 </div>
                             </div>

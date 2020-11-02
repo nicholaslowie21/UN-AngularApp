@@ -9,7 +9,16 @@
         <div class="row">
             <div class="col-6">
                 <div class="form-group row">
-                    <label for="title" class="col-sm-3 col-form-label">Title</label>
+                    <label for="externalName" class="col-sm-3 col-form-label">External Sponsor</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" name="externalName" [(ngModel)]="form.externalName" required #externalName="ngModel" />
+                    </div>
+                    <div class="alert-danger" *ngIf="f.submitted && externalName.invalid">
+                        <div *ngIf="externalName.errors.required">Name of External Sponsor is required</div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="title" class="col-sm-3 col-form-label">Reward Title</label>
                     <div class="col-sm-9">
                         <input type="text" class="form-control" name="title" [(ngModel)]="form.title" required #title="ngModel" />
                     </div>
@@ -83,13 +92,23 @@
                     </div>
                 </div>
                 <div class="form-group row">
+                    <label for="startDate" class="col-sm-3 col-form-label">Start Date</label>
+                    <div class="col-sm-5">
+                        <p-calendar [baseZIndex]="90" name="startDate" [(ngModel)]="form.startDate" dateFormat="yy-mm-dd" [showIcon]="true" [minDate]="minimumDate"
+                        [monthNavigator]="true" [yearNavigator]="true" yearRange="2020:2025" required #startDate="ngModel"></p-calendar>
+                    </div>
+                    <div class="alert-danger" *ngIf="f.submitted && startDate.invalid">
+                        <div *ngIf="startDate.errors.required">Start date is required</div>
+                    </div>
+                </div>
+                <div class="form-group row">
                     <label for="endDate" class="col-sm-3 col-form-label">End Date</label>
                     <div class="col-sm-5">
-                        <p-calendar [baseZIndex]="90" name="date" [(ngModel)]="form.date" dateFormat="yy-mm-dd" [showIcon]="true" [minDate]="minimumDate"
-                        [monthNavigator]="true" [yearNavigator]="true" yearRange="2020:2025" required #date="ngModel"></p-calendar>
+                        <p-calendar [baseZIndex]="90" name="endDate" [(ngModel)]="form.endDate" dateFormat="yy-mm-dd" [showIcon]="true" [minDate]="minimumDate"
+                        [monthNavigator]="true" [yearNavigator]="true" yearRange="2020:2025" required #endDate="ngModel"></p-calendar>
                     </div>
-                    <div class="alert-danger" *ngIf="f.submitted && date.invalid">
-                        <div *ngIf="date.errors.required">End date is required</div>
+                    <div class="alert-danger" *ngIf="f.submitted && endDate.invalid">
+                        <div *ngIf="endDate.errors.required">End date is required</div>
                     </div>
                 </div>
             </div>
@@ -117,6 +136,6 @@
 <div *ngIf="isSuccessful">
     <div class="alert alert-success">
         Reward created successfully.<br>
-        View in <a href="/reward">Reward Marketplace</a>
+        It will be visible in <a href="/reward">Reward Marketplace</a> upon the start date.
     </div>
 </div>

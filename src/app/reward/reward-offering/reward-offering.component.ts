@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RewardService } from '../../services/reward.service';
 import { MessageService } from 'primeng/api';
+import { TokenStorageService } from '../../services/token-storage.service';
 
 @Component({
   selector: 'app-reward-offering',
@@ -10,6 +11,8 @@ import { MessageService } from 'primeng/api';
 })
 export class RewardOfferingComponent implements OnInit {
 
+  userType: any;
+
   rewards = [];
   sortOrder: number;
   sortField: string;
@@ -17,9 +20,11 @@ export class RewardOfferingComponent implements OnInit {
 
   editForm: any = {rewardImg: ''};
 
-  constructor(private rewardService: RewardService, private messageService: MessageService) { }
+  constructor(private rewardService: RewardService, private messageService: MessageService, private tokenStorageService: TokenStorageService) { }
 
   async ngOnInit() {
+    this.userType = this.tokenStorageService.getAccountType();
+    
     await this.rewardService.getRewardOfferings().toPromise().then(
       res => this.rewards = res.data.rewards
     );
@@ -28,6 +33,7 @@ export class RewardOfferingComponent implements OnInit {
     this.filterStatusOptions = [
       { label: 'All', value: 'all' },
       { label: 'Pending', value: 'pending' },
+      { label: 'Accepted', value: 'accepted'},
       { label: 'Active', value: 'open' },
       { label: 'Expired', value: 'close' },
       { label: 'Rejected', value: 'rejected'}
@@ -64,6 +70,7 @@ export class RewardOfferingComponent implements OnInit {
       point: reward.point,
       quota: reward.quota,
       minTier: reward.minTier,
+      startDate: reward.startDate.substring(0, 10),
       endDate: reward.endDate.substring(0, 10),
       rewardImg: reward.imgPath,
       createdAt: reward.createdAt,

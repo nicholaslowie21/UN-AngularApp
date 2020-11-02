@@ -6,6 +6,10 @@
     background-color: rgb(83, 207, 10);
 }
 
+.acceptedStatus {
+    background-color: rgb(221, 160, 221);
+}
+
 .pendingStatus {
     background-color: rgb(235, 141, 33);
 }

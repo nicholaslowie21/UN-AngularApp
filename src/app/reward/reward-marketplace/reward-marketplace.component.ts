@@ -1,15 +1,24 @@
 import { Component, OnInit } from '@angular/core';
+import { MessageService } from 'primeng/api';
 import { RewardService } from '../../services/reward.service';
+import { TokenStorageService } from '../../services/token-storage.service';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-reward-marketplace',
   templateUrl: './reward-marketplace.component.html',
-  styleUrls: ['./reward-marketplace.component.css']
+  styleUrls: ['./reward-marketplace.component.css'],
+  providers: [MessageService]
 })
 export class RewardMarketplaceComponent implements OnInit {
 
   rewards: any[];
   currentReward: any = {rewardImg: ''};
+  userType: any;
+  userTier: any;
+  wallet: 0;
+
+  isRedeemSuccessful: boolean = false;
 
   sortOptions: any = [];
   sortOrder: number;
@@ -20,13 +29,23 @@ export class RewardMarketplaceComponent implements OnInit {
   countryOptions = [];
   filterKeyCountry = '';
 
-  constructor(private rewardService: RewardService) { }
+  constructor(private messageService: MessageService, private rewardService: RewardService, private tokenStorageService: TokenStorageService, private userService: UserService) { }
 
   async ngOnInit() {
     await this.rewardService.getRewardMarketplace().toPromise().then(
       res => this.rewards = res.data.rewards
     );
-    console.log(this.rewards);
+    console.log(this.rewards[0]);
+
+    this.userType = this.tokenStorageService.getAccountType(); 
+    if (this.userType == 'user') {
+      await this.userService.viewUserProfile({username: this.tokenStorageService.getUser().username}).toPromise().then(
+        response => {
+          this.wallet = response.data.targetUser.wallet;
+          this.userTier = response.data.targetUser.tier;
+        }
+      )
+    }
 
     this.sortOptions = [
       {label: 'Date Newest to Oldest', value: '!endDate'},
@@ -82,6 +101,7 @@ export class RewardMarketplaceComponent implements OnInit {
       point: reward.point,
       quota: reward.quota,
       minTier: reward.minTier,
+      startDate: reward.startDate.substring(0, 10),
       endDate: reward.endDate.substring(0, 10),
       rewardImg: reward.imgPath,
       claimedNum: reward.claimedNum,
@@ -90,10 +110,30 @@ export class RewardMarketplaceComponent implements OnInit {
       sponsorId: reward.sponsorId,
       sponsorType: reward.sponsorType,
       accountName: reward.accountName,
-      accountUsername: reward.accountUsername
+      accountUsername: reward.accountUsername,
+      accountImgPath: reward.accountImgPath,
+      externalName: reward.externalName
     };
-    this.currentReward.remaining = this.currentReward.quota - this.currentReward.claimedNum
+    this.currentReward.remaining = this.currentReward.quota - this.currentReward.claimedNum;
     console.log(this.currentReward);
+  }
+
+  redeemReward(rewardId): void {
+    let r = confirm("Are you sure you want to redeem this reward?");
+    if (r == true) {
+      this.rewardService.redeemReward({id: rewardId}).subscribe(
+        response => {
+          this.isRedeemSuccessful = true;
+          this.ngOnInit();
+        }, 
+        err => {
+          console.log(err);
+          this.messageService.add({key:'toastMsg', severity:'error', summary:'Error', detail:err.error.msg});
+        }
+      );
+    } else {
+      return;
+    }
   }
 
 }
