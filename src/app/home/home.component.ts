@@ -46,7 +46,8 @@ export class HomeComponent implements OnInit {
   getAnnouncement(a): void {
     this.viewAnn = {
       title: a.title,
-      desc: a.desc
+      desc: a.desc,
+      updatedAt: a.updatedAt
     };
   }
 

@@ -49,7 +49,8 @@ export class AnnouncementComponent implements OnInit {
   getAnnouncement(a): void {
     this.viewForm = {
       title: a.title,
-      desc: a.desc
+      desc: a.desc,
+      updatedAt: a.updatedAt
     }
   }
 

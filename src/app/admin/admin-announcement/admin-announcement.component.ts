@@ -83,7 +83,8 @@ export class AdminAnnouncementComponent implements OnInit {
     this.viewForm = {
       id: a.id,
       title: a.title,
-      desc: a.desc
+      desc: a.desc,
+      updatedAt: a.updatedAt
     }
   }
 

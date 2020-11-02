@@ -101,6 +101,7 @@
               <div class="dropdown-divider"></div>
               <div class="card-body">
                 <h5><button class="announcement-title" data-toggle="modal" data-target="#viewAnnouncement" (click)="getAnnouncement(a)">{{a.title}}</button></h5>
+                <div class="text-secondary">{{formatDate(a.updatedAt)}}</div>
                 <div class="p-text-nowrap p-text-truncate" style="width: 100%">{{a.desc}}</div>
               </div>
             </div>
@@ -119,6 +120,7 @@
                 </div>
                 <div class="modal-body">
                   <h5>{{viewAnn.title}}</h5>
+                  <div class="text-secondary mb-md-1">{{formatDate(viewAnn.updatedAt)}}</div>
                   <div class="text-justify">{{viewAnn.desc}}</div>
                 </div>
                 <div class="modal-footer">
