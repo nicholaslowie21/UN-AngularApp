@@ -18,6 +18,20 @@ import interactionPlugin from '@fullcalendar/interaction';
 })
 export class ProjectDetailsComponent implements OnInit {
 
+  eventOn = false;
+  @ViewChild('calendar', { static: true })
+  calendar: FullCalendar;
+  options = {
+    plugins: [dayGridPlugin, timeGridPlugin],
+    header: {
+      left: 'prev,next',
+      center: 'title',
+      right: 'dayGridMonth,timeGridWeek,timeGridDay'
+    },
+    eventClick: (el) => this.callEvent(el.event),
+    displayEventTime: false
+  };
+
   projectCode: any;
   project: any;
   projectId: any;
@@ -60,13 +74,23 @@ export class ProjectDetailsComponent implements OnInit {
   calendarOn = false;
   minimumDate = new Date();
   events: any[];
-  options: any;
-  header: any;
+  //options: any;
+  //header: any;
+  eventTitle: any;
+  eventStart: any;
+  eventEnd: any;
+  eventStat: any;
+
+  updateEvent: any = {};
+  selectEvent: any;
+  uEventNotif = false;
+  cEventNotif = false;
+  tempType: any;
 
   constructor(private route: ActivatedRoute, private projectService: ProjectService, private userService: UserService,
     private tokenStorageService: TokenStorageService, private messageService: MessageService) {
-      const name = FullCalendar.name;
-     }
+    const name = FullCalendar.name;
+  }
 
   async ngOnInit() {
     this.route.queryParams
@@ -160,6 +184,14 @@ export class ProjectDetailsComponent implements OnInit {
         this.contributors = response.data.contributors;
       }
     );
+    console.log(this.user.username);
+    for (var x = 0; x < this.contributors.length; x++) {
+      if (this.user.username == this.contributors[x].contributorUsername) {
+        this.isContributor = true;
+        console.log("count: " + x);
+      }
+    }
+    console.log(this.isContributor);
     console.log(this.contributors.length);
 
     await this.projectService.getProjectPosts({ id: this.projectId }).toPromise().then(
@@ -170,29 +202,24 @@ export class ProjectDetailsComponent implements OnInit {
     );
     console.log(this.projPosts);
 
-    await this.projectService.getAllProjectEvents({ id: this.projectId }).toPromise().then(
-      response => {
-        console.log(JSON.stringify(response));
-        this.events = response.data.projectEvents;
-      }
-    );
-    console.log(this.events);
-    /**this.events = [{
-      "title": "Conference",
-      "start": "2020-10-11",
-      "end": "2020-10-13"
-    }]; **/
+    if (this.isContributor) {
+      await this.projectService.getAllProjectEvents({ id: this.projectId }).toPromise().then(
+        response => {
+          console.log(JSON.stringify(response));
+          this.events = response.data.projectEvents;
+        }
+      );
+      console.log(this.events);
+    } else {
+      await this.projectService.getPublicProjectEvents({ id: this.projectId }).toPromise().then(
+        response => {
+          console.log(JSON.stringify(response));
+          this.events = response.data.projectEvents;
+        }
+      );
+      console.log(this.events);
+    }
 
-    this.options = {
-      plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
-      header: {
-        left: 'prev,next today',
-        center: 'Project Schedule',
-        right: 'dayGridMonth,timeGridWeek,timeGridDay'
-      },
-      editable: true,
-      displayEventTime: false
-    };
   }
 
   async loadProject() {
@@ -547,6 +574,7 @@ export class ProjectDetailsComponent implements OnInit {
 
   switchCalendarOn(): void {
     this.calendarOn = true;
+    this.eventOn = false;
   }
 
   switchCalendarOff(): void {
@@ -560,8 +588,12 @@ export class ProjectDetailsComponent implements OnInit {
     //console.log(new Date(this.form.endDate));
     //console.log(new Date(this.form.startDate));
     console.log(new Date(this.form.endDate) > new Date(this.form.startDate));
-    if (new Date(this.form.endDate) < new Date(this.form.startDate)) {
+    var a = new Date(this.form.endDate);
+    var b = new Date(this.form.startDate);
+    if (a < b) {
       this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: "The start date is after the end date!" });
+    } else if (a.getTime() === b.getTime()) {
+      this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: "End date cannot be the same as start date!" });
     } else {
       const formEvent = {
         id: this.projectId,
@@ -574,9 +606,11 @@ export class ProjectDetailsComponent implements OnInit {
       this.projectService.createProjectEvent(formEvent).subscribe(
         response => {
           console.log(JSON.stringify(response));
-          this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Event Added!' });
-          //this.ngOnInit();
-          window.location.reload();
+          //this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Event Added!' });
+          this.ngOnInit();
+          this.cEventNotif = true;
+          this.eventOn = false;
+          //window.location.reload();
         },
         err => {
           this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: err.error.msg });
@@ -585,5 +619,99 @@ export class ProjectDetailsComponent implements OnInit {
         }
       );
     }
+  }
+
+  onEventUpdate(): void {
+    console.log(this.updateEvent);
+    var a = new Date(this.updateEvent.end);
+    var b = new Date(this.updateEvent.start);
+    if (a < b) {
+      this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: "The start date is after the end date!" });
+    } else if (a.getTime() === b.getTime()) {
+      this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: "End date cannot be the same as start date!" });
+    } else {
+      this.updateEvent.type = this.updateEvent.type.toLowerCase();
+      console.log(this.updateEvent);
+      this.projectService.updateProjectEvent(this.updateEvent).subscribe(
+        response => {
+          console.log(JSON.stringify(response));
+          //this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Event Updated!' });
+          this.ngOnInit();
+          this.eventOn = false;
+          this.uEventNotif = true;
+          //window.location.reload();
+        },
+        err => {
+          this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: err.error.msg });
+          this.errorMsg = err.error.msg;
+          console.log(this.errorMsg);
+        }
+      );
+    }
+  }
+
+  callEvent(info): void {
+    this.uEventNotif = false;
+    this.eventOn = true;
+    console.log(info.title + " " + info.start + " " + info.end + " " + info.eventType);
+    console.log("event id: " + info.id);
+
+    this.eventTitle = info.title;
+    this.eventStart = new Date(+info.start + 3600000 * 24);
+    this.eventEnd = new Date(+info.end + 3600000 * 24);
+    this.eventStat = info.eventType;
+    this.findEvent(info.id);
+
+    this.updateEvent = {
+      id: info.id,
+      title: this.eventTitle,
+      start: info.start,
+      end: info.end,
+      type: this.selectEvent.eventType
+    }
+
+    if (this.updateEvent.type == "public") {
+      this.updateEvent.type = "Public";
+      this.tempType = "Public";
+    } else {
+      this.updateEvent.type = "Private";
+      this.tempType = "Private";
+    }
+
+    console.log(this.updateEvent);
+  }
+
+  findEvent(id): any {
+    for (var x = 0; x < this.events.length; x++) {
+      if (id == this.events[x].id) {
+        this.selectEvent = this.events[x];
+        console.log("event id: " + this.events[x].id);
+        console.log(this.selectEvent);
+      }
+    }
+  }
+
+  confirmDelEvent(): void {
+    let r = confirm("Are you sure you want to delete this event?");
+    if (r == true) {
+      this.deleteEvent();
+    } else {
+      return;
+    }
+  }
+
+  deleteEvent(): void {
+    this.projectService.deleteProjectEvent({ id: this.updateEvent.id }).subscribe(
+      response => {
+        console.log(JSON.stringify(response));
+        this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Event Deleted!' });
+        this.ngOnInit();
+        //window.location.reload();
+      }
+    );
+  }
+
+  closeModal(): void {
+    this.ngOnInit();
   }
 }

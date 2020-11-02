@@ -85,83 +85,155 @@
             </div>
 
             <div class="card" style="width: 100%">
+
                 <p-fullCalendar [events]="events" [options]="options"></p-fullCalendar>
             </div>
         </div>
 
-        <div class="modal fade" id="updateEventModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" data-backdrop="static" id="updateEventModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Update Event</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close" (click)="closeModal()" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
+                        <div *ngIf="!uEventNotif">
+                            <form name="form" (ngSubmit)="fe.form.valid && onEventUpdate()" #fe="ngForm" novalidate>
+                                <div class="form-group row">
+                                    <label for="title" class="col-sm-3 col-form-label">Title</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" name="title" [(ngModel)]="updateEvent.title" required #title="ngModel" />
+                                    </div>
+                                    <div class="alert-danger" *ngIf="fe.submitted && title.invalid">
+                                        <div *ngIf="title.errors.required">Title is required</div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="startDate" class="col-sm-3 col-form-label">Start Date</label>
+                                    <div class="col-sm-6">
+                                        <p-calendar [baseZIndex]="90" name="startDate" [(ngModel)]="updateEvent.start" dateFormat="yy-mm-dd" [showIcon]="true" [minDate]="minimumDate"
+                                            [monthNavigator]="true" [yearNavigator]="true" yearRange="2020:2025" required #startDate="ngModel"></p-calendar>
+                                    </div>
+                                    <div class="alert-danger" *ngIf="fe.submitted && startDate.invalid">
+                                        <div *ngIf="startDate.errors.required">Start date is required</div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="endDate" class="col-sm-3 col-form-label">End Date</label>
+                                    <div class="col-sm-6">
+                                        <p-calendar [baseZIndex]="90" name="endDate" [(ngModel)]="updateEvent.end" dateFormat="yy-mm-dd" [showIcon]="true" [minDate]="minimumDate"
+                                            [monthNavigator]="true" [yearNavigator]="true" yearRange="2020:2025" required #endDate="ngModel"></p-calendar>
+                                    </div>
+                                    <div class="alert-danger" *ngIf="fe.submitted && endDate.invalid">
+                                        <div *ngIf="endDate.errors.required">End date is required</div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="type" class="col-sm-3 col-form-label">Event Type</label>
+                                    <div class="col-sm-8">
+                                        <div *ngIf="updateEvent.type=='Public'">
+                                            <select class="form-control" name="type" [(ngModel)]="updateEvent.type" required #type="ngModel">
+                                                <option selected value="Public">Public</option>
+                                                <option value="Private">Private</option>
+                                            </select>
+                                        </div>
+                                        <div *ngIf="updateEvent.type=='Private'">
+                                            <select class="form-control" name="type" [(ngModel)]="updateEvent.type" required #type="ngModel">
+                                                <option value="Public">Public</option>
+                                                <option selected value="Private">Private</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!--div class="alert-danger" *ngIf="fe.submitted && type.invalid">
+                                                <div *ngIf="type.errors.required">Event type is required</div>
+                                            </div-->
+                                </div>
+                                <br>
+                                <div class="form-group">
+                                    <button class="btn btn-primary btn-block">Update</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div *ngIf="uEventNotif">
+                            <div class="alert alert-success">
+                                Event has been updated!
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="modal fade" id="createEventModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" data-backdrop="static" id="createEventModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">New Event</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close" (click)="closeModal()" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form name="form" (ngSubmit)="fd.form.valid && onEventPost()" #fd="ngForm" novalidate>
-                            <div class="form-group row">
-                                <label for="title" class="col-sm-3 col-form-label">Title</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" name="title" [(ngModel)]="form.title" required #title="ngModel" />
+                        <div *ngIf="!cEventNotif">
+                            <form name="form" (ngSubmit)="fd.form.valid && onEventPost()" #fd="ngForm" novalidate>
+                                <div class="form-group row">
+                                    <label for="title" class="col-sm-3 col-form-label">Title</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" name="title" [(ngModel)]="form.title" required #title="ngModel" />
+                                    </div>
+                                    <div class="alert-danger" *ngIf="fd.submitted && title.invalid">
+                                        <div *ngIf="title.errors.required">Title is required</div>
+                                    </div>
                                 </div>
-                                <div class="alert-danger" *ngIf="fd.submitted && title.invalid">
-                                    <div *ngIf="title.errors.required">Title is required</div>
+                                <div class="form-group row">
+                                    <label for="startDate" class="col-sm-3 col-form-label">Start Date</label>
+                                    <div class="col-sm-6">
+                                        <p-calendar [baseZIndex]="90" name="date" [(ngModel)]="form.startDate" dateFormat="yy-mm-dd" [showIcon]="true" [minDate]="minimumDate"
+                                            [monthNavigator]="true" [yearNavigator]="true" yearRange="2020:2025" required #startDate="ngModel"></p-calendar>
+                                    </div>
+                                    <div class="alert-danger" *ngIf="fd.submitted && startDate.invalid">
+                                        <div *ngIf="startDate.errors.required">Start date is required</div>
+                                    </div>
                                 </div>
+                                <div class="form-group row">
+                                    <label for="endDate" class="col-sm-3 col-form-label">End Date</label>
+                                    <div class="col-sm-6">
+                                        <p-calendar [baseZIndex]="90" name="date" [(ngModel)]="form.endDate" dateFormat="yy-mm-dd" [showIcon]="true" [minDate]="minimumDate"
+                                            [monthNavigator]="true" [yearNavigator]="true" yearRange="2020:2025" required #endDate="ngModel"></p-calendar>
+                                    </div>
+                                    <div class="alert-danger" *ngIf="fd.submitted && endDate.invalid">
+                                        <div *ngIf="endDate.errors.required">End date is required</div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="type" class="col-sm-3 col-form-label">Event Type</label>
+                                    <div class="col-sm-8">
+                                        <select class="form-control" name="type" [(ngModel)]="form.type" required #type="ngModel">
+                                            <option value="" selected hidden>Choose...</option>
+                                            <option value="Public">Public</option>
+                                            <option value="Private">Private</option>
+                                        </select>
+                                    </div>
+                                    <div class="alert-danger" *ngIf="fd.submitted && type.invalid">
+                                        <div *ngIf="type.errors.required">Event type is required</div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="form-group">
+                                    <button class="btn btn-primary btn-block">Create</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div *ngIf="cEventNotif">
+                            <div class="alert alert-success">
+                                Event has been created!
                             </div>
-                            <div class="form-group row">
-                                <label for="startDate" class="col-sm-3 col-form-label">Start Date</label>
-                                <div class="col-sm-6">
-                                    <p-calendar [baseZIndex]="90" name="date" [(ngModel)]="form.startDate" dateFormat="yy-mm-dd" [showIcon]="true" [minDate]="minimumDate"
-                                        [monthNavigator]="true" [yearNavigator]="true" yearRange="2020:2025" required #startDate="ngModel"></p-calendar>
-                                </div>
-                                <div class="alert-danger" *ngIf="fd.submitted && startDate.invalid">
-                                    <div *ngIf="startDate.errors.required">Start date is required</div>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="endDate" class="col-sm-3 col-form-label">End Date</label>
-                                <div class="col-sm-6">
-                                    <p-calendar [baseZIndex]="90" name="date" [(ngModel)]="form.endDate" dateFormat="yy-mm-dd" [showIcon]="true" [minDate]="minimumDate"
-                                        [monthNavigator]="true" [yearNavigator]="true" yearRange="2020:2025" required #endDate="ngModel"></p-calendar>
-                                </div>
-                                <div class="alert-danger" *ngIf="fd.submitted && endDate.invalid">
-                                    <div *ngIf="endDate.errors.required">End date is required</div>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="type" class="col-sm-3 col-form-label">Event Type</label>
-                                <div class="col-sm-8">
-                                    <select class="form-control" name="type" [(ngModel)]="form.type" required #type="ngModel">
-                                        <option value="" selected hidden>Choose...</option>
-                                        <option value="Public">Public</option>
-                                        <option value="Private">Private</option>
-                                    </select>
-                                </div>
-                                <div class="alert-danger" *ngIf="fd.submitted && type.invalid">
-                                    <div *ngIf="type.errors.required">Event type is required</div>
-                                </div>
-                            </div>
-                            <br>
-                            <div class="form-group">
-                                <button class="btn btn-primary btn-block">Create</button>
-                            </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -501,54 +573,86 @@
                 </div>
             </div>
         </div>
-        <div class="card bg-secondary mb-md-1">
-            <div class="card-header text-white">
-                <a class="btn btn-primary" (click)="switchCalendarOn()">
-                    View Calendar
-                </a>
-            </div>
-            <div class="card-header text-white">
-                <a class="btn btn-primary" (click)="switchCalendarOff()">
-                    Hide Calendar
-                </a>
+        <div class="card mb-md-1">
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-primary" (click)="switchCalendarOn()">View Schedule</button>
+                <button type="button" class="btn btn-light" (click)="switchCalendarOff()">Hide Schedule</button>
             </div>
         </div>
-        <div class="card-header bg-secondary text-white">
-            <i class="pi pi-chart-bar"></i>
-            <h5 style="display: inline-block;" class="mt-md-1 mb-md-0 ml-md-2">KPIs</h5>
-            <button pButton *ngIf="(isCreator||isAdmin)&&isOngoing" type="button" icon="pi pi-plus" class="p-button-rounded float-right"
-                data-toggle="modal" data-target="#kpiModal" title="Add KPI">
-            </button>
-        </div>
-
-        <div *ngIf="KPIs.length == 0" class="alert alert-info mt-md-1">
-            This project has no KPI yet.
-        </div>
-
-        <div *ngFor="let kpi of KPIs">
-            <ul class="list-group">
-                <li class="list-group-item">
-                    <div class="row">
-                        <div class="card border-0" style="width:75%">
-                            <h5 class="card-title text-left mt-md-1" style="margin-left: 5%;">
-                                {{kpi.title}}
-                            </h5>
-                            <h6 class="card-title text-left text-secondary" style="margin-left: 5%;">{{kpi.desc}} </h6>
-                            <h6 class="card-title text-left text-secondary" style="margin-left: 5%;">Completion: {{kpi.completion}}% </h6>
+        <div class="sticky">
+            <div *ngIf="calendarOn">
+                <div *ngIf=eventOn>
+                    <div class="card border-0">
+                        <h5 class="card-title text-left mt-md-1">
+                            Event Details:
+                        </h5>
+                        <h6 class="card-title text-left text-secondary">Event Title:
+                            <br>
+                            <strong>{{eventTitle}}</strong>
+                        </h6>
+                        <h6 class="card-title text-left text-secondary">Event Start Date:
+                            <br>
+                            <strong>{{formatDate(eventStart)}}</strong>
+                        </h6>
+                        <h6 class="card-title text-left text-secondary">Event End Date:
+                            <br>
+                            <strong>{{formatDate(eventEnd)}}</strong>
+                        </h6>
+                        <div *ngIf="(isContributor)">
+                            <span class="badge badge-pill {{tempType}}">{{tempType}}</span>
                         </div>
-                        <div class="card border-0" style="width:25%">
-                            <a *ngIf="(isCreator||isAdmin)&&isOngoing" class="btn btn-primary text-white" role="button" style="margin: 3px" (click)=getForm(kpi.id,kpi.title,kpi.desc,kpi.completion)
-                                data-toggle="modal" data-target="#editModal">
+                        <div class="row">
+                            <a *ngIf="(isCreator||isAdmin)&&isOngoing" class="btn btn-primary text-white" role="button" style="margin: 3%; width: 25%;"
+                                data-toggle="modal" data-target="#updateEventModal">
                                 <i class="pi pi-pencil"></i>
                             </a>
-                            <a *ngIf="(isCreator||isAdmin)&&isOngoing" class="btn btn-danger text-white" role="button" style="margin: 3px" (click)=confirmDeleteKPI(kpi.id)>
+                            <a *ngIf="(isCreator||isAdmin)&&isOngoing" class="btn btn-danger text-white" role="button" style="margin: 3%; width: 25%"
+                                (click)="confirmDelEvent()">
                                 <i class="pi pi-trash"></i>
                             </a>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="!calendarOn">
+            <div class="card-header bg-secondary text-white">
+                <i class="pi pi-chart-bar"></i>
+                <h5 style="display: inline-block;" class="mt-md-1 mb-md-0 ml-md-2">KPIs</h5>
+                <button pButton *ngIf="(isCreator||isAdmin)&&isOngoing" type="button" icon="pi pi-plus" class="p-button-rounded float-right"
+                    data-toggle="modal" data-target="#kpiModal" title="Add KPI">
+                </button>
+            </div>
 
-                </li>
-            </ul>
+            <div *ngIf="KPIs.length == 0" class="alert alert-info mt-md-1">
+                This project has no KPI yet.
+            </div>
+
+            <div *ngFor="let kpi of KPIs">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="card border-0" style="width:75%">
+                                <h5 class="card-title text-left mt-md-1" style="margin-left: 5%;">
+                                    {{kpi.title}}
+                                </h5>
+                                <h6 class="card-title text-left text-secondary" style="margin-left: 5%;">{{kpi.desc}} </h6>
+                                <h6 class="card-title text-left text-secondary" style="margin-left: 5%;">Completion: {{kpi.completion}}% </h6>
+                            </div>
+                            <div class="card border-0" style="width:25%">
+                                <a *ngIf="(isCreator||isAdmin)&&isOngoing" class="btn btn-primary text-white" role="button" style="margin: 3px" (click)=getForm(kpi.id,kpi.title,kpi.desc,kpi.completion)
+                                    data-toggle="modal" data-target="#editModal">
+                                    <i class="pi pi-pencil"></i>
+                                </a>
+                                <a *ngIf="(isCreator||isAdmin)&&isOngoing" class="btn btn-danger text-white" role="button" style="margin: 3px" (click)=confirmDeleteKPI(kpi.id)>
+                                    <i class="pi pi-trash"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                    </li>
+                </ul>
+            </div>
         </div>
 
         <!-- Modal -->
