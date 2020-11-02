@@ -12,6 +12,7 @@ import { saveAs } from 'file-saver';
 export class AdminRewardManagementComponent implements OnInit {
 
   pending = [];
+  accepted = [];
   open = [];
   rejected = [];
   close = [];
@@ -31,6 +32,7 @@ export class AdminRewardManagementComponent implements OnInit {
   countries = ["Afghanistan","Albania","Algeria","Andorra","Angola","Anguilla","Antigua and Barbuda","Argentina","Armenia","Aruba","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bermuda","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi","Cambodia","Cameroon","Canada","Cape Verde","Cayman Islands","Central African Republic","Chad","Chile","China","Colombia","Congo","Cook Islands","Costa Rica","Côte d'Ivoire","Croatia","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","East Timor","Ecuador","Egypt","El Salvador","Equatorial Guinea","Estonia","Ethiopia","Falkland Islands","Faroe Islands","Fiji","Finland","France","French Polynesia","Gabon","Gambia","Georgia","Germany","Ghana","Gibraltar","Greece","Greenland","Grenada","Guam","Guatemala","Guernsey","Guinea","Guinea Bissau","Guyana","Haiti","Honduras","Hong Kong","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Isle of Man","Israel","Italy","Jamaica","Japan","Jersey","Jordan","Kazakhstan","Kenya","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Macau","Macedonia","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Mauritania","Mauritius","Mexico","Moldova","Monaco","Mongolia","Montenegro","Montserrat","Morocco","Mozambique","Namibia","Nepal","Netherlands","Netherlands Antilles","New Caledonia","New Zealand","Nicaragua","Niger","Nigeria","Norway","Oman","Pakistan","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Puerto Rico","Qatar","Reunion","Romania","Russia","Rwanda","Saint Pierre and Miquelon","Samoa","San Marino","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","South Africa","South Korea","Spain","Sri Lanka","Saint Kitts and Nevis","Saint Lucia","Saint Vincent And The Grenadines","Sudan","Suriname","Swaziland","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Turks and Caicos Islands","Uganda","Ukraine","United Arab Emirates","United Kingdom","Uruguay","Uzbekistan","Venezuela","Vietnam", "Virgin Islands (British)", "Virgin Islands (US)","Yemen","Zambia","Zimbabwe"];
   countryOptions = [];
   filterKeyCountry = '';
+  filterKeyCountryAcc = '';
   filterKeyCountryOpen = '';
   filterKeyCountryRej = '';
   filterKeyCountryClose = '';
@@ -45,6 +47,11 @@ export class AdminRewardManagementComponent implements OnInit {
       res => this.pending = res.data.rewards
     )
     console.log(this.pending)
+
+    await this.rewardService.getRewardOfferingReq({status: 'accepted'}).toPromise().then(
+      res => this.accepted = res.data.rewards
+    )
+    console.log(this.accepted)
 
     await this.rewardService.getRewardOfferingReq({status: 'open'}).toPromise().then(
       res => this.open = res.data.rewards
@@ -134,6 +141,7 @@ export class AdminRewardManagementComponent implements OnInit {
       point: reward.point,
       quota: reward.quota,
       minTier: reward.minTier,
+      startDate: reward.startDate.substring(0, 10),
       endDate: reward.endDate.substring(0, 10),
       rewardImg: reward.imgPath,
       createdAt: reward.createdAt,
@@ -141,6 +149,7 @@ export class AdminRewardManagementComponent implements OnInit {
       accountName: reward.accountName,
       accountUsername: reward.accountUsername,
       sponsorType: reward.sponsorType,
+      externalName: reward.externalName,
       verifyFile: reward.verifyFile,
       status: reward.status
     }
@@ -217,6 +226,7 @@ export class AdminRewardManagementComponent implements OnInit {
     formData.append("quota", this.editForm.quota);
     formData.append("minTier", this.editForm.minTier);
     formData.append("rewardImg", this.file);
+    formData.append("startDate", this.editForm.startDate);
     formData.append("endDate", this.editForm.endDate);
 
     this.rewardService.updateReward(formData).subscribe(

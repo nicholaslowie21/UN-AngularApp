@@ -9,6 +9,9 @@
       <a class="nav-link active" id="pending-tab" data-toggle="tab" href="#pending" role="tab" aria-controls="pending" aria-selected="true">Pending</a>
     </li>
     <li class="nav-item">
+        <a class="nav-link" id="accepted-tab" data-toggle="tab" href="#accepted" role="tab" aria-controls="accepted" aria-selected="true">Accepted</a>
+      </li>
+    <li class="nav-item">
       <a class="nav-link" id="active-tab" data-toggle="tab" href="#open" role="tab" aria-controls="open" aria-selected="false">Active</a>
     </li>
     <li class="nav-item">
@@ -70,19 +73,20 @@
                         </div>
                         <div class="modal-body">
                             <span class="product-category">{{editForm.country}}</span>
-                            <span class="float-right">{{formatDate(editForm.createdAt)}}</span>
+                            <span class="float-right">Created: {{formatDate(editForm.createdAt)}}</span>
                             <br>
                             <img *ngIf="editForm.rewardImg.length == 0" src="../../../assets/img/rewardPlaceholder.png"
                                 class="img-fluid" style="width: 500px; height: 200px; object-fit: cover;" alt="Reward pic" />
                             <img *ngIf="editForm.rewardImg.length != 0" src="https://localhost:8080{{editForm.rewardImg}}"
                                 class="img-fluid" style="width: 500px; height: 200px; object-fit: cover;" alt="Reward pic" />
+                            <br/><br/>
                             <h5>{{editForm.title}}
                                 <span class="small float-right">&nbsp;Status: <span class="pendingStatus rounded-pill text-white pl-2 pr-2">pending</span>&nbsp;</span>
                             </h5>
-                            <div>{{editForm.desc}}</div>
+                            <div>Description: {{editForm.desc}}</div>
                             <div>
-                                    <img *ngIf="editForm.accountImgPath.length == 0" src="../../../assets/img/rewardPlaceholder.png"
-                                        class="img-fluid rounded-circle mr-md-2" style="width: 80px; height: 80px; object-fit: cover;" alt="Profile pic" />
+                                    <img *ngIf="editForm.accountImgPath.length == 0" src="../../../assets/img/profilePic_Placeholder.png"
+                                        class="img-fluid rounded-circle mr-md-2" style="width: 60px; height: 60px; object-fit: cover;" alt="Profile pic" />
                                     <img *ngIf="editForm.accountImgPath.length > 0" src="https://localhost:8080{{editForm.accountImgPath}}"
                                         class="img-fluid rounded-circle mr-md-2" style="width: 60px; height: 60px; object-fit: cover;" alt="Profile pic" />
                                     <span *ngIf="editForm.sponsorType == 'user'">
@@ -94,18 +98,109 @@
                             </div>
                             <div class="row">
                                 <div class="col-6">
-                                    Point: {{editForm.point}} <br>
+                                    Points needed: {{editForm.point}} <br>
+                                    Quota: {{editForm.quota}} <br>
                                     Tier: <span class="rounded-pill pl-2 pr-2 {{editForm.minTier}}">{{editForm.minTier}}</span>
                                 </div>
                                 <div class="col-6">
-                                    Quota: {{editForm.quota}} <br>
+                                    Start Date: {{formatDate(editForm.startDate)}}<br/>
                                     End Date: {{formatDate(editForm.endDate)}}
                                 </div>
                             </div>
                             Download verification file: <button pButton class="p-button-rounded" title="Download attachment" icon="pi pi-download" (click)="downloadAttachment(editForm.verifyFile)"></button>
                             <br>
-                            <button class="btn btn-success mr-md-2" (click)="approveReq(editForm.id)">Approve</button>
-                            <button class="btn btn-danger" (click)="rejectReq(editForm.id)">Reject</button>
+                            <button class="btn btn-danger ml-1 float-right" (click)="rejectReq(editForm.id)">Reject</button>
+                            <button class="btn btn-success mr-md-2 float-right" (click)="approveReq(editForm.id)">Approve</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tab-pane fade" id="accepted" role="tabpanel" aria-labelledby="accepted-tab">
+        <div class="card">
+            <p-dataView #re [value]="accepted" [paginator]="true" [rows]="9" filterBy="title" [sortField]="sortField"
+                [sortOrder]="sortOrder" layout="grid">
+                <ng-template pTemplate="header">
+                    <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                        <p-dropdown [options]="countryOptions" [(ngModel)]="filterKeyCountryAcc" placeholder="Filter By Country"
+                            (onChange)="onFilterCountry($event , [(pp)])" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                        <!-- <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyMpw" placeholder="Sort By Date"
+                            (onChange)="onSortChangeManpower($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown> -->
+                        <span class="p-input-icon-left p-mb-2 p-mb-md-0">
+                            <i class="pi pi-search"></i>
+                            <input type="search" pInputText placeholder="Search by Title" (input)="re.filter($event.target.value)">
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template let-reward pTemplate="gridItem">
+                    <div class="p-col-12 p-md-3">
+                        <div class="product-grid-item card p-2">
+                            <div class="product-grid-item-top">
+                                <div class="small">Created at: {{formatDate(reward.createdAt)}}</div>
+                            </div>
+                            <div class="product-grid-item-content">
+                                <img *ngIf="reward.imgPath.length == 0" src="../../../assets/img/rewardPlaceholder.png"
+                                    class="img-fluid" style="width: 150px; height: 150px; object-fit: cover;" alt="Reward pic" />
+                                <img *ngIf="reward.imgPath.length != 0" src="https://localhost:8080{{reward.imgPath}}"
+                                    class="img-fluid" style="width: 150px; height: 150px; object-fit: cover;" alt="Reward pic" />
+                                <div class="product-name">
+                                    <button class="btn" data-toggle="modal" data-target="#ViewModalAcc" (click)=getForm(reward)>
+                                        {{reward.title}}
+                                    </button>
+                                </div>
+                                <div>{{reward.country}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-dataView>
+
+            <div class="modal fade" id="ViewModalAcc" tabindex="-1" role="dialog" aria-labelledby="viewModalAccLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="viewModalLabel">View Reward</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <span class="product-category">{{editForm.country}}</span>
+                            <span class="float-right">Created: {{formatDate(editForm.createdAt)}}</span>
+                            <br>
+                            <img *ngIf="editForm.rewardImg.length == 0" src="../../../assets/img/rewardPlaceholder.png"
+                                class="img-fluid" style="width: 500px; height: 200px; object-fit: cover;" alt="Reward pic" />
+                            <img *ngIf="editForm.rewardImg.length != 0" src="https://localhost:8080{{editForm.rewardImg}}"
+                                class="img-fluid" style="width: 500px; height: 200px; object-fit: cover;" alt="Reward pic" />
+                            <br/><br/>
+                            <h5>{{editForm.title}}
+                                <span class="small float-right">&nbsp;Status: <span class="acceptedStatus rounded-pill text-white pl-2 pr-2">accepted</span>&nbsp;</span>
+                            </h5>
+                            <div>Description: {{editForm.desc}}</div>
+                            <div>
+                                    <img *ngIf="editForm.accountImgPath.length == 0" src="../../../assets/img/profilePic_Placeholder.png"
+                                        class="img-fluid rounded-circle mr-md-2" style="width: 60px; height: 60px; object-fit: cover;" alt="Profile pic" />
+                                    <img *ngIf="editForm.accountImgPath.length > 0" src="https://localhost:8080{{editForm.accountImgPath}}"
+                                        class="img-fluid rounded-circle mr-md-2" style="width: 60px; height: 60px; object-fit: cover;" alt="Profile pic" />
+                                    <span *ngIf="editForm.sponsorType == 'user'">
+                                        <a href="/profile?username={{editForm.accountUsername}}&userType=individual">{{editForm.accountName}}</a>
+                                    </span>
+                                    <span *ngIf="editForm.sponsorType == 'institution'">
+                                        <a href="/profile?username={{editForm.accountUsername}}&userType=institution">{{editForm.accountName}}</a>
+                                    </span>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    Points needed: {{editForm.point}} <br>
+                                    Quota: {{editForm.quota}} <br>
+                                    Tier: <span class="rounded-pill pl-2 pr-2 {{editForm.minTier}}">{{editForm.minTier}}</span>
+                                </div>
+                                <div class="col-6">
+                                    Start Date: {{formatDate(editForm.startDate)}}<br/>
+                                    End Date: {{formatDate(editForm.endDate)}}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -163,20 +258,21 @@
                         <div class="modal-body">
                             <div *ngIf="!isEdit">
                                 <span class="product-category">{{editForm.country}}</span>
-                                <span class="float-right">{{formatDate(editForm.createdAt)}}</span>
+                                <span class="float-right">Created: {{formatDate(editForm.createdAt)}}</span>
                                 <br>
                                 <img *ngIf="editForm.rewardImg.length == 0" src="../../../assets/img/rewardPlaceholder.png"
                                     class="img-fluid" style="width: 500px; height: 200px; object-fit: cover;" alt="Reward pic" />
                                 <img *ngIf="editForm.rewardImg.length != 0" src="https://localhost:8080{{editForm.rewardImg}}"
                                     class="img-fluid" style="width: 500px; height: 200px; object-fit: cover;" alt="Reward pic" />
+                                <br/><br/>
                                 <h5>{{editForm.title}}
                                     <span class="small float-right">&nbsp;Status: <span class="activeStatus rounded-pill text-white pl-2 pr-2">active</span>&nbsp;</span>
                                 </h5>
-                                <div>{{editForm.desc}}</div>
+                                <div>Description: {{editForm.desc}}</div>
                                 <div class="mt-md-2">
                                     Created by
                                     <span *ngIf="editForm.sponsorType == 'external'">
-                                        External sponsor
+                                        external sponsor <b>{{editForm.externalName}}</b>
                                     </span>
                                     <span *ngIf="editForm.sponsorType != 'external'">
                                         <img *ngIf="editForm.accountImgPath.length == 0" src="../../../assets/img/rewardPlaceholder.png"
@@ -193,11 +289,12 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-6">
-                                        Point: {{editForm.point}} <br>
+                                        Points needed: {{editForm.point}} <br>
+                                        Quota: {{editForm.quota}} <br>
                                         Tier: <span class="rounded-pill pl-2 pr-2 {{editForm.minTier}}">{{editForm.minTier}}</span>
                                     </div>
                                     <div class="col-6">
-                                        Quota: {{editForm.quota}} <br>
+                                        Start Date: {{formatDate(editForm.startDate)}}
                                         End Date: {{formatDate(editForm.endDate)}}
                                     </div>
                                 </div>
@@ -205,11 +302,11 @@
                                     Download verification file: <button pButton class="p-button-rounded" title="Download attachment" icon="pi pi-download" (click)="downloadAttachment(editForm.verifyFile)"></button>
                                 </div>
                                 <br>
-                                <button class="btn btn-primary mr-md-2" (click)=editReward() title="Edit">
-                                    <i class="pi pi-pencil"></i>&nbsp;Edit
-                                </button>
-                                <button class="btn btn-danger" (click)="deleteReward(editForm.id)">
+                                <button class="btn btn-danger ml-1 float-right" (click)="deleteReward(editForm.id)">
                                     <i class="pi pi-trash"></i>&nbsp;Delete
+                                </button>
+                                <button class="btn btn-primary mr-md-2 float-right" (click)=editReward() title="Edit">
+                                    <i class="pi pi-pencil"></i>&nbsp;Edit
                                 </button>
                             </div>
                             <div *ngIf="isEdit">
@@ -373,10 +470,11 @@
                                 class="img-fluid" style="width: 500px; height: 200px; object-fit: cover;" alt="Reward pic" />
                             <img *ngIf="editForm.rewardImg.length != 0" src="https://localhost:8080{{editForm.rewardImg}}"
                                 class="img-fluid" style="width: 500px; height: 200px; object-fit: cover;" alt="Reward pic" />
+                            <br/><br/>
                             <h5>{{editForm.title}}
                                 <span class="small float-right">&nbsp;Status: <span class="rejectedStatus rounded-pill text-white pl-2 pr-2">rejected</span>&nbsp;</span> 
                             </h5>
-                            <div>{{editForm.desc}}</div>
+                            <div>Description: {{editForm.desc}}</div>
                             <div>
                                     <img *ngIf="editForm.accountImgPath.length == 0" src="../../../assets/img/rewardPlaceholder.png"
                                         class="img-fluid rounded-circle mr-md-2" style="width: 80px; height: 80px; object-fit: cover;" alt="Profile pic" />
@@ -392,10 +490,11 @@
                             <div class="row">
                                 <div class="col-6">
                                     Point: {{editForm.point}} <br>
+                                    Quota: {{editForm.quota}} <br>
                                     Tier: <span class="rounded-pill pl-2 pr-2 {{editForm.minTier}}">{{editForm.minTier}}</span>
                                 </div>
                                 <div class="col-6">
-                                    Quota: {{editForm.quota}} <br>
+                                    Start Date: {{formatDate(editForm.startDate)}}
                                     End Date: {{formatDate(editForm.endDate)}}
                                 </div>
                             </div>
@@ -463,10 +562,11 @@
                                 class="img-fluid" style="width: 500px; height: 200px; object-fit: cover;" alt="Reward pic" />
                             <img *ngIf="editForm.rewardImg.length != 0" src="https://localhost:8080{{editForm.rewardImg}}"
                                 class="img-fluid" style="width: 500px; height: 200px; object-fit: cover;" alt="Reward pic" />
+                            <br/><br/>
                             <h5>{{editForm.title}}
                                 <span class="small float-right">&nbsp;Status: <span class="expiredStatus rounded-pill pl-2 pr-2 text-white">expired</span>&nbsp;</span>
                             </h5>
-                            <div>{{editForm.desc}}</div>
+                            <div>Description: {{editForm.desc}}</div>
                             <div>
                                     <img *ngIf="editForm.accountImgPath.length == 0" src="../../../assets/img/rewardPlaceholder.png"
                                         class="img-fluid rounded-circle mr-md-2" style="width: 80px; height: 80px; object-fit: cover;" alt="Profile pic" />
@@ -482,10 +582,11 @@
                             <div class="row">
                                 <div class="col-6">
                                     Point: {{editForm.point}} <br>
+                                    Quota: {{editForm.quota}} <br>
                                     Tier: <span class="rounded-pill pl-2 pr-2 {{editForm.minTier}}">{{editForm.minTier}}</span>
                                 </div>
                                 <div class="col-6">
-                                    Quota: {{editForm.quota}} <br>
+                                    Start Date: {{formatDate(editForm.startDate)}}
                                     End Date: {{formatDate(editForm.endDate)}}
                                 </div>
                             </div>

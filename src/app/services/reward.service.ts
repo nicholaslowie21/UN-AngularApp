@@ -39,7 +39,7 @@ export class RewardService {
   }
 
   getRewardOfferingReq(data): Observable<any> {
-    return this.http.get(API_URL + '/allReward?status='+data.status);
+    return this.http.get(API_URL + '/allReward?status=' + data.status);
   }
 
   validateReward(data): Observable<any> {
@@ -65,5 +65,29 @@ export class RewardService {
 
   getRewardMarketplace(): Observable<any> {
     return this.http.get(API_URL + '/marketplace');
+  }
+
+  redeemReward(data): Observable<any> {
+    return this.http.post(API_URL + '/redeem', {
+      rewardId: data.id
+    }, httpOptions);
+  }
+
+  // to retrieve a user's redeemed rewards (vouchers)
+  getVouchers(data): Observable<any> {
+    return this.http.get(API_URL + '/voucher?status=' + data.status);
+  }
+
+  claimVoucher(data): Observable<any> {
+    return this.http.post(API_URL + '/claim/voucher', {
+      voucherId: data.id
+    }, httpOptions);
+  }
+
+  transferVoucher(data): Observable<any> {
+    return this.http.post(API_URL + '/claim/voucher', {
+      voucherId: data.voucherId,
+      targetId: data.targetId
+    }, httpOptions);
   }
 }

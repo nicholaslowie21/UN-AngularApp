@@ -24,3 +24,18 @@
 .linkedin {
   color: #0e76a8;
 }
+
+.gold {
+  background-color: rgb(205, 157, 25);
+  color: white;
+}
+
+.silver {
+  background-color: rgb(170, 170, 170);
+  color: white;
+}
+
+.bronze {
+  background-color: rgb(185, 114, 45);
+  color: white;
+}

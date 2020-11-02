@@ -1,13 +1,14 @@
-<h2>My Reward Offering
-    <span class="btn btn-primary float-right"><a class="text-white" href="/reward/create">Create Reward Offering</a></span>
-</h2>
-
 <div class="row">
     <div class="col-2 bg-light p-2">
         <div class="mb-md-2"><a href="/reward">Marketplace</a></div>
         <div class="mb-md-2">My Reward Offering</div>
+        <div class="mb-md-2" *ngIf= "userType == 'user'"><a href="/reward/myRewards">My Rewards</a></div>
     </div>
     <div class="col-10">
+        <h2>My Reward Offering
+            <span class="btn btn-primary float-right"><a class="text-white" href="/reward/create">Create Reward Offering</a></span>
+        </h2>
+        <br/>
         <div class="card">
             <p-dataView #re [value]="rewards" [paginator]="true" [rows]="9" filterBy="title" [sortField]="sortField"
                 [sortOrder]="sortOrder" layout="grid">
@@ -39,7 +40,9 @@
                                 </div>
                                 <div class="small mb-md-1">Last updated: {{formatDate(reward.updatedAt)}}</div>
                                 <div>
+                                    <!-- <span class="rounded-pill pl-2 pr-2 {{editForm.status}}">{{editForm.status}}</span> -->
                                     <span *ngIf="reward.status == 'open'" class="rounded-pill pl-2 pr-2 active">active</span>
+                                    <span *ngIf="reward.status == 'accepted'" class="rounded-pill pl-2 pr-2 accepted">accepted</span>
                                     <span *ngIf="reward.status == 'pending'" class="rounded-pill pl-2 pr-2 pending">pending</span>
                                     <span *ngIf="reward.status == 'close'" class="rounded-pill pl-2 pr-2 expired">expired</span>
                                     <span *ngIf="reward.status == 'rejected'" class="rounded-pill pl-2 pr-2 rejected">rejected</span>
@@ -71,7 +74,9 @@
                             <br/><br/>
                             <h5>{{editForm.title}}
                                 <span class="small float-right">&nbsp;Status: 
+                                    <!-- <span class="rounded-pill pl-2 pr-2 {{editForm.status}}">{{editForm.status}}</span> -->
                                     <span *ngIf="editForm.status == 'open'" class="rounded-pill pl-2 pr-2 active">active</span>
+                                    <span *ngIf="editForm.status == 'accepted'" class="rounded-pill pl-2 pr-2 accepted">accepted</span>
                                     <span *ngIf="editForm.status == 'pending'" class="rounded-pill pl-2 pr-2 pending">pending</span>
                                     <span *ngIf="editForm.status == 'close'" class="rounded-pill pl-2 pr-2 expired">expired</span>
                                     <span *ngIf="editForm.status == 'rejected'" class="rounded-pill pl-2 pr-2 rejected">rejected</span>
@@ -79,20 +84,22 @@
                                     &nbsp;
                                 </span>
                             </h5>
-                            <div>{{editForm.desc}}</div>
+                            <div>Description: {{editForm.desc}}</div>
                             <br>
                             <div class="row">
                                 <div class="col-6">
                                     Point: {{editForm.point}} <br>
-                                    Tier: <span class="rounded-pill pl-2 pr-2 {{editForm.minTier}}">{{editForm.minTier}}</span><br>
+                                    Quota: {{editForm.quota}} <br>
                                     Total claimed: {{editForm.claimedNum}}
                                 </div>
                                 <div class="col-6">
-                                    Quota: {{editForm.quota}} <br>
+                                    Tier: <span class="rounded-pill pl-2 pr-2 {{editForm.minTier}}">{{editForm.minTier}}</span><br>
+                                    Start Date: {{formatDate(editForm.startDate)}}
                                     End Date: {{formatDate(editForm.endDate)}}
                                 </div>
                             </div>
-                            <button class="btn btn-danger" *ngIf="editForm.status == 'pending'" (click)="cancelReward(editForm.id)">Cancel Offering</button>
+                            <br/>
+                            <button class="btn btn-danger float-right" *ngIf="editForm.status == 'pending'" (click)="cancelReward(editForm.id)">Cancel Offering</button>
                         </div>
                     </div>
                 </div>
