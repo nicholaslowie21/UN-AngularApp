@@ -75,6 +75,7 @@ import { AdminCreateRewardComponent } from './admin/admin-create-reward/admin-cr
 import { MyRewardsComponent } from './reward/my-rewards/my-rewards.component';
 import { AdminAnnouncementComponent } from './admin/admin-announcement/admin-announcement.component';
 import { AnnouncementComponent } from './announcement/announcement.component';
+import { ReportSubmittedComponent } from './report-submitted/report-submitted.component';
 
 @NgModule({
   declarations: [
@@ -123,7 +124,8 @@ import { AnnouncementComponent } from './announcement/announcement.component';
     AdminCreateRewardComponent,
     MyRewardsComponent,
     AdminAnnouncementComponent,
-    AnnouncementComponent
+    AnnouncementComponent,
+    ReportSubmittedComponent
   ],
   imports: [
     BrowserModule,
