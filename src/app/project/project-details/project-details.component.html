@@ -5,12 +5,13 @@
         <div class="row bg-secondary text-white">
             <div class="col-3">
                 <div *ngIf="project.imgPath.length != 0">
-                    <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src={{imgString}} style="margin: 25px; width: 150px; height: 150px; object-fit: cover;"
-                        alt="Profile picture">
+                    <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src={{imgString}}
+                        style="margin: 25px; width: 150px; height: 150px; object-fit: cover;" alt="Profile picture">
                 </div>
                 <div *ngIf="project.imgPath.length == 0">
-                    <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src="../../../assets/img/team.jpg" style="margin: 25px; width: 150px; height: 150px; object-fit: cover;"
-                        alt="Project picture">
+                    <img class="card-img-top rounded-circle img-fluid mx-auto d-block"
+                        src="../../../assets/img/team.jpg"
+                        style="margin: 25px; width: 150px; height: 150px; object-fit: cover;" alt="Project picture">
                 </div>
 
             </div>
@@ -32,11 +33,13 @@
 
             <div class="col-4">
                 <div *ngIf=isCreator||isAdmin>
-                    <a *ngIf=isOngoing class="btn btn-primary mt-3 float-right" href="/project/editDetails?id={{project.id}}" role="button" style="margin: 3px; width: 80%">
+                    <a *ngIf=isOngoing class="btn btn-primary mt-3 float-right"
+                        href="/project/editDetails?id={{project.id}}" role="button" style="margin: 3px; width: 80%">
                         <i class="pi pi-pencil"></i>
                         Edit Project
                     </a>
-                    <a *ngIf=!isOngoing class="btn btn-primary mt-3 disabled float-right" aria-disabled="true" role="button" style="margin: 3px; width: 80%">
+                    <a *ngIf=!isOngoing class="btn btn-primary mt-3 disabled float-right" aria-disabled="true"
+                        role="button" style="margin: 3px; width: 80%">
                         <i class="pi pi-pencil"></i>
                         Edit Project
                     </a>
@@ -48,20 +51,23 @@
                         <i class="pi pi-user-edit"></i>
                         Edit Admins
                     </a> -->
-                    <a *ngIf=isOngoing&&isCreator class="btn btn-success text-white float-right" (click)=completeProject(project.title) role="button" style="margin: 3px; width: 80%">
+                    <a *ngIf=isOngoing&&isCreator class="btn btn-success text-white float-right"
+                        (click)=completeProject(project.title) role="button" style="margin: 3px; width: 80%">
                         <i class="pi pi-check"></i>
                         Mark Complete
                     </a>
-                    <a *ngIf=!isOngoing&&isCreator class="btn btn-success text-white disabled float-right" aria-disabled="true" role="button" style="margin: 3px; width: 80%">
+                    <a *ngIf=!isOngoing&&isCreator class="btn btn-success text-white disabled float-right"
+                        aria-disabled="true" role="button" style="margin: 3px; width: 80%">
                         <i class="pi pi-check"></i>
                         Mark Complete
                     </a>
-                    <a *ngIf=isOngoing&&isCreator class="btn btn-danger mb-3 text-white float-right" (click)="deleteProject(project.title)" role="button"
-                        style="margin: 3px; width: 80%">
+                    <a *ngIf=isOngoing&&isCreator class="btn btn-danger mb-3 text-white float-right"
+                        (click)="deleteProject(project.title)" role="button" style="margin: 3px; width: 80%">
                         <i class="pi pi-trash"></i>
                         Delete Project
                     </a>
-                    <a *ngIf=!isOngoing&&isCreator class="btn btn-danger mb-3 text-white disabled float-right" aria-disabled="true" role="button" style="margin: 3px; width: 80%">
+                    <a *ngIf=!isOngoing&&isCreator class="btn btn-danger mb-3 text-white disabled float-right"
+                        aria-disabled="true" role="button" style="margin: 3px; width: 80%">
                         <i class="pi pi-trash"></i>
                         Delete Project
                     </a>
@@ -152,20 +158,24 @@
                         <div class="card-body row">
                             <div class="col-4">
                                 <div *ngIf="con.contributorImgPath.length > 0">
-                                    <img src={{con.contributorImgPath}} class="rounded-circle img-fluid" style="width: 50px; height: 50px; object-fit: cover;"
-                                        alt="Profile picture" />
+                                    <img src={{con.contributorImgPath}} class="rounded-circle img-fluid"
+                                        style="width: 50px; height: 50px; object-fit: cover;" alt="Profile picture" />
                                 </div>
                                 <div *ngIf="con.contributorImgPath.length == 0">
-                                    <img src="../../assets/img/profilePic_Placeholder.png" class="rounded-circle img-fluid" style="width: 50px; height: 50px; object-fit: cover;"
-                                        alt="Profile picture" />
+                                    <img src="../../assets/img/profilePic_Placeholder.png"
+                                        class="rounded-circle img-fluid"
+                                        style="width: 50px; height: 50px; object-fit: cover;" alt="Profile picture" />
                                 </div>
                             </div>
                             <div class="col-8">
-                                <span *ngIf="con.contributorType == 'user'"><a href="/profile?username={{con.contributorUsername}}&userType=individual">{{con.contributorName}}</a></span>
-                                <span *ngIf="con.contributorType == 'institution'"><a href="/profile?username={{con.contributorUsername}}&userType=institution">{{con.contributorName}}</a></span>
-                                
-                                <br/>
-                                <div class="text-secondary" style="font-size: small;">Project {{con.contributionType}}</div>
+                                <span *ngIf="con.contributorType == 'user'"><a
+                                        href="/profile?username={{con.contributorUsername}}&userType=individual">{{con.contributorName}}</a></span>
+                                <span *ngIf="con.contributorType == 'institution'"><a
+                                        href="/profile?username={{con.contributorUsername}}&userType=institution">{{con.contributorName}}</a></span>
+
+                                <br />
+                                <div class="text-secondary" style="font-size: small;">Project {{con.contributionType}}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -179,8 +189,10 @@
             <div class="col-8">
                 <div class="container-fluid">
                     <div class="card">
-                        <div *ngIf="!isCreator && !isAdmin" class="bg-secondary text-center p-2 text-white rounded-sm">Project Posts</div>
-                        <button *ngIf=isOngoing&&(isCreator||isAdmin) class="btn btn-primary btn-block" data-toggle="modal" data-target="#createPostModal">Create Post</button>
+                        <div *ngIf="!isCreator && !isAdmin" class="bg-secondary text-center p-2 text-white rounded-sm">
+                            Project Posts</div>
+                        <button *ngIf=isOngoing&&(isCreator||isAdmin) class="btn btn-primary btn-block"
+                            data-toggle="modal" data-target="#createPostModal">Create Post</button>
                     </div>
                     <br>
                     <!--div class="card border-dark">
@@ -191,18 +203,23 @@
                     <div *ngFor="let p of projPosts">
                         <div class="card mb-md-2">
                             <div *ngIf="p.imgPath.length == 0">
-                                <img class="card-img-top img-fluid" src="../../assets/img/team.jpg" alt="Project picture" style="height: 200px; object-fit: cover;">
+                                <img class="card-img-top img-fluid" src="../../assets/img/team.jpg"
+                                    alt="Project picture" style="height: 200px; object-fit: cover;">
                             </div>
                             <div *ngIf="p.imgPath.length > 0">
-                                <img class="card-img-top img-fluid" src="https://localhost:8080{{p.imgPath}}" alt="Project picture" style="height: 200px; object-fit: cover;">
+                                <img class="card-img-top img-fluid" src="https://localhost:8080{{p.imgPath}}"
+                                    alt="Project picture" style="height: 200px; object-fit: cover;">
                             </div>
                             <div class="card-body border-dark col ml-2">
-                                <a *ngIf=isOngoing&&(isCreator||isAdmin) class="btn btn-danger mb-3 text-white float-right" role="button" style="margin: 3px;"
-                                    (click)=confirmDeletePost(p.id)>
+                                <a *ngIf=isOngoing&&(isCreator||isAdmin)
+                                    class="btn btn-danger mb-3 text-white float-right" role="button"
+                                    style="margin: 3px;" (click)=confirmDeletePost(p.id)>
                                     <i class="pi pi-trash"></i>
                                 </a>
-                                <a *ngIf=isOngoing&&(isCreator||isAdmin) class="btn btn-primary mb-3 text-white float-right" role="button" style="margin: 3px;"
-                                    data-toggle="modal" data-target="#updatePostModal" (click)=getPost(p.id,p.title,p.desc,p.imgPath)>
+                                <a *ngIf=isOngoing&&(isCreator||isAdmin)
+                                    class="btn btn-primary mb-3 text-white float-right" role="button"
+                                    style="margin: 3px;" data-toggle="modal" data-target="#updatePostModal"
+                                    (click)=getPost(p.id,p.title,p.desc,p.imgPath)>
                                     <i class="pi pi-pencil"></i>
                                 </a>
 
@@ -216,7 +233,8 @@
                                     <small>Last updated: {{formatDate(p.updatedAt)}} by {{p.accountUsername}}</small>
                                 </h6>
 
-                                <button type="button" (click)=getComments(p.id) class="btn btn-link" data-toggle="modal" data-target="#commentModal"> View Comments</button>
+                                <button type="button" (click)=getComments(p.id) class="btn btn-link" data-toggle="modal"
+                                    data-target="#commentModal"> View Comments</button>
                                 <!--div *ngFor="let c of allComments">
                                     <ul class="list-group">
                                         <li class="list-group-item">
@@ -247,7 +265,8 @@
                 </div>
 
                 <!-- Modal -->
-                <div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+                <div class="modal fade" id="commentModal" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-scrollable" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -264,7 +283,9 @@
                                     <ul class="list-group">
                                         <li class="list-group-item">
                                             <strong>{{c.accountUsername}}: </strong> {{c.comment}}
-                                            <a *ngIf=isOngoing&&myComment(c.accountId) class="btn btn-light mb-3 float-right" role="button" style="margin: 3px;" (click)=confirmDelCom(c.id)>
+                                            <a *ngIf=isOngoing&&myComment(c.accountId)
+                                                class="btn btn-light mb-3 float-right" role="button"
+                                                style="margin: 3px;" (click)=confirmDelCom(c.id)>
                                                 <i class="pi pi-trash"></i>
                                             </a>
                                             <br>
@@ -274,16 +295,19 @@
                                     </ul>
                                 </div>
                                 <br>
-                                <a class="btn btn-primary mb-3 text-white float-right" role="button" style="margin: 3px;" (click)=addComment()>
+                                <a class="btn btn-primary mb-3 text-white float-right" role="button"
+                                    style="margin: 3px;" (click)=addComment()>
                                     Post
                                 </a>
-                                <textarea class="form-control" name="comment" [(ngModel)]="newComment" required #comment="ngModel" rows="1" style="width: 85%"></textarea>
+                                <textarea class="form-control" name="comment" [(ngModel)]="newComment" required
+                                    #comment="ngModel" rows="1" style="width: 85%"></textarea>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="modal fade" id="updatePostModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal fade" id="updatePostModal" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -297,7 +321,8 @@
                                     <div class="form-group row">
                                         <label for="title" class="col-sm-3 col-form-label">Title</label>
                                         <div class="col-sm-8">
-                                            <input type="text" class="form-control" name="title" [(ngModel)]="updatePost.title" required #title="ngModel" />
+                                            <input type="text" class="form-control" name="title"
+                                                [(ngModel)]="updatePost.title" required #title="ngModel" />
                                         </div>
                                         <div class="alert-danger" *ngIf="fa.submitted && title.invalid">
                                             <div *ngIf="title.errors.required">Title is required</div>
@@ -306,7 +331,8 @@
                                     <div class="form-group row">
                                         <label for="desc" class="col-sm-3 col-form-label">Description</label>
                                         <div class="col-sm-8">
-                                            <textarea class="form-control" name="desc" [(ngModel)]="updatePost.desc" required #desc="ngModel" rows="3"></textarea>
+                                            <textarea class="form-control" name="desc" [(ngModel)]="updatePost.desc"
+                                                required #desc="ngModel" rows="3"></textarea>
                                         </div>
                                         <div class="alert-danger" *ngIf="fa.submitted && desc.invalid">
                                             <div *ngIf="desc.errors.required">Description is required</div>
@@ -325,7 +351,8 @@
                     </div>
                 </div>
 
-                <div class="modal fade" id="createPostModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal fade" id="createPostModal" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -339,7 +366,8 @@
                                     <div class="form-group row">
                                         <label for="title" class="col-sm-3 col-form-label">Title</label>
                                         <div class="col-sm-8">
-                                            <input type="text" class="form-control" name="title" [(ngModel)]="form.title" required #title="ngModel" />
+                                            <input type="text" class="form-control" name="title"
+                                                [(ngModel)]="form.title" required #title="ngModel" />
                                         </div>
                                         <div class="alert-danger" *ngIf="fa.submitted && title.invalid">
                                             <div *ngIf="title.errors.required">Title is required</div>
@@ -348,7 +376,8 @@
                                     <div class="form-group row">
                                         <label for="desc" class="col-sm-3 col-form-label">Description</label>
                                         <div class="col-sm-8">
-                                            <textarea class="form-control" name="desc" [(ngModel)]="form.desc" required #desc="ngModel" rows="3"></textarea>
+                                            <textarea class="form-control" name="desc" [(ngModel)]="form.desc" required
+                                                #desc="ngModel" rows="3"></textarea>
                                         </div>
                                         <div class="alert-danger" *ngIf="fa.submitted && desc.invalid">
                                             <div *ngIf="desc.errors.required">Description is required</div>
@@ -407,8 +436,8 @@
         <div class="card-header bg-secondary text-white">
             <i class="pi pi-chart-bar"></i>
             <h5 style="display: inline-block;" class="mt-md-1 mb-md-0 ml-md-2">KPIs</h5>
-            <button pButton *ngIf="(isCreator||isAdmin)&&isOngoing" type="button" icon="pi pi-plus" class="p-button-rounded float-right"
-                data-toggle="modal" data-target="#kpiModal" title="Add KPI">
+            <button pButton *ngIf="(isCreator||isAdmin)&&isOngoing" type="button" icon="pi pi-plus"
+                class="p-button-rounded float-right" data-toggle="modal" data-target="#kpiModal" title="Add KPI">
             </button>
         </div>
 
@@ -419,31 +448,31 @@
         <div *ngFor="let kpi of KPIs">
             <ul class="list-group">
                 <li class="list-group-item">
-                    <div class="row">
-                        <div class="card border-0" style="width:75%">
-                            <h5 class="card-title text-left mt-md-1" style="margin-left: 5%;">
-                                {{kpi.title}}
-                            </h5>
-                            <h6 class="card-title text-left text-secondary" style="margin-left: 5%;">{{kpi.desc}} </h6>
-                            <h6 class="card-title text-left text-secondary" style="margin-left: 5%;">Completion: {{kpi.completion}}% </h6>
-                        </div>
-                        <div class="card border-0" style="width:25%">
-                            <a *ngIf="(isCreator||isAdmin)&&isOngoing" class="btn btn-primary text-white" role="button" style="margin: 3px" (click)=getForm(kpi.id,kpi.title,kpi.desc,kpi.completion)
-                                data-toggle="modal" data-target="#editModal">
-                                <i class="pi pi-pencil"></i>
-                            </a>
-                            <a *ngIf="(isCreator||isAdmin)&&isOngoing" class="btn btn-danger text-white" role="button" style="margin: 3px" (click)=confirmDeleteKPI(kpi.id)>
-                                <i class="pi pi-trash"></i>
-                            </a>
-                        </div>
+                    <div>
+                        <h5 class="mt-md-1">
+                            {{kpi.title}}
+                        </h5>
+                        <h6 class="text-secondary">{{kpi.desc}} </h6>
+                        <h6 class="text-secondary">Completion: {{kpi.completion}}% </h6>
                     </div>
-
+                    <div>
+                        <a *ngIf="(isCreator||isAdmin)&&isOngoing" class="btn btn-primary text-white" role="button"
+                            style="margin: 3px" (click)=getForm(kpi.id,kpi.title,kpi.desc,kpi.completion)
+                            data-toggle="modal" data-target="#editModal">
+                            <i class="pi pi-pencil"></i>
+                        </a>
+                        <a *ngIf="(isCreator||isAdmin)&&isOngoing" class="btn btn-danger text-white" role="button"
+                            style="margin: 3px" (click)=confirmDeleteKPI(kpi.id)>
+                            <i class="pi pi-trash"></i>
+                        </a>
+                    </div>
                 </li>
             </ul>
         </div>
 
         <!-- Modal -->
-        <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -457,7 +486,8 @@
                             <div class="form-group row">
                                 <label for="titleU" class="col-sm-3 col-form-label">Title</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" name="titleU" [(ngModel)]="updateForm.title" required #titleU="ngModel" />
+                                    <input type="text" class="form-control" name="titleU" [(ngModel)]="updateForm.title"
+                                        required #titleU="ngModel" />
                                 </div>
                                 <div class="alert-danger" *ngIf="f.submitted && titleU.invalid">
                                     <div *ngIf="titleU.errors.required">Title is required</div>
@@ -469,7 +499,8 @@
                             <div class="form-group row">
                                 <label for="descU" class="col-sm-3 col-form-label">Description</label>
                                 <div class="col-sm-8">
-                                    <textarea class="form-control" name="descU" [(ngModel)]="updateForm.desc" required #descU="ngModel" rows="3"></textarea>
+                                    <textarea class="form-control" name="descU" [(ngModel)]="updateForm.desc" required
+                                        #descU="ngModel" rows="3"></textarea>
                                 </div>
                                 <div class="alert-danger" *ngIf="f.submitted && descU.invalid">
                                     <div *ngIf="descU.errors.required">Description is required</div>
@@ -478,7 +509,8 @@
                             <div class="form-group row">
                                 <label for="completionU" class="col-sm-3 col-form-label">Completion</label>
                                 <div class="col-sm-8">
-                                    <input type="number" class="form-control" name="completionU" [(ngModel)]="updateForm.completion" required min="0" max="100"
+                                    <input type="number" class="form-control" name="completionU"
+                                        [(ngModel)]="updateForm.completion" required min="0" max="100"
                                         #completionU="ngModel" />
                                 </div>
                                 <div class="alert-danger" *ngIf="f.submitted && completionU.invalid">
@@ -501,7 +533,8 @@
         </div>
 
         <!-- Modal -->
-        <div class="modal fade" id="kpiModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="kpiModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -515,7 +548,8 @@
                             <div class="form-group row">
                                 <label for="title" class="col-sm-3 col-form-label">Title</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" name="title" [(ngModel)]="form.title" required #title="ngModel" />
+                                    <input type="text" class="form-control" name="title" [(ngModel)]="form.title"
+                                        required #title="ngModel" />
                                 </div>
                                 <div class="alert-danger" *ngIf="fa.submitted && title.invalid">
                                     <div *ngIf="title.errors.required">Title is required</div>
@@ -527,7 +561,8 @@
                             <div class="form-group row">
                                 <label for="desc" class="col-sm-3 col-form-label">Description</label>
                                 <div class="col-sm-8">
-                                    <textarea class="form-control" name="desc" [(ngModel)]="form.desc" required #desc="ngModel" rows="3"></textarea>
+                                    <textarea class="form-control" name="desc" [(ngModel)]="form.desc" required
+                                        #desc="ngModel" rows="3"></textarea>
                                 </div>
                                 <div class="alert-danger" *ngIf="fa.submitted && desc.invalid">
                                     <div *ngIf="desc.errors.required">Description is required</div>
