@@ -60,7 +60,6 @@ import {ProgressBarModule} from 'primeng/progressbar';
 import {GalleriaModule} from 'primeng/galleria';
 import {MultiSelectModule} from 'primeng/multiselect';
 import {CalendarModule} from 'primeng/calendar';
-import {EditorModule} from 'primeng/editor';
 
 import { ProjectMarketplaceComponent } from './marketplace/project-marketplace/project-marketplace.component';
 import { ResourceMarketplaceComponent } from './marketplace/resource-marketplace/resource-marketplace.component';
@@ -147,8 +146,7 @@ import { AnnouncementComponent } from './announcement/announcement.component';
     ProgressBarModule,
     GalleriaModule,
     MultiSelectModule,
-    CalendarModule,
-    EditorModule
+    CalendarModule
   ],
   providers: [authInterceptorProviders, AuthGuardService],
   bootstrap: [AppComponent]
