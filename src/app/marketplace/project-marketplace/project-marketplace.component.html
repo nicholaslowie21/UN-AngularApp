@@ -51,7 +51,7 @@
                 <div class="product-grid-item card p-3">
                     <div class="mb-md-2">
                         <div *ngFor="let sdg of project.SDGs" style="display:inline-block;">
-                            <button class="sdg sdg{{sdg}} mr-md-1">{{sdg}}</button>
+                            <button class="sdg sdg{{sdg}} mr-md-1 small">{{sdg}}</button>
                         </div>
                         <span class="float-right">{{formatDate(project.createdAt)}}</span>
                     </div>
@@ -67,7 +67,7 @@
                         
                     </div>
                     <div class="mt-md-3">
-                        <a class="btn btn-primary float-right" style="bottom: 0; right: 0; position: absolute;" href="/project/resources?id={{project.id}}">Contribute</a>
+                        <a class="btn btn-primary float-right" style="bottom: 3%; right: 3%; position: absolute;" href="/project/resources?id={{project.id}}">Contribute</a>
                     </div>
                 </div>
             </div>

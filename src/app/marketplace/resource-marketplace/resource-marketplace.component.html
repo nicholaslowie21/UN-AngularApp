@@ -34,23 +34,21 @@
                 <ng-template let-item pTemplate="gridItem">
                     <div class="p-col-12 p-md-4">
                         <div class="product-grid-item card p-3">
-                            <div class="product-grid-item-top">
-                                <div>
+                            <div class="mb-md-2">
+                                <span>
                                     <i class="pi pi-tag product-category-icon"></i>
                                     <span class="product-category itemtype rounded-sm text-white"> Item&nbsp;</span>
-                                </div>
+                                </span>
+                                <div class="float-right">{{formatDate(item.updatedAt)}}</div>
                             </div>
                             <div class="product-grid-item-content">
                                 <img *ngIf="item.imgPath.length == 0" src="../../../assets/img/item.png" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;" [alt]="item.title"/>
                                 <img *ngIf="item.imgPath.length != 0" src="https://localhost:8080{{item.imgPath[0]}}" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;" [alt]="item.title"/>
                                 <div class="product-name"><a href="/resource/resourceDetails?id={{item.id}}&type=item">{{item.title}}</a></div>
                                 <div class="product-description">{{item.country}}</div>
-                                <div class="product-description text-secondary">
-                                    <small>Last updated: {{formatDate(item.updatedAt)}}</small>
-                                </div>
                             </div>
-                            <div class="product-grid-item-bottom">
-                                <button *ngIf="item.ownerUsername != loggedInUsername" (click)="setResourceId(item.id); setResourceType('item')" class="btn btn-primary btn-success" data-toggle="modal" data-target="#requestModal">Request</button>
+                            <div class="mt-md-3">
+                                <button *ngIf="item.ownerUsername != loggedInUsername" (click)="setResourceId(item.id); setResourceType('item')" class="btn btn-primary" style="bottom: 3%; right: 3%; position: absolute;" data-toggle="modal" data-target="#requestModal">Request</button>
                             </div>
                         </div>
                     </div>
@@ -76,23 +74,21 @@
                 <ng-template let-manpower pTemplate="gridItem">
                     <div class="p-col-12 p-md-4">
                         <div class="product-grid-item card p-3">
-                            <div class="product-grid-item-top">
-                                <div>
+                            <div class="mb-md-2">
+                                <span>
                                     <i class="pi pi-tag product-category-icon"></i>
                                     <span class="product-category manpowertype rounded-sm text-white"> Manpower&nbsp;</span>
-                                </div>
+                                </span>
+                                <div class="float-right">{{formatDate(manpower.updatedAt)}}</div>
                             </div>
                             <div class="product-grid-item-content">
                                 <img *ngIf="manpower.ownerImg.length == 0" src="../../../assets/img/profilePic_Placeholder.png" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;" alt="Profile pic"/>
                                 <img *ngIf="manpower.ownerImg.length != 0" src="https://localhost:8080{{manpower.ownerImg}}" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;" alt="Profile pic"/>
                                 <div class="product-name"><a href="/resource/resourceDetails?id={{manpower.id}}&type=manpower">{{manpower.title}}</a></div>
                                 <div class="product-description">{{manpower.country}}</div>
-                                <div class="product-description text-secondary">
-                                    <small>Last updated: {{formatDate(manpower.updatedAt)}}</small>
-                                </div>
                             </div>
-                            <div class="product-grid-item-bottom">
-                                <button *ngIf="manpower.ownerUsername != loggedInUsername" (click)="setResourceId(manpower.id); setResourceType('manpower')" class="btn btn-primary btn-success" data-toggle="modal" data-target="#requestModal">Request</button>
+                            <div class="mt-md-3">
+                                <button *ngIf="manpower.ownerUsername != loggedInUsername" (click)="setResourceId(manpower.id); setResourceType('manpower')" class="btn btn-primary" style="bottom: 3%; right: 3%; position: absolute;" data-toggle="modal" data-target="#requestModal">Request</button>
                             </div>
                         </div>
                     </div>
@@ -118,23 +114,21 @@
                 <ng-template let-venue pTemplate="gridItem">
                     <div class="p-col-12 p-md-4">
                         <div class="product-grid-item card p-3">
-                            <div class="product-grid-item-top">
-                                <div>
+                            <div class="mb-md-2">
+                                <span>
                                     <i class="pi pi-tag product-category-icon"></i>
                                     <span class="product-category venuetype rounded-sm text-white"> Venue&nbsp;</span>
-                                </div>
+                                </span>
+                                <div class="float-right">{{formatDate(venue.updatedAt)}}</div>
                             </div>
                             <div class="product-grid-item-content">
                                 <img *ngIf="venue.imgPath.length == 0" src="../../../assets/img/venue.png" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;" [alt]="venue.title"/>
                                 <img *ngIf="venue.imgPath.length != 0" src="https://localhost:8080{{venue.imgPath[0]}}" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;" [alt]="venue.title"/>
                                 <div class="product-name"><a href="/resource/resourceDetails?id={{venue.id}}&type=venue">{{venue.title}}</a></div>
                                 <div class="product-description">{{venue.country}}</div>
-                                <div class="product-description text-secondary">
-                                    <small>Last updated: {{formatDate(venue.updatedAt)}}</small>
-                                </div>
                             </div>
-                            <div class="product-grid-item-bottom">
-                                <button *ngIf="venue.ownerUsername != loggedInUsername" (click)="setResourceId(venue.id); setResourceType('venue')" class="btn btn-primary btn-success" data-toggle="modal" data-target="#requestModal">Request</button>
+                            <div class="mt-md-3">
+                                <button *ngIf="venue.ownerUsername != loggedInUsername" (click)="setResourceId(venue.id); setResourceType('venue')" class="btn btn-primary" style="bottom: 3%; right: 3%; position: absolute;" data-toggle="modal" data-target="#requestModal">Request</button>
                             </div>
                         </div>
                     </div>
@@ -233,6 +227,7 @@
                                     <i class="pi pi-tag product-category-icon"></i>
                                     <span class="product-category knowledgetype rounded-sm text-white"> Knowledge&nbsp;</span>
                                 </div>
+                                <div class="float-right">{{formatDate(knowledge.updatedAt)}}</div>
                             </div>
                             <div class="product-grid-item-content">
                                 <div class="product-name"><a href="/resource/resourceDetails?id={{knowledge.id}}&type=knowledge">{{knowledge.title}}</a></div><br/>
@@ -242,12 +237,9 @@
                                 <div class="product-description text-secondary" *ngIf="knowledge.desc.length > 60">
                                     {{knowledge.desc.substring(0, 30)}}...
                                 </div>
-                                <div class="product-description text-secondary">
-                                    <small>Last updated: {{formatDate(knowledge.updatedAt)}}</small>
-                                </div>
                             </div>
-                            <div class="product-grid-item-bottom">
-                                <button *ngIf="knowledge.ownerUsername != loggedInUsername" (click)="setResourceId(knowledge.id); setResourceType('knowledge')" class="btn btn-primary btn-success" data-toggle="modal" data-target="#useKnowledgeModal">Use in My Project</button>
+                            <div class="mt-md-3">
+                                <button *ngIf="knowledge.ownerUsername != loggedInUsername" (click)="setResourceId(knowledge.id); setResourceType('knowledge')" class="btn btn-primary" style="bottom: 3%; right: 3%; position: absolute;" data-toggle="modal" data-target="#useKnowledgeModal">Use in My Project</button>
                             </div>
                         </div>
                     </div>

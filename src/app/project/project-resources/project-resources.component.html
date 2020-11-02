@@ -1,13 +1,15 @@
 <div>
-<a href="/project/projectDetails?id={{projectId}}">
-    <u>Project Details </u>
-</a> |
+    <a href="/project/projectDetails?id={{projectId}}">
+        <u>Project Details </u>
+    </a> |
 
-Project Resources |
+    Project Resources
 
-<a *ngIf="isOwnerAdmin" href="/project/requests?id={{projectId}}">
-    <u>Project Requests</u>
-</a>
+    <span *ngIf="isOwnerAdmin">|
+    <a href="/project/requests?id={{projectId}}">
+        <u>Project Requests</u>
+    </a>
+    </span>
 </div>
 <div class="dropdown-divider"></div>
 
