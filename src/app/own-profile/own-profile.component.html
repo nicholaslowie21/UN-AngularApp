@@ -1,3 +1,5 @@
+<p-toast key="toastMsg" [baseZIndex]="100"></p-toast>
+
 <div class="container p-3 my-3 bg-dark text-white">
     <div class="row">
         <div class="col-3">
@@ -25,76 +27,137 @@
             <h6 class="card-title text-left mt-md-1">{{ user.bio }}</h6>
             <h6 class="card-title text-left mt-md-1"><a [href]="user.website">{{ user.website }}</a></h6>
         </div>
-        <div class="col-2" *ngIf="isOwner && isLoggedIn">
-            <a href="/editProfile" class="btn btn-primary mb-md-2">
-                <fa-icon [icon]="faPencilAlt" size="1x"></fa-icon>
-            </a>
-            <br/>
-            <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-                <fa-icon [icon]="faShareAlt" size="1x"></fa-icon>
-            </button>
-
-            <!-- Modal -->
-            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title text-dark" id="exampleModalLongTitle">Share Profile</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body text-dark">
-                            <button class="btn fb" shareButton="facebook" url="{{shareLink}}">
-                                <fa-icon [icon]="faFacebookSquare" size="2x"></fa-icon>
-                            </button>
-                            <button class="btn twitter" shareButton="twitter" url="{{shareLink}}">
-                                <fa-icon [icon]="faTwitter" size="2x"></fa-icon>
-                            </button>
-                            <button class="btn linkedin" shareButton="linkedin" url="{{shareLink}}">
-                                <fa-icon [icon]="faLinkedin" size="2x"></fa-icon>
-                            </button>
-                            <button class="btn whatsapp" shareButton="whatsapp" url="{{shareLink}}">
-                                <fa-icon [icon]="faWhatsapp" size="2x"></fa-icon>
-                            </button>
-                            <button class="btn telegram" shareButton="telegram" url="{{shareLink}}">
-                                <fa-icon [icon]="faTelegram" size="2x"></fa-icon>
-                            </button>
-                            <br />
-                            <div class="card">
-                                <div class="card-header" #container>
-                                    <div class="row">
-                                        <div class="col-11 mt-md-2"><a href={{shareLink}}>{{shareLink}}</a></div>
-                                        <div class="col-1"><button class="btn float-right" (click)="copied()" ngxClipboard [cbContent]="shareLink" [container]="container">
-                                            <fa-icon style="color: grey;" [icon]="faCopy" size="lg"></fa-icon>
-                                        </button></div>
+        <div class="col-2">
+            <div *ngIf="isOwner && isLoggedIn">
+                <a href="/editProfile" class="btn btn-primary mb-md-2">
+                    <fa-icon [icon]="faPencilAlt" size="1x"></fa-icon>
+                </a>
+                <br/>
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                    <fa-icon [icon]="faShareAlt" size="1x"></fa-icon>
+                </button>
+    
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title text-dark" id="exampleModalLongTitle">Share Profile</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body text-dark">
+                                <button class="btn fb" shareButton="facebook" url="{{shareLink}}">
+                                    <fa-icon [icon]="faFacebookSquare" size="2x"></fa-icon>
+                                </button>
+                                <button class="btn twitter" shareButton="twitter" url="{{shareLink}}">
+                                    <fa-icon [icon]="faTwitter" size="2x"></fa-icon>
+                                </button>
+                                <button class="btn linkedin" shareButton="linkedin" url="{{shareLink}}">
+                                    <fa-icon [icon]="faLinkedin" size="2x"></fa-icon>
+                                </button>
+                                <button class="btn whatsapp" shareButton="whatsapp" url="{{shareLink}}">
+                                    <fa-icon [icon]="faWhatsapp" size="2x"></fa-icon>
+                                </button>
+                                <button class="btn telegram" shareButton="telegram" url="{{shareLink}}">
+                                    <fa-icon [icon]="faTelegram" size="2x"></fa-icon>
+                                </button>
+                                <br />
+                                <div class="card">
+                                    <div class="card-header" #container>
+                                        <div class="row">
+                                            <div class="col-11 mt-md-2"><a href={{shareLink}}>{{shareLink}}</a></div>
+                                            <div class="col-1"><button class="btn float-right" (click)="copied()" ngxClipboard [cbContent]="shareLink" [container]="container">
+                                                <fa-icon style="color: grey;" [icon]="faCopy" size="lg"></fa-icon>
+                                            </button></div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-header" #container2>
-                                    <div class="row">
-                                        <div class="col-11"><code>&lt;iframe src="{{iFrameLink}}" title="User Profile" width="500" height="500"&gt;&lt;/iframe&gt;</code></div>
-                                        <div class="col-1"><button class="btn float-right" (click)="copied()" ngxClipboard [cbContent]="copyIFrameLink" [container]="container2">
-                                            <fa-icon style="color: grey;" [icon]="faCopy" size="lg"></fa-icon>
-                                        </button></div>
+                                <div class="card">
+                                    <div class="card-header" #container2>
+                                        <div class="row">
+                                            <div class="col-11"><code>&lt;iframe src="{{iFrameLink}}" title="User Profile" width="500" height="500"&gt;&lt;/iframe&gt;</code></div>
+                                            <div class="col-1"><button class="btn float-right" (click)="copied()" ngxClipboard [cbContent]="copyIFrameLink" [container]="container2">
+                                                <fa-icon style="color: grey;" [icon]="faCopy" size="lg"></fa-icon>
+                                            </button></div>
+                                        </div>
                                     </div>
                                 </div>
+                                <!-- <div class="embed-responsive embed-responsive-4by3"> -->
+                                <div class="text-center">
+                                    <iframe class="embed-responsive-item" [src]="iFrameLink | safe: 'resourceUrl'" title="User Profile" width="500" height="500">
+                                    </iframe>
+                                </div>
+                                <!-- </div> -->
                             </div>
-                            <!-- <div class="embed-responsive embed-responsive-4by3"> -->
-                            <div class="text-center">
-                                <iframe class="embed-responsive-item" [src]="iFrameLink | safe: 'resourceUrl'" title="User Profile" width="500" height="500">
-                                </iframe>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             </div>
-                            <!-- </div> -->
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         </div>
                     </div>
                 </div>
             </div>
+            <div *ngIf="!isOwner && isLoggedIn">
+                <button class="btn btn-primary" data-toggle="modal" data-target="#ReportModal">
+                    <i class="pi pi-ellipsis-h"></i>
+                </button>
+
+                <div class="modal fade text-dark" data-backdrop="static" id="ReportModal" tabindex="-1" role="dialog" aria-labelledby="ReportModal" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div *ngIf="isReport" class="modal-header">
+                                <h5 class="modal-title" id="ReportModalLabel">Report User</h5>
+                                <button type="button" (click)="closeModal()" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div *ngIf="!isReport">
+                                    <button class="btn btn-block" style="color: red;" (click)="clickReport()">Report User</button>
+                                    <hr>
+                                    <button class="btn btn-block" data-dismiss="modal">Cancel</button>
+                                </div>
+                                <div *ngIf="isReport">
+                                    <div *ngIf="!isReportSuccessful">
+                                        <form name="form" (ngSubmit)="f.form.valid && submitReport()" #f="ngForm" novalidate>
+                                            <div class="form-group">
+                                                <label for="title" class="col-form-label">Title</label>
+                                                <div>
+                                                  <input type="text" class="form-control" name="title" [(ngModel)]="form.title" required #title="ngModel" />
+                                                </div>
+                                                <div class="alert-danger" *ngIf="f.submitted && title.invalid">
+                                                  <div *ngIf="title.errors.required">Title is required</div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="summary" class="col-form-label">Summary</label>
+                                                <div>
+                                                  <textarea rows="5" class="form-control" name="summary" [(ngModel)]="form.summary" required #summary="ngModel"></textarea>
+                                                </div>
+                                                <div class="alert-danger" *ngIf="f.submitted && summary.invalid">
+                                                  <div *ngIf="summary.errors.required">Summary is required</div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div *ngIf="isReportSuccessful">
+                                        <div class="alert alert-success">
+                                            Your report has been submitted successfully. <br>
+                                            You can monitor the status of your report under <a href="/reports-submitted">My Reports</a>.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
         </div>
     </div>
 </div>

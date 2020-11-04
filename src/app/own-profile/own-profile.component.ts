@@ -12,12 +12,15 @@ import { faClipboard } from '@fortawesome/free-solid-svg-icons/faClipboard';
 import { UserService } from '../services/user.service';
 import { ResourceService } from '../services/resource.service';
 import { InstitutionService } from '../services/institution.service';
+import { ReportService } from '../services/report.service';
 import { ActivatedRoute } from '@angular/router';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-own-profile',
   templateUrl: './own-profile.component.html',
-  styleUrls: ['./own-profile.component.css']
+  styleUrls: ['./own-profile.component.css'],
+  providers: [MessageService]
 })
 export class OwnProfileComponent implements OnInit {
 
@@ -55,8 +58,13 @@ export class OwnProfileComponent implements OnInit {
   resourceOffers = [];
   feed = [];
 
+  isReport = false;
+  form: any = {};
+  isReportSuccessful = false;
+
   constructor(private tokenStorageService: TokenStorageService, private userService: UserService,
-    private resourceService: ResourceService, private institutionService: InstitutionService, private route: ActivatedRoute) { }
+    private resourceService: ResourceService, private institutionService: InstitutionService, 
+    private route: ActivatedRoute, private reportService: ReportService, private messageService: MessageService) { }
 
   async ngOnInit() {
     this.route.queryParams.subscribe(
@@ -221,6 +229,9 @@ export class OwnProfileComponent implements OnInit {
     this.resourceOffers.sort(this.sortFunction);
     this.feed.sort(this.sortFeed);
 
+    this.isReport = false;
+    this.isReportSuccessful = false;
+
     console.log("BADGES: "+this.badges);
     console.log("CURR PROJ: "+JSON.stringify(this.currentProj));
     console.log("PAST PROJ: " + this.pastProj);
@@ -238,7 +249,7 @@ export class OwnProfileComponent implements OnInit {
   }
 
   copied(): void {
-    alert("Copied!");
+    this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Copied!'});
   }
 
   sortFeed(a, b) {
@@ -250,6 +261,41 @@ export class OwnProfileComponent implements OnInit {
   formatDate(date): any {
     let formattedDate = new Date(date).toUTCString();
     return formattedDate.substring(5, formattedDate.length-13);
+  }
+
+  clickReport(): void {
+    this.isReport = true;
+  }
+
+  closeModal(): void {
+    this.isReport = false;
+    this.isReportSuccessful = false;
+    this.form.title = '';
+    this.form.summary = '';
+  }
+
+  submitReport(): void {
+    let tempType = '';
+    if(this.userType == 'individual') {
+      tempType = 'user';
+    } else {
+      tempType = 'institution';
+    }
+
+    const reportForm = {
+      title: this.form.title,
+      summary: this.form.summary,
+      type: tempType,
+      id: this.userId
+    }
+
+    this.reportService.createReport(reportForm).subscribe(
+      response => {
+        this.isReportSuccessful = true;
+      }, err => {
+        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+      }
+    );
   }
 
 }
