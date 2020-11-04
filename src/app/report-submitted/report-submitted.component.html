@@ -25,7 +25,6 @@
                             <i class="pi pi-search"></i>
                             <input type="search" pInputText placeholder="Search by Title" (input)="dv.filter($event.target.value)">
                         </span>
-                        <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyDate" placeholder="Sort By Date" (onChange)="onSortDate($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
                     </div>
                 </ng-template>
                 <ng-template let-a pTemplate="listItem">
@@ -36,7 +35,7 @@
                         
                         </div>
                         <div class="col-3">
-                            <div class="float-right">{{formatDate(a.createdAt)}}</div> <br>
+                            <div class="float-right">Submitted at {{formatDate(a.createdAt)}}</div> <br>
                             <button class="btn btn-primary float-right" data-toggle="modal" data-target="#viewReport" (click)="getReport(a)">
                                 View
                             </button>
@@ -55,7 +54,6 @@
                             <i class="pi pi-search"></i>
                             <input type="search" pInputText placeholder="Search by Title" (input)="pr.filter($event.target.value)">
                         </span>
-                        <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyDate" placeholder="Sort By Date" (onChange)="onSortDate($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
                     </div>
                 </ng-template>
                 <ng-template let-a pTemplate="listItem">
@@ -66,7 +64,7 @@
                         
                         </div>
                         <div class="col-3">
-                            <div class="float-right">{{formatDate(a.createdAt)}}</div> <br>
+                            <div class="float-right">Accepted at {{formatDate(a.createdAt)}}</div> <br>
                             <button class="btn btn-primary float-right" data-toggle="modal" data-target="#viewReport" (click)="getReport(a)">
                                 View
                             </button>
@@ -85,7 +83,6 @@
                             <i class="pi pi-search"></i>
                             <input type="search" pInputText placeholder="Search by Title" (input)="so.filter($event.target.value)">
                         </span>
-                        <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyDate" placeholder="Sort By Date" (onChange)="onSortDate($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
                     </div>
                 </ng-template>
                 <ng-template let-a pTemplate="listItem">
@@ -96,7 +93,7 @@
                         
                         </div>
                         <div class="col-3">
-                            <div class="float-right">{{formatDate(a.createdAt)}}</div> <br>
+                            <div class="float-right">Solved at {{formatDate(a.createdAt)}}</div> <br>
                             <button class="btn btn-primary float-right" data-toggle="modal" data-target="#viewReport" (click)="getReport(a)">
                                 View
                             </button>
@@ -115,7 +112,6 @@
                             <i class="pi pi-search"></i>
                             <input type="search" pInputText placeholder="Search by Title" (input)="de.filter($event.target.value)">
                         </span>
-                        <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyDate" placeholder="Sort By Date" (onChange)="onSortDate($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
                     </div>
                 </ng-template>
                 <ng-template let-a pTemplate="listItem">
@@ -126,7 +122,7 @@
                         
                         </div>
                         <div class="col-3">
-                            <div class="float-right">{{formatDate(a.createdAt)}}</div> <br>
+                            <div class="float-right">Declined at {{formatDate(a.createdAt)}}</div> <br>
                             <button class="btn btn-primary float-right" data-toggle="modal" data-target="#viewReport" (click)="getReport(a)">
                                 View
                             </button>

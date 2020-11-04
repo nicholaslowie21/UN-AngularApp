@@ -21,8 +21,15 @@ export class AdminReportComponent implements OnInit {
   isDeclineSuccessful = false;
   isSolveSuccessful = false;
 
+  pe = 'pe';
+  ip = 'ip';
+  so = 'so';
+  de = 'de';
+
   sortField: string;
   sortOrder: number;
+  typeOptions = [];
+  filterKeyType: any;
 
   constructor(private reportService: ReportService, private messageService: MessageService, private tokenStorageService: TokenStorageService) { }
 
@@ -59,6 +66,13 @@ export class AdminReportComponent implements OnInit {
       this.isDeclineSuccessful = false;
       this.isSolveSuccessful = false;
     }
+
+    this.typeOptions = [
+      {label: 'All', value: 'all'},
+      {label: 'Individual', value: 'user'},
+      {label: 'Institution', value: 'institution'},
+      {label: 'Project', value: 'project'}
+    ];
 
     console.log(this.pending)
     console.log(this.progress)
@@ -97,6 +111,45 @@ export class AdminReportComponent implements OnInit {
   formatDate(date): any {
     let formattedDate = new Date(date).toUTCString();
     return formattedDate.substring(5, formattedDate.length-13);
+  }
+
+  async onFilterType(event, type) {
+    let value = event.value;
+    await this.ngOnInit();
+    let arr = [];
+    if(value == 'all') {
+      return;
+    }
+    else if(type == 'pe') {
+      for(var i=0; i<this.pending.length; i++) {
+        if(this.pending[i].reportType == value) {
+          arr.push(this.pending[i]);
+        }
+      }
+      this.pending = arr;
+    } else if(type == 'ip') {
+      for(var i=0; i<this.progress.length; i++) {
+        if(this.progress[i].reportType == value) {
+          arr.push(this.progress[i]);
+        }
+      }
+      this.progress = arr;
+    } else if(type == 'so') {
+      for(var i=0; i<this.solved.length; i++) {
+        if(this.solved[i].reportType == value) {
+          arr.push(this.solved[i]);
+        }
+      }
+      this.solved = arr;
+    } else if(type == 'de') {
+      for(var i=0; i<this.declined.length; i++) {
+        if(this.declined[i].reportType == value) {
+          arr.push(this.declined[i]);
+        }
+      }
+      this.declined = arr;
+    }
+    
   }
 
 }

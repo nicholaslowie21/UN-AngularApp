@@ -23,17 +23,23 @@
             <p-dataView #dv [value]="pending" [paginator]="true" [rows]="9" filterBy="title" [sortField]="sortField" [sortOrder]="sortOrder" layout="list">
                 <ng-template pTemplate="header">
                     <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                        <p-dropdown [options]="typeOptions" [(ngModel)]="filterKeyType" placeholder="Filter By Type"
+                            (onChange)="onFilterType($event, [(pe)])" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
                         <span class="p-input-icon-left p-mb-2 p-mb-md-0">
                             <i class="pi pi-search"></i>
                             <input type="search" pInputText placeholder="Search by Title" (input)="dv.filter($event.target.value)">
                         </span>
-                        <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyDate" placeholder="Sort By Date" (onChange)="onSortDate($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                        <!-- <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyDate" placeholder="Sort By Date" (onChange)="onSortDate($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown> -->
                     </div>
                 </ng-template>
                 <ng-template let-a pTemplate="listItem">
                     <div class="product-list-item">
                         <div class="col-9">
                             <div class="product-name">{{a.title}}</div>
+                            <div>Type: 
+                                <span *ngIf="a.reportType == 'user'">individual</span>
+                                <span *ngIf="a.reportType != 'user'">{{a.reportType}}</span>
+                            </div>
                             <div class="product-description">Submitted by Reporter's Name</div>
                         
                         </div>
@@ -53,17 +59,23 @@
             <p-dataView #pr [value]="progress" [paginator]="true" [rows]="9" filterBy="title" [sortField]="sortField" [sortOrder]="sortOrder" layout="list">
                 <ng-template pTemplate="header">
                     <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                        <p-dropdown [options]="typeOptions" [(ngModel)]="filterKeyType" placeholder="Filter By Type"
+                            (onChange)="onFilterType($event, [(ip)])" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
                         <span class="p-input-icon-left p-mb-2 p-mb-md-0">
                             <i class="pi pi-search"></i>
                             <input type="search" pInputText placeholder="Search by Title" (input)="pr.filter($event.target.value)">
                         </span>
-                        <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyDate" placeholder="Sort By Date" (onChange)="onSortDate($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                        <!-- <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyDate" placeholder="Sort By Date" (onChange)="onSortDate($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown> -->
                     </div>
                 </ng-template>
                 <ng-template let-a pTemplate="listItem">
                     <div class="product-list-item">
                         <div class="col-8">
                             <div class="product-name">{{a.title}}</div>
+                            <div>Type: 
+                                <span *ngIf="a.reportType == 'user'">individual</span>
+                                <span *ngIf="a.reportType != 'user'">{{a.reportType}}</span>
+                            </div>
                             <div class="product-description">Submitted by Reporter's Name</div>
                         
                         </div>
