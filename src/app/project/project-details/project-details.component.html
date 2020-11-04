@@ -32,7 +32,7 @@
             </div>
 
             <div class="col-4">
-                <div *ngIf=isCreator||isAdmin>
+                <div *ngIf=isCreator>
                     <a *ngIf=isOngoing class="btn btn-primary mt-3 float-right"
                         href="/project/editDetails?id={{project.id}}" role="button" style="margin: 3px; width: 80%">
                         <i class="pi pi-pencil"></i>
@@ -73,14 +73,24 @@
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <div *ngIf="isReport" class="modal-header">
-                                    <h5 class="modal-title" id="ReportModalLabel">Report User</h5>
+                                    <h5 class="modal-title" id="ReportModalLabel">Report Project</h5>
                                     <button type="button" (click)="closeModal()" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                                 <div class="modal-body">
                                     <div *ngIf="!isReport">
-                                        <button class="btn btn-block" style="color: red;" (click)="clickReport()">Report User</button>
+                                        <div *ngIf="isAdmin">
+                                            <button *ngIf=isOngoing class="btn btn-block">
+                                                <a href="/project/editDetails?id={{project.id}}">
+                                                <i class="pi pi-pencil"></i>&nbsp;Edit Project
+                                            </a></button>
+                                            <button *ngIf=!isOngoing class="btn btn-block disabled">
+                                                <i class="pi pi-pencil"></i>&nbsp;Edit Project
+                                            </button>
+                                            <hr>
+                                        </div>
+                                        <button class="btn btn-block" style="color: red;" (click)="clickReport()">Report Project</button>
                                         <hr>
                                         <button class="btn btn-block" data-dismiss="modal">Cancel</button>
                                     </div>
