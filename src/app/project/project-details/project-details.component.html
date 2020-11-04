@@ -32,39 +32,7 @@
             </div>
 
             <div class="col-4">
-                <div *ngIf=isCreator>
-                    <a *ngIf=isOngoing class="btn btn-primary mt-3 float-right"
-                        href="/project/editDetails?id={{project.id}}" role="button" style="margin: 3px; width: 80%">
-                        <i class="pi pi-pencil"></i>
-                        Edit Project
-                    </a>
-                    <a *ngIf=!isOngoing class="btn btn-primary mt-3 disabled float-right" aria-disabled="true"
-                        role="button" style="margin: 3px; width: 80%">
-                        <i class="pi pi-pencil"></i>
-                        Edit Project
-                    </a>
-                    <a *ngIf=isOngoing&&isCreator class="btn btn-success text-white float-right"
-                        (click)=completeProject(project.title) role="button" style="margin: 3px; width: 80%">
-                        <i class="pi pi-check"></i>
-                        Mark Complete
-                    </a>
-                    <a *ngIf=!isOngoing&&isCreator class="btn btn-success text-white disabled float-right"
-                        aria-disabled="true" role="button" style="margin: 3px; width: 80%">
-                        <i class="pi pi-check"></i>
-                        Mark Complete
-                    </a>
-                    <a *ngIf=isOngoing&&isCreator class="btn btn-danger mb-3 text-white float-right"
-                        (click)="deleteProject(project.title)" role="button" style="margin: 3px; width: 80%">
-                        <i class="pi pi-trash"></i>
-                        Delete Project
-                    </a>
-                    <a *ngIf=!isOngoing&&isCreator class="btn btn-danger mb-3 text-white disabled float-right"
-                        aria-disabled="true" role="button" style="margin: 3px; width: 80%">
-                        <i class="pi pi-trash"></i>
-                        Delete Project
-                    </a>
-                </div>
-                <div *ngIf="isAdmin || isContributor">
+                <div>
                     <button class="btn btn-primary float-right mt-md-4" data-toggle="modal" data-target="#ReportModal">
                         <i class="pi pi-ellipsis-h"></i>
                     </button>
@@ -80,7 +48,7 @@
                                 </div>
                                 <div class="modal-body">
                                     <div *ngIf="!isReport">
-                                        <div *ngIf="isAdmin">
+                                        <div *ngIf="isAdmin || isCreator">
                                             <button *ngIf=isOngoing class="btn btn-block">
                                                 <a href="/project/editDetails?id={{project.id}}">
                                                 <i class="pi pi-pencil"></i>&nbsp;Edit Project
@@ -90,8 +58,27 @@
                                             </button>
                                             <hr>
                                         </div>
-                                        <button class="btn btn-block" style="color: red;" (click)="clickReport()">Report Project</button>
-                                        <hr>
+                                        <div *ngIf="isAdmin || isContributor">
+                                            <button class="btn btn-block" style="color: red;" (click)="clickReport()">Report Project</button>
+                                            <hr>
+                                        </div>
+                                        <div *ngIf="isCreator">
+                                            <button *ngIf=isOngoing class="btn btn-block" style="color: green;" (click)="completeProject(project.title)">
+                                                <i class="pi pi-check"></i>&nbsp;Mark Complete
+                                            </button>
+                                            <button *ngIf=!isOngoing class="btn btn-block disabled">
+                                                <i class="pi pi-check"></i>&nbsp;Mark Complete
+                                            </button>
+                                            <hr>
+                                            <button *ngIf=isOngoing class="btn btn-block" style="color: red;" (click)="deleteProject(project.title)">
+                                                <i class="pi pi-trash"></i>&nbsp;Delete Project
+                                            </button>
+                                            <button *ngIf=!isOngoing class="btn btn-block disabled">
+                                                <i class="pi pi-trash"></i>&nbsp;Delete Project
+                                            </button>
+                                            <hr>
+                                        </div>
+                                        
                                         <button class="btn btn-block" data-dismiss="modal">Cancel</button>
                                     </div>
                                     <div *ngIf="isReport">
