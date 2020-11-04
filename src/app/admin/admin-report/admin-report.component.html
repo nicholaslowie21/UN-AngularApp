@@ -1,1 +1,160 @@
-<p>admin-report works!</p>
+<h2>Report Management</h2>
+
+<p-toast key="toastMsg" [baseZIndex]="100"></p-toast>
+
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" id="pending-tab" data-toggle="tab" href="#pending" role="tab" aria-controls="pending" aria-selected="true">Pending</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="progress-tab" data-toggle="tab" href="#progress" role="tab" aria-controls="progress" aria-selected="false">In Progress</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="solved-tab" data-toggle="tab" href="#solved" role="tab" aria-controls="solved" aria-selected="false">Solved</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="declined-tab" data-toggle="tab" href="#declined" role="tab" aria-controls="declined" aria-selected="false">Declined</a>
+    </li>
+</ul>
+
+<div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="pending" role="tabpanel" aria-labelledby="pending-tab">
+        <div class="card">
+            <p-dataView #dv [value]="pending" [paginator]="true" [rows]="9" filterBy="title" [sortField]="sortField" [sortOrder]="sortOrder" layout="list">
+                <ng-template pTemplate="header">
+                    <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                        <span class="p-input-icon-left p-mb-2 p-mb-md-0">
+                            <i class="pi pi-search"></i>
+                            <input type="search" pInputText placeholder="Search by Title" (input)="dv.filter($event.target.value)">
+                        </span>
+                        <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyDate" placeholder="Sort By Date" (onChange)="onSortDate($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                    </div>
+                </ng-template>
+                <ng-template let-a pTemplate="listItem">
+                    <div class="product-list-item">
+                        <div class="col-9">
+                            <div class="product-name">{{a.title}}</div>
+                            <div class="product-description">Submitted by Reporter's Name</div>
+                        
+                        </div>
+                        <div class="col-3">
+                            <div class="float-right">Submitted at {{formatDate(a.createdAt)}}</div> <br>
+                            <button class="btn btn-primary float-right" data-toggle="modal" data-target="#viewReport" (click)="getReport(a)">
+                                View
+                            </button>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-dataView>
+        </div>
+    </div>
+    <div class="tab-pane fade" id="progress" role="tabpanel" aria-labelledby="progress-tab">
+        <div class="card">
+            <p-dataView #pr [value]="progress" [paginator]="true" [rows]="9" filterBy="title" [sortField]="sortField" [sortOrder]="sortOrder" layout="list">
+                <ng-template pTemplate="header">
+                    <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                        <span class="p-input-icon-left p-mb-2 p-mb-md-0">
+                            <i class="pi pi-search"></i>
+                            <input type="search" pInputText placeholder="Search by Title" (input)="pr.filter($event.target.value)">
+                        </span>
+                        <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyDate" placeholder="Sort By Date" (onChange)="onSortDate($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                    </div>
+                </ng-template>
+                <ng-template let-a pTemplate="listItem">
+                    <div class="product-list-item">
+                        <div class="col-8">
+                            <div class="product-name">{{a.title}}</div>
+                            <div class="product-description">Submitted by Reporter's Name</div>
+                        
+                        </div>
+                        <div class="col-4">
+                            <div class="float-right">Last updated at {{formatDate(a.updatedAt)}}</div> <br>
+                            <button class="btn btn-primary float-right" data-toggle="modal" data-target="#viewReport" (click)="getReport(a)">
+                                View
+                            </button>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-dataView>
+        </div>
+    </div>
+    <div class="tab-pane fade" id="solved" role="tabpanel" aria-labelledby="solved-tab">
+
+    </div>
+    <div class="tab-pane fade" id="declined" role="tabpanel" aria-labelledby="declined-tab">
+
+    </div>
+</div>
+
+<div class="modal fade" data-backdrop="static" id="viewReport" tabindex="-1" role="dialog" aria-labelledby="viewReportLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewReportLabel">View Report</h5>
+                <button type="button" (click)="closeModal()" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div *ngIf="!isAcceptSuccessful && !isDeclineSuccessful && !isSolveSuccessful">
+                    <h4>{{viewForm.title}}</h4>
+                    <div class="text-secondary mb-md-1">Submitted at {{formatDate(viewForm.createdAt)}}</div>
+                    <div class="text-secondary mb-md-1">Last updated at {{formatDate(viewForm.updatedAt)}}</div>
+                    <div class="mb-md-1">Status: 
+                        <span class="rounded-pill {{viewForm.status}}Status pl-2 pr-2">
+                            <span *ngIf="viewForm.status == 'progress'">in</span> {{viewForm.status}}
+                        </span>
+                    </div>
+                    <div class="mb-3">
+                        Submitted by: Reporter's Name
+                    </div>
+                    <div class="">
+                        Reported User: User/Project's Name
+                    </div>
+                    <h5>Summary</h5>
+                    <div class="text-justify">{{viewForm.summary}}</div>
+                </div>
+                <div *ngIf="isAcceptSuccessful">
+                    <div class="alert alert-success">
+                        Report's status has been updated to 'In Progress' <br>
+                        View it under the 'In Progress' tab.
+                    </div>
+                </div>
+                <div *ngIf="isDeclineSuccessful">
+                    <div class="alert alert-success">
+                        Report's status has been updated to 'Declined' <br>
+                        View it under the 'Declined' tab.
+                    </div>
+                </div>
+                <div *ngIf="isSolveSuccessful">
+                    <div class="alert alert-success">
+                        Report's status has been updated to 'Solved' <br>
+                        View it under the 'Solved' tab.
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div *ngIf="viewForm.status == 'pending'">
+                    <div *ngIf="!isAcceptSuccessful && !isDeclineSuccessful">
+                        <button class="btn btn-success" (click)="updateReport(viewForm.id, 'progress')"><i class="pi pi-check"></i>&nbsp;Accept</button>
+                        <button class="btn btn-danger ml-md-2" (click)="updateReport(viewForm.id, 'declined')"><i class="pi pi-times"></i>&nbsp;Decline</button>
+                    </div>
+                    <div *ngIf="isAcceptSuccessful || isDeclineSuccessful">
+                        <button class="btn btn-secondary" (click)="closeModal()" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+                <div *ngIf="viewForm.status == 'progress'">
+                    <div *ngIf="!isSolveSuccessful">
+                        <button class="btn btn-success" (click)="updateReport(viewForm.id, 'solved')"><i class="pi pi-check"></i>&nbsp;Mark as Solved</button>
+                    </div>
+                    <div *ngIf="isSolveSuccessful">
+                        <button class="btn btn-secondary" (click)="closeModal()" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+                <div *ngIf="viewForm.status == 'solved' || viewForm.status == 'declined'">
+                    <button class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
