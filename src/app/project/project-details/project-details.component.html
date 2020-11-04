@@ -43,14 +43,6 @@
                         <i class="pi pi-pencil"></i>
                         Edit Project
                     </a>
-                    <!-- <a *ngIf=isOngoing&&isCreator class="btn btn-light" href="/project/editAdmin?id={{project.id}}" role="button" style="margin: 3px; width: 170px">
-                        <i class="pi pi-user-edit"></i>
-                        Edit Admins
-                    </a>
-                    <a *ngIf=!isOngoing&&isCreator class="btn btn-light disabled" aria-disabled="true" role="button" style="margin: 3px; width: 170px">
-                        <i class="pi pi-user-edit"></i>
-                        Edit Admins
-                    </a> -->
                     <a *ngIf=isOngoing&&isCreator class="btn btn-success text-white float-right"
                         (click)=completeProject(project.title) role="button" style="margin: 3px; width: 80%">
                         <i class="pi pi-check"></i>
@@ -71,6 +63,64 @@
                         <i class="pi pi-trash"></i>
                         Delete Project
                     </a>
+                </div>
+                <div *ngIf="isAdmin || isContributor">
+                    <button class="btn btn-primary float-right mt-md-4" data-toggle="modal" data-target="#ReportModal">
+                        <i class="pi pi-ellipsis-h"></i>
+                    </button>
+
+                    <div class="modal fade text-dark" data-backdrop="static" id="ReportModal" tabindex="-1" role="dialog" aria-labelledby="ReportModal" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div *ngIf="isReport" class="modal-header">
+                                    <h5 class="modal-title" id="ReportModalLabel">Report User</h5>
+                                    <button type="button" (click)="closeModal()" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div *ngIf="!isReport">
+                                        <button class="btn btn-block" style="color: red;" (click)="clickReport()">Report User</button>
+                                        <hr>
+                                        <button class="btn btn-block" data-dismiss="modal">Cancel</button>
+                                    </div>
+                                    <div *ngIf="isReport">
+                                        <div *ngIf="!isReportSuccessful">
+                                            <form name="formReport" (ngSubmit)="fr.form.valid && submitReport()" #fr="ngForm" novalidate>
+                                                <div class="form-group">
+                                                    <label for="title" class="col-form-label">Title</label>
+                                                    <div>
+                                                      <input type="text" class="form-control" name="title" [(ngModel)]="formReport.title" required #title="ngModel" />
+                                                    </div>
+                                                    <div class="alert-danger" *ngIf="fr.submitted && title.invalid">
+                                                      <div *ngIf="title.errors.required">Title is required</div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="summary" class="col-form-label">Summary</label>
+                                                    <div>
+                                                      <textarea rows="5" class="form-control" name="summary" [(ngModel)]="formReport.summary" required #summary="ngModel"></textarea>
+                                                    </div>
+                                                    <div class="alert-danger" *ngIf="fr.submitted && summary.invalid">
+                                                      <div *ngIf="summary.errors.required">Summary is required</div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div *ngIf="isReportSuccessful">
+                                            <div class="alert alert-success">
+                                                Your report has been submitted successfully. <br>
+                                                You can monitor the status of your report under <a href="/reports-submitted">My Reports</a>.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -96,62 +146,7 @@
                             </div>
                         </div>
                     </div>
-                    <!--div class="card-body row">
-                        <div class="col-4">
-                            <div *ngIf="host.profilePic.length > 0">
-                                <img src={{host.profilePic}} class="rounded-circle img-fluid" style="width: 50px; height: 50px; object-fit: cover;" alt="Profile picture"
-                                />
-                            </div>
-                            <div *ngIf="host.profilePic.length == 0">
-                                <img src="../../assets/img/profilePic_Placeholder.png" class="rounded-circle img-fluid" style="width: 50px; height: 50px; object-fit: cover;"
-                                    alt="Profile picture" />
-                            </div>
-                        </div>
-                        <br/>
-                        <div class="col-8">
-                            <a href="/profile?username={{host.username}}&userType=individual">{{host.name}}</a>
-                            <br/>
-                            <div class="text-secondary" style="font-size: small;">Project Creator</div>
-                        </div>
-                    </div-->
                 </div>
-                <!-- <div class="card mt-2">
-                    <div class="card-header">
-                        Project Admins:
-                        
-                    </div>
-                </div> -->
-
-                <!--div *ngIf="admins.length == 0">
-                    <div class="card">
-                        <div class="card-body row">
-                            <p style="margin-left: 10px">There are no project admins for now.</p>
-                        </div>
-                    </div>
-
-                </div>
-                <div *ngFor="let admin of admins">
-                    <div class="card">
-                        <div class="card-body row">
-                            <div class="col-4">
-                                <div *ngIf="admin.profilePic.length > 0">
-                                    <img src={{admin.profilePic}} class="rounded-circle img-fluid" style="width: 50px; height: 50px; object-fit: cover;" alt="Profile picture"
-                                    />
-                                </div>
-                                <div *ngIf="admin.profilePic.length == 0">
-                                    <img src="../../assets/img/profilePic_Placeholder.png" class="rounded-circle img-fluid" style="width: 50px; height: 50px; object-fit: cover;"
-                                        alt="Profile picture" />
-                                </div>
-                            </div>
-                            <br/>
-                            <div class="col-8">
-                                <a href="/profile?username={{admin.username}}&userType=individual">{{admin.name}}</a>
-                                <br/>
-                                <div class="text-secondary" style="font-size: small;">Project Admin</div>
-                            </div>
-                        </div>
-                    </div>
-                </div-->
 
                 <div *ngFor="let con of contributors">
                     <div class="card">

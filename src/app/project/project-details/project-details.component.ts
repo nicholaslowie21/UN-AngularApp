@@ -4,6 +4,7 @@ import { ProjectService } from '../../services/project.service';
 import { UserService } from '../../services/user.service';
 import { TokenStorageService } from '../../services/token-storage.service';
 import { MessageService } from 'primeng/api';
+import { ReportService } from '../../services/report.service';
 
 @Component({
   selector: 'app-project-details',
@@ -13,7 +14,6 @@ import { MessageService } from 'primeng/api';
 })
 export class ProjectDetailsComponent implements OnInit {
 
-  projectCode: any;
   project: any;
   projectId: any;
 
@@ -52,17 +52,20 @@ export class ProjectDetailsComponent implements OnInit {
   tempId: any;
   checkComment = false;
 
+  isReport = false;
+  isReportSuccessful = false;
+  formReport: any = {};
+
   constructor(private route: ActivatedRoute, private projectService: ProjectService, private userService: UserService,
-    private tokenStorageService: TokenStorageService, private messageService: MessageService) { }
+    private tokenStorageService: TokenStorageService, private messageService: MessageService, private reportService: ReportService) { }
 
   async ngOnInit() {
     this.route.queryParams
       .subscribe(params => {
-        //this.projectCode = params.code;
         this.projectId = params.id;
       }
       );
-    // this.loadProject();
+    
     await this.projectService.viewProject({ id: this.projectId }).toPromise().then(
       response => {
         this.project = response.data.targetProject;
@@ -70,11 +73,6 @@ export class ProjectDetailsComponent implements OnInit {
         this.projAdmins = response.data.targetProject.admins;
         this.status = response.data.targetProject.status;
         this.imgString = "https://localhost:8080" + this.project.imgPath;
-        // console.log("INIT: "+this.project);
-        console.log("INIT INSIDE SERVICE: " + this.projHost);
-        //console.log(this.userId);
-        console.log("INIT INSIDE SERVICE: " + this.projAdmins);
-        console.log(this.status);
       },
       err => {
         alert(err.error.msg);
@@ -83,12 +81,6 @@ export class ProjectDetailsComponent implements OnInit {
 
     this.user = this.tokenStorageService.getUser();
     this.userId = this.user.id;
-    //this.checkRole();
-
-    console.log("INIT OUTSIDE SERVICE: " + this.projHost);
-    console.log("INIT OUTSIDE SERVICE: " + this.projAdmins);
-    console.log(this.userId);
-    console.log(this.status);
 
     //check project status
     if (this.status == "completed") {
@@ -147,7 +139,7 @@ export class ProjectDetailsComponent implements OnInit {
         this.contributors = response.data.contributors;
       }
     );
-    console.log(this.contributors.length);
+    console.log(this.contributors);
 
     await this.projectService.getProjectPosts({ id: this.projectId}).toPromise().then(
       response => {
@@ -157,48 +149,13 @@ export class ProjectDetailsComponent implements OnInit {
     );
     console.log(this.projPosts);
 
-  }
-
-  async loadProject() {
-    await this.projectService.viewProject({ id: this.projectId }).toPromise().then(
-      response => {
-        this.project = response.data.targetProject;
-        this.projHost = response.data.targetProject.host;
-        this.projAdmins = response.data.targetProject.admins;
-        console.log(this.project);
-        console.log(this.projHost);
-        console.log(this.projAdmins);
-      },
-      err => {
-        alert(err.error.msg);
-      }
-    );
-
-    console.log("LOAD PROJ OUTSIDE SERVICE: " + this.projHost);
-    console.log(this.userId);
-
-    if (String(this.userId) === String(this.projHost)) {
-      this.isCreator = true;
-      console.log(this.isCreator);
-      console.log(this.isAdmin);
-    } else {
-      let x = this.projAdmins.length;
-      for (var y = 0; y < x; y++) {
-        console.log(this.projAdmins[y]);
+    //check isContributor
+    for(var i=0; i<this.contributors.length; i++) {
+      if(this.contributors[i].contributionType == 'contributor' && this.contributors[i].contributorUsername == this.user.username) {
+        this.isContributor = true;
       }
     }
-  }
 
-  checkRole(): void {
-    //check if user is creator
-    if (String(this.userId) === String(this.projHost)) {
-      this.isCreator = true;
-      console.log(this.isCreator);
-      console.log(this.isAdmin);
-    }
-
-    console.log(this.isCreator);
-    console.log(this.isAdmin);
   }
 
   deleteProj(title: string): void {
@@ -506,6 +463,34 @@ export class ProjectDetailsComponent implements OnInit {
       return true;
     }
     return false;
+  }
+
+  clickReport(): void {
+    this.isReport = true;
+  }
+
+  closeModal(): void {
+    this.isReport = false;
+    this.isReportSuccessful = false;
+    this.formReport.title = '';
+    this.formReport.summary = '';
+  }
+
+  submitReport(): void {
+    const reportForm = {
+      title: this.formReport.title,
+      summary: this.formReport.summary,
+      type: 'project',
+      id: this.projectId
+    }
+
+    this.reportService.createReport(reportForm).subscribe(
+      response => {
+        this.isReportSuccessful = true;
+      }, err => {
+        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+      }
+    );
   }
 
 }
