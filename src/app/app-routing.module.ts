@@ -16,12 +16,14 @@ import { AffiliationPageComponent } from './affiliation-page/affiliation-page.co
 import { AdminHomeComponent } from './admin/admin-home/admin-home.component';
 import { AdminManagementComponent } from './admin/admin-management/admin-management.component';
 import { AdminReportComponent } from './admin/admin-report/admin-report.component';
+import { AdminReportDetailsComponent } from './admin/admin-report-details/admin-report-details.component';
 import { AdminUserManagementComponent } from './admin/admin-user-management/admin-user-management.component';
 import { AdminUserManagementProfileComponent } from './admin/admin-user-management-profile/admin-user-management-profile.component';
 import { AdminVerificationComponent } from './admin/admin-verification/admin-verification.component';
 import { AdminRewardManagementComponent } from './admin/admin-reward-management/admin-reward-management.component';
 import { AdminCreateRewardComponent } from './admin/admin-create-reward/admin-create-reward.component';
 import { AdminAnnouncementComponent } from './admin/admin-announcement/admin-announcement.component';
+import { AdminChatComponent } from './admin/admin-chat/admin-chat.component';
 import { ShareProfilePageComponent } from './share-profile-page/share-profile-page.component';
 import { CreateProjectComponent } from './project/create-project/create-project.component';
 import { EditProjectAdminComponent } from './project/edit-project-admin/edit-project-admin.component';
@@ -46,6 +48,7 @@ import { RewardMarketplaceComponent } from './reward/reward-marketplace/reward-m
 import { MyRewardsComponent } from './reward/my-rewards/my-rewards.component';
 import { AnnouncementComponent } from './announcement/announcement.component';
 import { ReportSubmittedComponent } from './report-submitted/report-submitted.component';
+import { ChatComponent } from './chat/chat.component';
 
 const routes: Routes = [
   { path: 'landing', component: LandingComponent},
@@ -63,12 +66,14 @@ const routes: Routes = [
     children: [
       { path: 'admin-management', component: AdminManagementComponent },
       { path: 'report', component: AdminReportComponent },
+      { path: 'reportDetails', component: AdminReportDetailsComponent },
       { path: 'user-management', component: AdminUserManagementComponent },
       { path: 'user-management/profile', component: AdminUserManagementProfileComponent },
       { path: 'verification', component: AdminVerificationComponent },
       { path: 'reward', component: AdminRewardManagementComponent },
       { path: 'create-reward', component: AdminCreateRewardComponent},
       { path: 'announcement', component: AdminAnnouncementComponent},
+      { path: 'chat', component: AdminChatComponent},
       { path: '', component: AdminHomeComponent, pathMatch: 'full'}
     ] 
   },
@@ -112,6 +117,7 @@ const routes: Routes = [
   { path: 'discover-weekly', component: DiscoverWeeklyComponent},
   { path: 'announcements', component: AnnouncementComponent},
   { path: 'reports-submitted', component: ReportSubmittedComponent},
+  { path: 'chat', component: ChatComponent},
   { path: '', redirectTo: 'home', pathMatch: 'full'}
 ];
 
