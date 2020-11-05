@@ -1,0 +1,17 @@
+div.sticky {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 12%;
+    padding: 3%;
+    font-size: 17px;
+}
+
+.Public {
+    background-color: rgb(49, 173, 0);
+    color: white;
+}
+
+.Private {
+    background-color: rgb(168, 0, 0);
+    color: white;
+}

@@ -1,10 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProjectService } from '../../services/project.service';
 import { UserService } from '../../services/user.service';
 import { TokenStorageService } from '../../services/token-storage.service';
 import { MessageService } from 'primeng/api';
 import { ReportService } from '../../services/report.service';
+import { Calendar } from '@fullcalendar/core';
+import { FullCalendar } from 'primeng/fullcalendar';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import interactionPlugin from '@fullcalendar/interaction';
 
 @Component({
   selector: 'app-project-details',
@@ -14,6 +19,21 @@ import { ReportService } from '../../services/report.service';
 })
 export class ProjectDetailsComponent implements OnInit {
 
+  eventOn = false;
+  @ViewChild('calendar', { static: true })
+  calendar: FullCalendar;
+  options = {
+    plugins: [dayGridPlugin, timeGridPlugin],
+    header: {
+      left: 'prev,next',
+      center: 'title',
+      right: 'dayGridMonth,timeGridWeek,timeGridDay'
+    },
+    eventClick: (el) => this.callEvent(el.event),
+    displayEventTime: false
+  };
+
+  projectCode: any;
   project: any;
   projectId: any;
 
@@ -56,8 +76,26 @@ export class ProjectDetailsComponent implements OnInit {
   isReportSuccessful = false;
   formReport: any = {};
 
+  calendarOn = false;
+  minimumDate = new Date();
+  events: any[];
+  //options: any;
+  //header: any;
+  eventTitle: any;
+  eventStart: any;
+  eventEnd: any;
+  eventStat: any;
+
+  updateEvent: any = {};
+  selectEvent: any;
+  uEventNotif = false;
+  cEventNotif = false;
+  tempType: any;
+
   constructor(private route: ActivatedRoute, private projectService: ProjectService, private userService: UserService,
-    private tokenStorageService: TokenStorageService, private messageService: MessageService, private reportService: ReportService) { }
+    private tokenStorageService: TokenStorageService, private messageService: MessageService, private reportService: ReportService) {
+    const name = FullCalendar.name;
+  }
 
   async ngOnInit() {
     this.route.queryParams
@@ -139,9 +177,17 @@ export class ProjectDetailsComponent implements OnInit {
         this.contributors = response.data.contributors;
       }
     );
-    console.log(this.contributors);
+    console.log(this.user.username);
+    for (var x = 0; x < this.contributors.length; x++) {
+      if (this.user.username == this.contributors[x].contributorUsername) {
+        this.isContributor = true;
+        console.log("count: " + x);
+      }
+    }
+    console.log(this.isContributor);
+    console.log(this.contributors.length);
 
-    await this.projectService.getProjectPosts({ id: this.projectId}).toPromise().then(
+    await this.projectService.getProjectPosts({ id: this.projectId }).toPromise().then(
       response => {
         console.log(JSON.stringify(response));
         this.projPosts = response.data.projectPosts;
@@ -149,15 +195,25 @@ export class ProjectDetailsComponent implements OnInit {
     );
     console.log(this.projPosts);
 
-    //check isContributor
-    for(var i=0; i<this.contributors.length; i++) {
-      if(this.contributors[i].contributionType == 'contributor' && this.contributors[i].contributorUsername == this.user.username) {
-        this.isContributor = true;
-      }
+    if (this.isContributor) {
+      await this.projectService.getAllProjectEvents({ id: this.projectId }).toPromise().then(
+        response => {
+          console.log(JSON.stringify(response));
+          this.events = response.data.projectEvents;
+        }
+      );
+      console.log(this.events);
+    } else {
+      await this.projectService.getPublicProjectEvents({ id: this.projectId }).toPromise().then(
+        response => {
+          console.log(JSON.stringify(response));
+          this.events = response.data.projectEvents;
+        }
+      );
+      console.log(this.events);
     }
-
   }
-
+    
   deleteProj(title: string): void {
     this.projectService.deleteProject({ id: this.projectId }).subscribe(
       response => {
@@ -212,7 +268,7 @@ export class ProjectDetailsComponent implements OnInit {
 
   formatDate(date): any {
     let formattedDate = new Date(date).toUTCString();
-    return formattedDate.substring(5, formattedDate.length-13);
+    return formattedDate.substring(5, formattedDate.length - 13);
   }
 
   getForm(kid: string, ktitle: string, kdesc: string, kcompletion: number): void {
@@ -316,7 +372,7 @@ export class ProjectDetailsComponent implements OnInit {
       img: this.image
     }
     console.log(formPost); **/
-    
+
     const formData = new FormData();
     formData.append("projectId", this.projectId);
     formData.append("title", this.form.title);
@@ -399,7 +455,7 @@ export class ProjectDetailsComponent implements OnInit {
 
   addComment(): void {
     console.log(this.newComment + " " + this.tempId);
-    
+
     const formAddComment = {
       id: this.tempId,
       comment: this.newComment
@@ -421,15 +477,16 @@ export class ProjectDetailsComponent implements OnInit {
   }
 
   async getComments(pid: string) {
-    await this.projectService.getPostComment({id: pid}).toPromise().then(
-      res => { 
+    await this.projectService.getPostComment({ id: pid }).toPromise().then(
+      res => {
         console.log(JSON.stringify(res));
-        this.allComments = res.data.postComments}
+        this.allComments = res.data.postComments
+      }
     );
     this.tempId = pid;
     console.log(this.tempId);
 
-    if(this.allComments.length==0) {
+    if (this.allComments.length == 0) {
       this.checkComment = false;
       console.log("length 0");
     } else {
@@ -448,28 +505,205 @@ export class ProjectDetailsComponent implements OnInit {
   }
 
   deleteComment(pid: string): void {
-   
-      this.projectService.deletePostComment({id: pid}).subscribe(
-        response => {
-          console.log(JSON.stringify(response));
-          this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Comment Deleted!' });
-          window.location.reload();
-        }
-      );
+
+    this.projectService.deletePostComment({ id: pid }).subscribe(
+      response => {
+        console.log(JSON.stringify(response));
+        this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Comment Deleted!' });
+        window.location.reload();
+      }
+    );
   }
 
   myComment(aId: string): boolean {
-    if(this.userId == aId) {
+    if (this.userId == aId) {
       return true;
     }
     return false;
+  }
+
+  switchCalendarOn(): void {
+    this.calendarOn = true;
+    this.eventOn = false;
+  }
+
+  switchCalendarOff(): void {
+    this.calendarOn = false;
+  }
+
+  onEventPost(): void {
+    console.log(this.form);
+    console.log(this.projectId);
+    console.log(this.form.type.toLowerCase());
+    //console.log(new Date(this.form.endDate));
+    //console.log(new Date(this.form.startDate));
+    console.log(new Date(this.form.endDate) > new Date(this.form.startDate));
+    var a = new Date(this.form.endDate);
+    var b = new Date(this.form.startDate);
+    if (a < b) {
+      this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: "The start date is after the end date!" });
+    } /**else if (a.getTime() === b.getTime()) {
+      this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: "End date cannot be the same as start date!" });
+    } **/ else {
+      const formEvent = {
+        id: this.projectId,
+        title: this.form.title,
+        start: this.form.startDate,
+        end: this.form.endDate,
+        type: this.form.type.toLowerCase()
+      }
+
+      this.projectService.createProjectEvent(formEvent).subscribe(
+        response => {
+          console.log(JSON.stringify(response));
+          //this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Event Added!' });
+          //this.ngOnInit();
+          this.cEventNotif = true;
+          
+          //window.location.reload();
+        },
+        err => {
+          this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: err.error.msg });
+          this.errorMsg = err.error.msg;
+          console.log(this.errorMsg);
+        }
+      );
+    }
+  }
+
+  onEventUpdate(): void {
+    console.log(this.updateEvent);
+    
+    //this.updateEvent.end.setUTCHours(0);
+    //this.updateEvent.start.setUTCHours(0);
+    //console.log(this.updateEvent.end.toUTCString());
+    //console.log(this.updateEvent.start.toUTCString());
+
+    console.log(this.updateEvent.end);
+    console.log(this.updateEvent.start);
+    var a = new Date(this.updateEvent.end).toDateString();
+    var b = new Date(this.updateEvent.start).toDateString();
+    var c = new Date(this.updateEvent.end);
+    var d = new Date(this.updateEvent.start);
+    console.log(a);
+    console.log(b);
+    console.log(a.substring(11,15));
+    console.log(a.substring(8,10));
+    console.log(a.substring(4,7));
+    console.log(new Date(a).getTime());
+    console.log("check date: " + (a==b) );
+
+    //one-day event
+    if(a == b) {
+      this.updateEvent.type = this.updateEvent.type.toLowerCase();
+      this.projectService.updateProjectEvent(this.updateEvent).subscribe(
+        response => {
+          this.uEventNotif = true;
+        },
+        err => {
+          this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: err.error.msg });
+          this.errorMsg = err.error.msg;
+          console.log(this.errorMsg);
+        }
+      );
+    } else {
+      if (c < d) {
+        this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: "The start date is after the end date!" });
+      } else {
+        this.updateEvent.type = this.updateEvent.type.toLowerCase();
+        this.projectService.updateProjectEvent(this.updateEvent).subscribe(
+          response => {            
+            this.uEventNotif = true;
+          },
+          err => {
+            this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: err.error.msg });
+            this.errorMsg = err.error.msg;
+            console.log(this.errorMsg);
+          }
+        );
+      }
+    }
+
+  }
+
+  callEvent(info): void {
+    this.uEventNotif = false;
+    this.eventOn = true;
+    console.log(info.title + " " + info.start + " " + info.end + " " + info.eventType);
+    console.log("event id: " + info.id);
+
+    this.findEvent(info.id);
+    this.eventTitle = info.title;
+    this.eventStart = this.selectEvent.start;
+    this.eventEnd = this.selectEvent.end;
+    this.eventStat = info.eventType;
+
+    if(info.end == null) {
+      this.updateEvent = {
+        id: info.id,
+        title: this.eventTitle,
+        start: info.start,
+        end: info.start,
+        type: this.selectEvent.eventType
+      }
+    } else {
+      this.updateEvent = {
+        id: info.id,
+        title: this.eventTitle,
+        start: info.start,
+        end: info.end,
+        type: this.selectEvent.eventType
+      }
+    }
+    
+
+    if (this.updateEvent.type == "public") {
+      this.updateEvent.type = "Public";
+      this.tempType = "Public";
+    } else {
+      this.updateEvent.type = "Private";
+      this.tempType = "Private";
+    }
+
+    console.log(this.updateEvent);
+  }
+
+  findEvent(id): any {
+    for (var x = 0; x < this.events.length; x++) {
+      if (id == this.events[x].id) {
+        this.selectEvent = this.events[x];
+        console.log("event id: " + this.events[x].id);
+        console.log(this.selectEvent);
+      }
+    }
+  }
+
+  confirmDelEvent(): void {
+    let r = confirm("Are you sure you want to delete this event?");
+    if (r == true) {
+      this.deleteEvent();
+    } else {
+      return;
+    }
+  }
+
+  deleteEvent(): void {
+    this.projectService.deleteProjectEvent({ id: this.updateEvent.id }).subscribe(
+      response => {
+        console.log(JSON.stringify(response));
+        this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Event Deleted!' });
+        this.eventOn = false;
+        this.ngOnInit();
+        //window.location.reload();
+      }
+    );
   }
 
   clickReport(): void {
     this.isReport = true;
   }
 
-  closeModal(): void {
+  closeModalReport(): void {
     this.isReport = false;
     this.isReportSuccessful = false;
     this.formReport.title = '';
@@ -493,4 +727,11 @@ export class ProjectDetailsComponent implements OnInit {
     );
   }
 
+  closeModal(): void {
+    this.eventOn = false;
+    this.cEventNotif = false;
+    this.uEventNotif = false;
+    this.form = {};
+    this.ngOnInit();
+  }
 }

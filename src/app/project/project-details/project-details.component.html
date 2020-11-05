@@ -42,7 +42,7 @@
                             <div class="modal-content">
                                 <div *ngIf="isReport" class="modal-header">
                                     <h5 class="modal-title" id="ReportModalLabel">Report Project</h5>
-                                    <button type="button" (click)="closeModal()" class="close" data-dismiss="modal" aria-label="Close">
+                                    <button type="button" (click)="closeModalReport()" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
@@ -127,9 +127,171 @@
             <h6 class="card-title text-left text-justify" style="margin: 20px">Description: {{project.desc}}</h6>
         </div>
 
+        <div *ngIf="calendarOn" class="row mt-3">
+            <div class="bg-secondary text-center p-2 text-white rounded-sm" style="width: 100%">Project Milestones
+                <button pButton *ngIf="isOngoing&&(isCreator||isAdmin)" type="button" icon="pi pi-plus" class="p-button-rounded float-right"
+                    data-toggle="modal" data-target="#createEventModal">
+                </button>
+            </div>
+
+            <div class="card" style="width: 100%">
+
+                <p-fullCalendar [events]="events" [options]="options"></p-fullCalendar>
+            </div>
+        </div>
+
+        <div class="modal fade" data-backdrop="static" id="updateEventModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Update Milestone</h5>
+                        <button type="button" class="close" (click)="closeModal()" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div *ngIf="!uEventNotif">
+                            <form name="form" (ngSubmit)="fe.form.valid && onEventUpdate()" #fe="ngForm" novalidate>
+                                <div class="form-group row">
+                                    <label for="title" class="col-sm-4 col-form-label">Title</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control" name="title" [(ngModel)]="updateEvent.title" required #title="ngModel" />
+                                    </div>
+                                    <div class="alert-danger" *ngIf="fe.submitted && title.invalid">
+                                        <div *ngIf="title.errors.required">Title is required</div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="startDate" class="col-sm-4 col-form-label">Start Date</label>
+                                    <div class="col-sm-6">
+                                        <p-calendar [baseZIndex]="90" name="startDate" [(ngModel)]="updateEvent.start" dateFormat="yy-mm-dd" [showIcon]="true" [minDate]="minimumDate"
+                                            [monthNavigator]="true" [yearNavigator]="true" yearRange="2020:2025" required #startDate="ngModel"></p-calendar>
+                                    </div>
+                                    <div class="alert-danger" *ngIf="fe.submitted && startDate.invalid">
+                                        <div *ngIf="startDate.errors.required">Start date is required</div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="endDate" class="col-sm-4 col-form-label">End Date</label>
+                                    <div class="col-sm-6">
+                                        <p-calendar [baseZIndex]="90" name="endDate" [(ngModel)]="updateEvent.end" dateFormat="yy-mm-dd" [showIcon]="true" [minDate]="minimumDate"
+                                            [monthNavigator]="true" [yearNavigator]="true" yearRange="2020:2025" required #endDate="ngModel"></p-calendar>
+                                    </div>
+                                    <div class="alert-danger" *ngIf="fe.submitted && endDate.invalid">
+                                        <div *ngIf="endDate.errors.required">End date is required</div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="type" class="col-sm-4 col-form-label">Milestone Type</label>
+                                    <div class="col-sm-7">
+                                        <div *ngIf="updateEvent.type=='Public'">
+                                            <select class="form-control" name="type" [(ngModel)]="updateEvent.type" required #type="ngModel">
+                                                <option selected value="Public">Public</option>
+                                                <option value="Private">Private</option>
+                                            </select>
+                                        </div>
+                                        <div *ngIf="updateEvent.type=='Private'">
+                                            <select class="form-control" name="type" [(ngModel)]="updateEvent.type" required #type="ngModel">
+                                                <option value="Public">Public</option>
+                                                <option selected value="Private">Private</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!--div class="alert-danger" *ngIf="fe.submitted && type.invalid">
+                                                <div *ngIf="type.errors.required">Event type is required</div>
+                                            </div-->
+                                </div>
+                                <br>
+                                <div class="form-group">
+                                    <button class="btn btn-primary btn-block">Update</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div *ngIf="uEventNotif">
+                            <div class="alert alert-success">
+                                Milestone has been updated!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" data-backdrop="static" id="createEventModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">New Milestone</h5>
+                        <button type="button" class="close" (click)="closeModal()" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div *ngIf="!cEventNotif">
+                            <form name="form" (ngSubmit)="fd.form.valid && onEventPost()" #fd="ngForm" novalidate>
+                                <div class="form-group row">
+                                    <label for="title" class="col-sm-4 col-form-label">Title</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control" name="title" [(ngModel)]="form.title" required #title="ngModel" />
+                                    </div>
+                                    <div class="alert-danger" *ngIf="fd.submitted && title.invalid">
+                                        <div *ngIf="title.errors.required">Title is required</div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="startDate" class="col-sm-4 col-form-label">Start Date</label>
+                                    <div class="col-sm-6">
+                                        <p-calendar [baseZIndex]="90" name="date" [(ngModel)]="form.startDate" dateFormat="yy-mm-dd" [showIcon]="true" [minDate]="minimumDate"
+                                            [monthNavigator]="true" [yearNavigator]="true" yearRange="2020:2025" required #startDate="ngModel"></p-calendar>
+                                    </div>
+                                    <div class="alert-danger" *ngIf="fd.submitted && startDate.invalid">
+                                        <div *ngIf="startDate.errors.required">Start date is required</div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="endDate" class="col-sm-4 col-form-label">End Date</label>
+                                    <div class="col-sm-6">
+                                        <p-calendar [baseZIndex]="90" name="date" [(ngModel)]="form.endDate" dateFormat="yy-mm-dd" [showIcon]="true" [minDate]="minimumDate"
+                                            [monthNavigator]="true" [yearNavigator]="true" yearRange="2020:2025" required #endDate="ngModel"></p-calendar>
+                                    </div>
+                                    <div class="alert-danger" *ngIf="fd.submitted && endDate.invalid">
+                                        <div *ngIf="endDate.errors.required">End date is required</div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="type" class="col-sm-4 col-form-label">Milestone Type</label>
+                                    <div class="col-sm-7">
+                                        <select class="form-control" name="type" [(ngModel)]="form.type" required #type="ngModel">
+                                            <option value="" selected hidden>Choose...</option>
+                                            <option value="Public">Public</option>
+                                            <option value="Private">Private</option>
+                                        </select>
+                                    </div>
+                                    <div class="alert-danger" *ngIf="fd.submitted && type.invalid">
+                                        <div *ngIf="type.errors.required">Event type is required</div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="form-group">
+                                    <button class="btn btn-primary btn-block">Create</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div *ngIf="cEventNotif">
+                            <div class="alert alert-success">
+                                Milestone has been created!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="row mt-3">
             <div class="col-4">
-                <div class="card">
+                <div *ngIf="!calendarOn" class="card">
                     <div class="card-header">
                         <div class="row">
                             <div class="col-9 mt-md-1">Project Team:</div>
@@ -145,28 +307,24 @@
                     </div>
                 </div>
 
-                <div *ngFor="let con of contributors">
-                    <div class="card">
-                        <div class="card-body row">
-                            <div class="col-4">
-                                <div *ngIf="con.contributorImgPath.length > 0">
-                                    <img src={{con.contributorImgPath}} class="rounded-circle img-fluid"
-                                        style="width: 50px; height: 50px; object-fit: cover;" alt="Profile picture" />
+                <div *ngIf="!calendarOn">
+                    <div *ngFor="let con of contributors">
+                        <div class="card">
+                            <div class="card-body row">
+                                <div class="col-4">
+                                    <div *ngIf="con.contributorImgPath.length > 0">
+                                        <img src={{con.contributorImgPath}} class="rounded-circle img-fluid" style="width: 50px; height: 50px; object-fit: cover;"
+                                            alt="Profile picture" />
+                                    </div>
+                                    <div *ngIf="con.contributorImgPath.length == 0">
+                                        <img src="../../assets/img/profilePic_Placeholder.png" class="rounded-circle img-fluid" style="width: 50px; height: 50px; object-fit: cover;"
+                                            alt="Profile picture" />
+                                    </div>
                                 </div>
-                                <div *ngIf="con.contributorImgPath.length == 0">
-                                    <img src="../../assets/img/profilePic_Placeholder.png"
-                                        class="rounded-circle img-fluid"
-                                        style="width: 50px; height: 50px; object-fit: cover;" alt="Profile picture" />
-                                </div>
-                            </div>
-                            <div class="col-8">
-                                <span *ngIf="con.contributorType == 'user'"><a
-                                        href="/profile?username={{con.contributorUsername}}&userType=individual">{{con.contributorName}}</a></span>
-                                <span *ngIf="con.contributorType == 'institution'"><a
-                                        href="/profile?username={{con.contributorUsername}}&userType=institution">{{con.contributorName}}</a></span>
-
-                                <br />
-                                <div class="text-secondary" style="font-size: small;">Project {{con.contributionType}}
+                                <div class="col-8">
+                                    <a href="/profile?username={{con.contributorUsername}}&userType=individual">{{con.contributorName}}</a>
+                                    <br/>
+                                    <div class="text-secondary" style="font-size: small;">Project {{con.contributionType}}</div>
                                 </div>
                             </div>
                         </div>
@@ -180,11 +338,9 @@
             </div>
             <div class="col-8">
                 <div class="container-fluid">
-                    <div class="card">
-                        <div *ngIf="!isCreator && !isAdmin" class="bg-secondary text-center p-2 text-white rounded-sm">
-                            Project Posts</div>
-                        <button *ngIf=isOngoing&&(isCreator||isAdmin) class="btn btn-primary btn-block"
-                            data-toggle="modal" data-target="#createPostModal">Create Post</button>
+                    <div *ngIf="!calendarOn" class="card">
+                        <div *ngIf="!isCreator && !isAdmin" class="bg-secondary text-center p-2 text-white rounded-sm">Project Posts</div>
+                        <button *ngIf=isOngoing&&(isCreator||isAdmin) class="btn btn-primary btn-block" data-toggle="modal" data-target="#createPostModal">Create Post</button>
                     </div>
                     <br>
                     <!--div class="card border-dark">
@@ -192,42 +348,39 @@
                             Project Feed
                         </h5>
                     </div-->
-                    <div *ngFor="let p of projPosts">
-                        <div class="card mb-md-2">
-                            <div *ngIf="p.imgPath.length == 0">
-                                <img class="card-img-top img-fluid" src="../../assets/img/team.jpg"
-                                    alt="Project picture" style="height: 200px; object-fit: cover;">
-                            </div>
-                            <div *ngIf="p.imgPath.length > 0">
-                                <img class="card-img-top img-fluid" src="https://localhost:8080{{p.imgPath}}"
-                                    alt="Project picture" style="height: 200px; object-fit: cover;">
-                            </div>
-                            <div class="card-body border-dark col ml-2">
-                                <a *ngIf=isOngoing&&(isCreator||isAdmin)
-                                    class="btn btn-danger mb-3 text-white float-right" role="button"
-                                    style="margin: 3px;" (click)=confirmDeletePost(p.id)>
-                                    <i class="pi pi-trash"></i>
-                                </a>
-                                <a *ngIf=isOngoing&&(isCreator||isAdmin)
-                                    class="btn btn-primary mb-3 text-white float-right" role="button"
-                                    style="margin: 3px;" data-toggle="modal" data-target="#updatePostModal"
-                                    (click)=getPost(p.id,p.title,p.desc,p.imgPath)>
-                                    <i class="pi pi-pencil"></i>
-                                </a>
+                    <div *ngIf="!calendarOn">
+                        <div *ngFor="let p of projPosts">
+                            <div class="card mb-md-2">
+                                <div *ngIf="p.imgPath.length == 0">
+                                    <img class="card-img-top img-fluid" src="../../assets/img/team.jpg" alt="Project picture" style="height: 200px; object-fit: cover;">
+                                </div>
+                                <div *ngIf="p.imgPath.length > 0">
+                                    <img class="card-img-top img-fluid" src="https://localhost:8080{{p.imgPath}}" alt="Project picture" style="height: 200px; object-fit: cover;">
+                                </div>
+                                <div class="card-body border-dark col ml-2">
+                                    <a *ngIf=isOngoing&&(isCreator||isAdmin) class="btn btn-danger mb-3 text-white float-right" role="button" style="margin: 3px;"
+                                        (click)=confirmDeletePost(p.id)>
+                                        <i class="pi pi-trash"></i>
+                                    </a>
+                                    <a *ngIf=isOngoing&&(isCreator||isAdmin) class="btn btn-primary mb-3 text-white float-right" role="button" style="margin: 3px;"
+                                        data-toggle="modal" data-target="#updatePostModal" (click)=getPost(p.id,p.title,p.desc,p.imgPath)>
+                                        <i class="pi pi-pencil"></i>
+                                    </a>
 
-                                <br>
-                                <h5 class="card-title text-left"><strong>{{p.title}}</strong></h5>
-                                <h6 class="card-title text-left">{{p.desc}}</h6>
-                                <h6 class="card-title text-left text-secondary">
-                                    <small>Created on: {{formatDate(p.createdAt)}}</small>
-                                </h6>
-                                <h6 class="card-title text-left text-secondary">
-                                    <small>Last updated: {{formatDate(p.updatedAt)}} by {{p.accountUsername}}</small>
-                                </h6>
+                                    <br>
+                                    <h5 class="card-title text-left">
+                                        <strong>{{p.title}}</strong>
+                                    </h5>
+                                    <h6 class="card-title text-left">{{p.desc}}</h6>
+                                    <h6 class="card-title text-left text-secondary">
+                                        <small>Created on: {{formatDate(p.createdAt)}}</small>
+                                    </h6>
+                                    <h6 class="card-title text-left text-secondary">
+                                        <small>Last updated: {{formatDate(p.updatedAt)}} by {{p.accountUsername}}</small>
+                                    </h6>
 
-                                <button type="button" (click)=getComments(p.id) class="btn btn-link" data-toggle="modal"
-                                    data-target="#commentModal"> View Comments</button>
-                                <!--div *ngFor="let c of allComments">
+                                    <button type="button" (click)=getComments(p.id) class="btn btn-link" data-toggle="modal" data-target="#commentModal"> View Comments</button>
+                                    <!--div *ngFor="let c of allComments">
                                     <ul class="list-group">
                                         <li class="list-group-item">
                                             <strong>{{c.accountUsername}}: </strong> {{c.comment}}
@@ -247,11 +400,12 @@
                                 </a>
                                 <textarea class="form-control" name="comment" [(ngModel)]="newComment" required #comment="ngModel" rows="1" style="width: 85%"></textarea-->
 
-                            </div>
-                            <!-- <div class="card-body col border-dark">
+                                </div>
+                                <!-- <div class="card-body col border-dark">
 
                             </div> -->
 
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -425,41 +579,85 @@
                 </div>
             </div>
         </div>
-        <div class="card-header bg-secondary text-white">
-            <i class="pi pi-chart-bar"></i>
-            <h5 style="display: inline-block;" class="mt-md-1 mb-md-0 ml-md-2">KPIs</h5>
-            <button pButton *ngIf="(isCreator||isAdmin)&&isOngoing" type="button" icon="pi pi-plus"
-                class="p-button-rounded float-right" data-toggle="modal" data-target="#kpiModal" title="Add KPI">
-            </button>
+        <div class="card mb-md-1">
+            <div class="btn-group" role="group" aria-label="Basic example" style="width: 100%">
+                <button type="button" class="btn btn-primary" (click)="switchCalendarOn()">View Schedule</button>
+                <button type="button" class="btn btn-light" (click)="switchCalendarOff()">Hide Schedule</button>
+            </div>
         </div>
-
-        <div *ngIf="KPIs.length == 0" class="alert alert-info mt-md-1">
-            This project has no KPI yet.
-        </div>
-
-        <div *ngFor="let kpi of KPIs">
-            <ul class="list-group">
-                <li class="list-group-item">
-                    <div>
-                        <h5 class="mt-md-1">
-                            {{kpi.title}}
+        <div class="sticky">
+            <div *ngIf="calendarOn">
+                <div *ngIf=eventOn>
+                    <div class="card border-0">
+                        <h5 class="card-title text-left mt-md-1">
+                            Milestone Details:
                         </h5>
-                        <h6 class="text-secondary">{{kpi.desc}} </h6>
-                        <h6 class="text-secondary">Completion: {{kpi.completion}}% </h6>
+                        <h6 class="card-title text-left text-secondary">Milestone Title:
+                            <br>
+                            <strong>{{eventTitle}}</strong>
+                        </h6>
+                        <h6 class="card-title text-left text-secondary">Milestone Start Date:
+                            <br>
+                            <strong>{{formatDate(eventStart)}}</strong>
+                        </h6>
+                        <h6 class="card-title text-left text-secondary">Milestone End Date:
+                            <br>
+                            <strong>{{formatDate(eventEnd)}}</strong>
+                        </h6>
+                        <div *ngIf="(isContributor)">
+                            <span class="badge badge-pill {{tempType}}">{{tempType}}</span>
+                        </div>
+                        <div class="row">
+                            <a *ngIf="(isCreator||isAdmin)&&isOngoing" class="btn btn-primary text-white" role="button" style="margin: 3%; width: 25%;"
+                                data-toggle="modal" data-target="#updateEventModal">
+                                <i class="pi pi-pencil"></i>
+                            </a>
+                            <a *ngIf="(isCreator||isAdmin)&&isOngoing" class="btn btn-danger text-white" role="button" style="margin: 3%; width: 25%"
+                                (click)="confirmDelEvent()">
+                                <i class="pi pi-trash"></i>
+                            </a>
+                        </div>
                     </div>
-                    <div>
-                        <a *ngIf="(isCreator||isAdmin)&&isOngoing" class="btn btn-primary text-white" role="button"
-                            style="margin: 3px" (click)=getForm(kpi.id,kpi.title,kpi.desc,kpi.completion)
-                            data-toggle="modal" data-target="#editModal">
-                            <i class="pi pi-pencil"></i>
-                        </a>
-                        <a *ngIf="(isCreator||isAdmin)&&isOngoing" class="btn btn-danger text-white" role="button"
-                            style="margin: 3px" (click)=confirmDeleteKPI(kpi.id)>
-                            <i class="pi pi-trash"></i>
-                        </a>
-                    </div>
-                </li>
-            </ul>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="!calendarOn">
+            <div class="card-header bg-secondary text-white">
+                <i class="pi pi-chart-bar"></i>
+                <h5 style="display: inline-block;" class="mt-md-1 mb-md-0 ml-md-2">KPIs</h5>
+                <button pButton *ngIf="(isCreator||isAdmin)&&isOngoing" type="button" icon="pi pi-plus" class="p-button-rounded float-right"
+                    data-toggle="modal" data-target="#kpiModal" title="Add KPI">
+                </button>
+            </div>
+
+            <div *ngIf="KPIs.length == 0" class="alert alert-info mt-md-1">
+                This project has no KPI yet.
+            </div>
+
+            <div *ngFor="let kpi of KPIs">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <div>
+                            <h5 class="mt-md-1">
+                                {{kpi.title}}
+                            </h5>
+                            <h6 class="text-secondary">{{kpi.desc}} </h6>
+                            <h6 class="text-secondary">Completion: {{kpi.completion}}% </h6>
+                        </div>
+                        <div>
+                            <a *ngIf="(isCreator||isAdmin)&&isOngoing" class="btn btn-primary text-white" role="button"
+                                style="margin: 3px" (click)=getForm(kpi.id,kpi.title,kpi.desc,kpi.completion)
+                                data-toggle="modal" data-target="#editModal">
+                                <i class="pi pi-pencil"></i>
+                            </a>
+                            <a *ngIf="(isCreator||isAdmin)&&isOngoing" class="btn btn-danger text-white" role="button"
+                                style="margin: 3px" (click)=confirmDeleteKPI(kpi.id)>
+                                <i class="pi pi-trash"></i>
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
         </div>
 
         <!-- Modal -->
