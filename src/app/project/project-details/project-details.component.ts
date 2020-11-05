@@ -592,9 +592,9 @@ export class ProjectDetailsComponent implements OnInit {
     var b = new Date(this.form.startDate);
     if (a < b) {
       this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: "The start date is after the end date!" });
-    } else if (a.getTime() === b.getTime()) {
+    } /**else if (a.getTime() === b.getTime()) {
       this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: "End date cannot be the same as start date!" });
-    } else {
+    } **/ else {
       const formEvent = {
         id: this.projectId,
         title: this.form.title,
@@ -607,9 +607,9 @@ export class ProjectDetailsComponent implements OnInit {
         response => {
           console.log(JSON.stringify(response));
           //this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Event Added!' });
-          this.ngOnInit();
+          //this.ngOnInit();
           this.cEventNotif = true;
-          this.eventOn = false;
+          
           //window.location.reload();
         },
         err => {
@@ -623,23 +623,32 @@ export class ProjectDetailsComponent implements OnInit {
 
   onEventUpdate(): void {
     console.log(this.updateEvent);
-    var a = new Date(this.updateEvent.end);
-    var b = new Date(this.updateEvent.start);
-    if (a < b) {
-      this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: "The start date is after the end date!" });
-    } else if (a.getTime() === b.getTime()) {
-      this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: "End date cannot be the same as start date!" });
-    } else {
+    
+    //this.updateEvent.end.setUTCHours(0);
+    //this.updateEvent.start.setUTCHours(0);
+    //console.log(this.updateEvent.end.toUTCString());
+    //console.log(this.updateEvent.start.toUTCString());
+
+    console.log(this.updateEvent.end);
+    console.log(this.updateEvent.start);
+    var a = new Date(this.updateEvent.end).toDateString();
+    var b = new Date(this.updateEvent.start).toDateString();
+    var c = new Date(this.updateEvent.end);
+    var d = new Date(this.updateEvent.start);
+    console.log(a);
+    console.log(b);
+    console.log(a.substring(11,15));
+    console.log(a.substring(8,10));
+    console.log(a.substring(4,7));
+    console.log(new Date(a).getTime());
+    console.log("check date: " + (a==b) );
+
+    //one-day event
+    if(a == b) {
       this.updateEvent.type = this.updateEvent.type.toLowerCase();
-      console.log(this.updateEvent);
       this.projectService.updateProjectEvent(this.updateEvent).subscribe(
         response => {
-          console.log(JSON.stringify(response));
-          //this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Event Updated!' });
-          this.ngOnInit();
-          this.eventOn = false;
           this.uEventNotif = true;
-          //window.location.reload();
         },
         err => {
           this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: err.error.msg });
@@ -647,7 +656,24 @@ export class ProjectDetailsComponent implements OnInit {
           console.log(this.errorMsg);
         }
       );
+    } else {
+      if (c < d) {
+        this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: "The start date is after the end date!" });
+      } else {
+        this.updateEvent.type = this.updateEvent.type.toLowerCase();
+        this.projectService.updateProjectEvent(this.updateEvent).subscribe(
+          response => {            
+            this.uEventNotif = true;
+          },
+          err => {
+            this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: err.error.msg });
+            this.errorMsg = err.error.msg;
+            console.log(this.errorMsg);
+          }
+        );
+      }
     }
+
   }
 
   callEvent(info): void {
@@ -656,19 +682,30 @@ export class ProjectDetailsComponent implements OnInit {
     console.log(info.title + " " + info.start + " " + info.end + " " + info.eventType);
     console.log("event id: " + info.id);
 
-    this.eventTitle = info.title;
-    this.eventStart = new Date(+info.start + 3600000 * 24);
-    this.eventEnd = new Date(+info.end + 3600000 * 24);
-    this.eventStat = info.eventType;
     this.findEvent(info.id);
+    this.eventTitle = info.title;
+    this.eventStart = this.selectEvent.start;
+    this.eventEnd = this.selectEvent.end;
+    this.eventStat = info.eventType;
 
-    this.updateEvent = {
-      id: info.id,
-      title: this.eventTitle,
-      start: info.start,
-      end: info.end,
-      type: this.selectEvent.eventType
+    if(info.end == null) {
+      this.updateEvent = {
+        id: info.id,
+        title: this.eventTitle,
+        start: info.start,
+        end: info.start,
+        type: this.selectEvent.eventType
+      }
+    } else {
+      this.updateEvent = {
+        id: info.id,
+        title: this.eventTitle,
+        start: info.start,
+        end: info.end,
+        type: this.selectEvent.eventType
+      }
     }
+    
 
     if (this.updateEvent.type == "public") {
       this.updateEvent.type = "Public";
@@ -705,6 +742,7 @@ export class ProjectDetailsComponent implements OnInit {
       response => {
         console.log(JSON.stringify(response));
         this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Event Deleted!' });
+        this.eventOn = false;
         this.ngOnInit();
         //window.location.reload();
       }
@@ -712,6 +750,10 @@ export class ProjectDetailsComponent implements OnInit {
   }
 
   closeModal(): void {
+    this.eventOn = false;
+    this.cEventNotif = false;
+    this.uEventNotif = false;
+    this.form = {};
     this.ngOnInit();
   }
 }
