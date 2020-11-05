@@ -31,8 +31,28 @@
                     <div class="product-list-item">
                         <div class="col-9">
                             <div class="product-name">{{a.title}}</div>
-                            <div class="product-description">Reported User</div>
-                        
+                            <div>
+                                Reported 
+                                <span *ngIf="a.reportType == 'user'">Individual: 
+                                    <span *ngIf="a.targetImg.length == 0">
+                                        <img src="../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                                    </span>
+                                    <span *ngIf="a.targetImg.length != 0">
+                                        <img src="https://localhost:8080{{a.targetImg}}" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                                    </span>
+                                    <a href="/profile?username={{a.targetUsername}}&userType=individual">{{a.targetName}}</a>
+                                </span>
+                                <span *ngIf="a.reportType == 'institution'">Institution: 
+                                    <span *ngIf="a.targetImg.length == 0">
+                                        <img src="../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                                    </span>
+                                    <span *ngIf="a.targetImg.length != 0">
+                                        <img src="https://localhost:8080{{a.targetImg}}" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                                    </span>
+                                    <a href="/profile?username={{a.targetUsername}}&userType=institution">{{a.targetName}}</a>
+                                </span>
+                                <span *ngIf="a.reportType == 'project'">Project: <a href="/project/projectDetails?id={{a.targetId}}">{{a.targetTitle}}</a></span>
+                            </div>
                         </div>
                         <div class="col-3">
                             <div class="float-right">Submitted at {{formatDate(a.createdAt)}}</div> <br>
@@ -60,8 +80,28 @@
                     <div class="product-list-item">
                         <div class="col-9">
                             <div class="product-name">{{a.title}}</div>
-                            <div class="product-description">{{a.summary}}</div>
-                        
+                            <div>
+                                Reported 
+                                <span *ngIf="a.reportType == 'user'">Individual: 
+                                    <span *ngIf="a.targetImg.length == 0">
+                                        <img src="../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                                    </span>
+                                    <span *ngIf="a.targetImg.length != 0">
+                                        <img src="https://localhost:8080{{a.targetImg}}" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                                    </span>
+                                    <a href="/profile?username={{a.targetUsername}}&userType=individual">{{a.targetName}}</a>
+                                </span>
+                                <span *ngIf="a.reportType == 'institution'">Institution: 
+                                    <span *ngIf="a.targetImg.length == 0">
+                                        <img src="../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                                    </span>
+                                    <span *ngIf="a.targetImg.length != 0">
+                                        <img src="https://localhost:8080{{a.targetImg}}" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                                    </span>
+                                    <a href="/profile?username={{a.targetUsername}}&userType=institution">{{a.targetName}}</a>
+                                </span>
+                                <span *ngIf="a.reportType == 'project'">Project: <a href="/project/projectDetails?id={{a.targetId}}">{{a.targetTitle}}</a></span>
+                            </div>
                         </div>
                         <div class="col-3">
                             <div class="float-right">Accepted at {{formatDate(a.createdAt)}}</div> <br>
@@ -89,8 +129,28 @@
                     <div class="product-list-item">
                         <div class="col-9">
                             <div class="product-name">{{a.title}}</div>
-                            <div class="product-description">{{a.summary}}</div>
-                        
+                            <div>
+                                Reported 
+                                <span *ngIf="a.reportType == 'user'">Individual: 
+                                    <span *ngIf="a.targetImg.length == 0">
+                                        <img src="../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                                    </span>
+                                    <span *ngIf="a.targetImg.length != 0">
+                                        <img src="https://localhost:8080{{a.targetImg}}" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                                    </span>
+                                    <a href="/profile?username={{a.targetUsername}}&userType=individual">{{a.targetName}}</a>
+                                </span>
+                                <span *ngIf="a.reportType == 'institution'">Institution: 
+                                    <span *ngIf="a.targetImg.length == 0">
+                                        <img src="../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                                    </span>
+                                    <span *ngIf="a.targetImg.length != 0">
+                                        <img src="https://localhost:8080{{a.targetImg}}" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                                    </span>
+                                    <a href="/profile?username={{a.targetUsername}}&userType=institution">{{a.targetName}}</a>
+                                </span>
+                                <span *ngIf="a.reportType == 'project'">Project: <a href="/project/projectDetails?id={{a.targetId}}">{{a.targetTitle}}</a></span>
+                            </div>
                         </div>
                         <div class="col-3">
                             <div class="float-right">Solved at {{formatDate(a.createdAt)}}</div> <br>
@@ -118,8 +178,28 @@
                     <div class="product-list-item">
                         <div class="col-9">
                             <div class="product-name">{{a.title}}</div>
-                            <div class="product-description">{{a.summary}}</div>
-                        
+                            <div>
+                                Reported 
+                                <span *ngIf="a.reportType == 'user'">Individual: 
+                                    <span *ngIf="a.targetImg.length == 0">
+                                        <img src="../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                                    </span>
+                                    <span *ngIf="a.targetImg.length != 0">
+                                        <img src="https://localhost:8080{{a.targetImg}}" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                                    </span>
+                                    <a href="/profile?username={{a.targetUsername}}&userType=individual">{{a.targetName}}</a>
+                                </span>
+                                <span *ngIf="a.reportType == 'institution'">Institution: 
+                                    <span *ngIf="a.targetImg.length == 0">
+                                        <img src="../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                                    </span>
+                                    <span *ngIf="a.targetImg.length != 0">
+                                        <img src="https://localhost:8080{{a.targetImg}}" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                                    </span>
+                                    <a href="/profile?username={{a.targetUsername}}&userType=institution">{{a.targetName}}</a>
+                                </span>
+                                <span *ngIf="a.reportType == 'project'">Project: <a href="/project/projectDetails?id={{a.targetId}}">{{a.targetTitle}}</a></span>
+                            </div>
                         </div>
                         <div class="col-3">
                             <div class="float-right">Declined at {{formatDate(a.createdAt)}}</div> <br>
@@ -152,8 +232,29 @@
                     </span>
                 </div>
                 <div class="mb-md-2">
-                    Reported User: User's Name
+                    Reported
+                    <span *ngIf="viewForm.reportType == 'user'">Individual: 
+                        <span *ngIf="viewForm.targetImg.length == 0">
+                            <img src="../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                        </span>
+                        <span *ngIf="viewForm.targetImg.length != 0">
+                            <img src="https://localhost:8080{{viewForm.targetImg}}" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                        </span>
+                        <a href="/profile?username={{viewForm.targetUsername}}&userType=individual">{{viewForm.targetName}}</a>
+                    </span>
+                    <span *ngIf="viewForm.reportType == 'institution'">Institution: 
+                        <span *ngIf="viewForm.targetImg.length == 0">
+                            <img src="../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                        </span>
+                        <span *ngIf="viewForm.targetImg.length != 0">
+                            <img src="https://localhost:8080{{viewForm.targetImg}}" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                        </span>
+                        <a href="/profile?username={{viewForm.targetUsername}}&userType=institution">{{viewForm.targetName}}</a>
+                    </span>
+                    <span *ngIf="viewForm.reportType == 'project'">Project: <a href="/project/projectDetails?id={{viewForm.targetId}}">{{viewForm.targetTitle}}</a></span>
+                            
                 </div>
+                <h5>Summary</h5>
                 <div class="text-justify">{{viewForm.summary}}</div>
             </div>
             <div class="modal-footer">

@@ -13,7 +13,7 @@ export class ReportSubmittedComponent implements OnInit {
   solved = [];
   declined = [];
 
-  viewForm: any = {};
+  viewForm: any = {targetImg: ''};
 
   sortField: string;
   sortOrder: number;
@@ -43,7 +43,13 @@ export class ReportSubmittedComponent implements OnInit {
       summary: a.summary,
       createdAt: a.createdAt,
       updatedAt: a.updatedAt,
-      status: a.status
+      status: a.status,
+      reportType: a.reportType,
+      targetUsername: a.targetUsername,
+      targetName: a.targetName,
+      targetTitle: a.targetTitle,
+      targetId: a.targetId,
+      targetImg: a.targetImg
     }
   }
 

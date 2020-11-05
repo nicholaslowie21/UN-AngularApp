@@ -23,7 +23,7 @@
             <p-dataView #dv [value]="pending" [paginator]="true" [rows]="9" filterBy="title" [sortField]="sortField" [sortOrder]="sortOrder" layout="list">
                 <ng-template pTemplate="header">
                     <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
-                        <p-dropdown [options]="typeOptions" [(ngModel)]="filterKeyType" placeholder="Filter By Type"
+                        <p-dropdown [options]="typeOptions" [(ngModel)]="filterKeyTypePending" placeholder="Filter By Type"
                             (onChange)="onFilterType($event, [(pe)])" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
                         <span class="p-input-icon-left p-mb-2 p-mb-md-0">
                             <i class="pi pi-search"></i>
@@ -36,11 +36,30 @@
                     <div class="product-list-item">
                         <div class="col-9">
                             <div class="product-name">{{a.title}}</div>
-                            <div>Type: 
-                                <span *ngIf="a.reportType == 'user'">individual</span>
-                                <span *ngIf="a.reportType != 'user'">{{a.reportType}}</span>
+                            <div>
+                                Reported 
+                                <span *ngIf="a.reportType == 'user'"><b>Individual</b>: <br>
+                                    <span *ngIf="a.targetImg.length == 0">
+                                        <img src="../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                                    </span>
+                                    <span *ngIf="a.targetImg.length != 0">
+                                        <img src="https://localhost:8080{{a.targetImg}}" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                                    </span>
+                                    <a href="/profile?username={{a.targetUsername}}&userType=individual">{{a.targetName}}</a>
+                                </span>
+                                <span *ngIf="a.reportType == 'institution'"><b>Institution</b>: <br>
+                                    <span *ngIf="a.targetImg.length == 0">
+                                        <img src="../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                                    </span>
+                                    <span *ngIf="a.targetImg.length != 0">
+                                        <img src="https://localhost:8080{{a.targetImg}}" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                                    </span>
+                                    <a href="/profile?username={{a.targetUsername}}&userType=institution">{{a.targetName}}</a>
+                                </span>
+                                <span *ngIf="a.reportType == 'project'"><b>Project</b>: <br>
+                                    <a href="/project/projectDetails?id={{a.targetId}}">{{a.targetTitle}}</a>
+                                </span>
                             </div>
-                            <div class="product-description">Submitted by Reporter's Name</div>
                         
                         </div>
                         <div class="col-3">
@@ -59,7 +78,7 @@
             <p-dataView #pr [value]="progress" [paginator]="true" [rows]="9" filterBy="title" [sortField]="sortField" [sortOrder]="sortOrder" layout="list">
                 <ng-template pTemplate="header">
                     <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
-                        <p-dropdown [options]="typeOptions" [(ngModel)]="filterKeyType" placeholder="Filter By Type"
+                        <p-dropdown [options]="typeOptions" [(ngModel)]="filterKeyTypeProgress" placeholder="Filter By Type"
                             (onChange)="onFilterType($event, [(ip)])" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
                         <span class="p-input-icon-left p-mb-2 p-mb-md-0">
                             <i class="pi pi-search"></i>
@@ -70,17 +89,36 @@
                 </ng-template>
                 <ng-template let-a pTemplate="listItem">
                     <div class="product-list-item">
-                        <div class="col-8">
+                        <div class="col-9">
                             <div class="product-name">{{a.title}}</div>
-                            <div>Type: 
-                                <span *ngIf="a.reportType == 'user'">individual</span>
-                                <span *ngIf="a.reportType != 'user'">{{a.reportType}}</span>
+                            <div>
+                                Reported 
+                                <span *ngIf="a.reportType == 'user'"><b>Individual</b>: <br>
+                                    <span *ngIf="a.targetImg.length == 0">
+                                        <img src="../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                                    </span>
+                                    <span *ngIf="a.targetImg.length != 0">
+                                        <img src="https://localhost:8080{{a.targetImg}}" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                                    </span>
+                                    <a href="/profile?username={{a.targetUsername}}&userType=individual">{{a.targetName}}</a>
+                                </span>
+                                <span *ngIf="a.reportType == 'institution'"><b>Institution</b>: <br>
+                                    <span *ngIf="a.targetImg.length == 0">
+                                        <img src="../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                                    </span>
+                                    <span *ngIf="a.targetImg.length != 0">
+                                        <img src="https://localhost:8080{{a.targetImg}}" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                                    </span>
+                                    <a href="/profile?username={{a.targetUsername}}&userType=institution">{{a.targetName}}</a>
+                                </span>
+                                <span *ngIf="a.reportType == 'project'"><b>Project</b>: <br>
+                                    <a href="/project/projectDetails?id={{a.targetId}}">{{a.targetTitle}}</a>
+                                </span>
                             </div>
-                            <div class="product-description">Submitted by Reporter's Name</div>
                         
                         </div>
-                        <div class="col-4">
-                            <div class="float-right">Last updated at {{formatDate(a.updatedAt)}}</div> <br>
+                        <div class="col-3">
+                            <div class="float-right">Submitted at {{formatDate(a.createdAt)}}</div> <br>
                             <button class="btn btn-primary float-right" data-toggle="modal" data-target="#viewReport" (click)="getReport(a)">
                                 View
                             </button>
@@ -91,10 +129,112 @@
         </div>
     </div>
     <div class="tab-pane fade" id="solved" role="tabpanel" aria-labelledby="solved-tab">
-
+        <div class="card">
+            <p-dataView #sl [value]="solved" [paginator]="true" [rows]="9" filterBy="title" [sortField]="sortField" [sortOrder]="sortOrder" layout="list">
+                <ng-template pTemplate="header">
+                    <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                        <p-dropdown [options]="typeOptions" [(ngModel)]="filterKeyTypeSolved" placeholder="Filter By Type"
+                            (onChange)="onFilterType($event, [(so)])" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                        <span class="p-input-icon-left p-mb-2 p-mb-md-0">
+                            <i class="pi pi-search"></i>
+                            <input type="search" pInputText placeholder="Search by Title" (input)="sl.filter($event.target.value)">
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template let-a pTemplate="listItem">
+                    <div class="product-list-item">
+                        <div class="col-9">
+                            <div class="product-name">{{a.title}}</div>
+                            <div>
+                                Reported 
+                                <span *ngIf="a.reportType == 'user'"><b>Individual</b>: <br>
+                                    <span *ngIf="a.targetImg.length == 0">
+                                        <img src="../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                                    </span>
+                                    <span *ngIf="a.targetImg.length != 0">
+                                        <img src="https://localhost:8080{{a.targetImg}}" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                                    </span>
+                                    <a href="/profile?username={{a.targetUsername}}&userType=individual">{{a.targetName}}</a>
+                                </span>
+                                <span *ngIf="a.reportType == 'institution'"><b>Institution</b>: <br>
+                                    <span *ngIf="a.targetImg.length == 0">
+                                        <img src="../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                                    </span>
+                                    <span *ngIf="a.targetImg.length != 0">
+                                        <img src="https://localhost:8080{{a.targetImg}}" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                                    </span>
+                                    <a href="/profile?username={{a.targetUsername}}&userType=institution">{{a.targetName}}</a>
+                                </span>
+                                <span *ngIf="a.reportType == 'project'"><b>Project</b>: <br>
+                                    <a href="/project/projectDetails?id={{a.targetId}}">{{a.targetTitle}}</a>
+                                </span>
+                            </div>
+                        
+                        </div>
+                        <div class="col-3">
+                            <div class="float-right">Submitted at {{formatDate(a.createdAt)}}</div> <br>
+                            <button class="btn btn-primary float-right" data-toggle="modal" data-target="#viewReport" (click)="getReport(a)">
+                                View
+                            </button>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-dataView>
+        </div>
     </div>
     <div class="tab-pane fade" id="declined" role="tabpanel" aria-labelledby="declined-tab">
-
+        <div class="card">
+            <p-dataView #dc [value]="declined" [paginator]="true" [rows]="9" filterBy="title" [sortField]="sortField" [sortOrder]="sortOrder" layout="list">
+                <ng-template pTemplate="header">
+                    <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                        <p-dropdown [options]="typeOptions" [(ngModel)]="filterKeyTypeDeclined" placeholder="Filter By Type"
+                            (onChange)="onFilterType($event, [(de)])" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                        <span class="p-input-icon-left p-mb-2 p-mb-md-0">
+                            <i class="pi pi-search"></i>
+                            <input type="search" pInputText placeholder="Search by Title" (input)="dc.filter($event.target.value)">
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template let-a pTemplate="listItem">
+                    <div class="product-list-item">
+                        <div class="col-9">
+                            <div class="product-name">{{a.title}}</div>
+                            <div>
+                                Reported 
+                                <span *ngIf="a.reportType == 'user'"><b>Individual</b>: <br>
+                                    <span *ngIf="a.targetImg.length == 0">
+                                        <img src="../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                                    </span>
+                                    <span *ngIf="a.targetImg.length != 0">
+                                        <img src="https://localhost:8080{{a.targetImg}}" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                                    </span>
+                                    <a href="/profile?username={{a.targetUsername}}&userType=individual">{{a.targetName}}</a>
+                                </span>
+                                <span *ngIf="a.reportType == 'institution'"><b>Institution</b>: <br>
+                                    <span *ngIf="a.targetImg.length == 0">
+                                        <img src="../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                                    </span>
+                                    <span *ngIf="a.targetImg.length != 0">
+                                        <img src="https://localhost:8080{{a.targetImg}}" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                                    </span>
+                                    <a href="/profile?username={{a.targetUsername}}&userType=institution">{{a.targetName}}</a>
+                                </span>
+                                <span *ngIf="a.reportType == 'project'"><b>Project</b>: <br>
+                                    <a href="/project/projectDetails?id={{a.targetId}}">{{a.targetTitle}}</a>
+                                </span>
+                            </div>
+                        
+                        </div>
+                        <div class="col-3">
+                            <div class="float-right">Submitted at {{formatDate(a.createdAt)}}</div> <br>
+                            <button class="btn btn-primary float-right" data-toggle="modal" data-target="#viewReport" (click)="getReport(a)">
+                                View
+                            </button>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-dataView>
+        </div>
     </div>
 </div>
 
@@ -111,18 +251,65 @@
                 <div *ngIf="!isAcceptSuccessful && !isDeclineSuccessful && !isSolveSuccessful">
                     <h4>{{viewForm.title}}</h4>
                     <div class="text-secondary mb-md-1">Submitted at {{formatDate(viewForm.createdAt)}}</div>
-                    <div class="text-secondary mb-md-1">Last updated at {{formatDate(viewForm.updatedAt)}}</div>
+                    <div *ngIf="viewForm.status != 'pending'" class="text-secondary mb-md-1">Last updated at {{formatDate(viewForm.updatedAt)}}</div>
                     <div class="mb-md-1">Status: 
                         <span class="rounded-pill {{viewForm.status}}Status pl-2 pr-2">
                             <span *ngIf="viewForm.status == 'progress'">in</span> {{viewForm.status}}
                         </span>
                     </div>
-                    <div class="mb-3">
-                        Submitted by: Reporter's Name
-                    </div>
-                    <div class="">
-                        Reported User: User/Project's Name
-                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Submitted by</th>
+                                <th scope="col">Reported 
+                                    <span *ngIf="viewForm.reportType == 'user'">Individual</span>
+                                    <span *ngIf="viewForm.reportType == 'institution'">Institution</span>
+                                    <span *ngIf="viewForm.reportType == 'project'">Project</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td scope="row">
+                                    <span *ngIf="viewForm.reporterImgPath.length == 0">
+                                        <img src="../../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                                    </span>
+                                    <span *ngIf="viewForm.reporterImgPath.length != 0">
+                                        <img src="https://localhost:8080{{viewForm.reporterImgPath}}" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                                    </span>
+                                    <span *ngIf="viewForm.reporterType == 'user'">
+                                        <a href="/profile?username={{viewForm.reporterUsername}}&userType=individual">{{viewForm.reporterName}}</a>
+                                    </span>
+                                    <span *ngIf="viewForm.reporterType == 'institution'">
+                                        <a href="/profile?username={{viewForm.reporterUsername}}&userType=institution">{{viewForm.reporterName}}</a>
+                                    </span>
+                                </td>
+                                <td scope="row">
+                                    <span *ngIf="viewForm.reportType == 'user'">
+                                        <span *ngIf="viewForm.targetImg.length == 0">
+                                            <img src="../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                                        </span>
+                                        <span *ngIf="viewForm.targetImg.length != 0">
+                                            <img src="https://localhost:8080{{viewForm.targetImg}}" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                                        </span>
+                                        <a href="/profile?username={{viewForm.targetUsername}}&userType=individual">{{viewForm.targetName}}</a>
+                                    </span>
+                                    <span *ngIf="viewForm.reportType == 'institution'">
+                                        <span *ngIf="viewForm.targetImg.length == 0">
+                                            <img src="../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                                        </span>
+                                        <span *ngIf="viewForm.targetImg.length != 0">
+                                            <img src="https://localhost:8080{{viewForm.targetImg}}" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                                        </span>
+                                        <a href="/profile?username={{viewForm.targetUsername}}&userType=institution">{{viewForm.targetName}}</a>
+                                    </span>
+                                    <div *ngIf="viewForm.reportType == 'project'" class="mt-2">
+                                        <a href="/project/projectDetails?id={{viewForm.targetId}}">{{viewForm.targetTitle}}</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                     <h5>Summary</h5>
                     <div class="text-justify">{{viewForm.summary}}</div>
                 </div>

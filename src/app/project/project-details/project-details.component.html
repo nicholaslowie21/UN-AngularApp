@@ -58,7 +58,7 @@
                                             </button>
                                             <hr>
                                         </div>
-                                        <div *ngIf="isAdmin || isContributor">
+                                        <div *ngIf="!isCreator">
                                             <button class="btn btn-block" style="color: red;" (click)="clickReport()">Report Project</button>
                                             <hr>
                                         </div>

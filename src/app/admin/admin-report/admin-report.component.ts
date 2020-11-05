@@ -16,7 +16,7 @@ export class AdminReportComponent implements OnInit {
   solved = [];
   declined = [];
 
-  viewForm: any = {};
+  viewForm: any = {targetImg: '', reporterImgPath: ''};
   isAcceptSuccessful = false;
   isDeclineSuccessful = false;
   isSolveSuccessful = false;
@@ -29,7 +29,10 @@ export class AdminReportComponent implements OnInit {
   sortField: string;
   sortOrder: number;
   typeOptions = [];
-  filterKeyType: any;
+  filterKeyTypePending: any;
+  filterKeyTypeProgress: any;
+  filterKeyTypeSolved: any;
+  filterKeyTypeDeclined: any;
 
   constructor(private reportService: ReportService, private messageService: MessageService, private tokenStorageService: TokenStorageService) { }
 
@@ -87,7 +90,17 @@ export class AdminReportComponent implements OnInit {
       summary: a.summary,
       createdAt: a.createdAt,
       updatedAt: a.updatedAt,
-      status: a.status
+      status: a.status,
+      reportType: a.reportType,
+      targetUsername: a.targetUsername,
+      targetName: a.targetName,
+      targetTitle: a.targetTitle,
+      targetId: a.targetId,
+      targetImg: a.targetImg,
+      reporterName: a.reporterName,
+      reporterUsername: a.reporterUsername,
+      reporterImgPath: a.reporterImgPath,
+      reporterType: a.reporterType
     }
   }
 
@@ -120,7 +133,7 @@ export class AdminReportComponent implements OnInit {
     if(value == 'all') {
       return;
     }
-    else if(type == 'pe') {
+    if(type == 'pe') {
       for(var i=0; i<this.pending.length; i++) {
         if(this.pending[i].reportType == value) {
           arr.push(this.pending[i]);
@@ -135,6 +148,7 @@ export class AdminReportComponent implements OnInit {
       }
       this.progress = arr;
     } else if(type == 'so') {
+      console.log("ENTER SOLVED")
       for(var i=0; i<this.solved.length; i++) {
         if(this.solved[i].reportType == value) {
           arr.push(this.solved[i]);
