@@ -226,6 +226,7 @@
             <div class="modal-body">
                 <h4>{{viewForm.title}}</h4>
                 <div class="text-secondary mb-md-1">Submitted at {{formatDate(viewForm.createdAt)}}</div>
+                <div *ngIf="viewForm.status != 'pending'" class="text-secondary mb-md-1">Last updated at {{formatDate(viewForm.updatedAt)}}</div>
                 <div class="mb-md-1">Status: 
                     <span class="rounded-pill {{viewForm.status}}Status pl-2 pr-2">
                         <span *ngIf="viewForm.status == 'progress'">in</span> {{viewForm.status}}
