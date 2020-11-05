@@ -74,7 +74,7 @@
                   </div>
                   <div class="col-10">
                     <h5><a href="/project/projectDetails?id={{n.id}}">{{n.title}}</a>
-                      <span class="ml-md-2 text-secondary" style="font-size: small;">created at {{formatDate(n.createdAt)}}</span>
+                      <span class="ml-md-2 text-secondary" style="font-size: small;">{{formatDate(n.createdAt)}}</span>
                     <div class="float-right">
                       <span style="font-size: small;">SDGs:&nbsp;</span>
                       <div *ngFor="let s of n.SDGs" style="display:inline-block;">

@@ -1,6 +1,6 @@
 <div class="row">
     <div class="card border-0">
-        <div class="card-body">
+        <div *ngIf="isUser" class="card-body">
             <div *ngIf="user.profilePic.length == 0">
                 <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src="../../assets/img/profilePic_Placeholder.png" style="margin: 10px; width: 80px; height: 80px; object-fit: cover;"
                     alt="Profile picture">
@@ -11,9 +11,20 @@
             </div>
         </div>
 
+        <div *ngIf="isProject" class="card-body">
+            <div *ngIf="project.imgPath.length == 0">
+                <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src="../../assets/img/team.jpg" style="margin: 10px; width: 80px; height: 80px; object-fit: cover;"
+                    alt="Profile picture">
+            </div>
+            <div *ngIf="project.imgPath.length != 0">
+                <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src={{imgString}} style="margin: 10px; width: 80px; height: 80px; object-fit: cover;"
+                    alt="Profile picture">
+            </div>
+        </div>
+
     </div>
     <div class="card border-0" style="width: 40%">
-        <div class="card-body">
+        <div *ngIf="isUser" class="card-body">
             <h4 class="card-title text-left mt-md-3 mb-md-0">
                 <a [href]="viewUser(user)" class="text-dark">{{ user.name }}</a>
             </h4>
@@ -21,8 +32,15 @@
             <div *ngIf="user.role" class="text-secondary">{{user.role}}</div>
             <div class="text-secondary">{{user.status}}</div>
         </div>
+        <div *ngIf="isProject" class="card-body">
+            <h4 class="card-title text-left mt-md-3 mb-md-0">
+                <a href="/project/projectDetails?id={{project.id}}" class="text-dark">{{ project.title }}</a>
+            </h4>
+            <div style="font-size:medium;">{{ project.country }}</div>
+            <div class="text-secondary">{{project.status}}</div>
+        </div>
     </div>
-    <div class="card">
+    <div class="card border-0">
         <div class="card-body" *ngIf="userType=='individual'">
             <button class="btn btn-danger float-right ml-2 mt-3" type="button" aria-haspopup="true" aria-expanded="false" (click)="suspendUser()">
                 Suspend
@@ -38,6 +56,49 @@
             <button class="btn btn-success float-right mt-3" type="button" aria-haspopup="true" aria-expanded="false" (click)="activateInstitution()">
                 Activate
             </button>
+        </div>
+        <div class="card-body" *ngIf="isProject">
+            <button class="btn btn-danger float-right ml-2 mt-3" type="button" aria-haspopup="true" aria-expanded="false" (click)="suspendProject()">
+                Suspend
+            </button>
+            <button *ngIf="!disableActivate" class="btn btn-success float-right mt-3" type="button" aria-haspopup="true" aria-expanded="false"
+                (click)="activateProject()">
+                Activate
+            </button>
+            <button *ngIf="disableActivate" disabled class="btn btn-success float-right mt-3" type="button" aria-haspopup="true" aria-expanded="false">
+                Activate
+            </button>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="card border-0" style="width: 80%">
+        <div class="row">
+            <h5 class="card-title text-left mt-md-3 mb-md-0" style="margin: 5%">
+                Audit Log
+            </h5>
+            <div *ngIf="(isAdminLead&&checkAdmin)">
+                <select class="form-control" name="type" [(ngModel)]="auditType" required #type="ngModel">
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
+        </div>
+
+        <div *ngIf="auditType=='user' " class="card-body">
+            User Audit
+            <br>Action: ...
+            <br> Date created: 5 Nov 2020
+        </div>
+        <div *ngIf="auditType=='admin' " class="card-body">
+            Admin Audit
+            <br>Action: ...
+            <br> Date created: 5 Nov 2020
+        </div>
+        <div *ngIf="auditType==null " class="card-body">
+            Other Audits
+            <br>Action: ...
+            <br> Date created: 5 Nov 2020
         </div>
     </div>
 </div>

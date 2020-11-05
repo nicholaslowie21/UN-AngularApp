@@ -201,4 +201,36 @@ export class ProjectService {
       theRating: data.rating
     }, httpOptions);
   }
+
+  createProjectEvent(data):Observable<any> {
+    return this.http.post(API_URL + '/projectEvent', {
+      projectId: data.id,
+      title: data.title,
+      start: data.start,
+      end: data.end,
+      eventType: data.type
+    }, httpOptions);
+  }
+
+  updateProjectEvent(data):Observable<any> {
+    return this.http.post(API_URL + '/updateProjectEvent', {
+      eventId: data.id,
+      title: data.title,
+      start: data.start,
+      end: data.end,
+      eventType: data.type
+    }, httpOptions);
+  }
+
+  deleteProjectEvent(data): Observable<any> {
+    return this.http.delete(API_URL + '/projectEvent?eventId=' + data.id);
+  }
+
+  getAllProjectEvents(data): Observable<any> {
+    return this.http.get(API_URL + '/all/events?projectId=' + data.id);
+  }
+
+  getPublicProjectEvents(data): Observable<any> {
+    return this.http.get(API_URL + '/public/events?projectId=' + data.id);
+  }
 }

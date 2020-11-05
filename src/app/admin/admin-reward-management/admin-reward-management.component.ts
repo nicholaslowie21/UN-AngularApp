@@ -169,7 +169,7 @@ export class AdminRewardManagementComponent implements OnInit {
         saveAs(response, this.attachmentPath);
       },
       err => {
-        alert('Something went wrong while downloading the file. Please try again!');
+        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:'Something went wrong while downloading the file. Please try again!'});
       }
     )
   }
