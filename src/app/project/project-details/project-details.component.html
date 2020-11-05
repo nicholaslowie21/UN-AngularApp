@@ -78,7 +78,7 @@
         </div>
 
         <div *ngIf="calendarOn" class="row mt-3">
-            <div class="bg-secondary text-center p-2 text-white rounded-sm" style="width: 100%">Project Events
+            <div class="bg-secondary text-center p-2 text-white rounded-sm" style="width: 100%">Project Milestones
                 <button pButton *ngIf="isOngoing&&(isCreator||isAdmin)" type="button" icon="pi pi-plus" class="p-button-rounded float-right"
                     data-toggle="modal" data-target="#createEventModal">
                 </button>
@@ -95,7 +95,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Update Event</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Update Milestone</h5>
                         <button type="button" class="close" (click)="closeModal()" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -104,8 +104,8 @@
                         <div *ngIf="!uEventNotif">
                             <form name="form" (ngSubmit)="fe.form.valid && onEventUpdate()" #fe="ngForm" novalidate>
                                 <div class="form-group row">
-                                    <label for="title" class="col-sm-3 col-form-label">Title</label>
-                                    <div class="col-sm-8">
+                                    <label for="title" class="col-sm-4 col-form-label">Title</label>
+                                    <div class="col-sm-7">
                                         <input type="text" class="form-control" name="title" [(ngModel)]="updateEvent.title" required #title="ngModel" />
                                     </div>
                                     <div class="alert-danger" *ngIf="fe.submitted && title.invalid">
@@ -113,7 +113,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="startDate" class="col-sm-3 col-form-label">Start Date</label>
+                                    <label for="startDate" class="col-sm-4 col-form-label">Start Date</label>
                                     <div class="col-sm-6">
                                         <p-calendar [baseZIndex]="90" name="startDate" [(ngModel)]="updateEvent.start" dateFormat="yy-mm-dd" [showIcon]="true" [minDate]="minimumDate"
                                             [monthNavigator]="true" [yearNavigator]="true" yearRange="2020:2025" required #startDate="ngModel"></p-calendar>
@@ -123,7 +123,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="endDate" class="col-sm-3 col-form-label">End Date</label>
+                                    <label for="endDate" class="col-sm-4 col-form-label">End Date</label>
                                     <div class="col-sm-6">
                                         <p-calendar [baseZIndex]="90" name="endDate" [(ngModel)]="updateEvent.end" dateFormat="yy-mm-dd" [showIcon]="true" [minDate]="minimumDate"
                                             [monthNavigator]="true" [yearNavigator]="true" yearRange="2020:2025" required #endDate="ngModel"></p-calendar>
@@ -133,8 +133,8 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="type" class="col-sm-3 col-form-label">Event Type</label>
-                                    <div class="col-sm-8">
+                                    <label for="type" class="col-sm-4 col-form-label">Milestone Type</label>
+                                    <div class="col-sm-7">
                                         <div *ngIf="updateEvent.type=='Public'">
                                             <select class="form-control" name="type" [(ngModel)]="updateEvent.type" required #type="ngModel">
                                                 <option selected value="Public">Public</option>
@@ -160,7 +160,7 @@
                         </div>
                         <div *ngIf="uEventNotif">
                             <div class="alert alert-success">
-                                Event has been updated!
+                                Milestone has been updated!
                             </div>
                         </div>
                     </div>
@@ -173,7 +173,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">New Event</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">New Milestone</h5>
                         <button type="button" class="close" (click)="closeModal()" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -182,8 +182,8 @@
                         <div *ngIf="!cEventNotif">
                             <form name="form" (ngSubmit)="fd.form.valid && onEventPost()" #fd="ngForm" novalidate>
                                 <div class="form-group row">
-                                    <label for="title" class="col-sm-3 col-form-label">Title</label>
-                                    <div class="col-sm-8">
+                                    <label for="title" class="col-sm-4 col-form-label">Title</label>
+                                    <div class="col-sm-7">
                                         <input type="text" class="form-control" name="title" [(ngModel)]="form.title" required #title="ngModel" />
                                     </div>
                                     <div class="alert-danger" *ngIf="fd.submitted && title.invalid">
@@ -191,7 +191,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="startDate" class="col-sm-3 col-form-label">Start Date</label>
+                                    <label for="startDate" class="col-sm-4 col-form-label">Start Date</label>
                                     <div class="col-sm-6">
                                         <p-calendar [baseZIndex]="90" name="date" [(ngModel)]="form.startDate" dateFormat="yy-mm-dd" [showIcon]="true" [minDate]="minimumDate"
                                             [monthNavigator]="true" [yearNavigator]="true" yearRange="2020:2025" required #startDate="ngModel"></p-calendar>
@@ -201,7 +201,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="endDate" class="col-sm-3 col-form-label">End Date</label>
+                                    <label for="endDate" class="col-sm-4 col-form-label">End Date</label>
                                     <div class="col-sm-6">
                                         <p-calendar [baseZIndex]="90" name="date" [(ngModel)]="form.endDate" dateFormat="yy-mm-dd" [showIcon]="true" [minDate]="minimumDate"
                                             [monthNavigator]="true" [yearNavigator]="true" yearRange="2020:2025" required #endDate="ngModel"></p-calendar>
@@ -211,8 +211,8 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="type" class="col-sm-3 col-form-label">Event Type</label>
-                                    <div class="col-sm-8">
+                                    <label for="type" class="col-sm-4 col-form-label">Milestone Type</label>
+                                    <div class="col-sm-7">
                                         <select class="form-control" name="type" [(ngModel)]="form.type" required #type="ngModel">
                                             <option value="" selected hidden>Choose...</option>
                                             <option value="Public">Public</option>
@@ -231,7 +231,7 @@
                         </div>
                         <div *ngIf="cEventNotif">
                             <div class="alert alert-success">
-                                Event has been created!
+                                Milestone has been created!
                             </div>
                         </div>
                     </div>
@@ -584,17 +584,17 @@
                 <div *ngIf=eventOn>
                     <div class="card border-0">
                         <h5 class="card-title text-left mt-md-1">
-                            Event Details:
+                            Milestone Details:
                         </h5>
-                        <h6 class="card-title text-left text-secondary">Event Title:
+                        <h6 class="card-title text-left text-secondary">Milestone Title:
                             <br>
                             <strong>{{eventTitle}}</strong>
                         </h6>
-                        <h6 class="card-title text-left text-secondary">Event Start Date:
+                        <h6 class="card-title text-left text-secondary">Milestone Start Date:
                             <br>
                             <strong>{{formatDate(eventStart)}}</strong>
                         </h6>
-                        <h6 class="card-title text-left text-secondary">Event End Date:
+                        <h6 class="card-title text-left text-secondary">Milestone End Date:
                             <br>
                             <strong>{{formatDate(eventEnd)}}</strong>
                         </h6>
