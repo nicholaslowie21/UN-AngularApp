@@ -141,7 +141,7 @@ export class MyRequestsComponent implements OnInit {
       this.marketplaceService.cancelProjectReq({id: reqId}).subscribe(
         response => {
           this.messageService.add({key:'toastMsg', severity:'success', summary:'Success', detail:'Project request cancelled!'});
-          window.location.reload();
+          this.ngOnInit();
         }, 
         err => {
           this.messageService.add({key:'toastMsg', severity:'error', summary:'Error', detail:err.error.msg});

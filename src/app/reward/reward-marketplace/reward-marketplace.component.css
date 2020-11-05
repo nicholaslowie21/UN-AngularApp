@@ -1,5 +1,7 @@
 .gold {
-    background-color: rgb(205, 157, 25);
+    background-color: rgb(226, 173, 28);
+    /* background-color: rgb(212, 175, 55); */
+    
     color: white;
 }
 
@@ -9,6 +11,7 @@
 }
 
 .bronze {
+    /* background-color: rgb(176, 141, 87); */
     background-color: rgb(185, 114, 45);
     color: white;
 }

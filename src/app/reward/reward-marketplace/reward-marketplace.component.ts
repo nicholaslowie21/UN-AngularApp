@@ -28,6 +28,8 @@ export class RewardMarketplaceComponent implements OnInit {
   countries = ["All","Afghanistan","Albania","Algeria","Andorra","Angola","Anguilla","Antigua and Barbuda","Argentina","Armenia","Aruba","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bermuda","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi","Cambodia","Cameroon","Canada","Cape Verde","Cayman Islands","Central African Republic","Chad","Chile","China","Colombia","Congo","Cook Islands","Costa Rica","Côte d'Ivoire","Croatia","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","East Timor","Ecuador","Egypt","El Salvador","Equatorial Guinea","Estonia","Ethiopia","Falkland Islands","Faroe Islands","Fiji","Finland","France","French Polynesia","Gabon","Gambia","Georgia","Germany","Ghana","Gibraltar","Greece","Greenland","Grenada","Guam","Guatemala","Guernsey","Guinea","Guinea Bissau","Guyana","Haiti","Honduras","Hong Kong","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Isle of Man","Israel","Italy","Jamaica","Japan","Jersey","Jordan","Kazakhstan","Kenya","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Macau","Macedonia","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Mauritania","Mauritius","Mexico","Moldova","Monaco","Mongolia","Montenegro","Montserrat","Morocco","Mozambique","Namibia","Nepal","Netherlands","Netherlands Antilles","New Caledonia","New Zealand","Nicaragua","Niger","Nigeria","Norway","Oman","Pakistan","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Puerto Rico","Qatar","Reunion","Romania","Russia","Rwanda","Saint Pierre and Miquelon","Samoa","San Marino","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","South Africa","South Korea","Spain","Sri Lanka","Saint Kitts and Nevis","Saint Lucia","Saint Vincent And The Grenadines","Sudan","Suriname","Swaziland","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Turks and Caicos Islands","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan","Venezuela","Vietnam", "Virgin Islands (British)", "Virgin Islands (US)","Yemen","Zambia","Zimbabwe"];
   countryOptions = [];
   filterKeyCountry = '';
+  tierOptions = [];
+  filterKeyMinTier = '';
 
   constructor(private messageService: MessageService, private rewardService: RewardService, private tokenStorageService: TokenStorageService, private userService: UserService) { }
 
@@ -50,6 +52,12 @@ export class RewardMarketplaceComponent implements OnInit {
     this.sortOptions = [
       {label: 'Date Newest to Oldest', value: '!endDate'},
       {label: 'Date Oldest to Newest', value: 'endDate'}
+    ];
+
+    this.tierOptions = [
+      {label: 'Bronze', value: 'bronze'},
+      {label: 'Silver', value: 'silver'},
+      {label: 'Gold', value: 'gold'}
     ];
 
     for (let i = 0; i < this.countries.length; i++) {
@@ -78,11 +86,11 @@ export class RewardMarketplaceComponent implements OnInit {
     await this.ngOnInit();
     let arr = [];
     let value = event.value;
-    if(value == 'All') {
+    if (value == 'All') {
       arr = this.rewards;
     } else {
-      for(let i = 0; i < this.rewards.length; i++) {
-        if(this.rewards[i].country == value) {
+      for (let i = 0; i < this.rewards.length; i++) {
+        if (this.rewards[i].country == value) {
           arr.push(this.rewards[i]);
         }
       }
@@ -90,6 +98,27 @@ export class RewardMarketplaceComponent implements OnInit {
     
     this.rewards = arr;
     this.sortKey = '';
+    this.filterKeyMinTier = '';
+  }
+
+  async filterMinTier(event) {
+    await this.ngOnInit();
+    let arr = [];
+    let value = event.value;
+    if (value == 'bronze') {
+      arr = this.rewards;
+    } else {
+      // selecting 'gold' shows gold tier only, selecting 'silver' shows 'silver' and 'gold'
+      for (let i = 0; i < this.rewards.length; i++) {
+        if (this.rewards[i].minTier == 'gold' || this.rewards[i].minTier == value) {
+          arr.push(this.rewards[i]);
+        }
+      }
+    }
+    
+    this.rewards = arr;
+    this.sortKey = '';
+    this.filterKeyCountry = '';
   }
 
   setCurrentReward(reward): void {

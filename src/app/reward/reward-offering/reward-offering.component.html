@@ -27,8 +27,9 @@
                 <ng-template let-reward pTemplate="gridItem">
                     <div class="p-col-12 p-md-4">
                         <div class="product-grid-item card p-2">
-                                
-                            <div class="product-grid-item-content">
+                            <div class="product-grid-item-content mt-1 mr-1">
+                                <span class="rounded-pill pl-2 pr-2 {{reward.minTier}} float-left">{{reward.minTier}}</span>
+                                <div class="text-right">{{reward.point}} pts</div><br/>
                                 <img *ngIf="reward.imgPath.length == 0" src="../../../assets/img/rewardPlaceholder.png"
                                     class="img-fluid" style="width: 150px; height: 150px; object-fit: cover;" alt="Reward pic" />
                                 <img *ngIf="reward.imgPath.length != 0" src="https://localhost:8080{{reward.imgPath}}"
@@ -38,7 +39,10 @@
                                         {{reward.title}}
                                     </button>
                                 </div>
-                                <div class="small mb-md-1">Last updated: {{formatDate(reward.updatedAt)}}</div>
+                                <div class="small mb-md-1">
+                                    Country: {{reward.country}}<br/>
+                                    Last updated: {{formatDate(reward.updatedAt)}}
+                                </div>
                                 <div>
                                     <!-- <span class="rounded-pill pl-2 pr-2 {{editForm.status}}">{{editForm.status}}</span> -->
                                     <span *ngIf="reward.status == 'open'" class="rounded-pill pl-2 pr-2 active">active</span>
@@ -84,7 +88,8 @@
                                     &nbsp;
                                 </span>
                             </h5>
-                            <div>Description: {{editForm.desc}}</div>
+                            <div *ngIf="editForm.desc">Description: {{editForm.desc}}</div>
+                            <div *ngIf="!editForm.desc">Description: -</div>
                             <br>
                             <div class="row">
                                 <div class="col-6">

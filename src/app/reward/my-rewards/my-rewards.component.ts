@@ -42,7 +42,7 @@ export class MyRewardsComponent implements OnInit {
     await this.rewardService.getVouchers({status: 'claimed'}).toPromise().then(
       res => this.claimedVouchers = res.data.vouchers
     );
-    console.log(this.activeVouchers.length);
+    console.log(this.activeVouchers[0]);
     
     this.userType = this.tokenStorageService.getAccountType();
     if (this.userType == 'user') {

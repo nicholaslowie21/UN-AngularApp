@@ -48,6 +48,7 @@
                             <div class="p-col-12 p-md-4">
                                 <div class="product-grid-item card p-2">
                                     <div class="product-grid-item-content mt-1 mr-1">
+                                        <!-- <span class="rounded-pill pl-2 pr-2 {{reward.minTier}} float-left">{{reward.minTier}}</span> -->
                                         <div class="small mb-md-1 float-right">Redeemed at: {{formatDate(voucher.createdAt)}}</div>
                                         <img *ngIf="voucher.rewardImgPath.length == 0" src="../../../assets/img/rewardPlaceholder.png"
                                             class="img-fluid" style="width: 150px; height: 150px; object-fit: cover;" alt="Reward pic" />
@@ -58,7 +59,10 @@
                                                 {{voucher.rewardTitle}}
                                             </button>
                                         </div>
-                                        <div class="small mb-md-1">End Date: {{formatDate(voucher.endDate)}}</div>
+                                        <div class="small mb-md-1">
+                                            Country: {{voucher.rewardCountry}}<br/>
+                                            End Date: {{formatDate(voucher.endDate)}}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -91,8 +95,13 @@
                             <br/><br/>
                             <button type="button" class="btn btn-success float-right" (click)="claimVoucher(currentVoucher.id)">Claim</button>
                             <h5>{{currentVoucher.rewardTitle}}</h5>
-                            <div>Code: {{currentVoucher.code}}</div>
-                            <div>Description: {{currentVoucher.rewardDesc}}</div><br/>
+                            <div>
+                                Code: {{currentVoucher.code}}<br>
+                                Use this code at the merchant to use your voucher, then click the Claim button.
+                            </div>
+                            <div *ngIf="currentVoucher.rewardDesc">Description: {{currentVoucher.rewardDesc}}</div>
+                            <div *ngIf="!currentVoucher.rewardDesc">Description: -</div>
+                            <br/>
                             <div class="row">
                                 <div class="col-6">
                                     Redeemed at: {{formatDate(currentVoucher.createdAt)}}
@@ -124,7 +133,8 @@
                             <div class="p-col-12 p-md-4">
                                 <div class="product-grid-item card p-2">
                                     <div class="product-grid-item-content mt-1 mr-1">
-                                        <div class="small mb-md-1 float-right">Redeemed at: {{formatDate(voucher.createdAt)}}</div>
+                                        <!-- <span class="rounded-pill pl-2 pr-2 {{reward.minTier}} float-left">{{reward.minTier}}</span> -->
+                                        <div class="small mb-md-1 float-right">Claimed at: {{formatDate(voucher.claimedAt)}}</div>
                                         <img *ngIf="voucher.rewardImgPath.length == 0" src="../../../assets/img/rewardPlaceholder.png"
                                             class="img-fluid" style="width: 150px; height: 150px; object-fit: cover;" alt="Reward pic" />
                                         <img *ngIf="voucher.rewardImgPath.length != 0" src="https://localhost:8080{{voucher.rewardImgPath}}"
@@ -134,7 +144,10 @@
                                                 {{voucher.rewardTitle}}
                                             </button>
                                         </div>
-                                        <div class="small mb-md-1">End Date: {{formatDate(voucher.endDate)}}</div>
+                                        <div class="small mb-md-1">
+                                            Country: {{voucher.rewardCountry}}<br/>
+                                            End Date: {{formatDate(voucher.endDate)}}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -162,7 +175,9 @@
                             <br/><br/>
                             <h5>{{currentVoucher.rewardTitle}}</h5>
                             <div>Code: {{currentVoucher.code}}</div>
-                            <div>Description: {{currentVoucher.rewardDesc}}</div><br/>
+                            <div *ngIf="currentVoucher.rewardDesc">Description: {{currentVoucher.rewardDesc}}</div>
+                            <div *ngIf="!currentVoucher.rewardDesc">Description: -</div>
+                            <br/>
                             <div class="row">
                                 <div class="col-6">
                                     Claimed at: {{formatDate(currentVoucher.claimedAt)}}
@@ -178,7 +193,7 @@
             
             <div class="tab-pane fade" id="cancelled" role="tabpanel" aria-labelledby="cancelled-tab">
                 <div class="card">
-                    Cancelled rewards
+                    Cancelled rewards: for active (i.e. unclaimed vouchers) that were later removed by the reward offerer. I.e. the user who redeemed didn't get to claim the voucher.
                 </div>
             </div>
         </div>
