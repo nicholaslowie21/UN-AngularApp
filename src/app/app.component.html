@@ -95,48 +95,72 @@
       <button *ngIf="chatStatus.status == 'close'" id="chatButton" (click)="openChatPopUp()" class="btn btn-primary">Chat</button>
       <div *ngIf="chatStatus.status != 'close'" >
         <div class="chatPopUp card rounded-sm">
-          <div class="card-header">
+          <div class="card-header p-2">
             <h5 *ngIf="chatStatus.status == 'open'">Chat
               <button (click)="closeChatPopUp()" class="btn float-right"><i class="pi pi-times"></i></button>
             </h5>
             <div *ngIf="chatStatus.status == 'room'">
-              <button (click)="closeChatRoom()" class="btn"><</button>
-              <span *ngIf="selectedChatRoom.user1username != username">{{selectedChatRoom.user1username}}</span>
-              <span *ngIf="selectedChatRoom.user2username != username">{{selectedChatRoom.user2username}}</span>
+              <div class="row">
+                  <button (click)="closeChatRoom()" class="btn mt-1"><i class="pi pi-chevron-left"></i></button>
+                  <span *ngIf="selectedChatImg.length == 0">
+                    <img src="../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle" style="height: 40px; width: 40px; object-fit: cover;">
+                  </span>
+                  <span *ngIf="selectedChatImg.length != 0">
+                    <img src="https://localhost:8080{{selectedChatImg}}" class="img-fluid rounded-circle" style="height: 40px; width: 40px; object-fit: cover;">
+                  </span>
+                  <span *ngIf="selectedChatRoom.user1username != username" class="ml-2 mt-2">
+                    <span *ngIf="selectedChatRoom.user1type == 'user'">
+                      <a class="text-dark" href="/profile?username={{selectedChatRoom.user1username}}&userType=individual">{{selectedChatRoom.user1username}}</a>
+                    </span>
+                    <span *ngIf="selectedChatRoom.user1type == 'institution'">
+                      <a class="text-dark" href="/profile?username={{selectedChatRoom.user1username}}&userType=institution">{{selectedChatRoom.user1username}}</a>
+                    </span>
+                  </span>
+                  <span *ngIf="selectedChatRoom.user2username != username" class="ml-2 mt-2">
+                    <span *ngIf="selectedChatRoom.user2type == 'user'">
+                      <a class="text-dark" href="/profile?username={{selectedChatRoom.user2username}}&userType=individual">{{selectedChatRoom.user2username}}</a>
+                    </span>
+                    <span *ngIf="selectedChatRoom.user2type == 'institution'">
+                      <a class="text-dark" href="/profile?username={{selectedChatRoom.user2username}}&userType=institution">{{selectedChatRoom.user2username}}</a>
+                    </span>
+                  </span>
+              </div>
             </div>
           </div>
-          
-          <div *ngIf="chatStatus.status != 'room'">
-            <div *ngFor="let cr of chatRooms" class="card-body" style="padding: 0;">
-              <div class="chatRoom" (click)="openChatRoom(cr.id)">
-                <div class="row">
-                  <div class="col-3">
-                    <span *ngIf="cr.targetImg.length == 0">
-                      <img src="../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle" style="height: 40px; width: 40px; object-fit: cover;">
-                    </span>
-                    <span *ngIf="cr.targetImg.length != 0">
-                      <img src="https://localhost:8080{{cr.targetImg}}" class="img-fluid rounded-circle" style="height: 40px; width: 40px; object-fit: cover;">
-                    </span>
-                  </div>
-                  <div class="col-9">
-                    <span *ngIf="cr.user1username != username">{{cr.user1username}}</span>
-                    <span *ngIf="cr.user2username != username">{{cr.user2username}}</span>
-                    <div class="text-secondary p-text-nowrap p-text-truncate" style="width: 90%;">{{cr.lastMessage}} </div>
+
+          <div class="card-body" style="overflow: auto;">
+            <div *ngIf="chatStatus.status != 'room'">
+              <div *ngFor="let cr of chatRooms" style="padding: 0;">
+                <div class="chatRoom" (click)="openChatRoom(cr.id)">
+                  <div class="row">
+                    <div class="col-3">
+                      <span *ngIf="cr.targetImg.length == 0">
+                        <img src="../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle" style="height: 40px; width: 40px; object-fit: cover;">
+                      </span>
+                      <span *ngIf="cr.targetImg.length != 0">
+                        <img src="https://localhost:8080{{cr.targetImg}}" class="img-fluid rounded-circle" style="height: 40px; width: 40px; object-fit: cover;">
+                      </span>
+                    </div>
+                    <div class="col-9">
+                      <span *ngIf="cr.user1username != username">{{cr.user1username}}</span>
+                      <span *ngIf="cr.user2username != username">{{cr.user2username}}</span>
+                      <div class="text-secondary p-text-nowrap p-text-truncate" style="width: 90%;">{{cr.lastMessage}} </div>
+                    </div>
                   </div>
                 </div>
+                <hr>
               </div>
-              <hr>
+            </div>
+
+            <div *ngIf="chatStatus.status == 'room'" class=" pl-1 pr-1">
+              <div *ngFor="let msg of chatMsgs" style="padding: 4%;">
+                <span *ngIf="msg.accountUsername != username" class="bg-secondary rounded-pill p-2 pl-3 pr-3 text-white">{{msg.message}}</span>
+                <span *ngIf="msg.accountUsername == username" class="bg-primary rounded-pill p-2 pl-3 pr-3 text-white">{{msg.message}}</span>
+              </div>
             </div>
           </div>
 
-          <div *ngIf="chatStatus.status == 'room'">
-            <div *ngFor="let msg of chatMsgs" class="card-body" style="padding: 4%;">
-              <span *ngIf="msg.accountUsername != username" class="bg-secondary rounded-pill p-2 pl-3 pr-3 text-white">{{msg.message}}</span>
-              <span *ngIf="msg.accountUsername == username" class="bg-primary rounded-pill p-2 pl-3 pr-3 text-white">{{msg.message}}</span>
-            </div>
-          </div>
-
-          <div *ngIf="chatStatus.status == 'room'" class="card-footer" style="bottom: 0; position: absolute;">
+          <div *ngIf="chatStatus.status == 'room'" class="card-footer" >
             <form name="form" (ngSubmit)="f.form.valid && sendMsg()" #f="ngForm" novalidate>
               <div class="row">
                 <input type="text" class="form-control col-9" name="message" [(ngModel)]="chatForm.message" 
@@ -153,9 +177,4 @@
     </div>
 
     <script src="../assets/js/scripts.js"></script>
-    <script>
-      function openForm() {
-        document.getElementById("chatPopUpId").style.display = "block";
-      }
-    </script>
 </div>

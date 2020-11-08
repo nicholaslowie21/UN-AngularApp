@@ -21,6 +21,7 @@ export class AppComponent implements OnInit {
   chatStatus: any;
   chatRooms = [];
   selectedChatRoom: any;
+  selectedChatImg: any;
   chatMsgs = [];
   chatForm: any = {};
 
@@ -67,6 +68,7 @@ export class AppComponent implements OnInit {
     if (this.chatStatus.status == 'room') {
       await this.communicationService.getChatMsgs({ id: this.chatStatus.id }).toPromise().then(
         res => {
+          this.selectedChatImg = res.data.targetImg;
           this.selectedChatRoom = res.data.chatRoom;
           this.chatMsgs = res.data.chats;
         }
