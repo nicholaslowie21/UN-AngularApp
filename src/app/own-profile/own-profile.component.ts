@@ -26,6 +26,7 @@ import { MessageService } from 'primeng/api';
 export class OwnProfileComponent implements OnInit {
 
   isLoggedIn = false;
+  isAdmin = false;
   username: any;
   user: any;
   userType: any;
@@ -109,6 +110,11 @@ export class OwnProfileComponent implements OnInit {
 
     if(this.user.id == this.tokenStorageService.getUser().id) {
       this.isOwner = true;
+    }
+
+    let role = this.tokenStorageService.getUser().role;
+    if(role == 'adminlead' || role == 'admin' || role == 'regionaladmin') {
+      this.isAdmin = true;
     }
 
     this.shareLink = "http://localhost:4200/profile?username=" + this.username+"&userType="+this.userType;
@@ -300,7 +306,7 @@ export class OwnProfileComponent implements OnInit {
     );
   }
 
-  chatUser(): void {
+  chatUser(chatType): void {
     let tempType = '';
     if(this.userType == 'individual') {
       tempType = 'user';
@@ -308,7 +314,7 @@ export class OwnProfileComponent implements OnInit {
       tempType = 'institution';
     }
     const chatForm = {
-      chatType: "normal",
+      chatType: chatType,
       targetId: this.userId,
       targetType: tempType
     }

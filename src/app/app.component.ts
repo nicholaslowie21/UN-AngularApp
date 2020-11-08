@@ -25,6 +25,10 @@ export class AppComponent implements OnInit {
   chatMsgs = [];
   chatForm: any = {};
 
+  chatRoomsAdmin = [];
+  displayChatRooms = [];
+  selectedChatType: any;
+
   constructor(private tokenStorageService: TokenStorageService, private route: ActivatedRoute,
     private router: Router, private communicationService: CommunicationService, private messageService: MessageService) {
   }
@@ -51,6 +55,7 @@ export class AppComponent implements OnInit {
 
       this.username = user.username;
 
+      this.selectedChatType = 'user';
       await this.loadChat();
     }
   }
@@ -63,7 +68,25 @@ export class AppComponent implements OnInit {
       res => this.chatRooms = res.data.chatRooms
     );
 
+    await this.communicationService.getChatRoomsList({ type: 'admin' }).toPromise().then(
+      res => this.chatRoomsAdmin = res.data.chatRooms
+    );
+
     console.log(this.chatRooms);
+    console.log(this.chatRoomsAdmin);
+
+    if(this.showAdmin == true) {
+      if(this.selectedChatType == 'user') {
+        this.displayChatRooms = this.chatRooms;
+      } else {
+        this.displayChatRooms = this.chatRoomsAdmin;
+      }
+    } else {
+      this.displayChatRooms = this.chatRooms.concat(this.chatRoomsAdmin);
+      this.displayChatRooms.sort(this.sortFunction);
+    }
+
+    
 
     if (this.chatStatus.status == 'room') {
       await this.communicationService.getChatMsgs({ id: this.chatStatus.id }).toPromise().then(
@@ -110,6 +133,14 @@ export class AppComponent implements OnInit {
     this.chatStatus = this.tokenStorageService.getChatStatus();
   }
 
+  onChangeChatType(): void {
+    if(this.selectedChatType == "user") {
+      this.displayChatRooms = this.chatRooms;
+    } else {
+      this.displayChatRooms = this.chatRoomsAdmin;
+    }
+  }
+
   sendMsg(): void {
     if (this.chatForm.message.length == 0) {
       return;
@@ -122,6 +153,13 @@ export class AppComponent implements OnInit {
         this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
       }
     )
+  }
+
+  sortFunction(a, b) {
+    var dateA = new Date(a.updatedAt).getTime();
+    console.log("DATE A" + dateA);
+    var dateB = new Date(b.updatedAt).getTime();
+    return dateA > dateB ? -1 : 1;
   }
 
 }

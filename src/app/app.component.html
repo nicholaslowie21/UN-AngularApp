@@ -96,9 +96,14 @@
       <div *ngIf="chatStatus.status != 'close'" >
         <div class="chatPopUp card rounded-sm">
           <div class="card-header p-2">
-            <h5 *ngIf="chatStatus.status == 'open'">Chat
+            <div *ngIf="chatStatus.status == 'open'">
+              <h5 class="mt-2" style="display: inline-block;">Chat <span *ngIf="showAdmin">as</span></h5>
+              <select *ngIf="showAdmin" class="form-control col-4 ml-2" [(ngModel)]="selectedChatType" (change)="onChangeChatType()" style="display: inline-block;">
+                <option selected value="user">User</option>
+                <option value="admin">Admin</option>
+              </select>
               <button (click)="closeChatPopUp()" class="btn float-right"><i class="pi pi-times"></i></button>
-            </h5>
+            </div>
             <div *ngIf="chatStatus.status == 'room'">
               <div class="row">
                   <button (click)="closeChatRoom()" class="btn mt-1"><i class="pi pi-chevron-left"></i></button>
@@ -128,9 +133,9 @@
             </div>
           </div>
 
-          <div class="card-body" style="overflow: auto;">
+          <div class="card-body p-0" style="overflow: auto;">
             <div *ngIf="chatStatus.status != 'room'">
-              <div *ngFor="let cr of chatRooms" style="padding: 0;">
+              <div *ngFor="let cr of displayChatRooms" style="padding: 0;">
                 <div class="chatRoom" (click)="openChatRoom(cr.id)">
                   <div class="row">
                     <div class="col-3">
@@ -153,6 +158,7 @@
             </div>
 
             <div *ngIf="chatStatus.status == 'room'" class=" pl-1 pr-1">
+              <div *ngIf="selectedChatRoom.chatType == 'admin'" class="text-center bg-warning rounded-sm">You are now chatting as an admin</div>
               <div *ngFor="let msg of chatMsgs" style="padding: 4%;">
                 <span *ngIf="msg.accountUsername != username" class="bg-secondary rounded-pill p-2 pl-3 pr-3 text-white">{{msg.message}}</span>
                 <span *ngIf="msg.accountUsername == username" class="bg-primary rounded-pill p-2 pl-3 pr-3 text-white">{{msg.message}}</span>
