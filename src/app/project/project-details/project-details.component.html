@@ -128,7 +128,7 @@
         </div>
 
         <div *ngIf="calendarOn" class="row mt-3">
-            <div class="bg-secondary text-center p-2 text-white rounded-sm" style="width: 100%">Project Milestones
+            <div class="bg-secondary text-center p-2 text-white rounded-sm" style="width: 100%">Project Calendar
                 <button pButton *ngIf="isOngoing&&(isCreator||isAdmin)" type="button" icon="pi pi-plus" class="p-button-rounded float-right"
                     data-toggle="modal" data-target="#createEventModal">
                 </button>
@@ -581,8 +581,8 @@
         </div>
         <div class="card mb-md-1">
             <div class="btn-group" role="group" aria-label="Basic example" style="width: 100%">
-                <button type="button" class="btn btn-primary" (click)="switchCalendarOn()">View Schedule</button>
-                <button type="button" class="btn btn-light" (click)="switchCalendarOff()">Hide Schedule</button>
+                <button type="button" class="btn btn-primary" (click)="switchCalendarOn()">View Calendar</button>
+                <button type="button" class="btn btn-light" (click)="switchCalendarOff()">Hide Calendar</button>
             </div>
         </div>
         <div class="sticky">

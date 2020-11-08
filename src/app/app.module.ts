@@ -77,6 +77,9 @@ import { MyRewardsComponent } from './reward/my-rewards/my-rewards.component';
 import { AdminAnnouncementComponent } from './admin/admin-announcement/admin-announcement.component';
 import { AnnouncementComponent } from './announcement/announcement.component';
 import { ReportSubmittedComponent } from './report-submitted/report-submitted.component';
+import { AdminReportDetailsComponent } from './admin/admin-report-details/admin-report-details.component';
+import { AdminChatComponent } from './admin/admin-chat/admin-chat.component';
+import { ChatComponent } from './chat/chat.component';
 
 @NgModule({
   declarations: [
@@ -126,7 +129,10 @@ import { ReportSubmittedComponent } from './report-submitted/report-submitted.co
     MyRewardsComponent,
     AdminAnnouncementComponent,
     AnnouncementComponent,
-    ReportSubmittedComponent
+    ReportSubmittedComponent,
+    AdminReportDetailsComponent,
+    AdminChatComponent,
+    ChatComponent
   ],
   imports: [
     BrowserModule,
