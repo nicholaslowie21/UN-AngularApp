@@ -13,6 +13,7 @@ import { UserService } from '../services/user.service';
 import { ResourceService } from '../services/resource.service';
 import { InstitutionService } from '../services/institution.service';
 import { ReportService } from '../services/report.service';
+import { CommunicationService } from '../services/communication.service';
 import { ActivatedRoute } from '@angular/router';
 import { MessageService } from 'primeng/api';
 
@@ -64,7 +65,8 @@ export class OwnProfileComponent implements OnInit {
 
   constructor(private tokenStorageService: TokenStorageService, private userService: UserService,
     private resourceService: ResourceService, private institutionService: InstitutionService, 
-    private route: ActivatedRoute, private reportService: ReportService, private messageService: MessageService) { }
+    private route: ActivatedRoute, private reportService: ReportService, private messageService: MessageService,
+    private communicationService: CommunicationService) { }
 
   async ngOnInit() {
     this.route.queryParams.subscribe(
@@ -296,6 +298,29 @@ export class OwnProfileComponent implements OnInit {
         this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
       }
     );
+  }
+
+  chatUser(): void {
+    let tempType = '';
+    if(this.userType == 'individual') {
+      tempType = 'user';
+    } else {
+      tempType = 'institution';
+    }
+    const chatForm = {
+      chatType: "normal",
+      targetId: this.userId,
+      targetType: tempType
+    }
+    this.communicationService.chatAccount(chatForm).subscribe(
+      response => {
+        console.log(response)
+        this.tokenStorageService.setChatStatus({status:"room", id:response.data.chatRoom.id});
+        window.location.reload();
+      }, err => {
+        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+      }
+    )
   }
 
 }

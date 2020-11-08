@@ -115,6 +115,8 @@
                             </div>
                             <div class="modal-body">
                                 <div *ngIf="!isReport">
+                                    <button class="btn btn-block" (click)="chatUser()">Chat</button>
+                                    <hr>
                                     <button class="btn btn-block" style="color: red;" (click)="clickReport()">Report User</button>
                                     <hr>
                                     <button class="btn btn-block" data-dismiss="modal">Cancel</button>

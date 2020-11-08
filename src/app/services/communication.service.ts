@@ -37,4 +37,27 @@ export class CommunicationService {
   getAnnouncements(): Observable<any> {
     return this.http.get(API_URL + '/announcement');
   }
+
+  chatAccount(data): Observable<any> {
+    return this.http.post(API_URL + '/chat/chatAccount', {
+      chatType: data.chatType,
+      targetId: data.targetId,
+      targetType: data.targetType
+    }, httpOptions);
+  }
+
+  sendChatMsg(data): Observable<any> {
+    return this.http.post(API_URL + '/chat/send', {
+      roomId: data.roomId,
+      message: data.message
+    }, httpOptions);
+  }
+
+  getChatRoomsList(data): Observable<any> {
+    return this.http.get(API_URL + '/chat/rooms?chatType=' + data.type);
+  }
+
+  getChatMsgs(data): Observable<any> {
+    return this.http.get(API_URL + '/chat/chats?roomId=' + data.id);
+  }
 }
