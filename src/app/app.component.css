@@ -32,3 +32,11 @@
 .chatRoom:active {
     border: none;
 }
+
+.dot {
+    height: 20px;
+    width: 20px;
+    background-color: red;
+    border-radius: 50%;
+    display: inline-block;
+}

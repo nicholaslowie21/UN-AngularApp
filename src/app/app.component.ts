@@ -28,6 +28,7 @@ export class AppComponent implements OnInit {
   chatRoomsAdmin = [];
   displayChatRooms = [];
   selectedChatType = '';
+  totalUnreadRooms = 0;
 
   constructor(private tokenStorageService: TokenStorageService, private route: ActivatedRoute,
     private router: Router, private communicationService: CommunicationService, private messageService: MessageService) {
@@ -96,6 +97,28 @@ export class AppComponent implements OnInit {
     }
     console.log(this.selectedChatRoom);
     console.log(this.chatMsgs);
+    this.countTotalUnreadRooms();
+  }
+
+  countTotalUnreadRooms() {
+    this.totalUnreadRooms = 0;
+    for(var i=0; i<this.chatRooms.length; i++) {
+      if(this.chatRooms[i].user1username == this.username && this.chatRooms[i].user1read == false) {
+        this.totalUnreadRooms += 1;
+      } else if(this.chatRooms[i].user2username == this.username && this.chatRooms[i].user2read == false) {
+        this.totalUnreadRooms += 1;
+      }
+    }
+
+    for(var i=0; i<this.chatRoomsAdmin.length; i++) {
+      if(this.chatRoomsAdmin[i].user1username == this.username && this.chatRoomsAdmin[i].user1read == false) {
+        this.totalUnreadRooms += 1;
+      } else if(this.chatRoomsAdmin[i].user2username == this.username && this.chatRoomsAdmin[i].user2read == false) {
+        this.totalUnreadRooms += 1;
+      }
+    }
+
+    return this.totalUnreadRooms;
   }
 
   onActivate(event: any): void {
@@ -118,6 +141,7 @@ export class AppComponent implements OnInit {
   closeChatPopUp(): void {
     this.tokenStorageService.setChatStatus({ status: "close" });
     this.chatStatus = this.tokenStorageService.getChatStatus();
+    this.loadChat();
   }
 
   openChatRoom(roomId): void {
@@ -129,14 +153,10 @@ export class AppComponent implements OnInit {
   closeChatRoom(): void {
     this.tokenStorageService.setChatStatus({ status: "open", selectedChatType: this.chatStatus.selectedChatType });
     this.chatStatus = this.tokenStorageService.getChatStatus();
+    this.loadChat();
   }
 
   onChangeChatType(): void {
-    // if(this.selectedChatType == "user") {
-    //   this.displayChatRooms = this.chatRooms;
-    // } else {
-    //   this.displayChatRooms = this.chatRoomsAdmin;
-    // }
     this.tokenStorageService.setChatStatus({ status: "open", selectedChatType: this.chatStatus.selectedChatType });
     this.loadChat();
   }

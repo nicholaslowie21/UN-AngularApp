@@ -104,10 +104,15 @@
   <p-toast key="toastMsg" [baseZIndex]="100"></p-toast>
 
   <div *ngIf="isLoggedIn">
+    <!-- Chat BUTTON -->
     <button *ngIf="chatStatus.status == 'close'" id="chatButton" (click)="openChatPopUp()"
-      class="btn btn-primary">Chat</button>
+      class="btn btn-primary">Chat
+      <span *ngIf="totalUnreadRooms > 0" class="dot">{{totalUnreadRooms}}</span>
+    </button>
+
     <div *ngIf="chatStatus.status != 'close'">
       <div class="chatPopUp card rounded-sm">
+        <!-- Card HEADER -->
         <div class="card-header p-2"
           [ngClass]="{'bg-warning': chatStatus.status == 'room' && selectedChatRoom.chatType == 'admin'}">
           <div *ngIf="chatStatus.status == 'open'">
@@ -153,7 +158,9 @@
           </div>
         </div>
 
+        <!-- Card BODY -->
         <div class="card-body p-0" style="overflow: auto; overflow-x: hidden;">
+          <!-- Chat ROOMS -->
           <div *ngIf="chatStatus.status != 'room'">
             <div *ngFor="let cr of displayChatRooms">
               <div class="card p-2" [ngClass]="{'bg-warning': cr.chatType == 'admin'}" (click)="openChatRoom(cr.id)"
@@ -169,17 +176,22 @@
                         style="height: 40px; width: 40px; object-fit: cover;">
                     </span>
                   </div>
-                  <div class="col-9">
+                  <div class="col-7">
                     <span *ngIf="cr.user1username != username">{{cr.user1username}}</span>
                     <span *ngIf="cr.user2username != username">{{cr.user2username}}</span>
                     <div class="text-secondary p-text-nowrap p-text-truncate" style="width: 90%;">{{cr.lastMessage}}
                     </div>
+                  </div>
+                  <div class="col-2">
+                    <span *ngIf="cr.user1username != username && cr.user2read == false" class="dot"></span>
+                    <span *ngIf="cr.user2username != username && cr.user1read == false" class="dot"></span>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
+          <!-- Open a Chat Room -->
           <div *ngIf="chatStatus.status == 'room'" class="">
             <div *ngIf="selectedChatRoom.chatType == 'admin' && chatStatus.selectedChatType == 'admin'"
               class="text-center bg-warning rounded-sm"><small>You are now chatting as an admin</small></div>
@@ -194,6 +206,7 @@
           </div>
         </div>
 
+        <!-- Card FOOTER -->
         <div *ngIf="chatStatus.status == 'room'" class="card-footer">
           <form name="form" (ngSubmit)="f.form.valid && sendMsg()" #f="ngForm" novalidate>
             <div class="row">
