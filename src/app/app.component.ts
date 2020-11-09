@@ -27,7 +27,7 @@ export class AppComponent implements OnInit {
 
   chatRoomsAdmin = [];
   displayChatRooms = [];
-  selectedChatType: any;
+  selectedChatType = '';
 
   constructor(private tokenStorageService: TokenStorageService, private route: ActivatedRoute,
     private router: Router, private communicationService: CommunicationService, private messageService: MessageService) {
@@ -55,7 +55,6 @@ export class AppComponent implements OnInit {
 
       this.username = user.username;
 
-      this.selectedChatType = 'user';
       await this.loadChat();
     }
   }
@@ -76,7 +75,7 @@ export class AppComponent implements OnInit {
     console.log(this.chatRoomsAdmin);
 
     if(this.showAdmin == true) {
-      if(this.selectedChatType == 'user') {
+      if(this.chatStatus.selectedChatType == 'user') {
         this.displayChatRooms = this.chatRooms;
       } else {
         this.displayChatRooms = this.chatRoomsAdmin;
@@ -85,8 +84,6 @@ export class AppComponent implements OnInit {
       this.displayChatRooms = this.chatRooms.concat(this.chatRoomsAdmin);
       this.displayChatRooms.sort(this.sortFunction);
     }
-
-    
 
     if (this.chatStatus.status == 'room') {
       await this.communicationService.getChatMsgs({ id: this.chatStatus.id }).toPromise().then(
@@ -113,8 +110,9 @@ export class AppComponent implements OnInit {
   }
 
   openChatPopUp(): void {
-    this.tokenStorageService.setChatStatus({ status: "open" });
+    this.tokenStorageService.setChatStatus({ status: "open", selectedChatType: "user" });
     this.chatStatus = this.tokenStorageService.getChatStatus();
+    this.loadChat();
   }
 
   closeChatPopUp(): void {
@@ -123,22 +121,24 @@ export class AppComponent implements OnInit {
   }
 
   openChatRoom(roomId): void {
-    this.tokenStorageService.setChatStatus({ status: "room", id: roomId });
+    this.tokenStorageService.setChatStatus({ status: "room", id: roomId, selectedChatType: this.chatStatus.selectedChatType });
     this.chatStatus = this.tokenStorageService.getChatStatus();
     this.loadChat();
   }
 
   closeChatRoom(): void {
-    this.tokenStorageService.setChatStatus({ status: "open" });
+    this.tokenStorageService.setChatStatus({ status: "open", selectedChatType: this.chatStatus.selectedChatType });
     this.chatStatus = this.tokenStorageService.getChatStatus();
   }
 
   onChangeChatType(): void {
-    if(this.selectedChatType == "user") {
-      this.displayChatRooms = this.chatRooms;
-    } else {
-      this.displayChatRooms = this.chatRoomsAdmin;
-    }
+    // if(this.selectedChatType == "user") {
+    //   this.displayChatRooms = this.chatRooms;
+    // } else {
+    //   this.displayChatRooms = this.chatRoomsAdmin;
+    // }
+    this.tokenStorageService.setChatStatus({ status: "open", selectedChatType: this.chatStatus.selectedChatType });
+    this.loadChat();
   }
 
   sendMsg(): void {
@@ -157,7 +157,6 @@ export class AppComponent implements OnInit {
 
   sortFunction(a, b) {
     var dateA = new Date(a.updatedAt).getTime();
-    console.log("DATE A" + dateA);
     var dateB = new Date(b.updatedAt).getTime();
     return dateA > dateB ? -1 : 1;
   }

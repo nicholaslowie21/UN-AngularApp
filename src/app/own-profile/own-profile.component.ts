@@ -321,7 +321,8 @@ export class OwnProfileComponent implements OnInit {
     this.communicationService.chatAccount(chatForm).subscribe(
       response => {
         console.log(response)
-        this.tokenStorageService.setChatStatus({status:"room", id:response.data.chatRoom.id});
+        let chatStatus = this.tokenStorageService.getChatStatus();
+        this.tokenStorageService.setChatStatus({status:"room", id:response.data.chatRoom.id, selectedChatType: chatStatus.selectedChatType });
         window.location.reload();
       }, err => {
         this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
