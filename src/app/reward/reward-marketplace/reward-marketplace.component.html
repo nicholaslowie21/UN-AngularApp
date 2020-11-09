@@ -26,7 +26,7 @@
                         <p-dropdown [options]="sortOptions" [(ngModel)]="sortKey" placeholder="Sort By End Date" (onChange)="onSortChange($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
                         <p-dropdown [options]="countryOptions" [(ngModel)]="filterKeyCountry" placeholder="Filter By Country" (onChange)="filterCountry($event)"
                             styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
-                        <p-dropdown [options]="tierOptions" [(ngModel)]="filterKeyMinTier" placeholder="Minimum Tier" (onChange)="filterMinTier($event)"
+                        <p-dropdown [options]="tierOptions" [(ngModel)]="filterKeyMinTier" placeholder="Tier" (onChange)="filterTier($event)"
                             styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
                         <span class="p-input-icon-left p-mb-2 p-mb-md-0">
                             <i class="pi pi-search"></i>

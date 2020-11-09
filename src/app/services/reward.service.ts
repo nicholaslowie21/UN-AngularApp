@@ -85,7 +85,7 @@ export class RewardService {
   }
 
   transferVoucher(data): Observable<any> {
-    return this.http.post(API_URL + '/claim/voucher', {
+    return this.http.post(API_URL + '/transfer/voucher', {
       voucherId: data.voucherId,
       targetId: data.targetId
     }, httpOptions);

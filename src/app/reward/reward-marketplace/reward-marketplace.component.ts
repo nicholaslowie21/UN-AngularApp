@@ -50,11 +50,12 @@ export class RewardMarketplaceComponent implements OnInit {
     }
 
     this.sortOptions = [
-      {label: 'Date Newest to Oldest', value: '!endDate'},
-      {label: 'Date Oldest to Newest', value: 'endDate'}
+      {label: 'Date Latest to Soonest', value: '!endDate'},
+      {label: 'Date Soonest to Latest', value: 'endDate'}
     ];
 
     this.tierOptions = [
+      {label: 'All', value: 'all'},
       {label: 'Bronze', value: 'bronze'},
       {label: 'Silver', value: 'silver'},
       {label: 'Gold', value: 'gold'}
@@ -98,19 +99,31 @@ export class RewardMarketplaceComponent implements OnInit {
     
     this.rewards = arr;
     this.sortKey = '';
-    this.filterKeyMinTier = '';
+
+    let arr2 = [];
+    if(this.filterKeyMinTier.length > 0) {
+      if(this.filterKeyMinTier == 'all') {
+        arr2 = this.rewards;
+      } else {
+        for(var m = 0; m < this.rewards.length; m++) {
+          if(this.rewards[m].minTier == this.filterKeyMinTier) {
+            arr2.push(this.rewards[m]);
+          }
+        }
+      }
+      this.rewards = arr2;
+    }
   }
 
-  async filterMinTier(event) {
+  async filterTier(event) {
     await this.ngOnInit();
     let arr = [];
     let value = event.value;
-    if (value == 'bronze') {
+    if (value == 'all') {
       arr = this.rewards;
     } else {
-      // selecting 'gold' shows gold tier only, selecting 'silver' shows 'silver' and 'gold'
       for (let i = 0; i < this.rewards.length; i++) {
-        if (this.rewards[i].minTier == 'gold' || this.rewards[i].minTier == value) {
+        if (this.rewards[i].minTier == value) {
           arr.push(this.rewards[i]);
         }
       }
@@ -118,7 +131,20 @@ export class RewardMarketplaceComponent implements OnInit {
     
     this.rewards = arr;
     this.sortKey = '';
-    this.filterKeyCountry = '';
+    
+    let arr2 = [];
+    if(this.filterKeyCountry.length > 0) {
+      if(this.filterKeyCountry == 'All') {
+        arr2 = this.rewards;
+      } else {
+        for(var m = 0; m < this.rewards.length; m++) {
+          if(this.rewards[m].country == this.filterKeyCountry) {
+            arr2.push(this.rewards[m]);
+          }
+        }
+      }
+      this.rewards = arr2;
+    }
   }
 
   setCurrentReward(reward): void {

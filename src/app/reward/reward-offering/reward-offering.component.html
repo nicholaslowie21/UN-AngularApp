@@ -16,6 +16,8 @@
                     <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
                         <p-dropdown [options]="filterStatusOptions" [(ngModel)]="filterKeyStatus" placeholder="Filter By Status"
                             (onChange)="filterStatus($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                        <p-dropdown [options]="countryOptions" [(ngModel)]="filterKeyCountry" placeholder="Filter By Country" (onChange)="filterCountry($event)"
+                            styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
                         <!-- <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyMpw" placeholder="Sort By Date"
                             (onChange)="onSortChangeManpower($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown> -->
                         <span class="p-input-icon-left p-mb-2 p-mb-md-0">

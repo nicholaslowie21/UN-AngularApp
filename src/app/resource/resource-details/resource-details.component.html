@@ -130,6 +130,18 @@
                 <h6 class="text-secondary">{{resource.desc}}</h6>
                 <h6 *ngIf="type != 'knowledge'" class="text-secondary">Country: {{resource.country}}</h6>
                 <h6 *ngIf="type =='knowledge'" class="text-secondary">
+                    <p *ngIf="resource.knowType == 'patent'">
+                        Patent Number: {{resource.patentNum}}<br/>
+                        Expiry date: {{formatDate(resource.expiry)}}
+                    </p>
+                    <p *ngIf="resource.knowType == 'publication'">
+                        ISSN: {{resource.issn}}<br/>
+                        DOI: {{resource.doi}}<br/>
+                        Issue Date: {{formatDate(resource.issueDate)}}
+                    </p>
+                    <span *ngIf="resource.link.length == 0">Link: -</span>
+                    <span *ngIf="resource.link.length != 0">Link: <a href="{{resource.link}}">{{resource.link}}</a></span>
+                    <br/><br/>
                     <span *ngIf="resource.attachment.length == 0">Attachment: -</span>
                     <span *ngIf="resource.attachment.length > 0">Attachment: {{attachmentPath}}</span>
                     <span *ngIf="resource.attachment.length > 0" class="ml-md-2">
@@ -145,6 +157,10 @@
                 <div class="float-right">
                     <i class="pi pi-tag"></i>
                     <span class="{{type}}type rounded-sm text-white">&nbsp;{{type}}&nbsp;</span>
+                    <br/>
+                    <span *ngIf="type == 'knowledge'">
+                        Type: {{resource.knowType}}
+                    </span>
                 </div>
                 <br/>
                 <div *ngIf="isOwner" class="float-right mt-md-2">

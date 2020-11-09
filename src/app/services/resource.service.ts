@@ -107,11 +107,8 @@ export class ResourceService {
     }, httpOptions);
   }
 
-  createKnowledge(data): Observable<any> {
-    return this.http.post(API_URL + '/createKnowledge', {
-      title: data.title,
-      desc: data.desc
-    }, httpOptions);
+  createKnowledge(formData): Observable<any> {
+    return this.http.post(API_URL + '/createKnowledge', formData);
   }
 
   updateKnowledge(data): Observable<any> {

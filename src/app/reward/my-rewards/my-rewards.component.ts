@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { InstitutionService } from '../../services/institution.service';
 import { MessageService } from 'primeng/api';
 import { RewardService } from '../../services/reward.service';
 import { TokenStorageService } from '../../services/token-storage.service';
@@ -22,6 +23,14 @@ export class MyRewardsComponent implements OnInit {
 
   isClaimSuccessful: boolean = false;
 
+  transferYes: boolean = false;
+  isTransferSuccessful: boolean = false;
+  targetUserName = '';
+  keyword = '';
+  errorMsgSearch = '';
+  searchResults: any;
+  isSearchSuccessful: any;
+
   sortOptions: any = [];
   sortOrder: number;
   sortField: string;
@@ -33,7 +42,8 @@ export class MyRewardsComponent implements OnInit {
   filterKeyCountryActive = '';
   filterKeyCountryClaimed = '';
 
-  constructor(private messageService: MessageService, private rewardService: RewardService, private userService: UserService, private tokenStorageService: TokenStorageService) { }
+  constructor(private institutionService: InstitutionService, private messageService: MessageService, 
+    private rewardService: RewardService, private userService: UserService, private tokenStorageService: TokenStorageService) { }
 
   async ngOnInit() {
     await this.rewardService.getVouchers({status: 'active'}).toPromise().then(
@@ -156,6 +166,50 @@ export class MyRewardsComponent implements OnInit {
     } else {
       return;
     }
+  }
+
+  setTransferYes(voucherId): void {
+    this.transferYes = true;
+  }
+
+  cancelTransfer(): void {
+    this.transferYes = false;
+  }
+
+  searchUsers(): void {
+    if(this.keyword.length == 0) {
+      this.isSearchSuccessful = false;
+      this.errorMsgSearch = 'Please enter a username';
+      return;
+    }
+    this.institutionService.searchUsers({username: this.keyword}).subscribe(
+      response => {
+        this.searchResults = response.data.users;
+        if (this.searchResults.length == 0) {
+          this.isSearchSuccessful = false;
+          this.errorMsgSearch = 'No users found';
+        } else {
+          this.isSearchSuccessful = true;
+        }
+      },
+      err => {
+        this.errorMsgSearch = err.error.msg;
+        this.isSearchSuccessful = false;
+      }
+    );
+  }
+
+  transferVoucher(currentVoucherId, userId, userName) {
+    this.rewardService.transferVoucher({voucherId: currentVoucherId, targetId: userId}).subscribe(
+      response => {
+        this.isTransferSuccessful = true;
+        this.targetUserName = userName;
+      },
+      err => {
+        console.log(err);
+          this.messageService.add({key:'toastMsg', severity:'error', summary:'Error', detail:err.error.msg});
+      }
+    );
   }
 
 }

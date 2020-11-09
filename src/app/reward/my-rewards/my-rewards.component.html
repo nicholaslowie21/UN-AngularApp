@@ -86,6 +86,11 @@
                                     Voucher has been claimed.
                                 </div>
                             </div>
+                            <div *ngIf="isTransferSuccessful">
+                                <div class="alert alert-success">
+                                    Voucher has been transferred to {{targetUserName}}.
+                                </div>
+                            </div>            
                             <span class="product-category">{{currentVoucher.rewardCountry}}</span>
                             <br>
                             <img *ngIf="currentVoucher.rewardImgPath.length == 0" src="../../../assets/img/rewardPlaceholder.png"
@@ -93,7 +98,9 @@
                             <img *ngIf="currentVoucher.rewardImgPath.length != 0" src="https://localhost:8080{{currentVoucher.rewardImgPath}}"
                                 class="img-fluid" style="width: 500px; height: 200px; object-fit: cover;" alt="Reward pic" />
                             <br/><br/>
-                            <button type="button" class="btn btn-success float-right" (click)="claimVoucher(currentVoucher.id)">Claim</button>
+                            <button type="button" *ngIf="!transferYes" class="btn btn-info ml-1 float-right" (click)="setTransferYes(currentVoucher.id)">Transfer</button>
+                            <button type="button" *ngIf="transferYes" class="btn btn-info ml-1 float-right" (click)="cancelTransfer()">Cancel transfer</button>
+                            <button type="button" class="btn btn-success mr-md-2 float-right" (click)="claimVoucher(currentVoucher.id)">Claim</button>
                             <h5>{{currentVoucher.rewardTitle}}</h5>
                             <div>
                                 Code: {{currentVoucher.code}}<br>
@@ -108,6 +115,65 @@
                                 </div>
                                 <div class="col-6 text-right">
                                     End Date: {{formatDate(currentVoucher.endDate)}}
+                                </div>
+                            </div>
+                            <div *ngIf="transferYes">
+                                <br/>
+                                <div *ngIf="!isTransferSuccessful">
+                                    Select a user to transfer this voucher to:
+                                    <form name="form" (ngSubmit)="f.form.valid && searchUsers()" #f="ngForm" novalidate>
+                                        <div class="form-inline">
+                                            <input
+                                                type="text"
+                                                class="form-control mr-md-2"
+                                                name="search"
+                                                [(ngModel)]="keyword"
+                                                #search="ngModel"
+                                                placeholder="Enter a username"
+                                            />
+                                            <button class="btn btn-primary" (click)=searchUsers()>Search</button>
+                                        </div>
+                                    </form>
+                                    <br/>
+                                    <div class="alert alert-warning" *ngIf="f.submitted && !isSearchSuccessful">
+                                        {{ errorMsgSearch }}
+                                    </div>
+                                    <div *ngIf="isSearchSuccessful">
+                                        <div *ngFor="let user of searchResults">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="card border-0 col-3" style="width:20%">
+                                                            <div *ngIf="user.profilePic.length > 0">
+                                                                <img
+                                                                src={{user.profilePic}}
+                                                                class="rounded-circle img-fluid"
+                                                                style="width: 80px; height: 80px; object-fit: cover;"
+                                                                alt="Profile picture"
+                                                                />
+                                                            </div>
+                                                            <div *ngIf="user.profilePic.length == 0">
+                                                                <img
+                                                                src="../../assets/img/profilePic_Placeholder.png"
+                                                                class="rounded-circle img-fluid"
+                                                                style="width: 90px; height: 90px; object-fit: cover;"
+                                                                alt="Profile picture"
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                        <br/>
+                                                        <div class="card border-0 col-5" style="width:80%">
+                                                            Name: {{user.name}} <br/>
+                                                            Username: {{user.username}}
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <button class="btn btn-primary float-right" (click)="transferVoucher(currentVoucher.id, user.id, user.name)">Transfer</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
