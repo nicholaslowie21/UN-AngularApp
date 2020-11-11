@@ -69,13 +69,13 @@ export class AdminUserManagementComponent implements OnInit {
     } else {
       userType = 'institution';
     }
-    this.router.navigate(['/admin/user-management/profile'], {queryParams: {username: user.username, userType: userType}});
+    this.router.navigate(['/admin/user-management/profile'], {queryParams: {username: user.username, type: userType, id: user.id}});
     this.searchType = 'Select';
     this.keyword = '';
   }
 
   viewProject(project): void {
-    this.router.navigate(['/admin/user-management/profile'], {queryParams: {id: project.id}});
+    this.router.navigate(['/admin/user-management/profile'], {queryParams: {type: 'project', id: project.id}});
     this.searchType = 'Select';
     this.keyword = '';
   }

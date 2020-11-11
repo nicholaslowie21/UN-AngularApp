@@ -94,4 +94,14 @@ export class AdminService {
       targetId: data.id
     }, httpOptions);
   }
+
+  getAuditLogs(data): Observable<any> {
+    return this.http.get(API_URL + '/auditLogs?targetId=' + data.id +
+    '&targetType=' + data.type);
+  }
+
+  exportAuditLogs(data): Observable<any> {
+    return this.http.get(API_URL + '/export/auditLogs?targetId=' + data.id +
+    '&targetType=' + data.type);
+  }
 }

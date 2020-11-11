@@ -721,6 +721,7 @@ export class ProjectDetailsComponent implements OnInit {
     this.reportService.createReport(reportForm).subscribe(
       response => {
         this.isReportSuccessful = true;
+        console.log(JSON.stringify(response));
       }, err => {
         this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
       }
