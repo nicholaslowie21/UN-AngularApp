@@ -107,7 +107,7 @@
             </div>
           </div>
         </div>
-        <a href="/announcements">See All</a>
+        <a *ngIf="announcements.length > 0" href="/announcements">See All</a>
 
         <div class="modal fade" id="viewAnnouncement" tabindex="-1" role="dialog" aria-labelledby="viewAnnouncementLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
