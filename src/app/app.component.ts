@@ -17,6 +17,7 @@ export class AppComponent implements OnInit {
   userType: any;
   showAdmin = false;
   showNavBar = true;
+  showChatButton = true;
 
   chatStatus: any;
   chatRooms = [];
@@ -124,6 +125,9 @@ export class AppComponent implements OnInit {
   onActivate(event: any): void {
     if (event.isShareProfile) {
       this.showNavBar = false;
+    }
+    if(event.isChatPage) {
+      this.showChatButton = false;
     }
   }
 

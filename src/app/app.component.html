@@ -103,7 +103,7 @@
 
   <p-toast key="toastMsg" [baseZIndex]="100"></p-toast>
 
-  <div *ngIf="isLoggedIn">
+  <div *ngIf="isLoggedIn && showChatButton">
     <!-- Chat BUTTON -->
     <button *ngIf="chatStatus.status == 'close'" id="chatButton" (click)="openChatPopUp()"
       class="btn btn-primary">Chat
@@ -123,6 +123,7 @@
               <option value="admin">Admin</option>
             </select>
             <button (click)="closeChatPopUp()" class="btn float-right"><i class="pi pi-times"></i></button>
+            <a href="/chat" class="btn float-right"><i class="pi pi-external-link"></i></a>
           </div>
           <div *ngIf="chatStatus.status == 'room'">
             <button (click)="closeChatRoom()" class="btn mt-1"><i class="pi pi-chevron-left"></i></button>
