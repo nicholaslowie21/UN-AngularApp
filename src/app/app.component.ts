@@ -65,11 +65,11 @@ export class AppComponent implements OnInit {
     this.chatStatus = this.tokenStorageService.getChatStatus();
     console.log(this.chatStatus);
 
-    await this.communicationService.getChatRoomsList({ type: 'normal' }).toPromise().then(
+    await this.communicationService.getFilteredChatRoomsList({ type: 'normal' }).toPromise().then(
       res => this.chatRooms = res.data.chatRooms
     );
 
-    await this.communicationService.getChatRoomsList({ type: 'admin' }).toPromise().then(
+    await this.communicationService.getFilteredChatRoomsList({ type: 'admin' }).toPromise().then(
       res => this.chatRoomsAdmin = res.data.chatRooms
     );
 

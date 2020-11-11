@@ -1,1 +1,147 @@
-<h2>Chat</h2>
+<div class="container">
+    <div class="messaging">
+        <div class="inbox_msg">
+            <div class="inbox_people">
+                <div class="headind_srch" [ngClass]="{'bg-warning': selectedChatType == 'admin'}">
+                    <div class="recent_heading">
+                        <h4 *ngIf="!isAdmin">Chat</h4>
+                        <h4 *ngIf="isAdmin" style="display: inline-block;">Chat as </h4>
+                        <select *ngIf="isAdmin" class="ml-2" [(ngModel)]="selectedChatType"
+                            (change)="onChangeChatType()" style="display: inline-block; width: fit-content;">
+                            <option selected value="user">User</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    <div class="srch_bar">
+                        <div class="stylish-input-group">
+                            <form name="searchForm" (ngSubmit)="f.form.valid && searchChat()" #f="ngForm" novalidate>
+                                <input type="text" [(ngModel)]="searchForm.keyword"
+                                #keyword="ngModel" class="search-bar" placeholder="Search" />
+                                <span class="input-group-addon">
+                                    <button type="button"> <i class="pi pi-search" aria-hidden="true"></i> </button>
+                                </span>
+                            </form>
+                             
+                        </div>
+                    </div>
+                </div>
+                <div class="inbox_chat">
+                    <div *ngIf="displayChatRooms.length == 0" class="p-2">
+                        No chat found.
+                    </div>
+                    <div *ngFor="let cr of displayChatRooms">
+                        <div class="chat_list" (click)="startTimer(cr.id);" 
+                            [ngClass]="{'active_chat': selectedChatRoom && cr.id == selectedChatRoom.id, 'bg-warning': cr.chatType == 'admin' && !isAdmin}"
+                            style="cursor: pointer;">
+                            <div class="chat_people">
+                                <div class="chat_img">
+                                    <span *ngIf="cr.targetImg.length == 0">
+                                        <img src="../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle"
+                                          style="height: 40px; width: 40px; object-fit: cover;">
+                                    </span>
+                                    <span *ngIf="cr.targetImg.length != 0">
+                                        <img src="https://localhost:8080{{cr.targetImg}}" class="img-fluid rounded-circle"
+                                          style="height: 40px; width: 40px; object-fit: cover;">
+                                    </span>
+                                </div>
+                                <div class="chat_ib">
+                                    <h5><span *ngIf="cr.user1username != username">{{cr.user1username}}</span>
+                                        <span *ngIf="cr.user2username != username">{{cr.user2username}}</span> 
+                                        <span class="chat_date">{{formatDate(cr.updatedAt)}}</span>
+                                    </h5>
+                                    <p class="p-text-nowrap p-text-truncate" style="width: 90%;display: inline-block;">{{cr.lastMessage}}</p>
+                                    
+                                    <span *ngIf="cr.user1username != username && cr.user2read == false" class="dot"></span>
+                                    <span *ngIf="cr.user2username != username && cr.user1read == false" class="dot"></span>
+                                
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mesgs">
+                <div *ngIf="!selectedChatRoom" class="mt-4 ml-4">
+                    Please select a chat room to start messaging
+                </div>
+                <div *ngIf="selectedChatRoom">
+                    <div class="chatRoomHeader p-2">
+                        <span *ngIf="selectedChatImg.length == 0">
+                            <img src="../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle"
+                              style="height: 40px; width: 40px; object-fit: cover;">
+                        </span>
+                        <span *ngIf="selectedChatImg.length != 0">
+                            <img src="https://localhost:8080{{selectedChatImg}}" class="img-fluid rounded-circle"
+                              style="height: 40px; width: 40px; object-fit: cover;">
+                        </span>
+                        <span *ngIf="selectedChatRoom.user1username != username" class="ml-2 mt-2">
+                            <span *ngIf="selectedChatRoom.user1type == 'user'">
+                              <a class="text-dark"
+                                href="/profile?username={{selectedChatRoom.user1username}}&userType=individual">{{selectedChatRoom.user1username}}</a>
+                            </span>
+                            <span *ngIf="selectedChatRoom.user1type == 'institution'">
+                              <a class="text-dark"
+                                href="/profile?username={{selectedChatRoom.user1username}}&userType=institution">{{selectedChatRoom.user1username}}</a>
+                            </span>
+                        </span>
+                        <span *ngIf="selectedChatRoom.user2username != username" class="ml-2 mt-2">
+                            <span *ngIf="selectedChatRoom.user2type == 'user'">
+                              <a class="text-dark"
+                                href="/profile?username={{selectedChatRoom.user2username}}&userType=individual">{{selectedChatRoom.user2username}}</a>
+                            </span>
+                            <span *ngIf="selectedChatRoom.user2type == 'institution'">
+                              <a class="text-dark"
+                                href="/profile?username={{selectedChatRoom.user2username}}&userType=institution">{{selectedChatRoom.user2username}}</a>
+                            </span>
+                        </span>
+                    </div>
+                    <div *ngIf="selectedChatRoom.chatType == 'admin' && selectedChatType == 'admin'"
+                        class="text-center bg-warning"><small>You are now chatting as an admin</small></div>
+                    <div *ngIf="selectedChatRoom.chatType == 'admin' && selectedChatType == 'user'"
+                        class="text-center bg-warning"><small>You are now chatting with an admin</small></div>
+                    
+                        <div class="msg_history">
+                        <div *ngFor="let msg of chatMsgs">
+                            <div *ngIf="msg.accountUsername != username" class="incoming_msg">
+                                <div class="incoming_msg_img">
+                                    <span *ngIf="selectedChatImg.length == 0">
+                                        <img src="../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle"
+                                          style="height: 40px; width: 40px; object-fit: cover;">
+                                      </span>
+                                      <span *ngIf="selectedChatImg.length != 0">
+                                        <img src="https://localhost:8080{{selectedChatImg}}" class="img-fluid rounded-circle"
+                                          style="height: 40px; width: 40px; object-fit: cover;">
+                                      </span>
+                                </div>
+                                <div class="received_msg">
+                                    <div class="received_withd_msg">
+                                        <p>{{msg.message}}</p>
+                                        <span class="time_date"> 11:01 AM | {{formatDate(msg.updatedAt)}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="msg.accountUsername == username" class="outgoing_msg">
+                                <div class="sent_msg">
+                                    <p>{{msg.message}}</p>
+                                    <span class="time_date"> 11:01 AM | {{formatDate(msg.updatedAt)}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="selectedChatRoom" class="type_msg p-2">
+                    <div class="input_msg_write">
+                        <form name="form" (ngSubmit)="f.form.valid && sendMsg()" #f="ngForm" novalidate>
+                            <input type="text" class="write_msg" name="message" [(ngModel)]="chatForm.message" required
+                                #message="ngModel" placeholder="Type a message..." />
+                            <button class="msg_send_btn" type="button"><i class="pi pi-angle-right"
+                                aria-hidden="true"></i></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

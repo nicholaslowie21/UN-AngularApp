@@ -53,8 +53,12 @@ export class CommunicationService {
     }, httpOptions);
   }
 
-  getChatRoomsList(data): Observable<any> {
-    return this.http.get(API_URL + '/chat/rooms?chatType=' + data.type);
+  getChatRoomsList(): Observable<any> {
+    return this.http.get(API_URL + '/chat/rooms');
+  }
+
+  getFilteredChatRoomsList(data): Observable<any> {
+    return this.http.get(API_URL + '/chat/filtered/rooms?chatType=' + data.type);
   }
 
   getChatMsgs(data): Observable<any> {
