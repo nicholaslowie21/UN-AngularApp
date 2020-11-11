@@ -349,6 +349,9 @@
                         </h5>
                     </div-->
                     <div *ngIf="!calendarOn">
+                        <div *ngIf="projPosts.length == 0" class="alert alert-info">
+                            This project has no post yet.
+                        </div>
                         <div *ngFor="let p of projPosts">
                             <div class="card mb-md-2">
                                 <div *ngIf="p.imgPath.length == 0">
