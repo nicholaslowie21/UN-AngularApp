@@ -15,7 +15,7 @@ export class ChatComponent implements OnInit {
   isChatPage = true;
   isAdmin = false;
   username: any;
-  
+
   chatStatus: any;
   chatRooms = [];
   chatRoomsAdmin = [];
@@ -26,12 +26,12 @@ export class ChatComponent implements OnInit {
   selectedChatType = 'user';
   chatMsgs = [];
   chatForm: any = {};
-  searchForm: any = {};
+  searchForm: any = {keyword: ''};
 
   source: any;
   subscribe: any;
 
-  constructor(private tokenStorageService: TokenStorageService, private communicationService: CommunicationService, 
+  constructor(private tokenStorageService: TokenStorageService, private communicationService: CommunicationService,
     private messageService: MessageService) {
     this.source = interval(3000);
   }
@@ -40,7 +40,7 @@ export class ChatComponent implements OnInit {
     let user = this.tokenStorageService.getUser();
     this.username = user.username;
     let role = user.role;
-    if(role == 'adminlead' || role == 'admin' || role == 'regionaladmin') {
+    if (role == 'adminlead' || role == 'admin' || role == 'regionaladmin') {
       this.isAdmin = true;
     }
 
@@ -50,14 +50,14 @@ export class ChatComponent implements OnInit {
   }
 
   startTimer(id) {
-    if(this.subscribe) {
+    if (this.subscribe) {
       this.subscribe.unsubscribe();
     }
-    
+
     this.subscribe = this.source.subscribe(() => {
       this.openChatRoom(id);
-        console.log("timer is running");
-      }
+      console.log("timer is running");
+    }
     );
   }
 
@@ -70,8 +70,8 @@ export class ChatComponent implements OnInit {
       res => this.chatRoomsAdmin = res.data.chatRooms
     );
 
-    if(this.isAdmin == true) {
-      if(this.selectedChatType == 'user') {
+    if (this.isAdmin == true) {
+      if (this.selectedChatType == 'user') {
         this.displayChatRooms = this.chatRooms;
       } else {
         this.displayChatRooms = this.chatRoomsAdmin;
@@ -106,13 +106,32 @@ export class ChatComponent implements OnInit {
         this.chatForm.message = "";
         this.openChatRoom(this.selectedChatRoom.id);
       }, err => {
-        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+        this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: err.error.msg });
       }
     )
   }
 
-  searchChat(): void {
-    
+  async searchChat() {
+    await this.loadRooms();
+    if(this.searchForm.keyword.length == 0) {
+      return;
+    }
+    if (this.searchForm.keyword.length > 0) {
+      let arr = [];
+      for (var i = 0; i < this.displayChatRooms.length; i++) {
+        if (this.displayChatRooms[i].user1username != this.username && this.displayChatRooms[i].user1username.includes(this.searchForm.keyword)) {
+          arr.push(this.displayChatRooms[i]);
+        } else if (this.displayChatRooms[i].user2username != this.username && this.displayChatRooms[i].user2username.includes(this.searchForm.keyword)) {
+          arr.push(this.displayChatRooms[i]);
+        }
+      }
+      this.displayChatRooms = arr;
+    }
+  }
+
+  clearSearch(): void {
+    this.searchForm.keyword = '';
+    this.loadRooms();
   }
 
   onChangeChatType(): void {
@@ -121,7 +140,7 @@ export class ChatComponent implements OnInit {
 
   formatDate(date): any {
     let formattedDate = new Date(date).toDateString();
-    return formattedDate.substring(4, formattedDate.length-5);
+    return formattedDate.substring(4, formattedDate.length - 5);
   }
 
   sortFunction(a, b) {
