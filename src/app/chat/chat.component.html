@@ -100,7 +100,7 @@
                     <div *ngIf="selectedChatRoom.chatType == 'admin' && selectedChatType == 'user'"
                         class="text-center bg-warning"><small>You are now chatting with an admin</small></div>
                     
-                        <div class="msg_history">
+                        <div class="msg_history" #messageArea>
                         <div *ngFor="let msg of chatMsgs">
                             <div *ngIf="msg.accountUsername != username" class="incoming_msg">
                                 <div class="incoming_msg_img">

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { TokenStorageService } from '../services/token-storage.service';
 import { CommunicationService } from '../services/communication.service';
 import { MessageService } from 'primeng/api';
@@ -11,6 +11,9 @@ import { interval } from 'rxjs';
   providers: [MessageService]
 })
 export class ChatComponent implements OnInit {
+
+  @ViewChild('messageArea')
+  chatMessageAreaElement: ElementRef<HTMLElement>;
 
   isChatPage = true;
   isAdmin = false;
@@ -33,7 +36,7 @@ export class ChatComponent implements OnInit {
 
   constructor(private tokenStorageService: TokenStorageService, private communicationService: CommunicationService,
     private messageService: MessageService) {
-    this.source = interval(3000);
+    this.source = interval(1000);
   }
 
   async ngOnInit() {
@@ -57,11 +60,11 @@ export class ChatComponent implements OnInit {
     this.subscribe = this.source.subscribe(() => {
       this.openChatRoom(id);
       console.log("timer is running");
-    }
-    );
+    });
   }
 
   async loadRooms() {
+    console.log("LOAD ROOMS")
     await this.communicationService.getFilteredChatRoomsList({ type: 'normal' }).toPromise().then(
       res => this.chatRooms = res.data.chatRooms
     );
@@ -81,8 +84,8 @@ export class ChatComponent implements OnInit {
       this.displayChatRooms.sort(this.sortFunction);
     }
 
-    console.log(this.chatRooms)
-    console.log(this.chatRoomsAdmin)
+    // console.log(this.chatRooms)
+    // console.log(this.chatRoomsAdmin)
   }
 
   async openChatRoom(roomId) {
@@ -93,7 +96,8 @@ export class ChatComponent implements OnInit {
         this.chatMsgs = res.data.chats;
       }
     );
-    console.log(this.selectedChatRoom)
+    // console.log(this.selectedChatRoom)
+    this.scrollToLastMessage();
     this.loadRooms();
   }
 
@@ -132,6 +136,13 @@ export class ChatComponent implements OnInit {
   clearSearch(): void {
     this.searchForm.keyword = '';
     this.loadRooms();
+  }
+
+  scrollToLastMessage() {
+    console.log("SCROLL");
+    if (this.chatMessageAreaElement) {
+      this.chatMessageAreaElement.nativeElement.scrollTop = this.chatMessageAreaElement.nativeElement.scrollHeight;
+    }
   }
 
   onChangeChatType(): void {
