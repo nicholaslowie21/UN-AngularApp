@@ -148,6 +148,10 @@ export class MyRewardsComponent implements OnInit {
       this.currentVoucher.claimedAt = voucher.claimedAt.substring(0, 10);
     }
     console.log(this.currentVoucher);
+
+    this.isClaimSuccessful = false;
+    this.isTransferSuccessful = false;
+    this.transferYes = false;
   }
 
   claimVoucher(voucherId): void {
@@ -185,6 +189,18 @@ export class MyRewardsComponent implements OnInit {
     this.institutionService.searchUsers({username: this.keyword}).subscribe(
       response => {
         this.searchResults = response.data.users;
+
+        // remove the current user from search results so they cannot transfer to themselves
+        var index = -1;
+        for (let i = 0; i < this.searchResults.length; i++) {
+          if (this.searchResults[i].id == this.tokenStorageService.getUser().id) {
+            index = i;
+          }
+        }
+        if (index != -1) {
+          this.searchResults.splice(index, 1);
+        }
+
         if (this.searchResults.length == 0) {
           this.isSearchSuccessful = false;
           this.errorMsgSearch = 'No users found';
@@ -200,16 +216,23 @@ export class MyRewardsComponent implements OnInit {
   }
 
   transferVoucher(currentVoucherId, userId, userName) {
-    this.rewardService.transferVoucher({voucherId: currentVoucherId, targetId: userId}).subscribe(
-      response => {
-        this.isTransferSuccessful = true;
-        this.targetUserName = userName;
-      },
-      err => {
-        console.log(err);
-          this.messageService.add({key:'toastMsg', severity:'error', summary:'Error', detail:err.error.msg});
-      }
-    );
+    let r = confirm("Are you sure you want to transfer this voucher to " + userName + "?");
+    if (r == true) {
+      this.rewardService.transferVoucher({voucherId: currentVoucherId, targetId: userId}).subscribe(
+        response => {
+          this.isTransferSuccessful = true;
+          this.targetUserName = userName;
+          this.ngOnInit();
+          this.transferYes = false;
+        },
+        err => {
+          console.log(err);
+            this.messageService.add({key:'toastMsg', severity:'error', summary:'Error', detail:err.error.msg});
+        }
+      );
+    } else {
+      return;
+    }
   }
 
 }

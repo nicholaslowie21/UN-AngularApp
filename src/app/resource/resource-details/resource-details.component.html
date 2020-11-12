@@ -135,9 +135,12 @@
                         Expiry date: {{formatDate(resource.expiry)}}
                     </p>
                     <p *ngIf="resource.knowType == 'publication'">
-                        ISSN: {{resource.issn}}<br/>
-                        DOI: {{resource.doi}}<br/>
-                        Issue Date: {{formatDate(resource.issueDate)}}
+                        <span *ngIf="resource.issn.length == 0">ISSN: -</span>
+                        <span *ngIf="resource.issn.length != 0">ISSN: {{resource.issn}}</span><br/>
+                        <span *ngIf="resource.doi.length == 0">DOI: -</span>
+                        <span *ngIf="resource.doi.length != 0">DOI: {{resource.doi}}</span><br/>
+                        <span *ngIf="!resource.issueDate">Issue Date: -</span>
+                        <span *ngIf="resource.issueDate">Issue Date: {{formatDate(resource.issueDate)}}</span><br/>
                     </p>
                     <span *ngIf="resource.link.length == 0">Link: -</span>
                     <span *ngIf="resource.link.length != 0">Link: <a href="{{resource.link}}">{{resource.link}}</a></span>
@@ -164,8 +167,8 @@
                 </div>
                 <br/>
                 <div *ngIf="isOwner" class="float-right mt-md-2">
-                    <a href="/resource/editDetails?id={{resource.id}}&type={{type}}" class="btn btn-primary float-right"><i class="pi pi-pencil"></i>Edit</a>
-                    <button class="btn btn-danger float-right" (click)="deleteResource()"><i class="pi pi-trash"></i>Delete</button>
+                    <button class="btn btn-danger ml-1 float-right" (click)="deleteResource()"><i class="pi pi-trash"></i>Delete</button>
+                    <a href="/resource/editDetails?id={{resource.id}}&type={{type}}" class="btn btn-primary mr-md-2 float-right"><i class="pi pi-pencil"></i>Edit</a>
                 </div>
             </div>
         </div>

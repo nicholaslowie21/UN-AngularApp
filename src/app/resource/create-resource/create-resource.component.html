@@ -53,8 +53,9 @@
       <div class="form-group row" *ngIf="resourceType == 'Knowledge' && knowType == 'Patent'">
         <label for="expiry" class="col-sm-4 col-form-label">Patent Expiry</label>
         <div class="col-sm-8">
-          <p-calendar [baseZIndex]="90" name="expiry" [(ngModel)]="form.expiry" dateFormat="yy-mm-dd" [showIcon]="true" [minDate]="minimumDate"
-            [monthNavigator]="true" [yearNavigator]="true" yearRange="2020:2050" required #expiry="ngModel"></p-calendar>
+          <!-- allow from today to 25 years later since patents expire in 20 years -->
+          <p-calendar [baseZIndex]="90" name="expiry" [(ngModel)]="form.expiry" dateFormat="yy-mm-dd" [showIcon]="true" [minDate]="todayDate"
+            [monthNavigator]="true" [yearNavigator]="true" yearRange="2020:2045" required #expiry="ngModel"></p-calendar>
           <div class="alert-danger" *ngIf="f.submitted && expiry.invalid">
             <div *ngIf="expiry.errors.required">Patent Expiry is required</div>
           </div>
@@ -68,12 +69,8 @@
             class="form-control"
             name="issn"
             [(ngModel)]="form.issn"
-            required
             #issn="ngModel"
           />
-          <div class="alert-danger" *ngIf="f.submitted && issn.invalid">
-            <div *ngIf="issn.errors.required">ISSN is required</div>
-          </div>
         </div>
       </div>
       <div class="form-group row" *ngIf="resourceType == 'Knowledge' && knowType == 'Publication'">
@@ -84,22 +81,16 @@
             class="form-control"
             name="doi"
             [(ngModel)]="form.doi"
-            required
             #doi="ngModel"
           />
-          <div class="alert-danger" *ngIf="f.submitted && doi.invalid">
-            <div *ngIf="doi.errors.required">DOI is required</div>
-          </div>
         </div>
       </div>
       <div class="form-group row" *ngIf="resourceType == 'Knowledge' && knowType == 'Publication'">
-        <label for="issueDate" class="col-sm-4 col-form-label"></label>
+        <label for="issueDate" class="col-sm-4 col-form-label">Issue Date</label>
         <div class="col-sm-8">
-          <p-calendar [baseZIndex]="90" name="issueDate" [(ngModel)]="form.issueDate" dateFormat="yy-mm-dd" [showIcon]="true" [minDate]="minimumDate"
-            [monthNavigator]="true" [yearNavigator]="true" yearRange="2020:2050" required #issueDate="ngModel"></p-calendar>
-          <div class="alert-danger" *ngIf="f.submitted && issueDate.invalid">
-            <div *ngIf="issueDate.errors.required">Issue Date is required</div>
-          </div>
+          <!-- allow from 1970 to today's date -->
+          <p-calendar [baseZIndex]="90" name="issueDate" [(ngModel)]="form.issueDate" dateFormat="yy-mm-dd" [showIcon]="true" [maxDate]="todayDate"
+            [monthNavigator]="true" [yearNavigator]="true" yearRange="1970:2020" #issueDate="ngModel"></p-calendar>
         </div>
       </div>
       <div class="form-group row">
@@ -152,6 +143,14 @@
             [(ngModel)]="form.link"
             #link="ngModel"
           />
+        </div>
+      </div>
+      <div class="form-group row" *ngIf="resourceType == 'Knowledge'">
+        <label for="link" class="col-sm-4 col-form-label">Attachment</label>
+        <div class="col-sm-8">
+          <form>
+            <input type="file" name="attachment" (change)="selectAttachment($event)" />
+          </form>
         </div>
       </div>
       <!-- allow creator to set address attribute for venue resources -->

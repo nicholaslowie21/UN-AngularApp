@@ -18,6 +18,8 @@ export class EditResourceDetailsComponent implements OnInit {
   id: any;
   type: any;
   resource: any;
+  knowType: any;
+  todayDate = new Date();
   isUpdateSuccessful = false;
   errorMessage = '';
 
@@ -109,7 +111,7 @@ export class EditResourceDetailsComponent implements OnInit {
       // this.emptyPlaceholder = new Array(10 - this.resource.imgPath.length);
       // console.log(this.emptyPlaceholder);
     } else if (this.type == 'knowledge') {
-      await this.resourceService.viewKnowledgeDetails({id: this.id}).toPromise().then(res => {this.resource = res.data.knowledge, this.userOwners = res.data.userOwner, this.institutionOwners = res.data.institutionOwner, this.attachmentPath = res.data.knowledge.attachment;});
+      await this.resourceService.viewKnowledgeDetails({id: this.id}).toPromise().then(res => {this.resource = res.data.knowledge, this.userOwners = res.data.userOwner, this.institutionOwners = res.data.institutionOwner, this.attachmentPath = res.data.knowledge.attachment, this.knowType = res.data.knowledge.knowType});
       console.log(this.resource);
     }
 
@@ -270,7 +272,7 @@ export class EditResourceDetailsComponent implements OnInit {
 
     const formData = new FormData();
     formData.append("knowledgeId", this.id);
-    formData.append("IP", this.attachment);
+    formData.append("attachment", this.attachment);
 
     this.resourceService.uploadKnowledgeAttachment(formData).subscribe(
       response => {
@@ -420,9 +422,27 @@ export class EditResourceDetailsComponent implements OnInit {
     } else if (this.type == 'knowledge') {
       const formUpdateKnowledge = {
         id: this.id,
+        knowType: this.knowType,
+        patentNum: '',
+        expiry: '',
+        issn: '',
+        doi: '',
+        issueDate: '',
         title: this.resource.title,
-        desc: this.resource.desc
+        desc: this.resource.desc,
+        link: this.resource.link || ''
       }
+
+      if (this.knowType == 'patent') {
+        formUpdateKnowledge.patentNum = this.resource.patentNum;
+        formUpdateKnowledge.expiry = this.resource.expiry;
+
+      } else if (this.knowType == 'publication') {
+        formUpdateKnowledge.issn = this.resource.issn || '';
+        formUpdateKnowledge.doi = this.resource.doi || '';
+        formUpdateKnowledge.issueDate = this.resource.issueDate || '';
+      }
+      
       this.resourceService.updateKnowledge(formUpdateKnowledge).subscribe(
         response => {
           this.isUpdateSuccessful = true;

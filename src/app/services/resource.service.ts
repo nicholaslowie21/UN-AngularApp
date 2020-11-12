@@ -115,7 +115,14 @@ export class ResourceService {
     return this.http.post(API_URL + '/updateKnowledge', {
       knowledgeId: data.id,
       title: data.title,
-      desc: data.desc
+      desc: data.desc,
+      knowType: data.knowType,
+      link: data.link,
+      patentNum: data.patentNum,
+      expiry: data.expiry,
+      issn: data.issn,
+      doi: data.doi,
+      issueDate: data.issueDate
     }, httpOptions);
   }
 

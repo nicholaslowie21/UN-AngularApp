@@ -55,7 +55,7 @@
                                         <img *ngIf="voucher.rewardImgPath.length != 0" src="https://localhost:8080{{voucher.rewardImgPath}}"
                                             class="img-fluid" style="width: 150px; height: 150px; object-fit: cover;" alt="Reward pic" />
                                         <div class="product-name">
-                                            <button class="btn" data-toggle="modal" data-target="#ViewModal" (click)=setCurrentVoucher(voucher)>
+                                            <button class="btn" data-toggle="modal" data-target="#ViewModal" (click)="setCurrentVoucher(voucher)">
                                                 {{voucher.rewardTitle}}
                                             </button>
                                         </div>
@@ -98,9 +98,9 @@
                             <img *ngIf="currentVoucher.rewardImgPath.length != 0" src="https://localhost:8080{{currentVoucher.rewardImgPath}}"
                                 class="img-fluid" style="width: 500px; height: 200px; object-fit: cover;" alt="Reward pic" />
                             <br/><br/>
-                            <button type="button" *ngIf="!transferYes" class="btn btn-info ml-1 float-right" (click)="setTransferYes(currentVoucher.id)">Transfer</button>
-                            <button type="button" *ngIf="transferYes" class="btn btn-info ml-1 float-right" (click)="cancelTransfer()">Cancel transfer</button>
-                            <button type="button" class="btn btn-success mr-md-2 float-right" (click)="claimVoucher(currentVoucher.id)">Claim</button>
+                            <button type="button" *ngIf="!transferYes && !isTransferSuccessful && !isClaimSuccessful" class="btn btn-info ml-1 float-right" (click)="setTransferYes(currentVoucher.id)">Transfer</button>
+                            <button type="button" *ngIf="transferYes && !isTransferSuccessful && !isClaimSuccessful" class="btn btn-info ml-1 float-right" (click)="cancelTransfer()">Cancel transfer</button>
+                            <button type="button" *ngIf="!isClaimSuccessful && !isTransferSuccessful" class="btn btn-success mr-md-2 float-right" (click)="claimVoucher(currentVoucher.id)">Claim</button>
                             <h5>{{currentVoucher.rewardTitle}}</h5>
                             <div>
                                 Code: {{currentVoucher.code}}<br>
