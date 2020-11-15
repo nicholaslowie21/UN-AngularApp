@@ -52,13 +52,18 @@ export class ChatComponent implements OnInit {
     await this.loadRooms();
   }
 
-  startTimer(id) {
+  async startTimer(id) {
     if (this.subscribe) {
       this.subscribe.unsubscribe();
     }
 
-    this.subscribe = this.source.subscribe(() => {
-      this.openChatRoom(id);
+    this.subscribe = await this.source.subscribe(async () => {
+      let oldMsgsLength = this.chatMsgs.length;
+      await this.getMessages(id);
+      if(oldMsgsLength < this.chatMsgs.length) {
+        console.log("SCROLL INSIDE TIMER")
+        this.scrollToLastMessage();
+      }
       console.log("timer is running");
     });
   }
@@ -73,22 +78,24 @@ export class ChatComponent implements OnInit {
       res => this.chatRoomsAdmin = res.data.chatRooms
     );
 
-    if (this.isAdmin == true) {
       if (this.selectedChatType == 'user') {
         this.displayChatRooms = this.chatRooms;
       } else {
         this.displayChatRooms = this.chatRoomsAdmin;
       }
-    } else {
-      this.displayChatRooms = this.chatRooms.concat(this.chatRoomsAdmin);
-      this.displayChatRooms.sort(this.sortFunction);
-    }
 
     // console.log(this.chatRooms)
     // console.log(this.chatRoomsAdmin)
   }
 
   async openChatRoom(roomId) {
+    // await this.getMessages(roomId);
+    this.loadRooms();
+    await this.startTimer(roomId);
+    this.scrollToLastMessage();
+  }
+
+  async getMessages(roomId) {
     await this.communicationService.getChatMsgs({ id: roomId }).toPromise().then(
       res => {
         this.selectedChatImg = res.data.targetImg;
@@ -96,19 +103,18 @@ export class ChatComponent implements OnInit {
         this.chatMsgs = res.data.chats;
       }
     );
-    // console.log(this.selectedChatRoom)
-    this.scrollToLastMessage();
     this.loadRooms();
   }
 
-  sendMsg(): void {
+  sendMsg() {
     if (this.chatForm.message.length == 0) {
       return;
     }
     this.communicationService.sendChatMsg({ roomId: this.selectedChatRoom.id, message: this.chatForm.message }).subscribe(
-      response => {
+      async response => {
         this.chatForm.message = "";
-        this.openChatRoom(this.selectedChatRoom.id);
+        await this.getMessages(this.selectedChatRoom.id);
+        this.scrollToLastMessage();
       }, err => {
         this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: err.error.msg });
       }
@@ -116,6 +122,7 @@ export class ChatComponent implements OnInit {
   }
 
   async searchChat() {
+    console.log("SEARCH CHAT")
     await this.loadRooms();
     if(this.searchForm.keyword.length == 0) {
       return;

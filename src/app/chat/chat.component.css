@@ -14,10 +14,10 @@ img{ max-width:100%;}
 .top_spac{ margin: 20px 0 0;}
 
 
-.recent_heading {float: left; width:40%;}
+.recent_heading {float: left;}
 .srch_bar {
-  display: inline-block;
-  text-align: right;
+  /* display: inline-block; */
+  /* text-align: right; */
   width: 60%;
 }
 .headind_srch{ 
