@@ -1,1 +1,309 @@
-<p>testimonial works!</p>
+<h2>Testimonials</h2>
+
+<p-toast key="toastMsg" [baseZIndex]="100"></p-toast>
+
+<div class="row">
+    <div class="col-6">
+        <h4>Receive</h4>
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" id="open-tab" data-toggle="tab" href="#open" role="tab" aria-controls="open" aria-selected="true">Open</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="requested-tab" data-toggle="tab" href="#requested" role="tab" aria-controls="requested" aria-selected="false">Requested</a>
+              </li>
+            <li class="nav-item">
+              <a class="nav-link" id="pending-tab" data-toggle="tab" href="#pending" role="tab" aria-controls="pending" aria-selected="false">Pending</a>
+            </li>
+        </ul>
+        
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="open" role="tabpanel" aria-labelledby="open-tab">
+                <div class="card">
+                    <p-dataView #ro [value]="myOpen" [paginator]="true" [rows]="9" filterBy="creatorName" layout="list">
+                        <ng-template pTemplate="header">
+                            <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                                <span class="p-input-icon-left p-mb-2 p-mb-md-0">
+                                    <i class="pi pi-search"></i>
+                                    <input type="search" pInputText placeholder="Search by Name" (input)="ro.filter($event.target.value)">
+                                </span>
+                            </div>
+                        </ng-template>
+                        <ng-template let-t pTemplate="listItem">
+                            <div class="p-col-12 p-2">
+                                <div class="product-name">
+                                    From:
+                                    <span *ngIf="t.creatorImg.length == 0">
+                                        <img src="../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle" style="height: 40px;width: 40px;object-fit: cover;">
+                                    </span>
+                                    <span *ngIf="t.creatorImg.length > 0">
+                                        <img src="https://localhost:8080{{t.creatorImg}}" class="img-fluid rounded-circle" style="height: 40px;width: 40px;object-fit: cover;">
+                                    </span>
+                                    
+                                    <span *ngIf="t.creatorType == 'user'">
+                                        <a href="/profile?username={{t.creatorUsername}}&userType=individual">{{t.creatorName}}</a>
+                                    </span>
+                                    <span *ngIf="t.creatorType == 'institution'">
+                                        <a href="/profile?username={{t.creatorUsername}}&userType=institution">{{t.creatorName}}</a>
+                                    </span>
+                                </div>
+                                <div>
+                                    You worked together in <a href="/project/projectDetails?id={{t.projectId}}">{{t.projectTitle}}</a> <br>
+                                    Received at {{formatDate(t.createdAt)}}
+                                </div>
+                                <br>
+                                <div class="text-justify">
+                                    {{t.desc}}
+                                </div>
+                                <br>
+                                <div>
+                                    <button class="btn btn-danger" (click)="updateMyTestimonialStatus(t.id,'close')"><i class="pi pi-trash"></i>&nbsp;Delete</button>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </p-dataView>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="requested" role="tabpanel" aria-labelledby="requested-tab">
+                <div class="card">
+                    <p-dataView #rr [value]="myRequested" [paginator]="true" [rows]="9" filterBy="creatorName" layout="list">
+                        <ng-template pTemplate="header">
+                            <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                                <span class="p-input-icon-left p-mb-2 p-mb-md-0">
+                                    <i class="pi pi-search"></i>
+                                    <input type="search" pInputText placeholder="Search by Name" (input)="rr.filter($event.target.value)">
+                                </span>
+                            </div>
+                        </ng-template>
+                        <ng-template let-t pTemplate="listItem">
+                            <div class="p-col-12 p-2">
+                                <div class="product-name">
+                                    To:
+                                    <span *ngIf="t.creatorImg.length == 0">
+                                        <img src="../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle" style="height: 40px;width: 40px;object-fit: cover;">
+                                    </span>
+                                    <span *ngIf="t.creatorImg.length > 0">
+                                        <img src="https://localhost:8080{{t.creatorImg}}" class="img-fluid rounded-circle" style="height: 40px;width: 40px;object-fit: cover;">
+                                    </span>
+                                    
+                                    <span *ngIf="t.creatorType == 'user'">
+                                        <a href="/profile?username={{t.creatorUsername}}&userType=individual">{{t.creatorName}}</a>
+                                    </span>
+                                    <span *ngIf="t.creatorType == 'institution'">
+                                        <a href="/profile?username={{t.creatorUsername}}&userType=institution">{{t.creatorName}}</a>
+                                    </span>
+                                </div>
+                                <div>
+                                    You worked together in <a href="/project/projectDetails?id={{t.projectId}}">{{t.projectTitle}}</a> <br>
+                                    Requested at {{formatDate(t.createdAt)}}
+                                </div>
+                            </div>
+                        </ng-template>
+                    </p-dataView>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="pending" role="tabpanel" aria-labelledby="pending-tab">
+                <div class="card">
+                    <p-dataView #rp [value]="myPending" [paginator]="true" [rows]="9" filterBy="creatorName" layout="list">
+                        <ng-template pTemplate="header">
+                            <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                                <span class="p-input-icon-left p-mb-2 p-mb-md-0">
+                                    <i class="pi pi-search"></i>
+                                    <input type="search" pInputText placeholder="Search by Name" (input)="rp.filter($event.target.value)">
+                                </span>
+                            </div>
+                        </ng-template>
+                        <ng-template let-t pTemplate="listItem">
+                            <div class="p-col-12 p-2">
+                                <div class="product-name">
+                                    From:
+                                    <span *ngIf="t.creatorImg.length == 0">
+                                        <img src="../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle" style="height: 40px;width: 40px;object-fit: cover;">
+                                    </span>
+                                    <span *ngIf="t.creatorImg.length > 0">
+                                        <img src="https://localhost:8080{{t.creatorImg}}" class="img-fluid rounded-circle" style="height: 40px;width: 40px;object-fit: cover;">
+                                    </span>
+                                    
+                                    <span *ngIf="t.creatorType == 'user'">
+                                        <a href="/profile?username={{t.creatorUsername}}&userType=individual">{{t.creatorName}}</a>
+                                    </span>
+                                    <span *ngIf="t.creatorType == 'institution'">
+                                        <a href="/profile?username={{t.creatorUsername}}&userType=institution">{{t.creatorName}}</a>
+                                    </span>
+                                </div>
+                                <div>
+                                    You worked together in <a href="/project/projectDetails?id={{t.projectId}}">{{t.projectTitle}}</a> <br>
+                                    Written at {{formatDate(t.updatedAt)}}
+                                </div>
+                                <br>
+                                <div class="text-justify">
+                                    {{t.desc}}
+                                </div>
+                                <br>
+                                <div>
+                                    <button class="btn btn-success mr-md-2" (click)="updateMyTestimonialStatus(t.id,'open')"><i class="pi pi-check"></i>&nbsp;Accept</button>
+                                    <button class="btn btn-danger" (click)="updateMyTestimonialStatus(t.id,'dismissed')"><i class="pi pi-times"></i>&nbsp;Dismiss</button>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </p-dataView>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6">
+        <h3>Give</h3>
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="giverequested-tab" data-toggle="tab" href="#giverequested" role="tab" aria-controls="giverequested" aria-selected="false">Requested</a>
+              </li>
+            <li class="nav-item">
+              <a class="nav-link" id="givepending-tab" data-toggle="tab" href="#givepending" role="tab" aria-controls="givepending" aria-selected="false">Pending</a>
+            </li>
+        </ul>
+        
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="giverequested" role="tabpanel" aria-labelledby="giverequested-tab">
+                <div class="card">
+                    <p-dataView #gr [value]="giveReq" [paginator]="true" [rows]="9" filterBy="targetName" layout="list">
+                        <ng-template pTemplate="header">
+                            <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                                <span class="p-input-icon-left p-mb-2 p-mb-md-0">
+                                    <i class="pi pi-search"></i>
+                                    <input type="search" pInputText placeholder="Search by Name" (input)="gr.filter($event.target.value)">
+                                </span>
+                            </div>
+                        </ng-template>
+                        <ng-template let-t pTemplate="listItem">
+                            <div class="p-col-12 p-2">
+                                <div class="product-name">
+                                    From:
+                                    <span *ngIf="t.targetImg.length == 0">
+                                        <img src="../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle" style="height: 40px;width: 40px;object-fit: cover;">
+                                    </span>
+                                    <span *ngIf="t.targetImg.length > 0">
+                                        <img src="https://localhost:8080{{t.targetImg}}" class="img-fluid rounded-circle" style="height: 40px;width: 40px;object-fit: cover;">
+                                    </span>
+                                    
+                                    <span *ngIf="t.targetType == 'user'">
+                                        <a href="/profile?username={{t.targetUsername}}&userType=individual">{{t.targetName}}</a>
+                                    </span>
+                                    <span *ngIf="t.targetType == 'institution'">
+                                        <a href="/profile?username={{t.targetUsername}}&userType=institution">{{t.targetName}}</a>
+                                    </span>
+                                </div>
+                                <div>
+                                    You worked together in <a href="/project/projectDetails?id={{t.projectId}}">{{t.projectTitle}}</a> <br>
+                                    Received at {{formatDate(t.createdAt)}}
+                                </div>
+                                <br>
+                                <div>
+                                    <button class="btn btn-success mr-md-2" data-toggle="modal" data-target="#GiveModal" (click)="getTestimonialInfo(t)">
+                                        <i class="pi pi-check"></i>&nbsp;Give
+                                    </button>
+                                    <button class="btn btn-danger" (click)="dismissOutgoing(t.id)"><i class="pi pi-times"></i>&nbsp;Dismiss</button>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </p-dataView>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="givepending" role="tabpanel" aria-labelledby="givepending-tab">
+                <div class="card">
+                    <p-dataView #gp [value]="givePending" [paginator]="true" [rows]="9" filterBy="targetName" layout="list">
+                        <ng-template pTemplate="header">
+                            <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                                <span class="p-input-icon-left p-mb-2 p-mb-md-0">
+                                    <i class="pi pi-search"></i>
+                                    <input type="search" pInputText placeholder="Search by Name" (input)="gp.filter($event.target.value)">
+                                </span>
+                            </div>
+                        </ng-template>
+                        <ng-template let-t pTemplate="listItem">
+                            <div class="p-col-12 p-2">
+                                <div class="product-name">
+                                    To:
+                                    <span *ngIf="t.targetImg.length == 0">
+                                        <img src="../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle" style="height: 40px;width: 40px;object-fit: cover;">
+                                    </span>
+                                    <span *ngIf="t.targetImg.length > 0">
+                                        <img src="https://localhost:8080{{t.targetImg}}" class="img-fluid rounded-circle" style="height: 40px;width: 40px;object-fit: cover;">
+                                    </span>
+                                    
+                                    <span *ngIf="t.targetType == 'user'">
+                                        <a href="/profile?username={{t.targetUsername}}&userType=individual">{{t.targetName}}</a>
+                                    </span>
+                                    <span *ngIf="t.targetType == 'institution'">
+                                        <a href="/profile?username={{t.targetUsername}}&userType=institution">{{t.targetName}}</a>
+                                    </span>
+                                </div>
+                                <div>
+                                    You worked together in <a href="/project/projectDetails?id={{t.projectId}}">{{t.projectTitle}}</a> <br>
+                                    Received at {{formatDate(t.createdAt)}}
+                                </div>
+                                <br>
+                                <div class="text-justify">
+                                    {{t.desc}}
+                                </div>
+                                <br>
+                                <div>
+                                    <button class="btn btn-danger" (click)="cancelOutgoing(t.id)"><i class="pi pi-times"></i>&nbsp;Cancel</button>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </p-dataView>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="GiveModal" tabindex="-1" role="dialog" aria-labelledby="GiveModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="GiveModal">Give Testimonial</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div *ngIf="!isGiveSuccessful">
+                    <div>
+                        To: 
+                        <span *ngIf="testiForm.targetImg.length == 0">
+                            <img src="../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle" style="height: 40px;width: 40px;object-fit: cover;">
+                        </span>
+                        <span *ngIf="testiForm.targetImg.length > 0">
+                            <img src="https://localhost:8080{{testiForm.targetImg}}" class="img-fluid rounded-circle" style="height: 40px;width: 40px;object-fit: cover;">
+                        </span>
+                        
+                        <span *ngIf="testiForm.targetType == 'user'">
+                            <a href="/profile?username={{testiForm.targetUsername}}&userType=individual">{{testiForm.targetName}}</a>
+                        </span>
+                        <span *ngIf="testiForm.targetType == 'institution'">
+                            <a href="/profile?username={{testiForm.targetUsername}}&userType=institution">{{testiForm.targetName}}</a>
+                        </span>
+                    </div>
+                    <div>
+                        You worked together in <a href="/project/projectDetails?id={{testiForm.projectId}}">{{testiForm.projectTitle}}</a> <br>
+                        Received at {{formatDate(testiForm.createdAt)}}
+                    </div>
+                    <div>
+                        <form name="form" (ngSubmit)="f.form.valid && updateOutgoingTestimonial()" #f="ngForm" novalidate>
+                            <label for="desc" class="col-form-label">Testimonial</label>
+                            <textarea rows="5" class="form-control" name="desc" [(ngModel)]="testiDesc" required #desc="ngModel"></textarea>
+                            <br>
+                            <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                        </form>
+                    </div>
+                </div>
+                <div *ngIf="isGiveSuccessful">
+                    <div class="alert alert-success">
+                        Your testimonial has been submitted successfully.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

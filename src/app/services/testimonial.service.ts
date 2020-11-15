@@ -52,4 +52,13 @@ export class TestimonialService {
     }, httpOptions);
   }
 
+  giveTestimonial(data): Observable<any> {
+    return this.http.post(API_URL + '/write', {
+      accountId: data.accountId,
+      accountType: data.accountType,
+      projectId: data.projectId,
+      desc: data.desc
+    })
+  }
+
 }
