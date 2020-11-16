@@ -49,6 +49,7 @@ import { MyRewardsComponent } from './reward/my-rewards/my-rewards.component';
 import { AnnouncementComponent } from './announcement/announcement.component';
 import { ReportSubmittedComponent } from './report-submitted/report-submitted.component';
 import { ChatComponent } from './chat/chat.component';
+import { TestimonialComponent } from './testimonial/testimonial.component';
 
 const routes: Routes = [
   { path: 'landing', component: LandingComponent},
@@ -112,12 +113,13 @@ const routes: Routes = [
       { path: '', component: RewardMarketplaceComponent, pathMatch: 'full'}
     ]
   },
-  { path: 'shareProfile', component: ShareProfilePageComponent},
-  { path: 'myRequests', component: MyRequestsComponent},
-  { path: 'discover-weekly', component: DiscoverWeeklyComponent},
-  { path: 'announcements', component: AnnouncementComponent},
-  { path: 'reports-submitted', component: ReportSubmittedComponent},
-  { path: 'chat', component: ChatComponent},
+  { path: 'shareProfile', component: ShareProfilePageComponent, canActivate: [AuthGuardService] },
+  { path: 'myRequests', component: MyRequestsComponent, canActivate: [AuthGuardService] },
+  { path: 'discover-weekly', component: DiscoverWeeklyComponent, canActivate: [AuthGuardService] },
+  { path: 'announcements', component: AnnouncementComponent, canActivate: [AuthGuardService] },
+  { path: 'reports-submitted', component: ReportSubmittedComponent, canActivate: [AuthGuardService] },
+  { path: 'chat', component: ChatComponent, canActivate: [AuthGuardService] },
+  { path: 'testimonial', component: TestimonialComponent, canActivate: [AuthGuardService] },
   { path: '', redirectTo: 'home', pathMatch: 'full'}
 ];
 
