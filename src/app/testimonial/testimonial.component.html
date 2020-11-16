@@ -46,7 +46,7 @@
                                     </span>
                                 </div>
                                 <div>
-                                    You worked together in <a href="/project/projectDetails?id={{t.projectId}}">{{t.projectTitle}}</a> <br>
+                                    You worked together in <a href="/project/projectDetails?id={{t.projectId}}"><b>{{t.projectTitle}}</b></a> <br>
                                     Received at {{formatDate(t.createdAt)}}
                                 </div>
                                 <br>
@@ -92,8 +92,12 @@
                                     </span>
                                 </div>
                                 <div>
-                                    You worked together in <a href="/project/projectDetails?id={{t.projectId}}">{{t.projectTitle}}</a> <br>
+                                    You worked together in <a href="/project/projectDetails?id={{t.projectId}}"><b>{{t.projectTitle}}</b></a> <br>
                                     Requested at {{formatDate(t.createdAt)}}
+                                </div>
+                                <br>
+                                <div>
+                                    <button class="btn btn-danger" (click)="updateMyTestimonialStatus(t.id, 'close')"><i class="pi pi-times"></i>&nbsp;Cancel</button>
                                 </div>
                             </div>
                         </ng-template>
@@ -130,8 +134,8 @@
                                     </span>
                                 </div>
                                 <div>
-                                    You worked together in <a href="/project/projectDetails?id={{t.projectId}}">{{t.projectTitle}}</a> <br>
-                                    Written at {{formatDate(t.updatedAt)}}
+                                    You worked together in <a href="/project/projectDetails?id={{t.projectId}}"><b>{{t.projectTitle}}</b></a> <br>
+                                    Received at {{formatDate(t.updatedAt)}}
                                 </div>
                                 <br>
                                 <div class="text-justify">
@@ -165,7 +169,50 @@
         
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="giveopen" role="tabpanel" aria-labelledby="giveopen-tab">
-                Open
+                <div class="card">
+                    <p-dataView #go [value]="giveOpen" [paginator]="true" [rows]="9" filterBy="targetName" layout="list">
+                        <ng-template pTemplate="header">
+                            <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                                <span class="p-input-icon-left p-mb-2 p-mb-md-0">
+                                    <i class="pi pi-search"></i>
+                                    <input type="search" pInputText placeholder="Search by Name" (input)="go.filter($event.target.value)">
+                                </span>
+                            </div>
+                        </ng-template>
+                        <ng-template let-t pTemplate="listItem">
+                            <div class="p-col-12 p-2">
+                                <div class="product-name">
+                                    To:
+                                    <span *ngIf="t.targetImg.length == 0">
+                                        <img src="../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle" style="height: 40px;width: 40px;object-fit: cover;">
+                                    </span>
+                                    <span *ngIf="t.targetImg.length > 0">
+                                        <img src="https://localhost:8080{{t.targetImg}}" class="img-fluid rounded-circle" style="height: 40px;width: 40px;object-fit: cover;">
+                                    </span>
+                                    
+                                    <span *ngIf="t.targetType == 'user'">
+                                        <a href="/profile?username={{t.targetUsername}}&userType=individual">{{t.targetName}}</a>
+                                    </span>
+                                    <span *ngIf="t.targetType == 'institution'">
+                                        <a href="/profile?username={{t.targetUsername}}&userType=institution">{{t.targetName}}</a>
+                                    </span>
+                                </div>
+                                <div>
+                                    You worked together in <a href="/project/projectDetails?id={{t.projectId}}"><b>{{t.projectTitle}}</b></a> <br>
+                                    Given at {{formatDate(t.createdAt)}}
+                                </div>
+                                <br>
+                                <div class="text-justify">
+                                    {{t.desc}}
+                                </div>
+                                <br>
+                                <div>
+                                    <button class="btn btn-danger" (click)="updateOutgoing(t.id, 'delete')"><i class="pi pi-trash"></i>&nbsp;Delete</button>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </p-dataView>
+                </div>
             </div>
             <div class="tab-pane fade" id="giverequested" role="tabpanel" aria-labelledby="giverequested-tab">
                 <div class="card">
@@ -197,7 +244,7 @@
                                     </span>
                                 </div>
                                 <div>
-                                    You worked together in <a href="/project/projectDetails?id={{t.projectId}}">{{t.projectTitle}}</a> <br>
+                                    You worked together in <a href="/project/projectDetails?id={{t.projectId}}"><b>{{t.projectTitle}}</b></a> <br>
                                     Received at {{formatDate(t.createdAt)}}
                                 </div>
                                 <br>
@@ -205,7 +252,7 @@
                                     <button class="btn btn-success mr-md-2" data-toggle="modal" data-target="#GiveModal" (click)="getTestimonialInfo(t)">
                                         <i class="pi pi-check"></i>&nbsp;Give
                                     </button>
-                                    <button class="btn btn-danger" (click)="dismissOutgoing(t.id)"><i class="pi pi-times"></i>&nbsp;Dismiss</button>
+                                    <button class="btn btn-danger" (click)="updateOutgoing(t.id, 'dismiss')"><i class="pi pi-times"></i>&nbsp;Dismiss</button>
                                 </div>
                             </div>
                         </ng-template>
@@ -242,16 +289,12 @@
                                     </span>
                                 </div>
                                 <div>
-                                    You worked together in <a href="/project/projectDetails?id={{t.projectId}}">{{t.projectTitle}}</a> <br>
-                                    Received at {{formatDate(t.createdAt)}}
+                                    You worked together in <a href="/project/projectDetails?id={{t.projectId}}"><b>{{t.projectTitle}}</b></a> <br>
+                                    Given at {{formatDate(t.createdAt)}}
                                 </div>
                                 <br>
                                 <div class="text-justify">
                                     {{t.desc}}
-                                </div>
-                                <br>
-                                <div>
-                                    <button class="btn btn-danger" (click)="cancelOutgoing(t.id)"><i class="pi pi-times"></i>&nbsp;Cancel</button>
                                 </div>
                             </div>
                         </ng-template>
@@ -294,7 +337,7 @@
                         Received at {{formatDate(testiForm.createdAt)}}
                     </div>
                     <div>
-                        <form name="form" (ngSubmit)="f.form.valid && updateOutgoingTestimonial()" #f="ngForm" novalidate>
+                        <form name="form" (ngSubmit)="f.form.valid && giveTestimonial()" #f="ngForm" novalidate>
                             <label for="desc" class="col-form-label">Testimonial</label>
                             <textarea rows="5" class="form-control" name="desc" [(ngModel)]="testiDesc" required #desc="ngModel"></textarea>
                             <br>

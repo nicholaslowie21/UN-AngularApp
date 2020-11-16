@@ -19,6 +19,7 @@ export class TestimonialComponent implements OnInit {
 
   giveReq = [];
   givePending = [];
+  giveOpen = [];
 
   testiForm: any = {targetImg: ''};
   testiDesc = '';
@@ -51,17 +52,23 @@ export class TestimonialComponent implements OnInit {
     await this.testimonialService.getMyOutgoingTestimonials({id: this.myId, type: this.myType, status: 'pending'}).toPromise().then(
       res => this.givePending = res.data.testimonials
     );
+    await this.testimonialService.getMyOutgoingTestimonials({id: this.myId, type: this.myType, status: 'open'}).toPromise().then(
+      res => this.giveOpen = res.data.testimonials
+    );
 
     console.log(this.giveReq);
     console.log(this.givePending);
+    console.log(this.giveOpen);
   }
 
   updateMyTestimonialStatus(id, status): void {
     let r;
     if(status == 'open') {
       r = confirm("Are you sure you want to accept this testimonial?");
-    } else {
+    } else if(status == 'dismissed') {
       r = confirm("Are you sure you want to dismiss this testimonial?");
+    } else if(status == 'close') {
+      r = confirm("Are you sure you want to cancel this request?");
     }
     if (r == true) {
       this.testimonialService.updateMyTestimonialStatus({id: id, status: status}).subscribe(
@@ -69,8 +76,10 @@ export class TestimonialComponent implements OnInit {
           this.ngOnInit();
           if(status == 'open') {
             this.messageService.add({key:'toastMsg', severity:'success', summary:'Success', detail:'Testimonial has been accepted successfully!'});
-          } else {
+          } else if(status == 'dismissed') {
             this.messageService.add({key:'toastMsg', severity:'success', summary:'Success', detail:'Testimonial has been dismissed successfully!'});
+          } else if(status == 'close') {
+            this.messageService.add({key:'toastMsg', severity:'success', summary:'Success', detail:'Request has been canceled successfully!'});
           }
         },
         err => {
@@ -97,7 +106,7 @@ export class TestimonialComponent implements OnInit {
     }
   }
 
-  updateOutgoingTestimonial(): void {
+  giveTestimonial(): void {
     this.testimonialService.updateMyOutgoingTestimonial({id: this.testiForm.id, status: 'pending', desc: this.testiDesc}).subscribe(
       res => {
         this.isGiveSuccessful = true;
@@ -110,13 +119,23 @@ export class TestimonialComponent implements OnInit {
     )
   }
 
-  dismissOutgoing(id): void {
-    let r = confirm("Are you sure you want to dismiss this testimonial?");
+  updateOutgoing(id, status): void {
+    let r = confirm("Are you sure you want to" + status + "this testimonial?");
+    let tempStatus;
+    if(status == 'dismiss') {
+      tempStatus = 'dismissed';
+    } else if(status == 'delete') {
+      tempStatus = 'close';
+    } 
     if(r == true) {
-      this.testimonialService.updateMyOutgoingTestimonial({id: id, status: 'dismissed', desc: ''}).subscribe(
+      this.testimonialService.updateMyOutgoingTestimonial({id: id, status: tempStatus, desc: ''}).subscribe(
         res => {
           this.ngOnInit();
-          this.messageService.add({key:'toastMsg', severity:'success', summary:'Success', detail:'Testimonial has been dismissed successfully!'});
+          if(status == 'dismiss') {
+            this.messageService.add({key:'toastMsg', severity:'success', summary:'Success', detail:'Testimonial has been dismissed successfully!'});
+          } else if(status == 'delete') {
+            this.messageService.add({key:'toastMsg', severity:'success', summary:'Success', detail:'Testimonial has been deleted successfully!'});
+          }
         },
         err => {
           this.messageService.add({key:'toastMsg', severity:'error', summary:'Error', detail:err.error.msg});
@@ -126,23 +145,6 @@ export class TestimonialComponent implements OnInit {
       return;
     }
   }
-
-  cancelOutgoing(id): void {
-    let r = confirm("Are you sure you want to cancel this testimonial?");
-    if(r == true) {
-      this.testimonialService.updateMyOutgoingTestimonial({id: id, status: 'close', desc: ''}).subscribe(
-        res => {
-          this.ngOnInit();
-          this.messageService.add({key:'toastMsg', severity:'success', summary:'Success', detail:'Testimonial has been cancelled successfully!'});
-        },
-        err => {
-          this.messageService.add({key:'toastMsg', severity:'error', summary:'Error', detail:err.error.msg});
-        }
-      );
-    } else {
-      return;
-    }
-  } 
 
   formatDate(date): any {
     let formattedDate = new Date(date).toUTCString();
