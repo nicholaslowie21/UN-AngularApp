@@ -21,8 +21,8 @@ export class TestimonialService {
 
   requestTestimonial(data): Observable<any> {
     return this.http.post(API_URL + '/request', {
-      accountId: data.id,
-      accountType: data.type,
+      accountId: data.accountId,
+      accountType: data.accountType,
       projectId: data.projectId
     }, httpOptions);
   }

@@ -153,7 +153,10 @@
                             <!-- show current user's projects and get them to choose one -->
                             <div class="form-group row">
                                 <label for="project" class="col-sm-3 col-form-label">Select Project</label>
-                                <div class="col-sm-9">
+                                <div class="col-sm-9" *ngIf="myProjects.length == 0">
+                                    You currently have no ongoing projects.
+                                </div>
+                                <div class="col-sm-9" *ngIf="myProjects.length != 0">
                                     <select class="form-control" name="project" [(ngModel)]="selectedProjectId" required #project="ngModel" (click)="updateSelectedProject($event)">
                                         <option *ngFor="let p of myProjects" value={{p.id}}>{{p.title}}</option>
                                     </select>
@@ -165,7 +168,7 @@
                                 </div>
                             </div>
                             <!-- if the selected project currently doesn't have a corresponding resource need -->
-                            <div class="form-check">
+                            <div class="form-check" *ngIf="projectSelected">
                                 <input class="form-check-input" type="checkbox" value="" id="autogenerate" [checked]="autogenerateYes" (change)="updateAutogenerate($event);">
                                 <label class="form-check-label" for="autogenerate">
                                     I don't have a resource need for this yet, auto-generate it for me
@@ -261,7 +264,10 @@
                                     <!-- show current user's projects and get them to choose one -->
                                     <div class="form-group row">
                                         <label for="project" class="col-sm-3 col-form-label">Select Project</label>
-                                        <div class="col-sm-9">
+                                        <div class="col-sm-9" *ngIf="myProjects.length == 0">
+                                            You currently have no ongoing projects.
+                                        </div>
+                                        <div class="col-sm-9" *ngIf="myProjects.length != 0">
                                             <select class="form-control" name="project" [(ngModel)]="selectedProjectId" required #project="ngModel" (click)="updateSelectedProject($event)">
                                                 <option *ngFor="let p of myProjects" value={{p.id}}>{{p.title}}</option>
                                             </select>
@@ -273,7 +279,7 @@
                                         </div>
                                     </div>
                                     <!-- if the selected project currently doesn't have a corresponding resource need -->
-                                    <div class="form-check">
+                                    <div class="form-check" *ngIf="projectSelected">
                                         <input class="form-check-input" type="checkbox" value="" id="autogenerate" [checked]="autogenerateYes" (change)="updateAutogenerate($event);">
                                         <label class="form-check-label" for="autogenerate">
                                             I don't have a resource need for this yet, auto-generate it for me

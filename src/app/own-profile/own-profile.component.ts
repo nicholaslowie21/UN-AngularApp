@@ -15,6 +15,7 @@ import { InstitutionService } from '../services/institution.service';
 import { ReportService } from '../services/report.service';
 import { ActivatedRoute } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { TestimonialService } from '../services/testimonial.service';
 
 @Component({
   selector: 'app-own-profile',
@@ -47,6 +48,8 @@ export class OwnProfileComponent implements OnInit {
 
   currentProj: any = [];
   pastProj: any = [];
+  pastAdminProj: any = []; // subset of pastProj where this user was a founder/admin
+  pastContributorProj: any = []; // subset of pastProj where this user was a contributor
   badges: any = [];
   knowledge: any = [];
   manpower: any = [];
@@ -54,9 +57,16 @@ export class OwnProfileComponent implements OnInit {
   venue: any = [];
   indAffiliations = [];
   institutionAffiliations = [];
+  testimonials: any = [];
 
   resourceOffers = [];
   feed = [];
+
+  giveTestimonial = false;
+  giveTestimonialSuccessful = false;
+  requestTestimonial = false;
+  requestTestimonialSuccessful = false;
+  allMyProjects: any = [];
 
   isReport = false;
   form: any = {};
@@ -64,7 +74,8 @@ export class OwnProfileComponent implements OnInit {
 
   constructor(private tokenStorageService: TokenStorageService, private userService: UserService,
     private resourceService: ResourceService, private institutionService: InstitutionService, 
-    private route: ActivatedRoute, private reportService: ReportService, private messageService: MessageService) { }
+    private route: ActivatedRoute, private reportService: ReportService, private messageService: MessageService,
+    private testimonialService: TestimonialService) { }
 
   async ngOnInit() {
     this.route.queryParams.subscribe(
@@ -133,6 +144,17 @@ export class OwnProfileComponent implements OnInit {
       await this.userService.getPastProjects({ id: this.userId }).toPromise().then(
         response => {
           this.pastProj = response.data.pastProjects;
+          if (this.pastProj.length != 0) {
+            for (let i = 0; i < this.pastProj.length; i++) {
+              if (this.pastProj[i].host == this.userId || this.pastProj[i].admins.includes(this.userId)) {
+                this.pastAdminProj.push(this.pastProj[i]);
+              } else {
+                this.pastContributorProj.push(this.pastProj[i]);
+              }
+            }
+          }
+          console.log(this.pastAdminProj.length);
+          console.log(this.pastContributorProj.length);
         }
       );
 
@@ -182,6 +204,10 @@ export class OwnProfileComponent implements OnInit {
         response => this.feed = response.data.feeds
       );
 
+      await this.testimonialService.getMyTestimonial({id: this.userId, type: 'user', status: 'open'}).toPromise().then(
+        response => this.testimonials = response.data.testimonials
+      );
+
     } else {
       await this.institutionService.getCurrentProjects({ id: this.userId }).toPromise().then(
         response => {
@@ -224,7 +250,44 @@ export class OwnProfileComponent implements OnInit {
       await this.institutionService.getInstitutionProfileFeed({id: this.userId}).toPromise().then(
         response => this.feed = response.data.feeds
       );
+
+      await this.testimonialService.getMyTestimonial({id: this.userId, type: 'institution', status: 'open'}).toPromise().then(
+        response => this.testimonials = response.data.testimonials
+      );
     }
+
+    // get all projects of the current logged in user (not the one whose profile is shown)
+    var currentUserId = this.tokenStorageService.getUser().id;
+    var myCurrentProj;
+    var myPastProj;
+    if (this.tokenStorageService.getAccountType() == 'user') {
+      // user viewing this profile is an individual
+      await this.userService.getCurrentProjects({ id: currentUserId }).toPromise().then(
+        response => {
+          myCurrentProj = response.data.currProjects;
+        }
+      );
+
+      await this.userService.getPastProjects({ id: currentUserId }).toPromise().then(
+        response => {
+          myPastProj = response.data.pastProjects;
+        }
+      );
+    } else {
+      // user viewing this profile is an institution
+      await this.institutionService.getCurrentProjects({ id: currentUserId }).toPromise().then(
+        response => {
+          myCurrentProj = response.data.currProjects;
+        }
+      );
+
+      await this.institutionService.getPastInvolvement({ id: currentUserId }).toPromise().then(
+        response => {
+          myPastProj = response.data.pastProjects;
+        }
+      );
+    }
+    this.allMyProjects = myCurrentProj.concat(myPastProj);
 
     this.resourceOffers.sort(this.sortFunction);
     this.feed.sort(this.sortFeed);
@@ -263,6 +326,14 @@ export class OwnProfileComponent implements OnInit {
     return formattedDate.substring(5, formattedDate.length-13);
   }
 
+  giveTestimonialYes(): void {
+    this.giveTestimonial = true;
+  }
+
+  requestTestimonialYes(): void {
+    this.requestTestimonial = true;
+  }
+
   clickReport(): void {
     this.isReport = true;
   }
@@ -272,6 +343,59 @@ export class OwnProfileComponent implements OnInit {
     this.isReportSuccessful = false;
     this.form.title = '';
     this.form.summary = '';
+
+    this.giveTestimonial = false;
+    this.giveTestimonialSuccessful = false;
+
+    this.requestTestimonial = false;
+    this.requestTestimonialSuccessful = false;
+  }
+
+  submitGiveTestimonial(): void {
+    let tempType = '';
+    if(this.userType == 'individual') {
+      tempType = 'user';
+    } else {
+      tempType = 'institution';
+    }
+
+    const testimonialForm = {
+      accountId: this.userId,
+      accountType: tempType,
+      projectId: this.form.projectId,
+      desc: this.form.desc
+    }
+
+    this.testimonialService.giveTestimonial(testimonialForm).subscribe(
+      response => {
+        this.giveTestimonialSuccessful = true;
+      }, err => {
+        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+      }
+    );
+  }
+
+  submitRequestTestimonial(): void {
+    let tempType = '';
+    if(this.userType == 'individual') {
+      tempType = 'user';
+    } else {
+      tempType = 'institution';
+    }
+
+    const testimonialForm = {
+      accountId: this.userId,
+      accountType: tempType,
+      projectId: this.form.projectId
+    }
+
+    this.testimonialService.requestTestimonial(testimonialForm).subscribe(
+      response => {
+        this.requestTestimonialSuccessful = true;
+      }, err => {
+        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+      }
+    );
   }
 
   submitReport(): void {
