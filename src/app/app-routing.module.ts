@@ -24,6 +24,7 @@ import { AdminRewardManagementComponent } from './admin/admin-reward-management/
 import { AdminCreateRewardComponent } from './admin/admin-create-reward/admin-create-reward.component';
 import { AdminAnnouncementComponent } from './admin/admin-announcement/admin-announcement.component';
 import { AdminChatComponent } from './admin/admin-chat/admin-chat.component';
+import { AdminDataManagementComponent } from './admin/admin-data-management/admin-data-management.component';
 import { ShareProfilePageComponent } from './share-profile-page/share-profile-page.component';
 import { CreateProjectComponent } from './project/create-project/create-project.component';
 import { EditProjectAdminComponent } from './project/edit-project-admin/edit-project-admin.component';
@@ -49,6 +50,8 @@ import { MyRewardsComponent } from './reward/my-rewards/my-rewards.component';
 import { AnnouncementComponent } from './announcement/announcement.component';
 import { ReportSubmittedComponent } from './report-submitted/report-submitted.component';
 import { ChatComponent } from './chat/chat.component';
+import { DataDashboardComponent } from './data-dashboard/data-dashboard.component';
+import { SearchAccountsComponent } from './search-accounts/search-accounts.component';
 
 const routes: Routes = [
   { path: 'landing', component: LandingComponent},
@@ -74,6 +77,7 @@ const routes: Routes = [
       { path: 'create-reward', component: AdminCreateRewardComponent},
       { path: 'announcement', component: AdminAnnouncementComponent},
       { path: 'chat', component: AdminChatComponent},
+      { path: 'data-management', component: AdminDataManagementComponent},
       { path: '', component: AdminHomeComponent, pathMatch: 'full'}
     ] 
   },
@@ -113,11 +117,13 @@ const routes: Routes = [
     ]
   },
   { path: 'shareProfile', component: ShareProfilePageComponent},
-  { path: 'myRequests', component: MyRequestsComponent},
-  { path: 'discover-weekly', component: DiscoverWeeklyComponent},
-  { path: 'announcements', component: AnnouncementComponent},
-  { path: 'reports-submitted', component: ReportSubmittedComponent},
-  { path: 'chat', component: ChatComponent},
+  { path: 'myRequests', component: MyRequestsComponent, canActivate: [AuthGuardService] },
+  { path: 'discover-weekly', component: DiscoverWeeklyComponent, canActivate: [AuthGuardService] },
+  { path: 'announcements', component: AnnouncementComponent, canActivate: [AuthGuardService] },
+  { path: 'reports-submitted', component: ReportSubmittedComponent, canActivate: [AuthGuardService] },
+  { path: 'chat', component: ChatComponent, canActivate: [AuthGuardService] },
+  { path: 'search', component: SearchAccountsComponent},
+  { path: 'dashboard', component: DataDashboardComponent},
   { path: '', redirectTo: 'home', pathMatch: 'full'}
 ];
 

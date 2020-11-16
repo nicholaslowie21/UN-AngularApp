@@ -80,6 +80,9 @@ import { ReportSubmittedComponent } from './report-submitted/report-submitted.co
 import { AdminReportDetailsComponent } from './admin/admin-report-details/admin-report-details.component';
 import { AdminChatComponent } from './admin/admin-chat/admin-chat.component';
 import { ChatComponent } from './chat/chat.component';
+import { DataDashboardComponent } from './data-dashboard/data-dashboard.component';
+import { SearchAccountsComponent } from './search-accounts/search-accounts.component';
+import { AdminDataManagementComponent } from './admin/admin-data-management/admin-data-management.component';
 
 @NgModule({
   declarations: [
@@ -132,7 +135,10 @@ import { ChatComponent } from './chat/chat.component';
     ReportSubmittedComponent,
     AdminReportDetailsComponent,
     AdminChatComponent,
-    ChatComponent
+    ChatComponent,
+    DataDashboardComponent,
+    SearchAccountsComponent,
+    AdminDataManagementComponent
   ],
   imports: [
     BrowserModule,
