@@ -1,13 +1,11 @@
-<h2>Testimonials</h2>
-
 <p-toast key="toastMsg" [baseZIndex]="100"></p-toast>
 
 <div class="row">
     <div class="col-6">
-        <h4>Receive</h4>
+        <h4>Testimonials For Me</h4>
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item">
-              <a class="nav-link active" id="open-tab" data-toggle="tab" href="#open" role="tab" aria-controls="open" aria-selected="true">Open</a>
+              <a class="nav-link active" id="open-tab" data-toggle="tab" href="#open" role="tab" aria-controls="open" aria-selected="true">Received</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" id="requested-tab" data-toggle="tab" href="#requested" role="tab" aria-controls="requested" aria-selected="false">Requested</a>
@@ -152,18 +150,24 @@
         </div>
     </div>
     <div class="col-6">
-        <h3>Give</h3>
+        <h4>Testimonials For Others</h4>
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" id="giverequested-tab" data-toggle="tab" href="#giverequested" role="tab" aria-controls="giverequested" aria-selected="false">Requested</a>
-              </li>
+                <a class="nav-link active" id="giveopen-tab" data-toggle="tab" href="#giveopen" role="tab" aria-controls="giveopen" aria-selected="true">Given</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="giverequested-tab" data-toggle="tab" href="#giverequested" role="tab" aria-controls="giverequested" aria-selected="false">Requested</a>
+            </li>
             <li class="nav-item">
               <a class="nav-link" id="givepending-tab" data-toggle="tab" href="#givepending" role="tab" aria-controls="givepending" aria-selected="false">Pending</a>
             </li>
         </ul>
         
         <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="giverequested" role="tabpanel" aria-labelledby="giverequested-tab">
+            <div class="tab-pane fade show active" id="giveopen" role="tabpanel" aria-labelledby="giveopen-tab">
+                Open
+            </div>
+            <div class="tab-pane fade" id="giverequested" role="tabpanel" aria-labelledby="giverequested-tab">
                 <div class="card">
                     <p-dataView #gr [value]="giveReq" [paginator]="true" [rows]="9" filterBy="targetName" layout="list">
                         <ng-template pTemplate="header">
