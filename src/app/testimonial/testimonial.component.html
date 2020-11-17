@@ -28,7 +28,7 @@
                             </div>
                         </ng-template>
                         <ng-template let-t pTemplate="listItem">
-                            <div class="p-col-12 p-2">
+                            <div class="p-col-12 p-2 mt-2 ml-2">
                                 <div class="product-name">
                                     From:
                                     <span *ngIf="t.creatorImg.length == 0">
@@ -55,7 +55,7 @@
                                 </div>
                                 <br>
                                 <div>
-                                    <button class="btn btn-danger" (click)="updateMyTestimonialStatus(t.id,'close')"><i class="pi pi-trash"></i>&nbsp;Delete</button>
+                                    <button class="btn btn-danger mr-2 mb-1 float-right" (click)="updateMyTestimonialStatus(t.id,'close')"><i class="pi pi-trash"></i>&nbsp;Delete</button>
                                 </div>
                             </div>
                         </ng-template>
@@ -74,7 +74,7 @@
                             </div>
                         </ng-template>
                         <ng-template let-t pTemplate="listItem">
-                            <div class="p-col-12 p-2">
+                            <div class="p-col-12 p-2 mt-2 ml-2">
                                 <div class="product-name">
                                     To:
                                     <span *ngIf="t.creatorImg.length == 0">
@@ -97,7 +97,7 @@
                                 </div>
                                 <br>
                                 <div>
-                                    <button class="btn btn-danger" (click)="updateMyTestimonialStatus(t.id, 'close')"><i class="pi pi-times"></i>&nbsp;Cancel</button>
+                                    <button class="btn btn-danger mr-2 mb-1 float-right" (click)="updateMyTestimonialStatus(t.id, 'close')"><i class="pi pi-times"></i>&nbsp;Cancel</button>
                                 </div>
                             </div>
                         </ng-template>
@@ -143,8 +143,8 @@
                                 </div>
                                 <br>
                                 <div>
-                                    <button class="btn btn-success mr-md-2" (click)="updateMyTestimonialStatus(t.id,'open')"><i class="pi pi-check"></i>&nbsp;Accept</button>
-                                    <button class="btn btn-danger" (click)="updateMyTestimonialStatus(t.id,'dismissed')"><i class="pi pi-times"></i>&nbsp;Dismiss</button>
+                                    <button class="btn btn-danger ml-1 float-right" (click)="updateMyTestimonialStatus(t.id,'dismissed')"><i class="pi pi-times"></i>&nbsp;Dismiss</button>
+                                    <button class="btn btn-success mr-md-2 float-right" (click)="updateMyTestimonialStatus(t.id,'open')"><i class="pi pi-check"></i>&nbsp;Accept</button>
                                 </div>
                             </div>
                         </ng-template>
@@ -207,7 +207,7 @@
                                 </div>
                                 <br>
                                 <div>
-                                    <button class="btn btn-danger" (click)="updateOutgoing(t.id, 'delete')"><i class="pi pi-trash"></i>&nbsp;Delete</button>
+                                    <button class="btn btn-danger mr-2 mb-1 float-right" (click)="updateOutgoing(t.id, 'delete')"><i class="pi pi-trash"></i>&nbsp;Delete</button>
                                 </div>
                             </div>
                         </ng-template>
@@ -249,10 +249,10 @@
                                 </div>
                                 <br>
                                 <div>
-                                    <button class="btn btn-success mr-md-2" data-toggle="modal" data-target="#GiveModal" (click)="getTestimonialInfo(t)">
+                                    <button class="btn btn-danger ml-1 float-right" (click)="updateOutgoing(t.id, 'dismiss')"><i class="pi pi-times"></i>&nbsp;Dismiss</button>
+                                    <button class="btn btn-success mr-md-2 float-right" data-toggle="modal" data-target="#GiveModal" (click)="getTestimonialInfo(t)">
                                         <i class="pi pi-check"></i>&nbsp;Give
                                     </button>
-                                    <button class="btn btn-danger" (click)="updateOutgoing(t.id, 'dismiss')"><i class="pi pi-times"></i>&nbsp;Dismiss</button>
                                 </div>
                             </div>
                         </ng-template>

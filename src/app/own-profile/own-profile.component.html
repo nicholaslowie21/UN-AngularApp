@@ -127,9 +127,9 @@
                             </div>
                             <div class="modal-body">
                                 <div *ngIf="!isReport && (!giveTestimonial && !requestTestimonial)">
-                                    <button class="btn btn-block" style="color: blue;" (click)="giveTestimonialYes()">Give testimonial for {{user.name}}</button>
+                                    <button class="btn btn-block" style="color: blue;" (click)="giveTestimonialYes(); findCommonProjects()">Give testimonial for {{user.name}}</button>
                                     <hr>
-                                    <button class="btn btn-block" style="color: blue;" (click)="requestTestimonialYes()">Request testimonial from {{user.name}}</button>
+                                    <button class="btn btn-block" style="color: blue;" (click)="requestTestimonialYes(); findCommonProjects()">Request testimonial from {{user.name}}</button>
                                     <hr>
                                     <button class="btn btn-block" style="color: red;" (click)="clickReport()">Report User</button>
                                     <hr>
@@ -142,9 +142,9 @@
                                                 <label for="project" class="col-form-label"><b>Project</b></label>
                                                 <div>
                                                     Please indicate a project that you have worked on with {{user.name}}.
-                                                    <div *ngIf="allMyProjects.length == 0" style="color: red;">You do not have any current or past projects.</div>
-                                                    <select *ngIf="allMyProjects.length != 0" class="form-control" name="project" [(ngModel)]="form.projectId" required #project="ngModel">
-                                                        <option *ngFor="let p of allMyProjects" value={{p.id}}>{{p.title}}</option>
+                                                    <div *ngIf="commonProjects.length == 0" style="color: red;">You do not have any projects in common with {{user.name}}.</div>
+                                                    <select *ngIf="commonProjects.length != 0" class="form-control" name="project" [(ngModel)]="form.projectId" required #project="ngModel">
+                                                        <option *ngFor="let p of commonProjects" value={{p.id}}>{{p.title}}</option>
                                                     </select>
                                                 </div>
                                                 <div class="alert-danger" *ngIf="gtf.submitted && !project">Project is required</div>
@@ -176,9 +176,9 @@
                                                 <label for="project" class="col-form-label"><b>Project</b></label>
                                                 <div>
                                                     Please indicate a project that you have worked on with {{user.name}}.
-                                                    <div *ngIf="allMyProjects.length == 0" style="color: red;">You do not have any current or past projects.</div>
-                                                    <select *ngIf="allMyProjects.length != 0" class="form-control" name="project" [(ngModel)]="form.projectId" required #project="ngModel">
-                                                        <option *ngFor="let p of allMyProjects" value={{p.id}}>{{p.title}}</option>
+                                                    <div *ngIf="commonProjects.length == 0" style="color: red;">You do not have any current or past projects.</div>
+                                                    <select *ngIf="commonProjects.length != 0" class="form-control" name="project" [(ngModel)]="form.projectId" required #project="ngModel">
+                                                        <option *ngFor="let p of commonProjects" value={{p.id}}>{{p.title}}</option>
                                                     </select>
                                                 </div>
                                                 <div class="alert-danger" *ngIf="rtf.submitted && !project">Project is required</div>
@@ -400,7 +400,7 @@
                 </ul>
 
                 <div class="tab-content">
-                    <div class="tab-pane fade show active" id="personal" role="tabpanel" aria-labelledby="personal-tab">
+                    <div class="tab-pane fade show active scroll" id="personal" role="tabpanel" aria-labelledby="personal-tab">
                         <ul class="list-group">
                             <li *ngFor="let f of feed" class="list-group-item">
                                 <div class="row">
@@ -557,7 +557,11 @@
 
                     <div class="tab-content">
                         <div class="tab-pane fade show active" id="admin" role="tabpanel" aria-labelledby="admin-tab">
-                            <div *ngIf="pastAdminProj.length == 0">No projects found.<br/><br/></div>
+                            <div *ngIf="pastAdminProj.length == 0">
+                                <div class="card">
+                                    <h6 class="card-title text-left text-muted m-3">No projects found.</h6>
+                                </div>
+                            </div>
                             <div *ngIf="pastAdminProj.length > 0">
                                 <div *ngFor="let project of pastAdminProj; let p = index">
                                     <div *ngIf="p<3">
@@ -588,7 +592,11 @@
                         </div>
                         
                         <div class="tab-pane fade" id="contributor" role="tabpanel" aria-labelledby="contributor-tab">
-                            <div *ngIf="pastContributorProj.length == 0">No projects found.<br/><br/></div>
+                            <div *ngIf="pastContributorProj.length == 0">
+                                <div class="card">
+                                    <h6 class="card-title text-left text-muted m-3">No projects found.</h6>
+                                </div>
+                            </div>
                             <div *ngIf="pastContributorProj.length > 0">
                                 <div *ngFor="let project of pastContributorProj; let p = index">
                                 <div *ngIf="p<3">
@@ -621,21 +629,33 @@
 
                 <br><br>
                 <!-- <div class="card-body"> -->
-                    <h5 class="card-title">My Testimonials</h5>
-                    <div *ngIf="testimonials.length == 0">
-                        No testimonials found.
-                        <div *ngIf="isOwner">
-                            You may request other users to leave you a testimonial.
+                    <div class="row">
+                        <div class="col-4 d-flex flex-column">
+                            <h5 class="card-title" class="my-auto">My Testimonials</h5>
+                        </div>
+                        <div class="col-8">
+                            <div *ngIf="isOwner" class="btn btn-primary float-right"><a class="text-white" href="/testimonial"><i class="pi pi-pencil"></i></a></div>
+                            <!-- <button *ngIf="!isOwner" class="btn btn-primary float-right" data-toggle="modal" data-target="#ReportModal" (click)="giveTestimonialYes(); findCommonProjects()">
+                                Give {{user.name}} a testimonial
+                            </button> -->
                         </div>
                     </div>
-                    <div *ngIf="testimonials.length > 0">
+                    <div *ngIf="testimonials.length == 0">
+                        <div class="card">
+                            <h6 class="card-title text-left text-muted m-3">No testimonials found.</h6>
+                            <h6 class="card-title text-left text-muted m-3" *ngIf="isOwner">
+                                You may request other users to leave you a testimonial.
+                            </h6>
+                        </div>
+                    </div>
+                    <div *ngIf="testimonials.length > 0" class="scroll">
                         <div *ngFor="let testimonial of testimonials; let p = index">
                             <div *ngIf="p<3">
                                 <ul class="list-group">
                                     <li class="list-group-item">
                                         <div class="row">
                                             <div class="card border-0">
-                                                <div style="margin-left: 5%;">
+                                                <h6 style="margin-left: 5%">
                                                     Given by: 
                                                     <span *ngIf="testimonial.creatorImg.length == 0">
                                                         <img src="../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle" style="height: 40px;width: 40px; object-fit: cover;">
@@ -644,12 +664,12 @@
                                                         <img src="https://localhost:8080{{testimonial.creatorImg}}" class="img-fluid rounded-circle" style="height: 40px;width: 40px; object-fit: cover;">
                                                     </span>
                                                     <span *ngIf="testimonial.creatorType == 'user'">
-                                                        <a href="/profile?username={{testimonial.creatorUsername}}&userType=individual"><b> {{testimonial.creatorName}}</b></a>
+                                                        <a href="/profile?username={{testimonial.creatorUsername}}&userType=individual"> {{testimonial.creatorName}}</a>
                                                     </span>
                                                     <span *ngIf="testimonial.creatorType == 'institution'">
-                                                        <a href="/profile?username={{testimonial.creatorUsername}}&userType=institution"><b> {{testimonial.creatorName}}</b></a>
+                                                        <a href="/profile?username={{testimonial.creatorUsername}}&userType=institution"> {{testimonial.creatorName}}</a>
                                                     </span>
-                                                </div>
+                                                </h6>
                                                 <h6 class="card-title text-left mt-md-3" style="margin-left: 5%;">Project: <a href="/project/projectDetails?id={{testimonial.projectId}}">{{testimonial.projectTitle}}</a></h6>
                                                 <h6 class="card-title text-left text-secondary mt-md-1" style="width: 90%; margin-left: 5%;">{{testimonial.desc}} </h6>
                                             </div>
@@ -658,7 +678,6 @@
                                 </ul>
                             </div>
                         </div>
-                        <a href="/project/myProjects?username={{user.username}}&type={{userType}}">See all</a>
                     </div>
                 <!-- </div> -->
             </div>

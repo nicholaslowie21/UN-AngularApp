@@ -39,3 +39,9 @@
   background-color: rgb(185, 114, 45);
   color: white;
 }
+
+.scroll {
+  width: 100%;
+  height: 300px;
+  overflow: auto;
+}

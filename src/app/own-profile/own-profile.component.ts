@@ -62,11 +62,12 @@ export class OwnProfileComponent implements OnInit {
   resourceOffers = [];
   feed = [];
 
+  modalClosed = false;
   giveTestimonial = false;
   giveTestimonialSuccessful = false;
   requestTestimonial = false;
   requestTestimonialSuccessful = false;
-  allMyProjects: any = [];
+  commonProjects: any = [];
 
   isReport = false;
   form: any = {};
@@ -218,6 +219,17 @@ export class OwnProfileComponent implements OnInit {
       await this.institutionService.getPastInvolvement({ id: this.userId }).toPromise().then(
         response => {
           this.pastProj = response.data.pastProjects;
+          if (this.pastProj.length != 0) {
+            for (let i = 0; i < this.pastProj.length; i++) {
+              if (this.pastProj[i].host == this.userId || this.pastProj[i].admins.includes(this.userId)) {
+                this.pastAdminProj.push(this.pastProj[i]);
+              } else {
+                this.pastContributorProj.push(this.pastProj[i]);
+              }
+            }
+          }
+          console.log(this.pastAdminProj.length);
+          console.log(this.pastContributorProj.length);
         }
       );
 
@@ -255,39 +267,6 @@ export class OwnProfileComponent implements OnInit {
         response => this.testimonials = response.data.testimonials
       );
     }
-
-    // get all projects of the current logged in user (not the one whose profile is shown)
-    var currentUserId = this.tokenStorageService.getUser().id;
-    var myCurrentProj;
-    var myPastProj;
-    if (this.tokenStorageService.getAccountType() == 'user') {
-      // user viewing this profile is an individual
-      await this.userService.getCurrentProjects({ id: currentUserId }).toPromise().then(
-        response => {
-          myCurrentProj = response.data.currProjects;
-        }
-      );
-
-      await this.userService.getPastProjects({ id: currentUserId }).toPromise().then(
-        response => {
-          myPastProj = response.data.pastProjects;
-        }
-      );
-    } else {
-      // user viewing this profile is an institution
-      await this.institutionService.getCurrentProjects({ id: currentUserId }).toPromise().then(
-        response => {
-          myCurrentProj = response.data.currProjects;
-        }
-      );
-
-      await this.institutionService.getPastInvolvement({ id: currentUserId }).toPromise().then(
-        response => {
-          myPastProj = response.data.pastProjects;
-        }
-      );
-    }
-    this.allMyProjects = myCurrentProj.concat(myPastProj);
 
     this.resourceOffers.sort(this.sortFunction);
     this.feed.sort(this.sortFeed);
@@ -339,6 +318,7 @@ export class OwnProfileComponent implements OnInit {
   }
 
   closeModal(): void {
+    this.modalClosed = true;
     this.isReport = false;
     this.isReportSuccessful = false;
     this.form.title = '';
@@ -346,9 +326,23 @@ export class OwnProfileComponent implements OnInit {
 
     this.giveTestimonial = false;
     this.giveTestimonialSuccessful = false;
+    this.form.projectId = '';
+    this.form.desc = '';
 
     this.requestTestimonial = false;
     this.requestTestimonialSuccessful = false;
+  }
+
+  findCommonProjects(): void {
+    let tempType = '';
+    if(this.userType == 'individual') {
+      tempType = 'user';
+    } else {
+      tempType = 'institution';
+    }
+    this.testimonialService.getCommonProjects({id: this.userId, type: tempType}).toPromise().then(
+      res => this.commonProjects = res.data.theProjects
+    );
   }
 
   submitGiveTestimonial(): void {
