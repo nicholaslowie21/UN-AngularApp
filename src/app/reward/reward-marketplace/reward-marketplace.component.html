@@ -83,7 +83,7 @@
                             <img *ngIf="currentReward.rewardImg.length != 0" src="https://localhost:8080{{currentReward.rewardImg}}"
                                 class="img-fluid" style="width: 500px; height: 200px; object-fit: cover;" alt="Reward pic" />
                             <br/><br/>
-                            <button *ngIf= "userType == 'user'" type="button" class="btn btn-success float-right" (click)="redeemReward(currentReward.id)">Redeem</button>
+                            <button *ngIf= "userType == 'user' && !isRedeemSuccessful" type="button" class="btn btn-success float-right" (click)="redeemReward(currentReward.id)">Redeem</button>
                             <h5>{{currentReward.title}}</h5>
                             <div *ngIf="currentReward.desc">Description: {{currentReward.desc}}<br/></div>
                             <div *ngIf="!currentReward.desc">Description: -<br/></div>
@@ -107,7 +107,7 @@
                                     {{currentReward.remaining}} available<br>
                                 </div>
                                 <div class="col-6">
-                                    Start Date: {{formatDate(currentReward.startDate)}}
+                                    Start Date: {{formatDate(currentReward.startDate)}}<br/>
                                     End Date: {{formatDate(currentReward.endDate)}}
                                 </div>
                             </div>

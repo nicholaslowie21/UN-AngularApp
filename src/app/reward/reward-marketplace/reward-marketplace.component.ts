@@ -171,6 +171,7 @@ export class RewardMarketplaceComponent implements OnInit {
     };
     this.currentReward.remaining = this.currentReward.quota - this.currentReward.claimedNum;
     console.log(this.currentReward);
+    this.isRedeemSuccessful = false;
   }
 
   redeemReward(rewardId): void {
