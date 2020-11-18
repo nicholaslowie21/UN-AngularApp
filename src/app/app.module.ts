@@ -139,7 +139,7 @@ import { TestimonialComponent } from './testimonial/testimonial.component';
     ChatComponent,
     DataDashboardComponent,
     SearchAccountsComponent,
-    AdminDataManagementComponent
+    AdminDataManagementComponent,
     TestimonialComponent
   ],
   imports: [
