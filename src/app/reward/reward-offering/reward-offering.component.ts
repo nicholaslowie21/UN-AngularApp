@@ -100,10 +100,9 @@ export class RewardOfferingComponent implements OnInit {
     }
     
     this.rewards = arr;
-
     let arr2 = [];
     if(this.filterKeyStatus.length > 0) {
-      if(this.filterKeyStatus == 'All') {
+      if(this.filterKeyStatus == 'all') {
         arr2 = this.rewards;
       } else {
         for(var m = 0; m < this.rewards.length; m++) {
