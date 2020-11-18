@@ -322,7 +322,12 @@
                                     </div>
                                 </div>
                                 <div class="col-8">
-                                    <a href="/profile?username={{con.contributorUsername}}&userType=individual">{{con.contributorName}}</a>
+                                    <div *ngIf="con.contributorType == 'user'">
+                                        <a href="/profile?username={{con.contributorUsername}}&userType=individual">{{con.contributorName}}</a>
+                                    </div>
+                                    <div *ngIf="con.contributorType == 'institution'">
+                                        <a href="/profile?username={{con.contributorUsername}}&userType=institution">{{con.contributorName}}</a>
+                                    </div>
                                     <br/>
                                     <div class="text-secondary" style="font-size: small;">Project {{con.contributionType}}</div>
                                 </div>

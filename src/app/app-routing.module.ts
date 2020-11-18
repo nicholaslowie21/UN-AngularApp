@@ -52,6 +52,7 @@ import { ReportSubmittedComponent } from './report-submitted/report-submitted.co
 import { ChatComponent } from './chat/chat.component';
 import { DataDashboardComponent } from './data-dashboard/data-dashboard.component';
 import { SearchAccountsComponent } from './search-accounts/search-accounts.component';
+import { TestimonialComponent } from './testimonial/testimonial.component';
 
 const routes: Routes = [
   { path: 'landing', component: LandingComponent},
@@ -116,7 +117,7 @@ const routes: Routes = [
       { path: '', component: RewardMarketplaceComponent, pathMatch: 'full'}
     ]
   },
-  { path: 'shareProfile', component: ShareProfilePageComponent},
+  { path: 'shareProfile', component: ShareProfilePageComponent, canActivate: [AuthGuardService] },
   { path: 'myRequests', component: MyRequestsComponent, canActivate: [AuthGuardService] },
   { path: 'discover-weekly', component: DiscoverWeeklyComponent, canActivate: [AuthGuardService] },
   { path: 'announcements', component: AnnouncementComponent, canActivate: [AuthGuardService] },
@@ -124,6 +125,7 @@ const routes: Routes = [
   { path: 'chat', component: ChatComponent, canActivate: [AuthGuardService] },
   { path: 'search', component: SearchAccountsComponent},
   { path: 'dashboard', component: DataDashboardComponent},
+  { path: 'testimonial', component: TestimonialComponent, canActivate: [AuthGuardService] },
   { path: '', redirectTo: 'home', pathMatch: 'full'}
 ];
 

@@ -21,6 +21,78 @@
           </select>
         </div>
       </div>
+      <div class="form-group row" *ngIf="resourceType == 'Knowledge'">
+        <label for="knowledgeType" class="col-sm-4 col-form-label">Knowledge Type</label>
+        <div class="col-sm-8">
+          <select class="form-control" name="knowledgeType" [(ngModel)]="knowType" required #knowledgeType="ngModel">
+            <option>Patent</option>
+            <option>Publication</option>
+            <option>Other</option>
+          </select>
+          <div class="alert-danger" *ngIf="f.submitted && knowledgeType.invalid">
+            <div *ngIf="knowledgeType.errors.required">Knowledge Type is required</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row" *ngIf="resourceType == 'Knowledge' && knowType == 'Patent'">
+        <label for="patentno" class="col-sm-4 col-form-label">Patent Number</label>
+        <div class="col-sm-8">
+          <input
+            type="text"
+            class="form-control"
+            name="patentno"
+            [(ngModel)]="form.patentNum"
+            required
+            #patentno="ngModel"
+          />
+          <div class="alert-danger" *ngIf="f.submitted && patentno.invalid">
+            <div *ngIf="patentno.errors.required">Patent Number is required</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row" *ngIf="resourceType == 'Knowledge' && knowType == 'Patent'">
+        <label for="expiry" class="col-sm-4 col-form-label">Patent Expiry</label>
+        <div class="col-sm-8">
+          <!-- allow from today to 25 years later since patents expire in 20 years -->
+          <p-calendar [baseZIndex]="90" name="expiry" [(ngModel)]="form.expiry" dateFormat="yy-mm-dd" [showIcon]="true" [minDate]="todayDate"
+            [monthNavigator]="true" [yearNavigator]="true" yearRange="2020:2045" required #expiry="ngModel"></p-calendar>
+          <div class="alert-danger" *ngIf="f.submitted && expiry.invalid">
+            <div *ngIf="expiry.errors.required">Patent Expiry is required</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row" *ngIf="resourceType == 'Knowledge' && knowType == 'Publication'">
+        <label for="issn" class="col-sm-4 col-form-label">ISSN</label>
+        <div class="col-sm-8">
+          <input
+            type="text"
+            class="form-control"
+            name="issn"
+            [(ngModel)]="form.issn"
+            #issn="ngModel"
+          />
+        </div>
+      </div>
+      <div class="form-group row" *ngIf="resourceType == 'Knowledge' && knowType == 'Publication'">
+        <label for="doi" class="col-sm-4 col-form-label">DOI</label>
+        <div class="col-sm-8">
+          <input
+            type="text"
+            class="form-control"
+            name="doi"
+            [(ngModel)]="form.doi"
+            #doi="ngModel"
+          />
+        </div>
+      </div>
+      <div class="form-group row" *ngIf="resourceType == 'Knowledge' && knowType == 'Publication'">
+        <label for="issueDate" class="col-sm-4 col-form-label">Issue Date</label>
+        <div class="col-sm-8">
+          <!-- allow from 1970 to today's date -->
+          <p-calendar [baseZIndex]="90" name="issueDate" [(ngModel)]="form.issueDate" dateFormat="yy-mm-dd" [showIcon]="true" [maxDate]="todayDate"
+            [monthNavigator]="true" [yearNavigator]="true" yearRange="1970:2020" #issueDate="ngModel"></p-calendar>
+        </div>
+      </div>
       <div class="form-group row">
         <label for="title" class="col-sm-4 col-form-label">Title</label>
         <div class="col-sm-8">
@@ -33,11 +105,11 @@
             minlength="3"
             #title="ngModel"
           />
-        </div>
-        <div class="alert-danger" *ngIf="f.submitted && title.invalid">
-          <div *ngIf="title.errors.required">Title is required</div>
-          <div *ngIf="title.errors.minlength">
-            Title must be at least 3 characters
+          <div class="alert-danger" *ngIf="f.submitted && title.invalid">
+            <div *ngIf="title.errors.required">Title is required</div>
+            <div *ngIf="title.errors.minlength">
+              Title must be at least 3 characters
+            </div>
           </div>
         </div>
       </div>
@@ -53,12 +125,32 @@
             #desc="ngModel"
             rows="3"
           ></textarea>
-        </div>
-        <div class="alert-danger" *ngIf="f.submitted && desc.invalid">
-          <div *ngIf="desc.errors.required">Description is required</div>
-          <div *ngIf="desc.errors.minlength">
-            Description must be at least 3 characters
+          <div class="alert-danger" *ngIf="f.submitted && desc.invalid">
+            <div *ngIf="desc.errors.required">Description is required</div>
+            <div *ngIf="desc.errors.minlength">
+              Description must be at least 3 characters
+            </div>
           </div>
+        </div>
+      </div>
+      <div class="form-group row" *ngIf="resourceType == 'Knowledge'">
+        <label for="link" class="col-sm-4 col-form-label">Link</label>
+        <div class="col-sm-8">
+          <input
+            type="text"
+            class="form-control"
+            name="link"
+            [(ngModel)]="form.link"
+            #link="ngModel"
+          />
+        </div>
+      </div>
+      <div class="form-group row" *ngIf="resourceType == 'Knowledge'">
+        <label for="link" class="col-sm-4 col-form-label">Attachment</label>
+        <div class="col-sm-8">
+          <form>
+            <input type="file" name="attachment" (change)="selectAttachment($event)" />
+          </form>
         </div>
       </div>
       <!-- allow creator to set address attribute for venue resources -->
@@ -74,11 +166,11 @@
             minlength="3"
             #address="ngModel"
           />
-        </div>
-        <div class="alert-danger" *ngIf="f.submitted && address.invalid">
-          <div *ngIf="address.errors.required">Address is required</div>
-          <div *ngIf="address.errors.minlength">
-            Address must be at least 3 characters
+          <div class="alert-danger" *ngIf="f.submitted && address.invalid">
+            <div *ngIf="address.errors.required">Address is required</div>
+            <div *ngIf="address.errors.minlength">
+              Address must be at least 3 characters
+            </div>
           </div>
         </div>
       </div>
@@ -89,9 +181,9 @@
             <select class="form-control" name="country" [(ngModel)]="currentCountry" required #country="ngModel" (click)="updateCountry()">
               <option *ngFor="let c of countries" value={{c}}>{{c}}</option>
             </select>
-        </div>
-        <div class="alert-danger" *ngIf="f.submitted && country.invalid">
-            <div *ngIf="country.errors.required">Country is required</div>
+            <div class="alert-danger" *ngIf="f.submitted && country.invalid">
+              <div *ngIf="country.errors.required">Country is required</div>
+            </div>
         </div>
       </div>
       <div class="form-group row" *ngIf="resourceType == 'Item' || resourceType == 'Venue'">

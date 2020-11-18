@@ -1,50 +1,11 @@
-.rejectedStatus {
-    background-color: rgb(224, 11, 11);
-}
-
-.activeStatus {
-    background-color: rgb(83, 207, 10);
-}
-
-.acceptedStatus {
-    background-color: rgb(221, 160, 221);
-}
-
-.pendingStatus {
-    background-color: rgb(235, 141, 33);
-}
-
-.expiredStatus {
-    background-color: rgb(140, 197, 250);
-}
-
-.gold {
-    background-color: rgb(226, 173, 28);
-    color: white;
-}
-
-.silver {
-    background-color: rgb(170, 170, 170);
-    color: white;
-}
-
-.bronze {
-    background-color: rgb(185, 114, 45);
-    color: white;
-}
-
 .p-dropdown {
     width: 14rem;
     font-weight: normal;
 }
 
 .product-name {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: 700;
-}
-
-.product-description {
-    margin: 0 0 1rem 0;
 }
 
 .product-category-icon {
@@ -95,7 +56,7 @@
 }
 
 .product-grid-item {
-    /* margin: .5em; */
+    margin: .5em;
     border: 1px solid #dee2e6;
 }
 

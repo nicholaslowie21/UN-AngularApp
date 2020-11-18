@@ -1,3 +1,5 @@
+<p-toast key="toastMsg" [baseZIndex]="100"></p-toast>
+
 <div class="row">
     <div class="col-2 bg-light p-2">
         <div class="mb-md-2">Marketplace</div>
@@ -24,8 +26,8 @@
                         <p-dropdown [options]="sortOptions" [(ngModel)]="sortKey" placeholder="Sort By End Date" (onChange)="onSortChange($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
                         <p-dropdown [options]="countryOptions" [(ngModel)]="filterKeyCountry" placeholder="Filter By Country" (onChange)="filterCountry($event)"
                             styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
-                        <!-- <p-dropdown [options]="countryOptions" [(ngModel)]="filterKeyCountry" placeholder="Minimum Tier" (onChange)="filterCountry($event)"
-                            styleClass="p-mb-2 p-mb-md-0"></p-dropdown> -->
+                        <p-dropdown [options]="tierOptions" [(ngModel)]="filterKeyMinTier" placeholder="Tier" (onChange)="filterTier($event)"
+                            styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
                         <span class="p-input-icon-left p-mb-2 p-mb-md-0">
                             <i class="pi pi-search"></i>
                             <input type="search" pInputText placeholder="Search by Title" (input)="re.filter($event.target.value)">
@@ -83,8 +85,9 @@
                             <br/><br/>
                             <button *ngIf= "userType == 'user'" type="button" class="btn btn-success float-right" (click)="redeemReward(currentReward.id)">Redeem</button>
                             <h5>{{currentReward.title}}</h5>
-                            <div>Description: {{currentReward.desc}}<br/></div>
-                            <div *ngIf="currentReward.sponsorType == 'external'">Offered by: external sponsor {{currentReward.externalName}}</div>
+                            <div *ngIf="currentReward.desc">Description: {{currentReward.desc}}<br/></div>
+                            <div *ngIf="!currentReward.desc">Description: -<br/></div>
+                            <div *ngIf="currentReward.sponsorType == 'external'">Offered by: external sponsor <b>{{currentReward.externalName}}</b></div>
                             <div *ngIf="currentReward.sponsorType != 'external'">Offered by:
                                 <img *ngIf="!currentReward.accountImgPath" src="../../../assets/img/profilePic_Placeholder.png"
                                     class="img-fluid rounded-circle mr-md-2" style="width: 60px; height: 60px; object-fit: cover;" alt="Profile pic" />

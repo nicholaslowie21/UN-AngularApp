@@ -107,18 +107,22 @@ export class ResourceService {
     }, httpOptions);
   }
 
-  createKnowledge(data): Observable<any> {
-    return this.http.post(API_URL + '/createKnowledge', {
-      title: data.title,
-      desc: data.desc
-    }, httpOptions);
+  createKnowledge(formData): Observable<any> {
+    return this.http.post(API_URL + '/createKnowledge', formData);
   }
 
   updateKnowledge(data): Observable<any> {
     return this.http.post(API_URL + '/updateKnowledge', {
       knowledgeId: data.id,
       title: data.title,
-      desc: data.desc
+      desc: data.desc,
+      knowType: data.knowType,
+      link: data.link,
+      patentNum: data.patentNum,
+      expiry: data.expiry,
+      issn: data.issn,
+      doi: data.doi,
+      issueDate: data.issueDate
     }, httpOptions);
   }
 

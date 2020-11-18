@@ -144,6 +144,65 @@
                 
                 <!-- edit resource details -->
                 <h4>Resource Details</h4>
+                <div class="form-group row" *ngIf="type == 'knowledge' && knowType == 'patent'">
+                    <label for="patentno" class="col-sm-2 col-form-label">Patent Number</label>
+                    <div class="col-sm-10">
+                        <input
+                            type="text"
+                            class="form-control"
+                            name="patentno"
+                            [(ngModel)]="resource.patentNum"
+                            required
+                            #patentno="ngModel"
+                        />
+                        <div class="alert-danger" *ngIf="f.submitted && patentno.invalid">
+                            <div *ngIf="patentno.errors.required">Patent Number is required</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row" *ngIf="type == 'knowledge' && knowType == 'patent'">
+                    <label for="expiry" class="col-sm-2 col-form-label">Patent Expiry</label>
+                    <div class="col-sm-10">
+                        <!-- allow from today to 25 years later since patents expire in 20 years -->
+                        <p-calendar [baseZIndex]="90" name="expiry" [(ngModel)]="resource.expiry" dateFormat="yy-mm-dd" [showIcon]="true" [minDate]="todayDate"
+                            [monthNavigator]="true" [yearNavigator]="true" yearRange="2020:2045" required #expiry="ngModel"></p-calendar>
+                        <div class="alert-danger" *ngIf="f.submitted && expiry.invalid">
+                            <div *ngIf="expiry.errors.required">Patent Expiry is required</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row" *ngIf="type == 'knowledge' && knowType == 'publication'">
+                    <label for="issn" class="col-sm-2 col-form-label">ISSN</label>
+                    <div class="col-sm-10">
+                      <input
+                        type="text"
+                        class="form-control"
+                        name="issn"
+                        [(ngModel)]="resource.issn"
+                        #issn="ngModel"
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group row" *ngIf="type == 'knowledge' && knowType == 'publication'">
+                    <label for="doi" class="col-sm-2 col-form-label">DOI</label>
+                    <div class="col-sm-10">
+                      <input
+                        type="text"
+                        class="form-control"
+                        name="doi"
+                        [(ngModel)]="resource.doi"
+                        #doi="ngModel"
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group row" *ngIf="type == 'knowledge' && knowType == 'publication'">
+                    <label for="issueDate" class="col-sm-2 col-form-label">Issue Date</label>
+                    <div class="col-sm-10">
+                      <!-- allow from 1970 to today's date -->
+                      <p-calendar [baseZIndex]="90" name="issueDate" [(ngModel)]="resource.issueDate" dateFormat="yy-mm-dd" [showIcon]="true" [maxDate]="todayDate"
+                        [monthNavigator]="true" [yearNavigator]="true" yearRange="1970:2020" #issueDate="ngModel"></p-calendar>
+                    </div>
+                  </div>
                 <div class="form-group row">
                     <label for="title" class="col-sm-2 col-form-label">Title</label>
                     <div class="col-sm-10">
@@ -185,6 +244,18 @@
                         </div>
                     </div>
                 </div>
+                <div class="form-group row" *ngIf="type == 'knowledge'">
+                    <label for="link" class="col-sm-2 col-form-label">Link</label>
+                    <div class="col-sm-10">
+                      <input
+                        type="text"
+                        class="form-control"
+                        name="link"
+                        [(ngModel)]="resource.link"
+                        #link="ngModel"
+                      />
+                    </div>
+                  </div>
                 <div class="form-group row" *ngIf="type == 'venue'">
                     <label for="address" class="col-sm-2 col-form-label">Address</label>
                     <div class="col-sm-10">
@@ -219,15 +290,13 @@
                 
                 <div class="form-group" *ngIf="type == 'knowledge'">
                     <div *ngIf="resource.attachment.length == 0">
-                        Attachment: Currently no attachment
+                        Attachment: Currently no attachment uploaded
                     </div>
                     <div *ngIf="resource.attachment.length > 0">
                         Attachment: {{ attachmentPath }}
                         <span class="ml-md-2">
                             <button pButton class="p-button-rounded" title="Download current attachment" icon="pi pi-download" (click)="downloadAttachment(resource.attachment)"></button>
                         </span>
-                        <!-- <button type="button" class="btn btn-primary btn-sm float-right" (click)="downloadAttachment(resource.attachment)">Download current attachment</button>  -->
-                    
                     </div>
                     <br/>
                     <form>

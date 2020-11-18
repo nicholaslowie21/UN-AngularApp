@@ -83,6 +83,7 @@ import { ChatComponent } from './chat/chat.component';
 import { DataDashboardComponent } from './data-dashboard/data-dashboard.component';
 import { SearchAccountsComponent } from './search-accounts/search-accounts.component';
 import { AdminDataManagementComponent } from './admin/admin-data-management/admin-data-management.component';
+import { TestimonialComponent } from './testimonial/testimonial.component';
 
 @NgModule({
   declarations: [
@@ -139,6 +140,7 @@ import { AdminDataManagementComponent } from './admin/admin-data-management/admi
     DataDashboardComponent,
     SearchAccountsComponent,
     AdminDataManagementComponent
+    TestimonialComponent
   ],
   imports: [
     BrowserModule,

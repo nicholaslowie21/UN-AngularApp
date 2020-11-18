@@ -130,6 +130,21 @@
                 <h6 class="text-secondary">{{resource.desc}}</h6>
                 <h6 *ngIf="type != 'knowledge'" class="text-secondary">Country: {{resource.country}}</h6>
                 <h6 *ngIf="type =='knowledge'" class="text-secondary">
+                    <p *ngIf="resource.knowType == 'patent'">
+                        Patent Number: {{resource.patentNum}}<br/>
+                        Expiry date: {{formatDate(resource.expiry)}}
+                    </p>
+                    <p *ngIf="resource.knowType == 'publication'">
+                        <span *ngIf="resource.issn.length == 0">ISSN: -</span>
+                        <span *ngIf="resource.issn.length != 0">ISSN: {{resource.issn}}</span><br/>
+                        <span *ngIf="resource.doi.length == 0">DOI: -</span>
+                        <span *ngIf="resource.doi.length != 0">DOI: {{resource.doi}}</span><br/>
+                        <span *ngIf="!resource.issueDate">Issue Date: -</span>
+                        <span *ngIf="resource.issueDate">Issue Date: {{formatDate(resource.issueDate)}}</span><br/>
+                    </p>
+                    <span *ngIf="resource.link.length == 0">Link: -</span>
+                    <span *ngIf="resource.link.length != 0">Link: <a href="{{resource.link}}">{{resource.link}}</a></span>
+                    <br/><br/>
                     <span *ngIf="resource.attachment.length == 0">Attachment: -</span>
                     <span *ngIf="resource.attachment.length > 0">Attachment: {{attachmentPath}}</span>
                     <span *ngIf="resource.attachment.length > 0" class="ml-md-2">
@@ -145,11 +160,15 @@
                 <div class="float-right">
                     <i class="pi pi-tag"></i>
                     <span class="{{type}}type rounded-sm text-white">&nbsp;{{type}}&nbsp;</span>
+                    <br/>
+                    <span *ngIf="type == 'knowledge'">
+                        Type: {{resource.knowType}}
+                    </span>
                 </div>
                 <br/>
                 <div *ngIf="isOwner" class="float-right mt-md-2">
-                    <a href="/resource/editDetails?id={{resource.id}}&type={{type}}" class="btn btn-primary float-right"><i class="pi pi-pencil"></i>Edit</a>
-                    <button class="btn btn-danger float-right" (click)="deleteResource()"><i class="pi pi-trash"></i>Delete</button>
+                    <button class="btn btn-danger ml-1 float-right" (click)="deleteResource()"><i class="pi pi-trash"></i>Delete</button>
+                    <a href="/resource/editDetails?id={{resource.id}}&type={{type}}" class="btn btn-primary mr-md-2 float-right"><i class="pi pi-pencil"></i>Edit</a>
                 </div>
             </div>
         </div>
@@ -278,7 +297,10 @@
                             <!-- show current user's projects and get them to choose one -->
                             <div class="form-group row">
                                 <label for="project" class="col-sm-3 col-form-label">Select Project</label>
-                                <div class="col-sm-9">
+                                <div class="col-sm-9" *ngIf="myProjects.length == 0">
+                                    You currently have no ongoing projects.
+                                </div>
+                                <div class="col-sm-9" *ngIf="myProjects.length != 0">
                                     <select class="form-control" name="project" [(ngModel)]="selectedProjectId" required #project="ngModel" (click)="updateSelectedProject($event)">
                                         <option *ngFor="let p of myProjects" value={{p.id}}>{{p.title}}</option>
                                     </select>
@@ -290,7 +312,7 @@
                                 </div>
                             </div>
                             <!-- if the selected project currently doesn't have a corresponding resource need -->
-                            <div class="form-check">
+                            <div class="form-check" *ngIf="projectSelected">
                                 <input class="form-check-input" type="checkbox" value="" id="autogenerate" [checked]="autogenerateYes" (change)="updateAutogenerate($event);">
                                 <label class="form-check-label" for="autogenerate">
                                     I don't have a resource need for this yet, auto-generate it for me
@@ -345,7 +367,10 @@
                             <!-- show current user's projects and get them to choose one -->
                             <div class="form-group row">
                                 <label for="project" class="col-sm-3 col-form-label">Select Project</label>
-                                <div class="col-sm-9">
+                                <div class="col-sm-9" *ngIf="myProjects.length == 0">
+                                    You currently have no ongoing projects.
+                                </div>
+                                <div class="col-sm-9" *ngIf="myProjects.length != 0">
                                     <select class="form-control" name="project" [(ngModel)]="selectedProjectId" required #project="ngModel" (click)="updateSelectedProject($event)">
                                         <option *ngFor="let p of myProjects" value={{p.id}}>{{p.title}}</option>
                                     </select>
@@ -360,7 +385,7 @@
                                 </div>
                             </div>
                             <!-- if the selected project currently doesn't have a corresponding resource need -->
-                            <div class="form-check">
+                            <div class="form-check" *ngIf="projectSelected">
                                 <input class="form-check-input" type="checkbox" value="" id="autogenerate" [checked]="autogenerateYes" (change)="updateAutogenerate($event);">
                                 <label class="form-check-label" for="autogenerate">
                                     I don't have a resource need for this yet, auto-generate it for me
