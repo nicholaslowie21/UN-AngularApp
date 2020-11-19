@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 const API_URL = 'https://localhost:8080/api/admin';
+const base_url = 'https://localhost:8080';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -93,5 +94,20 @@ export class AdminService {
     return this.http.post(API_URL + '/activateInstitution', {
       targetId: data.id
     }, httpOptions);
+  }
+
+  getClaims(): Observable<any> {
+    return this.http.get(API_URL + '/claims?status=pending');
+  }
+
+  validateClaim(data): Observable<any> {
+    return this.http.post(API_URL + '/claim', {
+      claimId: data.id,
+      action: data.action
+    }, httpOptions);
+  }
+
+  getAttachmentFile(filePath): Observable<any> {
+    return this.http.get(base_url+ '/public/uploads/verifyClaim/' +filePath, {responseType: 'blob'});
   }
 }
