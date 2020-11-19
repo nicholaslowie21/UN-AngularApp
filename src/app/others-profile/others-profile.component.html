@@ -1,31 +1,117 @@
+<p-toast key="toastMsg" [baseZIndex]="100"></p-toast>
+
 <div class="container p-3 my-3 bg-dark text-white">
     <div class="row">
         <div class="col-3">
             <div *ngIf="user.profilePic.length == 0">
                 <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src="../../assets/img/profilePic_Placeholder.png" style="margin: 10px; width: 150px; height: 150px; object-fit: cover;"
-                alt="Profile picture">
+                    alt="Profile picture">
             </div>
             <div *ngIf="user.profilePic.length != 0">
                 <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src={{user.profilePic}} style="margin: 10px; width: 150px; height: 150px; object-fit: cover;"
-                alt="Profile picture">
+                    alt="Profile picture">
             </div>
             <div *ngIf=isVerified>
                 <img src="../../assets/img/verified.jpg" style="width: 30px; height: 30px;" class="center">
-            </div>        
+            </div>
         </div>
         <div class="col-7">
             <h4 class="card-title text-left mt-md-3">{{ user.name }}
-                <div style="font-size:medium; display: inline-block;">({{ user.username }})</div>
+                <div *ngIf="isIndividual" style="font-size:medium; display: inline-block;">({{ user.salutation }})</div>
             </h4>
             <h6 class="card-title text-left mt-md-3">{{ user.country }}</h6>
             <h6 class="card-title text-left mt-md-1">{{ user.occupation }}</h6>
             <h6 class="card-title text-left mt-md-1">{{ user.address }}</h6>
             <h6 class="card-title text-left mt-md-1">{{ user.phone }}</h6>
             <h6 class="card-title text-left mt-md-1">{{ user.bio }}</h6>
-            <h6 class="card-title text-left mt-md-1"><a [href]="user.website">{{ user.website }}</a></h6>
+            <h6 class="card-title text-left mt-md-1">
+                <a [href]="user.website">{{ user.website }}</a>
+            </h6>
+            <h6 *ngIf="isUnclaimed" class="card-title text-left mt-md-1">Status:
+                <i>unclaimed</i>
+            </h6>
+            <h6 *ngIf="!isUnclaimed" class="card-title text-left mt-md-1">Status:
+                <i>{{user.status}}</i>
+            </h6>
         </div>
         <div class="col-2">
-            <button class="btn btn-primary">Chat</button>
+            <button *ngIf="isUnclaimed" class="btn btn-primary" data-toggle="modal" data-target="#claim">Claim</button>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="claim" tabindex="-1" role="dialog" aria-labelledby="claimTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-dark" id="exampleModalLongTitle">Claim Profile</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-dark">
+                        <div *ngIf="!claimSuccess">
+                            <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+                                <div class="form-group row">
+                                    <label for="username" class="col-sm-4 col-form-label">Username</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" name="username" [(ngModel)]="form.username" required minlength="3" maxlength="20"
+                                            #username="ngModel" />
+                                    </div>
+                                    <div class="alert-danger" *ngIf="f.submitted && username.invalid">
+                                        <div *ngIf="username.errors.required">Username is required</div>
+                                        <div *ngIf="username.errors.minlength">
+                                            Username must be at least 3 characters
+                                        </div>
+                                        <div *ngIf="username.errors.maxlength">
+                                            Username must be at most 20 characters
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="password" class="col-sm-4 col-form-label">Password</label>
+                                    <div class="col-sm-8">
+                                        <input type="password" class="form-control" name="password" [(ngModel)]="form.password" required minlength="6" #password="ngModel"
+                                        />
+                                    </div>
+                                    <div class="alert-danger" *ngIf="f.submitted && password.invalid">
+                                        <div *ngIf="password.errors.required">Password is required</div>
+                                        <div *ngIf="password.errors.minlength">
+                                            Password must be at least 6 characters
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="confirmPassword" class="col-sm-4 col-form-label">Confirm Password</label>
+                                    <div class="col-sm-8">
+                                        <input type="password" class="form-control" name="confirmPassword" [(ngModel)]="form.confirmPassword" required minlength="6"
+                                            #confirmPassword="ngModel" />
+                                    </div>
+                                    <div class="alert-danger" *ngIf="f.submitted && confirmPassword.invalid">
+                                        <div *ngIf="confirmPassword.errors.required">Password is required</div>
+                                        <div *ngIf="confirmPassword.errors.minlength">
+                                            Password must be at least 6 characters
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="file">Upload File for Verification</label>
+                                    <form>
+                                        <input type="file" name="file" (change)="selectImage($event)" />
+                                    </form>
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-primary btn-block">Claim</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div *ngIf="claimSuccess">
+                            <div class="alert alert-success">
+                                Your request to claim this account has been sent!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -33,7 +119,7 @@
 <div class="container p-3 my-3 bg-primary text-white">
     <div class="row">
         <div class="col-6 bg-primary text-white border-0">
-            <h6 class="card-title text-left mt-md-3 center" style="margin: 15px">SDGs: 
+            <h6 class="card-title text-left mt-md-3" style="margin: 15px">SDGs:
                 <div *ngIf="user.SDGs.length == 0" style="display:inline-block;">
                     -
                 </div>
@@ -41,7 +127,7 @@
                     <button class="sdg sdg{{sdg}} mr-md-1">{{sdg}}</button>
                 </div>
             </h6>
-            <h6 *ngIf=isIndividual class="card-title text-left mt-md-3 center" style="margin: 15px">Skills:
+            <h6 *ngIf=isIndividual class="card-title text-left mt-md-3" style="margin: 15px">Skills:
                 <div *ngIf="user.skills.length == 0" style="display:inline-block;">
                     -
                 </div>
@@ -50,8 +136,53 @@
                 </div>
             </h6>
         </div>
-        <div class="col-3 bg-primary text-white border-0" *ngIf=isIndividual>
-            <h6 class="card-title text-left mt-md-3 center" style="margin: 15px">Gender: {{ user.gender }}</h6>
+        <div class="col-6">
+            <div class="row">
+                <button *ngIf="isIndividual" type="button" class="btn btn-warning ml-md-2 mt-md-4" data-toggle="modal" data-target="#individualAffiliations">
+                    See affiliated institutions
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="individualAffiliations" tabindex="-1" role="dialog" aria-labelledby="individualAffiliationsTitle"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title text-dark" id="exampleModalLongTitle">My Affiliations</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body text-dark">
+                                <div *ngIf="indAffiliations.length == 0">
+                                    No affiliated institution.
+                                </div>
+                                <div *ngFor="let a of indAffiliations">
+                                    <div class="card">
+                                        <div class="row p-2">
+                                            <div class="col-3">
+                                                <img *ngIf="a.profilePic.length == 0" src="../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle"
+                                                    style="height: 90px; width: 90px; object-fit: cover;" alt="Profile pic">
+                                                <img *ngIf="a.profilePic.length > 0" src={{a.profilePic}} class="img-fluid rounded-circle" style="height: 90px; width: 90px; object-fit: cover;"
+                                                    alt="Profile pic">
+                                            </div>
+                                            <div class="col-9 mt-md-2">
+                                                <h5>
+                                                    <a href="/profile?username={{a.username}}&userType=institution">{{a.name}}</a>
+                                                </h5>
+                                                {{a.username}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

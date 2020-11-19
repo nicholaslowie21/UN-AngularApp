@@ -53,6 +53,7 @@ import { ChatComponent } from './chat/chat.component';
 import { DataDashboardComponent } from './data-dashboard/data-dashboard.component';
 import { SearchAccountsComponent } from './search-accounts/search-accounts.component';
 import { TestimonialComponent } from './testimonial/testimonial.component';
+import { OthersProfileComponent } from './others-profile/others-profile.component';
 
 const routes: Routes = [
   { path: 'landing', component: LandingComponent},
@@ -126,7 +127,8 @@ const routes: Routes = [
   { path: 'search', component: SearchAccountsComponent},
   { path: 'dashboard', component: DataDashboardComponent},
   { path: 'testimonial', component: TestimonialComponent, canActivate: [AuthGuardService] },
-  { path: '', redirectTo: 'home', pathMatch: 'full'}
+  { path: '', redirectTo: 'home', pathMatch: 'full'},
+  { path: 'view-Profile', component: OthersProfileComponent}
 ];
 
 @NgModule({
