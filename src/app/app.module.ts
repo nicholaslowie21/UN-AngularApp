@@ -81,10 +81,11 @@ import { ReportSubmittedComponent } from './report-submitted/report-submitted.co
 import { AdminReportDetailsComponent } from './admin/admin-report-details/admin-report-details.component';
 import { AdminChatComponent } from './admin/admin-chat/admin-chat.component';
 import { ChatComponent } from './chat/chat.component';
-import { DataDashboardComponent } from './data-dashboard/data-dashboard.component';
+import { DataDashboardComponent } from './data-overview/data-dashboard/data-dashboard.component';
 import { SearchAccountsComponent } from './search-accounts/search-accounts.component';
 import { AdminDataManagementComponent } from './admin/admin-data-management/admin-data-management.component';
 import { TestimonialComponent } from './testimonial/testimonial.component';
+import { DataProjectComponent } from './data-overview/data-project/data-project.component';
 
 @NgModule({
   declarations: [
@@ -141,7 +142,8 @@ import { TestimonialComponent } from './testimonial/testimonial.component';
     DataDashboardComponent,
     SearchAccountsComponent,
     AdminDataManagementComponent,
-    TestimonialComponent
+    TestimonialComponent,
+    DataProjectComponent
   ],
   imports: [
     BrowserModule,
