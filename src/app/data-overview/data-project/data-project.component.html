@@ -1,3 +1,5 @@
+<a href="/dashboard"><< Back to Data Dashboard</a>
+<br>
 <h2>Data By SDG and Country</h2>
 
 <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -8,10 +10,11 @@
         <a class="nav-link" id="knowledge-tab" data-toggle="tab" href="#knowledge" role="tab" aria-controls="knowledge" aria-selected="false">Based on Country</a>
     </li>
 </ul>
+<!-- [loading]="loading" used to be in p-table, but caused some errors -->
 <div class="tab-content">
     <div class="tab-pane fade show active" id="personal" role="tabpanel" aria-labelledby="personal-tab">
     <p-table #dt1 [value]="dataBySDG" dataKey="id"
-        [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [loading]="loading" styleClass="p-datatable-customers p-datatable-gridlines"
+        [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" styleClass="p-datatable-customers p-datatable-gridlines"
         [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
         [globalFilterFields]="['sdgTitle','accountsNum','projectsNum','contributionsNum', 'fundingNum']">
         <ng-template pTemplate="caption">
@@ -62,7 +65,7 @@
     </div>
     <div class="tab-pane fade" id="knowledge" role="tabpanel" aria-labelledby="knowledge-tab">
         <p-table #dt1 [value]="dataByCountry" dataKey="id"
-        [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [loading]="loading" styleClass="p-datatable-customers p-datatable-gridlines"
+        [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" styleClass="p-datatable-customers p-datatable-gridlines"
         [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
         [globalFilterFields]="['country','accountsNum','projectsNum','contributionsNum', 'fundingNum']">
         <ng-template pTemplate="caption">
