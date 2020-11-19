@@ -78,7 +78,6 @@ import { AdminAnnouncementComponent } from './admin/admin-announcement/admin-ann
 import { AnnouncementComponent } from './announcement/announcement.component';
 import { ReportSubmittedComponent } from './report-submitted/report-submitted.component';
 import { AdminReportDetailsComponent } from './admin/admin-report-details/admin-report-details.component';
-import { AdminChatComponent } from './admin/admin-chat/admin-chat.component';
 import { ChatComponent } from './chat/chat.component';
 import { DataDashboardComponent } from './data-dashboard/data-dashboard.component';
 import { SearchAccountsComponent } from './search-accounts/search-accounts.component';
@@ -135,7 +134,6 @@ import { TestimonialComponent } from './testimonial/testimonial.component';
     AnnouncementComponent,
     ReportSubmittedComponent,
     AdminReportDetailsComponent,
-    AdminChatComponent,
     ChatComponent,
     DataDashboardComponent,
     SearchAccountsComponent,

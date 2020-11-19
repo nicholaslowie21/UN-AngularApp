@@ -23,7 +23,6 @@ import { AdminVerificationComponent } from './admin/admin-verification/admin-ver
 import { AdminRewardManagementComponent } from './admin/admin-reward-management/admin-reward-management.component';
 import { AdminCreateRewardComponent } from './admin/admin-create-reward/admin-create-reward.component';
 import { AdminAnnouncementComponent } from './admin/admin-announcement/admin-announcement.component';
-import { AdminChatComponent } from './admin/admin-chat/admin-chat.component';
 import { AdminDataManagementComponent } from './admin/admin-data-management/admin-data-management.component';
 import { ShareProfilePageComponent } from './share-profile-page/share-profile-page.component';
 import { CreateProjectComponent } from './project/create-project/create-project.component';
@@ -77,7 +76,6 @@ const routes: Routes = [
       { path: 'reward', component: AdminRewardManagementComponent },
       { path: 'create-reward', component: AdminCreateRewardComponent},
       { path: 'announcement', component: AdminAnnouncementComponent},
-      { path: 'chat', component: AdminChatComponent},
       { path: 'data-management', component: AdminDataManagementComponent},
       { path: '', component: AdminHomeComponent, pathMatch: 'full'}
     ] 
