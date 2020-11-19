@@ -83,7 +83,6 @@ import { DataDashboardComponent } from './data-dashboard/data-dashboard.componen
 import { SearchAccountsComponent } from './search-accounts/search-accounts.component';
 import { AdminDataManagementComponent } from './admin/admin-data-management/admin-data-management.component';
 import { TestimonialComponent } from './testimonial/testimonial.component';
-import { NotificationsComponent } from './notifications/notifications.component';
 
 @NgModule({
   declarations: [
@@ -139,8 +138,7 @@ import { NotificationsComponent } from './notifications/notifications.component'
     DataDashboardComponent,
     SearchAccountsComponent,
     AdminDataManagementComponent,
-    TestimonialComponent,
-    NotificationsComponent
+    TestimonialComponent
   ],
   imports: [
     BrowserModule,
