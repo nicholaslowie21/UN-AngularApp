@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TokenStorageService } from './services/token-storage.service';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CommunicationService } from './services/communication.service';
 
 @Component({
   selector: 'app-root',
@@ -10,20 +11,25 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 export class AppComponent implements OnInit {
   private role: string;
   isLoggedIn = false;
+  user: any;
   username: string;
   userType: any;
   showAdmin = false;
   showNavBar = true;
 
-  constructor(private tokenStorageService: TokenStorageService, private route: ActivatedRoute, private router: Router) { 
+  isNotifOpen = false;
+  notifications = [];
+
+  constructor(private tokenStorageService: TokenStorageService, private communicationService: CommunicationService) { 
   }
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.isLoggedIn = !!this.tokenStorageService.getToken();
     console.log(this.tokenStorageService.getToken())
 
     if (this.isLoggedIn) {
       const user = this.tokenStorageService.getUser();
+      this.user = user;
       if(this.tokenStorageService.getAccountType() == 'user') {
         this.userType = 'individual';
       } else {
@@ -40,6 +46,12 @@ export class AppComponent implements OnInit {
       }
 
       this.username = user.username;
+
+      await this.communicationService.getNotifications().toPromise().then(
+        res => this.notifications = res.data.notifications
+      );
+  
+      console.log(this.notifications)
     }
   }
 
@@ -47,6 +59,15 @@ export class AppComponent implements OnInit {
     if (event.isShareProfile) {
       this.showNavBar = false;
     }
+  }
+
+  openNotif(): void {
+    this.isNotifOpen = !this.isNotifOpen;
+  }
+
+  formatDate(date): any {
+    let formattedDate = new Date(date).toUTCString();
+    return formattedDate.substring(5, formattedDate.length-13);
   }
 
   logout(): void {

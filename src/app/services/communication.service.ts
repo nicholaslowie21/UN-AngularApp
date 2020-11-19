@@ -37,4 +37,8 @@ export class CommunicationService {
   getAnnouncements(): Observable<any> {
     return this.http.get(API_URL + '/announcement');
   }
+
+  getNotifications(): Observable<any> {
+    return this.http.get(API_URL + '/notifications');
+  }
 }
