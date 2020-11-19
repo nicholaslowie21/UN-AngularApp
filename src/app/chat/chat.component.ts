@@ -3,6 +3,7 @@ import { TokenStorageService } from '../services/token-storage.service';
 import { CommunicationService } from '../services/communication.service';
 import { MessageService } from 'primeng/api';
 import { interval } from 'rxjs';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-chat',
@@ -157,6 +158,8 @@ export class ChatComponent implements OnInit {
   }
 
   formatDate(date): any {
+    const format1 = "HH:mm";
+    console.log(moment(date).format(format1));
     let formattedDate = new Date(date).toDateString();
     return formattedDate.substring(4, formattedDate.length - 5);
   }
