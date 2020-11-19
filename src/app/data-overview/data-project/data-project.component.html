@@ -1,1 +1,113 @@
-<p>data-project works!</p>
+<h2>Data By SDG and Country</h2>
+
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active" id="personal-tab" data-toggle="tab" href="#personal" role="tab" aria-controls="personal" aria-selected="true">Based on SDG</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="knowledge-tab" data-toggle="tab" href="#knowledge" role="tab" aria-controls="knowledge" aria-selected="false">Based on Country</a>
+    </li>
+</ul>
+<div class="tab-content">
+    <div class="tab-pane fade show active" id="personal" role="tabpanel" aria-labelledby="personal-tab">
+    <p-table #dt1 [value]="dataBySDG" dataKey="id"
+        [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [loading]="loading" styleClass="p-datatable-customers p-datatable-gridlines"
+        [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [globalFilterFields]="['sdgTitle','accountsNum','projectsNum','contributionsNum', 'fundingNum']">
+        <ng-template pTemplate="caption">
+            <div class="p-d-flex">
+                <span class="p-input-icon-left p-ml-auto">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="dt1.filterGlobal($event.target.value, 'contains')" placeholder="Search keyword" />
+                </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="sdgTitle">SDG<p-sortIcon field="sdgTitle"></p-sortIcon></th>
+                <th pSortableColumn="accountsNum">
+                    <!-- <div class="p-d-flex p-jc-between p-ai-center"> -->
+                    Accounts
+                    <p-sortIcon field="accountsNum"></p-sortIcon>
+                    <!-- <p-columnFilter type="numeric" field="balance" display="menu"></p-columnFilter>
+                    </div> -->
+                </th>
+                <th pSortableColumn="projectsNum">Projects<p-sortIcon field="projectsNum"></p-sortIcon></th>
+                <th pSortableColumn="contributionsNum">Contributions<p-sortIcon field="contributionsNum"></p-sortIcon></th>
+                <th pSortableColumn="fundingNum">
+                    <!-- <div class="p-d-flex p-jc-between p-ai-center"> -->
+                        Funding
+                        <p-sortIcon field="fundingNum"></p-sortIcon>
+                        <!-- <p-columnFilter type="numeric" field="balance" display="menu" currency="SGD"></p-columnFilter>
+                    </div> -->
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-sdg>
+            <tr>
+                <td>{{sdg.sdgTitle}}</td>
+                <td>{{sdg.accountsNum}}</td>
+                <td>{{sdg.projectsNum}}</td>
+                <td>{{sdg.contributionsNum}}</td>
+                <td>{{sdg.fundingNum | currency: 'SGD'}}</td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="7">No data found.</td>
+            </tr>
+        </ng-template>
+    </p-table>
+
+    </div>
+    <div class="tab-pane fade" id="knowledge" role="tabpanel" aria-labelledby="knowledge-tab">
+        <p-table #dt1 [value]="dataByCountry" dataKey="id"
+        [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [loading]="loading" styleClass="p-datatable-customers p-datatable-gridlines"
+        [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [globalFilterFields]="['country','accountsNum','projectsNum','contributionsNum', 'fundingNum']">
+        <ng-template pTemplate="caption">
+            <div class="p-d-flex">
+                <span class="p-input-icon-left p-ml-auto">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="dt1.filterGlobal($event.target.value, 'contains')" placeholder="Search keyword" />
+                </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="country">Country<p-sortIcon field="country"></p-sortIcon></th>
+                <th pSortableColumn="accountsNum">
+                    <!-- <div class="p-d-flex p-jc-between p-ai-center"> -->
+                    Accounts
+                    <p-sortIcon field="accountsNum"></p-sortIcon>
+                    <!-- <p-columnFilter type="numeric" field="balance" display="menu"></p-columnFilter>
+                    </div> -->
+                </th>
+                <th pSortableColumn="projectsNum">Projects<p-sortIcon field="projectsNum"></p-sortIcon></th>
+                <th pSortableColumn="contributionsNum">Contributions<p-sortIcon field="contributionsNum"></p-sortIcon></th>
+                <th pSortableColumn="fundingNum">
+                    <!-- <div class="p-d-flex p-jc-between p-ai-center"> -->
+                        Funding
+                        <p-sortIcon field="fundingNum"></p-sortIcon>
+                        <!-- <p-columnFilter type="numeric" field="balance" display="menu" currency="SGD"></p-columnFilter>
+                    </div> -->
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-bycountry>
+            <tr>
+                <td>{{bycountry.country}}</td>
+                <td>{{bycountry.accountsNum}}</td>
+                <td>{{bycountry.projectsNum}}</td>
+                <td>{{bycountry.contributionsNum}}</td>
+                <td>{{bycountry.fundingNum | currency: 'SGD'}}</td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="7">No data found.</td>
+            </tr>
+        </ng-template>
+    </p-table>
+    </div>   
+</div>

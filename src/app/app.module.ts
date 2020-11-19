@@ -62,6 +62,7 @@ import {MultiSelectModule} from 'primeng/multiselect';
 import {CalendarModule} from 'primeng/calendar';
 import {FullCalendarModule} from 'primeng/fullcalendar';
 import {ChartModule} from 'primeng/chart';
+import {TableModule} from 'primeng/table';
 
 import { ProjectMarketplaceComponent } from './marketplace/project-marketplace/project-marketplace.component';
 import { ResourceMarketplaceComponent } from './marketplace/resource-marketplace/resource-marketplace.component';
@@ -168,7 +169,8 @@ import { DataProjectComponent } from './data-overview/data-project/data-project.
     MultiSelectModule,
     CalendarModule,
     FullCalendarModule,
-    ChartModule
+    ChartModule,
+    TableModule
   ],
   providers: [authInterceptorProviders, AuthGuardService],
   bootstrap: [AppComponent]
