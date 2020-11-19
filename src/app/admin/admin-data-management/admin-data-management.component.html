@@ -14,7 +14,7 @@
 </form>
 <h2>Account Claims</h2>
 <div class="card">
-    <p-dataView #dv [value]="claims" [paginator]="true" [rows]="9" filterBy="account.name" [sortField]="sortField" [sortOrder]="sortOrder" layout="list">
+    <p-dataView #dv [value]="claims" [paginator]="true" [rows]="9" filterBy="account.name" layout="list">
         <ng-template pTemplate="header">
             <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
                 <span class="p-input-icon-left p-mb-2 p-mb-md-0">
