@@ -105,13 +105,14 @@ export class OthersProfileComponent implements OnInit {
     }
 
     const formData = new FormData();
-    formData.append("username", this.form.username);
-    formData.append("email", this.form.email);
-    formData.append("password", this.form.password);
+    console.log(this.id + " " + this.type + " " + this.file + " " + this.form.email + " " + this.form.password + " " + this.form.username);
+    formData.append("accountId", this.id);
     formData.append("accountType", this.type);
     formData.append("verifyFile", this.file);
-    formData.append("accountId", this.id);
-
+    formData.append("email", this.form.email);
+    formData.append("password", this.form.password);
+    formData.append("username", this.form.username);
+    
     this.userService.claimAccount(formData).subscribe(
       response => {
         console.log(response);

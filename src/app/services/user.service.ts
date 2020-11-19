@@ -85,7 +85,7 @@ export class UserService {
     return this.http.get('https://localhost:8080/api/mapping/institutions');
   }
 
-  claimAccount(data):Observable<any> {
-    return this.http.post('https://localhost:8080/api/mapping/claim', data, httpOptions);
+  claimAccount(formData):Observable<any> {
+    return this.http.post('https://localhost:8080/api/mapping/claim', formData, httpOptions);
   }
 }
