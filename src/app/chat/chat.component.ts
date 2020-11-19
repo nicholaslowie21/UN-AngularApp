@@ -14,7 +14,7 @@ import * as moment from 'moment';
 export class ChatComponent implements OnInit {
 
   @ViewChild('messageArea')
-  chatMessageAreaElement: ElementRef<HTMLElement>;
+  messageArea: ElementRef<HTMLElement>;
 
   isChatPage = true;
   isAdmin = false;
@@ -58,14 +58,11 @@ export class ChatComponent implements OnInit {
       this.subscribe.unsubscribe();
     }
 
+    // this.scrollToLastMessage();
+
     this.subscribe = await this.source.subscribe(async () => {
-      let oldMsgsLength = this.chatMsgs.length;
-      await this.getMessages(id);
-      if(oldMsgsLength < this.chatMsgs.length) {
-        console.log("SCROLL INSIDE TIMER")
-        this.scrollToLastMessage();
-      }
       console.log("timer is running");
+      await this.getMessages(id);
     });
   }
 
@@ -92,19 +89,28 @@ export class ChatComponent implements OnInit {
   async openChatRoom(roomId) {
     // await this.getMessages(roomId);
     this.loadRooms();
-    await this.startTimer(roomId);
+    this.startTimer(roomId);
     this.scrollToLastMessage();
   }
 
   async getMessages(roomId) {
+    let oldMsgsLength = this.chatMsgs.length;
+    console.log("OLD "+oldMsgsLength);
     await this.communicationService.getChatMsgs({ id: roomId }).toPromise().then(
       res => {
         this.selectedChatImg = res.data.targetImg;
         this.selectedChatRoom = res.data.chatRoom;
         this.chatMsgs = res.data.chats;
+        this.loadRooms();
+        console.log("NEW "+this.chatMsgs.length);
+        if(oldMsgsLength < this.chatMsgs.length) {
+          console.log("SCROLL INSIDE TIMER")
+          this.scrollToLastMessage();
+        }
       }
     );
-    this.loadRooms();
+    
+    // this.scrollToLastMessage();
   }
 
   sendMsg() {
@@ -148,8 +154,11 @@ export class ChatComponent implements OnInit {
 
   scrollToLastMessage() {
     console.log("SCROLL");
-    if (this.chatMessageAreaElement) {
-      this.chatMessageAreaElement.nativeElement.scrollTop = this.chatMessageAreaElement.nativeElement.scrollHeight;
+    if (this.messageArea) {
+      console.log(this.messageArea)
+      console.log(this.messageArea.nativeElement.scrollTop);
+      console.log(this.messageArea.nativeElement.scrollHeight);
+      this.messageArea.nativeElement.scrollTop = this.messageArea.nativeElement.scrollHeight + 500;
     }
   }
 
@@ -158,8 +167,8 @@ export class ChatComponent implements OnInit {
   }
 
   formatDate(date): any {
-    const format1 = "HH:mm";
-    console.log(moment(date).format(format1));
+    // const format1 = "HH:mm";
+    // console.log(moment(date).format(format1));
     let formattedDate = new Date(date).toDateString();
     return formattedDate.substring(4, formattedDate.length - 5);
   }

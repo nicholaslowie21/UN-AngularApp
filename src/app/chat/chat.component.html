@@ -29,7 +29,7 @@
                         No chat found.
                     </div>
                     <div *ngFor="let cr of displayChatRooms">
-                        <div class="chat_list" (click)="openChatRoom(cr.id);" 
+                        <div class="chat_list" (click)="openChatRoom(cr.id)" 
                             [ngClass]="{'active_chat': selectedChatRoom && cr.id == selectedChatRoom.id}"
                             style="cursor: pointer;">
                             <div class="chat_people">
@@ -97,7 +97,7 @@
                     <div *ngIf="selectedChatRoom.chatType == 'admin'"
                         class="text-center admin-chat"><small>This is an administrative chat</small></div>
                     
-                        <div class="msg_history" #messageArea>
+                    <div class="msg_history" #messageArea >
                         <div *ngFor="let msg of chatMsgs">
                             <div *ngIf="msg.accountUsername != username" class="incoming_msg">
                                 <div class="incoming_msg_img">
@@ -125,18 +125,20 @@
                             </div>
                         </div>
                     </div>
+                    <div *ngIf="selectedChatRoom" class="type_msg p-2">
+                        <div class="input_msg_write">
+                            <form name="form" (ngSubmit)="f.form.valid && sendMsg()" #f="ngForm" novalidate>
+                                <input type="text" class="write_msg" name="message" [(ngModel)]="chatForm.message" required
+                                    #message="ngModel" placeholder="Type a message..." />
+                                <button class="msg_send_btn" type="button"><i class="pi pi-angle-right"
+                                    aria-hidden="true"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                    
                 </div>
 
-                <div *ngIf="selectedChatRoom" class="type_msg p-2">
-                    <div class="input_msg_write">
-                        <form name="form" (ngSubmit)="f.form.valid && sendMsg()" #f="ngForm" novalidate>
-                            <input type="text" class="write_msg" name="message" [(ngModel)]="chatForm.message" required
-                                #message="ngModel" placeholder="Type a message..." />
-                            <button class="msg_send_btn" type="button"><i class="pi pi-angle-right"
-                                aria-hidden="true"></i></button>
-                        </form>
-                    </div>
-                </div>
+                
             </div>
         </div>
 
