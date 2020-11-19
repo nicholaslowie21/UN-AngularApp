@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ReportService } from '../../services/report.service';
 import { AdminService } from '../../services/admin.service';
 import { MessageService } from 'primeng/api';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-report-details',
@@ -14,11 +15,13 @@ export class AdminReportDetailsComponent implements OnInit {
 
   id: any;
   report: any;
+  type: any;
   reporterId: any;
   reportedId: any;
+  status: any;
 
   constructor(private route: ActivatedRoute, private messageService: MessageService, private reportService: ReportService, 
-    private adminService: AdminService) { }
+    private adminService: AdminService, private router: Router) { }
 
   async ngOnInit() {
     this.route.queryParams
@@ -31,17 +34,43 @@ export class AdminReportDetailsComponent implements OnInit {
       await this.reportService.getReportDetails({ id: this.id }).toPromise().then(
         response => {
           this.report = response.data.report;
+          this.type = this.report.reportType;
+          this.status = this.report.status;
           console.log(JSON.stringify(response));
         },
         err => {
           alert(err.error.msg);
         }
       );
+      console.log(this.type);
   }
 
-  /**activateUser(): void {
-    console.log(this.user.id);
-    this.adminService.activateUser({ id: this.user.id }).subscribe(
+  formatDate(date): any {
+    let formattedDate = new Date(date).toUTCString();
+    return formattedDate.substring(5, formattedDate.length-13);
+  }
+
+  viewReported(): void {
+    if(this.type=='project') {
+      this.router.navigate(['/admin/user-management/profile'], {queryParams: {type: this.type, id: this.report.targetId}});
+    } else if(this.type=='user') {
+      this.router.navigate(['/admin/user-management/profile'], {queryParams: {username: this.report.targetUsername, type: 'individual', id: this.report.targetId}});
+    } else {
+      this.router.navigate(['/admin/user-management/profile'], {queryParams: {username: this.report.targetUsername, type: this.type, id: this.report.targetId}});
+    }
+  }
+
+  viewReporter(): void {
+    if(this.report.reporterType == 'user') {
+      this.router.navigate(['/admin/user-management/profile'], {queryParams: {username: this.report.reporterUsername, type: 'individual', id: this.report.reporterId}});
+    } else {
+      this.router.navigate(['/admin/user-management/profile'], {queryParams: {username: this.report.reporterUsername, type: this.report.reporterType, id: this.report.reporterId}});
+    }
+  }
+
+  activateUser(id): void {
+    console.log(id);
+    this.adminService.activateUser({ id: id }).subscribe(
       response => {
         //this.loadUser();
         alert("User has been activated!");
@@ -50,9 +79,9 @@ export class AdminReportDetailsComponent implements OnInit {
     )
   }
 
-  suspendUser(): void {
-    console.log(this.user.id);
-    this.adminService.suspendUser({ id: this.user.id }).subscribe(
+  suspendUser(pid): void {
+    console.log(pid);
+    this.adminService.suspendUser({ id: pid }).subscribe(
       response => {
         //this.loadUser();
         alert("User has been suspended!");
@@ -61,8 +90,8 @@ export class AdminReportDetailsComponent implements OnInit {
     )
   }
 
-  activateInstitution(): void {
-    this.adminService.activateInstitution({ id: this.user.id }).subscribe(
+  activateInstitution(pid): void {
+    this.adminService.activateInstitution({ id: pid }).subscribe(
       response => {
         //this.loadInstitution();
         alert("Institution has been activated!");
@@ -74,8 +103,8 @@ export class AdminReportDetailsComponent implements OnInit {
     )
   }
 
-  suspendInstitution(): void {
-    this.adminService.suspendInstitution({ id: this.user.id }).subscribe(
+  suspendInstitution(pid): void {
+    this.adminService.suspendInstitution({ id: pid }).subscribe(
       response => {
         //this.loadInstitution();
         alert("Institution has been suspended!");
@@ -87,8 +116,8 @@ export class AdminReportDetailsComponent implements OnInit {
     )
   }
 
-  activateProject(): void {
-    this.adminService.activateProject({ id: this.id }).subscribe(
+  activateProject(pid): void {
+    this.adminService.activateProject({ id: pid }).subscribe(
       response => {
         alert("Project has been activated!");
         this.ngOnInit();
@@ -99,8 +128,8 @@ export class AdminReportDetailsComponent implements OnInit {
     )
   }
 
-  suspendProject(): void {
-    this.adminService.suspendProject({ id: this.id }).subscribe(
+  suspendProject(pid): void {
+    this.adminService.suspendProject({ id: pid }).subscribe(
       response => {
         alert("Project has been suspended!");
         this.ngOnInit();
@@ -109,5 +138,17 @@ export class AdminReportDetailsComponent implements OnInit {
         alert(err.error.msg);
       }
     )
-  }**/
+  }
+
+  updateReport(id, status): void {
+    this.reportService.updateReport({id: id, status: status}).subscribe(
+      response => {
+        this.messageService.add({key:'toastMsg',severity:'success',summary:'Report updated!'});
+        this.ngOnInit();
+      },
+      err => {
+        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+      }
+    )
+  }
 }

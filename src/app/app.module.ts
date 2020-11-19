@@ -80,6 +80,7 @@ import { ReportSubmittedComponent } from './report-submitted/report-submitted.co
 import { AdminReportDetailsComponent } from './admin/admin-report-details/admin-report-details.component';
 import { AdminChatComponent } from './admin/admin-chat/admin-chat.component';
 import { ChatComponent } from './chat/chat.component';
+import { EditTargetComponent } from './edit-target/edit-target.component';
 
 @NgModule({
   declarations: [
@@ -132,7 +133,8 @@ import { ChatComponent } from './chat/chat.component';
     ReportSubmittedComponent,
     AdminReportDetailsComponent,
     AdminChatComponent,
-    ChatComponent
+    ChatComponent,
+    EditTargetComponent
   ],
   imports: [
     BrowserModule,

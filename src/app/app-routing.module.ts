@@ -49,6 +49,7 @@ import { MyRewardsComponent } from './reward/my-rewards/my-rewards.component';
 import { AnnouncementComponent } from './announcement/announcement.component';
 import { ReportSubmittedComponent } from './report-submitted/report-submitted.component';
 import { ChatComponent } from './chat/chat.component';
+import { EditTargetComponent } from './edit-target/edit-target.component';
 
 const routes: Routes = [
   { path: 'landing', component: LandingComponent},
@@ -118,7 +119,8 @@ const routes: Routes = [
   { path: 'announcements', component: AnnouncementComponent},
   { path: 'reports-submitted', component: ReportSubmittedComponent},
   { path: 'chat', component: ChatComponent},
-  { path: '', redirectTo: 'home', pathMatch: 'full'}
+  { path: '', redirectTo: 'home', pathMatch: 'full'},
+  { path: 'edit-target', component: EditTargetComponent}
 ];
 
 @NgModule({

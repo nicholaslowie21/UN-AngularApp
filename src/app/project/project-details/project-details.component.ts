@@ -10,6 +10,8 @@ import { FullCalendar } from 'primeng/fullcalendar';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
+import { Router } from '@angular/router';
+import { TargetService } from '../../services/target.service';
 
 @Component({
   selector: 'app-project-details',
@@ -92,8 +94,11 @@ export class ProjectDetailsComponent implements OnInit {
   cEventNotif = false;
   tempType: any;
 
+  targets: any;
+
   constructor(private route: ActivatedRoute, private projectService: ProjectService, private userService: UserService,
-    private tokenStorageService: TokenStorageService, private messageService: MessageService, private reportService: ReportService) {
+    private tokenStorageService: TokenStorageService, private messageService: MessageService, private reportService: ReportService, 
+    private router: Router, private targetService: TargetService) {
     const name = FullCalendar.name;
   }
 
@@ -212,6 +217,10 @@ export class ProjectDetailsComponent implements OnInit {
       );
       console.log(this.events);
     }
+
+    await this.targetService.getProjectTargets({ id: this.projectId }).toPromise().then(
+      response => this.targets = response.data.targets
+    );
   }
     
   deleteProj(title: string): void {
@@ -734,5 +743,10 @@ export class ProjectDetailsComponent implements OnInit {
     this.uEventNotif = false;
     this.form = {};
     this.ngOnInit();
+  }
+
+  viewTarget(): void {
+    this.closeModal();
+    this.router.navigate(['/edit-target'], {queryParams: {type: 'project', id: this.projectId}});
   }
 }
