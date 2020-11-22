@@ -83,6 +83,8 @@ import { DataDashboardComponent } from './data-dashboard/data-dashboard.componen
 import { SearchAccountsComponent } from './search-accounts/search-accounts.component';
 import { AdminDataManagementComponent } from './admin/admin-data-management/admin-data-management.component';
 import { TestimonialComponent } from './testimonial/testimonial.component';
+import { PaidResourceDetailsComponent } from './resource/paid-resource-details/paid-resource-details.component';
+import { MyTransactionsComponent } from './my-transactions/my-transactions.component';
 
 @NgModule({
   declarations: [
@@ -138,7 +140,9 @@ import { TestimonialComponent } from './testimonial/testimonial.component';
     DataDashboardComponent,
     SearchAccountsComponent,
     AdminDataManagementComponent,
-    TestimonialComponent
+    TestimonialComponent,
+    PaidResourceDetailsComponent,
+    MyTransactionsComponent
   ],
   imports: [
     BrowserModule,

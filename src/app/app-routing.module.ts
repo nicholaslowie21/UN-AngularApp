@@ -52,6 +52,8 @@ import { ChatComponent } from './chat/chat.component';
 import { DataDashboardComponent } from './data-dashboard/data-dashboard.component';
 import { SearchAccountsComponent } from './search-accounts/search-accounts.component';
 import { TestimonialComponent } from './testimonial/testimonial.component';
+import { MyTransactionsComponent } from './my-transactions/my-transactions.component';
+import { PaidResourceDetailsComponent } from './resource/paid-resource-details/paid-resource-details.component';
 
 const routes: Routes = [
   { path: 'landing', component: LandingComponent},
@@ -97,7 +99,8 @@ const routes: Routes = [
       { path: 'createResource', component: CreateResourceComponent },
       { path: 'editDetails', component: EditResourceDetailsComponent},
       { path: 'myResources', component: MyResourcesComponent},
-      { path: 'resourceDetails', component: ResourceDetailsComponent}
+      { path: 'resourceDetails', component: ResourceDetailsComponent},
+      { path: 'paid/details', component: PaidResourceDetailsComponent}
     ]
   },
   { path: 'marketplace', canActivate: [AuthGuardService],
@@ -124,6 +127,7 @@ const routes: Routes = [
   { path: 'search', component: SearchAccountsComponent},
   { path: 'dashboard', component: DataDashboardComponent},
   { path: 'testimonial', component: TestimonialComponent, canActivate: [AuthGuardService] },
+  { path: 'myTransactions', component: MyTransactionsComponent, canActivate: [AuthGuardService] },
   { path: '', redirectTo: 'home', pathMatch: 'full'}
 ];
 
