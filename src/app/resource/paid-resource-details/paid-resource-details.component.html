@@ -3,72 +3,75 @@
 <p-toast key="toastMsg" [baseZIndex]="100"></p-toast>
 
 <div *ngIf="resource.status != 'deleted'">
-<div class="row">
-    <div class="col-7">
-        <p-galleria #galleria [(value)]="resourceImages" [responsiveOptions]="responsiveOptions" [(activeIndex)]="activeIndex" [numVisible]="5" [containerStyle]="{'max-width':'100%'}" [containerClass]="galleriaClass()" [showThumbnails]="showThumbnails"
-            [showItemNavigators]="true" [showItemNavigatorsOnHover]="true" [circular]="true" [autoPlay]="true" [transitionInterval]="3000"> 
-            <ng-template pTemplate="item" let-item>
-                <img [src]="item" [ngStyle]="{'width': !fullscreen ? '100%' : '', 'display': !fullscreen ? 'block' : ''}" />
-            </ng-template>
-            <ng-template pTemplate="thumbnail" let-item>
-                <div class="p-grid p-nogutter p-justify-center">
-                    <img [src]="item" class="img-fluid" width="100" height="100" />
-                </div>
-            </ng-template>
-            <ng-template pTemplate="footer" let-item>
-                <div class="custom-galleria-footer">
-                    <button type="button" pButton icon="pi pi-list" (click)="onThumbnailButtonClick()"></button>
-                    <span *ngIf="resourceImages"  class="title-container">
-                        <span>{{activeIndex + 1}}/{{resourceImages.length}}</span>
-                        <span class="title">Picture {{activeIndex+1}}</span>
-                    </span>
-                    <button type="button" pButton [icon]="fullScreenIcon()" (click)="toggleFullScreen()" class="fullscreen-button"></button>
-                </div>
-            </ng-template>
-        </p-galleria>
-    </div>
-    <div class="col-5">
-        <div class="row">
-            <h3 [ngClass]="{'col-10': isOwner, 'col-12': !isOwner}">{{resource.title}}</h3>
-            <p-inputSwitch class="col-2 float-right" *ngIf="isOwner" [ngModel]="resource.status == 'active'" (onChange)="handleChangeChecked($event)"></p-inputSwitch>
+    <div class="row">
+        <div class="col-7">
+            <div *ngIf="resourceImages.length == 0">
+                <img src="../../../assets/img/imgPlaceholder.png" class="img-fluid">
+            </div>
+            <p-galleria #galleria [(value)]="resourceImages" [responsiveOptions]="responsiveOptions" [(activeIndex)]="activeIndex" [numVisible]="5" [containerStyle]="{'max-width':'100%'}" [containerClass]="galleriaClass()" [showThumbnails]="showThumbnails"
+                [showItemNavigators]="true" [showItemNavigatorsOnHover]="true" [circular]="true" [autoPlay]="true" [transitionInterval]="3000"> 
+                <ng-template pTemplate="item" let-item>
+                    <img [src]="item" [ngStyle]="{'width': !fullscreen ? '100%' : '', 'display': !fullscreen ? 'block' : ''}" />
+                </ng-template>
+                <ng-template pTemplate="thumbnail" let-item>
+                    <div class="p-grid p-nogutter p-justify-center">
+                        <img [src]="item" class="img-fluid" width="100" height="100" />
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="footer" let-item>
+                    <div class="custom-galleria-footer">
+                        <button type="button" pButton icon="pi pi-list" (click)="onThumbnailButtonClick()"></button>
+                        <span *ngIf="resourceImages"  class="title-container">
+                            <span>{{activeIndex + 1}}/{{resourceImages.length}}</span>
+                            <span class="title">Picture {{activeIndex+1}}</span>
+                        </span>
+                        <button type="button" pButton [icon]="fullScreenIcon()" (click)="toggleFullScreen()" class="fullscreen-button"></button>
+                    </div>
+                </ng-template>
+            </p-galleria>
         </div>
-        <div class="text-secondary">Last modified: {{formatDate(resource.updatedAt)}}</div>
-        
-        <div class="bg-light p-2 mb-2">
-            <div style="font-size: x-large;">Details</div>
-            {{resource.desc}}
-            <div><i class="pi pi-map-marker"></i> {{resource.country}}</div>
-            <div><i class="pi pi-tag"></i> {{resource.category}}</div>
-        </div>
-        
-        <div class="bg-light p-2 mb-2">
-            <div style="font-size: x-large;">Offered by</div>
-            <span *ngIf="resource.ownerImg.length == 0">
-                <img src="../../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle" style="height: 50px; width: 50px; object-fit: cover;"> 
-            </span>
-            <span *ngIf="resource.ownerImg.length > 0">
-                <img src="https://localhost:8080{{resource.ownerImg}}" class="img-fluid rounded-circle" style="height: 50px; width: 50px; object-fit: cover;"> 
-            </span>
+        <div class="col-5">
+            <div class="row">
+                <h3 [ngClass]="{'col-10': isOwner, 'col-12': !isOwner}">{{resource.title}}</h3>
+                <p-inputSwitch class="col-2 float-right" *ngIf="isOwner" [ngModel]="resource.status == 'active'" (onChange)="handleChangeChecked($event)"></p-inputSwitch>
+            </div>
+            <div class="text-secondary">Last modified: {{formatDate(resource.updatedAt)}}</div>
+            
+            <div class="bg-light p-2 mb-2">
+                <div style="font-size: x-large;">Details</div>
+                {{resource.desc}}
+                <div><i class="pi pi-map-marker"></i> {{resource.country}}</div>
+                <div><i class="pi pi-tag"></i> {{resource.category}}</div>
+            </div>
+            
+            <div class="bg-light p-2 mb-2">
+                <div style="font-size: x-large;">Offered by</div>
+                <span *ngIf="resource.ownerImg.length == 0">
+                    <img src="../../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle" style="height: 50px; width: 50px; object-fit: cover;"> 
+                </span>
+                <span *ngIf="resource.ownerImg.length > 0">
+                    <img src="https://localhost:8080{{resource.ownerImg}}" class="img-fluid rounded-circle" style="height: 50px; width: 50px; object-fit: cover;"> 
+                </span>
 
-            <span *ngIf="resource.ownerType == 'user'"><a href="/profile?username={{resource.ownerUsername}}&userType=individual">{{resource.ownerName}}</a></span>
-            <span *ngIf="resource.ownerType == 'institution'"><a href="/profile?username={{resource.ownerUsername}}&userType=institution">{{resource.ownerName}}</a></span>
-        </div>
-        <div class="bg-light p-2">
-            <div style="font-size: x-large;">Price</div>
-            <div style="font-size: xx-large;">${{resource.price}}</div>
-        </div>
-        <br>
-        <div>
-            <button *ngIf="!isOwner" class="btn btn-primary btn-block">Request to Purchase</button>
-            <button *ngIf="isOwner" class="btn btn-primary" style="width: 48%;"><i class="pi pi-pencil"></i>&nbsp;Edit</button>
-            <button *ngIf="isOwner" class="btn btn-danger float-right" style="width: 48%;" (click)="updateStatus('deleted')"><i class="pi pi-trash"></i>&nbsp;Delete</button>
+                <span *ngIf="resource.ownerType == 'user'"><a href="/profile?username={{resource.ownerUsername}}&userType=individual">{{resource.ownerName}}</a></span>
+                <span *ngIf="resource.ownerType == 'institution'"><a href="/profile?username={{resource.ownerUsername}}&userType=institution">{{resource.ownerName}}</a></span>
+            </div>
+            <div class="bg-light p-2">
+                <div style="font-size: x-large;">Price</div>
+                <div style="font-size: xx-large;">${{resource.price}}</div>
+            </div>
+            <br>
+            <div>
+                <button *ngIf="!isOwner" class="btn btn-primary btn-block">Request to Purchase</button>
+                <button *ngIf="isOwner" class="btn btn-primary" style="width: 48%;"><i class="pi pi-pencil"></i>&nbsp;Edit</button>
+                <button *ngIf="isOwner" class="btn btn-danger float-right" style="width: 48%;" (click)="updateStatus('deleted')"><i class="pi pi-trash"></i>&nbsp;Delete</button>
+            </div>
         </div>
     </div>
-</div>
 
-<div>
-    Incoming requests
-</div>
+    <div>
+        <h3>Incoming requests</h3>
+    </div>
 </div>
 
 <div *ngIf="resource.status == 'deleted'">
