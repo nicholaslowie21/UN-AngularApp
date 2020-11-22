@@ -52,8 +52,10 @@ import { ReportSubmittedComponent } from './report-submitted/report-submitted.co
 import { ChatComponent } from './chat/chat.component';
 import { DataDashboardComponent } from './data-dashboard/data-dashboard.component';
 import { SearchAccountsComponent } from './search-accounts/search-accounts.component';
+import { PaypalComponent } from './paypal/paypal.component';
 
 const routes: Routes = [
+  {path: 'paypal', component: PaypalComponent},
   { path: 'landing', component: LandingComponent},
   { path: 'home', component: HomeComponent, canActivate: [AuthGuardService] },
   { path: 'about', component: AboutComponent },
@@ -79,7 +81,7 @@ const routes: Routes = [
       { path: 'chat', component: AdminChatComponent},
       { path: 'data-management', component: AdminDataManagementComponent},
       { path: '', component: AdminHomeComponent, pathMatch: 'full'}
-    ] 
+    ]
   },
   { path: 'project', canActivate: [AuthGuardService],
     children: [

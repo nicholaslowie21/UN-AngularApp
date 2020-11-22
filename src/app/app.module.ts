@@ -29,6 +29,7 @@ import { AdminManagementComponent } from './admin/admin-management/admin-managem
 import { AdminReportComponent } from './admin/admin-report/admin-report.component';
 import { AdminUserManagementProfileComponent } from './admin/admin-user-management-profile/admin-user-management-profile.component';
 import { OthersProfileComponent } from './others-profile/others-profile.component';
+import { PaypalComponent } from './paypal/paypal.component';
 
 import { ShareModule } from 'ngx-sharebuttons';
 import { ShareIconsModule } from 'ngx-sharebuttons/icons';
@@ -138,7 +139,8 @@ import { AdminDataManagementComponent } from './admin/admin-data-management/admi
     ChatComponent,
     DataDashboardComponent,
     SearchAccountsComponent,
-    AdminDataManagementComponent
+    AdminDataManagementComponent,
+    PaypalComponent
   ],
   imports: [
     BrowserModule,

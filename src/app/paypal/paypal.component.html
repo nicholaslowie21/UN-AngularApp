@@ -1,0 +1,7 @@
+
+<input type="number" [(ngModel)]="finalAmount">
+<div id="paypal-checkout-btn"></div>
+<div class="alert alert-success" *ngIf="isSuccess">
+  Payment is successful!<br/>
+  Details: {{paymentDeets}}
+</div>
