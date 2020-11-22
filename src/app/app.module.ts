@@ -85,6 +85,7 @@ import { AdminDataManagementComponent } from './admin/admin-data-management/admi
 import { TestimonialComponent } from './testimonial/testimonial.component';
 import { PaidResourceDetailsComponent } from './resource/paid-resource-details/paid-resource-details.component';
 import { MyTransactionsComponent } from './my-transactions/my-transactions.component';
+import { DonateComponent } from './donate/donate.component';
 
 @NgModule({
   declarations: [
@@ -142,7 +143,8 @@ import { MyTransactionsComponent } from './my-transactions/my-transactions.compo
     AdminDataManagementComponent,
     TestimonialComponent,
     PaidResourceDetailsComponent,
-    MyTransactionsComponent
+    MyTransactionsComponent,
+    DonateComponent
   ],
   imports: [
     BrowserModule,

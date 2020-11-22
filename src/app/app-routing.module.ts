@@ -54,6 +54,7 @@ import { SearchAccountsComponent } from './search-accounts/search-accounts.compo
 import { TestimonialComponent } from './testimonial/testimonial.component';
 import { MyTransactionsComponent } from './my-transactions/my-transactions.component';
 import { PaidResourceDetailsComponent } from './resource/paid-resource-details/paid-resource-details.component';
+import { DonateComponent } from './donate/donate.component';
 
 const routes: Routes = [
   { path: 'landing', component: LandingComponent},
@@ -128,6 +129,7 @@ const routes: Routes = [
   { path: 'dashboard', component: DataDashboardComponent},
   { path: 'testimonial', component: TestimonialComponent, canActivate: [AuthGuardService] },
   { path: 'myTransactions', component: MyTransactionsComponent, canActivate: [AuthGuardService] },
+  { path: 'donate', component: DonateComponent},
   { path: '', redirectTo: 'home', pathMatch: 'full'}
 ];
 
