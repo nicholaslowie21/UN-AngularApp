@@ -40,7 +40,7 @@
                         <a class="dropdown-item" href="/project/myProjects?username={{username}}&type={{userType}}">My Projects</a>
                         <a class="dropdown-item" href="/resource/myResources?username={{username}}&type={{userType}}">My Resources</a>
                         <a class="dropdown-item" href="/myRequests">My Outgoing Requests</a>
-                        <a class="dropdown-item" href="/reports-submitted">My Submitted Reports</a>
+                        <a class="dropdown-item" href="/myTransactions">My Transactions</a>
                       </div>
                     </div>
                   </li>
@@ -72,6 +72,7 @@
                       </button>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <a class="dropdown-item" href="/profile?username={{username}}&userType={{userType}}">View profile</a>
+                        <a class="dropdown-item" href="/reports-submitted">Reports</a>
                         <a class="dropdown-item" href="/settings">Settings</a>
                         <div class="dropdown-divider"></div>
                         <a href class="dropdown-item" (click)="logout()">LogOut</a>
