@@ -86,6 +86,6 @@ export class UserService {
   }
 
   claimAccount(formData):Observable<any> {
-    return this.http.post('https://localhost:8080/api/mapping/claim', formData, httpOptions);
+    return this.http.post('https://localhost:8080/api/mapping/claim', formData);
   }
 }
