@@ -32,6 +32,11 @@ export class DonateComponent implements AfterViewChecked {
           transactions: [
             {amount: {total: this.finalAmount, currency: 'USD'}}
           ]
+        },
+        experience: {
+          input_fields: {
+            no_shipping: 1
+          }
         }
       });
     },
