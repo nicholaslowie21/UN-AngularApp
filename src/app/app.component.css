@@ -14,8 +14,15 @@
     position: fixed;
     top: 11%;
     right: 5%;
-    /* padding: 10px; */
     width: 25%;
     height: 50%;
-    overflow: auto;
+}
+
+.notifBadge {
+    height: 15px;
+    width: 15px;
+    background-color: red;
+    border-radius: 50%;
+    display: inline-block;
+    position: absolute; top: 1%; right: 10%;
 }

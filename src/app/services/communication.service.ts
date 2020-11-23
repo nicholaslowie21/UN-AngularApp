@@ -41,4 +41,8 @@ export class CommunicationService {
   getNotifications(): Observable<any> {
     return this.http.get(API_URL + '/notifications');
   }
+
+  checkNewNotifications(): Observable<any> {
+    return this.http.get(API_URL + '/gotNewNotif');
+  }
 }
