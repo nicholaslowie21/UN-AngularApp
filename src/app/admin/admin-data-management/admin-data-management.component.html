@@ -1,1 +1,59 @@
-<p>admin-data-management works!</p>
+<p-toast key="toastMsg" [baseZIndex]="100"></p-toast>
+
+<a href="https://localhost:8080/file/usersCSV.csv">Download User template</a>
+<form>
+    <input type="file" name="userCSV" (change)="selectFileUser($event)" />
+    <button type="submit" (click)="uploadUser()">Upload CSV</button>
+</form>
+<br>
+
+<a href="https://localhost:8080/file/institutionsCSV.csv">Download Institution template</a>
+<form>
+    <input type="file" name="institutionCSV" (change)="selectFileInstitution($event)" />
+    <button type="submit" (click)="uploadInstitution()">Upload CSV</button>
+</form>
+<h2>Account Claims</h2>
+<div class="card">
+    <p-dataView #dv [value]="claims" [paginator]="true" [rows]="9" filterBy="account.name" layout="list">
+        <ng-template pTemplate="header">
+            <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                <span class="p-input-icon-left p-mb-2 p-mb-md-0">
+                    <i class="pi pi-search"></i>
+                    <input type="search" pInputText placeholder="Search by Name" (input)="dv.filter($event.target.value)">
+                </span>
+                <p-dropdown [options]="userTypeOptions" [(ngModel)]="filterKeyType" placeholder="Filter By Type"
+                    (onChange)="onFilterType($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+            </div>
+        </ng-template>
+        <ng-template let-a pTemplate="listItem">
+            <div class="product-list-item">
+                <div class="col-9">
+                    <div class="product-name"> {{a.account.name}}
+                        <div style="display: inline;" class="small">(
+                            <span *ngIf="a.accountType == 'user'"><a href="/profile?username={{a.account.username}}&userType=individual">{{a.account.username}}</a></span>
+                            <span *ngIf="a.accountType == 'institution'"><a href="/profile?username={{a.account.username}}&userType=institution">{{a.account.username}}</a></span>   
+                            )
+                        </div>
+                    </div>
+                    <div>{{a.country}}</div>
+                    <div>
+                        Verification file:
+                        <button pButton class="p-button-rounded" title="Download" icon="pi pi-download" (click)="downloadAttachment(a.verificationFile)"></button>
+                    </div>
+                
+                </div>
+                <div class="col-3">
+                    <div class="float-right">
+                        <i class="pi pi-user mr-1"></i>
+                        <span *ngIf="a.accountType == 'user'" class="bg-primary rounded-pill text-white pl-2 pr-2">individual</span>
+                        <span *ngIf="a.accountType == 'institution'" class="bg-secondary rounded-pill text-white pl-2 pr-2">institution</span>
+                    </div>
+                    <br>
+                    <div class="float-right">{{formatDate(a.createdAt)}}</div> <br>
+                    <button class="btn btn-danger ml-md-2 float-right" (click)="updateClaim(a.id, 'declined')"><i class="pi pi-times"></i>&nbsp;Decline</button>
+                    <button class="btn btn-success float-right" (click)="updateClaim(a.id, 'accepted')"><i class="pi pi-check"></i>&nbsp;Accept</button>
+                </div>
+            </div>
+        </ng-template>
+    </p-dataView>
+</div>

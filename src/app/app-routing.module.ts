@@ -23,7 +23,6 @@ import { AdminVerificationComponent } from './admin/admin-verification/admin-ver
 import { AdminRewardManagementComponent } from './admin/admin-reward-management/admin-reward-management.component';
 import { AdminCreateRewardComponent } from './admin/admin-create-reward/admin-create-reward.component';
 import { AdminAnnouncementComponent } from './admin/admin-announcement/admin-announcement.component';
-import { AdminChatComponent } from './admin/admin-chat/admin-chat.component';
 import { AdminDataManagementComponent } from './admin/admin-data-management/admin-data-management.component';
 import { ShareProfilePageComponent } from './share-profile-page/share-profile-page.component';
 import { CreateProjectComponent } from './project/create-project/create-project.component';
@@ -54,6 +53,8 @@ import { DataDashboardComponent } from './data-overview/data-dashboard/data-dash
 import { SearchAccountsComponent } from './search-accounts/search-accounts.component';
 import { TestimonialComponent } from './testimonial/testimonial.component';
 import { DataProjectComponent } from './data-overview/data-project/data-project.component';
+import { MyTransactionsComponent } from './my-transactions/my-transactions.component';
+import { PaidResourceDetailsComponent } from './resource/paid-resource-details/paid-resource-details.component';
 
 const routes: Routes = [
   { path: 'landing', component: LandingComponent},
@@ -78,7 +79,6 @@ const routes: Routes = [
       { path: 'reward', component: AdminRewardManagementComponent },
       { path: 'create-reward', component: AdminCreateRewardComponent},
       { path: 'announcement', component: AdminAnnouncementComponent},
-      { path: 'chat', component: AdminChatComponent},
       { path: 'data-management', component: AdminDataManagementComponent},
       { path: '', component: AdminHomeComponent, pathMatch: 'full'}
     ] 
@@ -100,7 +100,8 @@ const routes: Routes = [
       { path: 'createResource', component: CreateResourceComponent },
       { path: 'editDetails', component: EditResourceDetailsComponent},
       { path: 'myResources', component: MyResourcesComponent},
-      { path: 'resourceDetails', component: ResourceDetailsComponent}
+      { path: 'resourceDetails', component: ResourceDetailsComponent},
+      { path: 'paid/details', component: PaidResourceDetailsComponent}
     ]
   },
   { path: 'marketplace', canActivate: [AuthGuardService],
@@ -132,6 +133,7 @@ const routes: Routes = [
   { path: 'chat', component: ChatComponent, canActivate: [AuthGuardService] },
   { path: 'search', component: SearchAccountsComponent},
   { path: 'testimonial', component: TestimonialComponent, canActivate: [AuthGuardService] },
+  { path: 'myTransactions', component: MyTransactionsComponent, canActivate: [AuthGuardService] },
   { path: '', redirectTo: 'home', pathMatch: 'full'}
 ];
 

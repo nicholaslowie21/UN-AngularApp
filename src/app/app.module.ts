@@ -80,13 +80,14 @@ import { AdminAnnouncementComponent } from './admin/admin-announcement/admin-ann
 import { AnnouncementComponent } from './announcement/announcement.component';
 import { ReportSubmittedComponent } from './report-submitted/report-submitted.component';
 import { AdminReportDetailsComponent } from './admin/admin-report-details/admin-report-details.component';
-import { AdminChatComponent } from './admin/admin-chat/admin-chat.component';
 import { ChatComponent } from './chat/chat.component';
 import { DataDashboardComponent } from './data-overview/data-dashboard/data-dashboard.component';
 import { SearchAccountsComponent } from './search-accounts/search-accounts.component';
 import { AdminDataManagementComponent } from './admin/admin-data-management/admin-data-management.component';
 import { TestimonialComponent } from './testimonial/testimonial.component';
 import { DataProjectComponent } from './data-overview/data-project/data-project.component';
+import { PaidResourceDetailsComponent } from './resource/paid-resource-details/paid-resource-details.component';
+import { MyTransactionsComponent } from './my-transactions/my-transactions.component';
 
 @NgModule({
   declarations: [
@@ -138,13 +139,17 @@ import { DataProjectComponent } from './data-overview/data-project/data-project.
     AnnouncementComponent,
     ReportSubmittedComponent,
     AdminReportDetailsComponent,
-    AdminChatComponent,
     ChatComponent,
     DataDashboardComponent,
     SearchAccountsComponent,
     AdminDataManagementComponent,
     TestimonialComponent,
+<<<<<<< HEAD
     DataProjectComponent
+=======
+    PaidResourceDetailsComponent,
+    MyTransactionsComponent
+>>>>>>> 85553e40608b15cbecd7b26cd8957f5599280892
   ],
   imports: [
     BrowserModule,
