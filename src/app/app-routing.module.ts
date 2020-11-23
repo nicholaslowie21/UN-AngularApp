@@ -55,6 +55,7 @@ import { TestimonialComponent } from './testimonial/testimonial.component';
 import { PaidResourceDetailsComponent } from './resource/paid-resource-details/paid-resource-details.component';
 import { DonateComponent } from './donate/donate.component';
 import { MyPurchasesComponent } from './my-purchases/my-purchases.component';
+import { EditTargetComponent } from './edit-target/edit-target.component';
 
 const routes: Routes = [
   { path: 'landing', component: LandingComponent},
@@ -130,6 +131,7 @@ const routes: Routes = [
   { path: 'testimonial', component: TestimonialComponent, canActivate: [AuthGuardService] },
   { path: 'donate', component: DonateComponent},
   { path: 'myPurchases', component: MyPurchasesComponent, canActivate: [AuthGuardService] },
+  { path: 'edit-target', component: EditTargetComponent,  canActivate: [AuthGuardService]},
   { path: '', redirectTo: 'home', pathMatch: 'full'}
 ];
 

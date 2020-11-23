@@ -110,4 +110,27 @@ export class AdminService {
   getAttachmentFile(filePath): Observable<any> {
     return this.http.get(base_url+ '/public/uploads/verifyClaim/' +filePath, {responseType: 'blob'});
   }
+  
+  getAuditLogs(data): Observable<any> {
+    return this.http.get(API_URL + '/auditLogs?targetId=' + data.id +
+    '&targetType=' + data.type);
+  }
+
+  exportAuditLogs(data): Observable<any> {
+    return this.http.get(API_URL + '/export/auditLogs?targetId=' + data.id +
+    '&targetType=' + data.type);
+  }
+
+  getAllProjects(): Observable<any> {
+    return this.http.get(API_URL + '/allProjects');
+  }
+
+  getAllUsers(): Observable<any> {
+    return this.http.get('https://localhost:8080/api/mapping/users');
+  }
+
+  getAllInstitutions(): Observable<any> {
+    return this.http.get('https://localhost:8080/api/mapping/institutions');
+  }
+  
 }

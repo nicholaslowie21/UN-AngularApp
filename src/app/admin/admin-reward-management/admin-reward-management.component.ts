@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RewardService } from '../../services/reward.service';
 import { MessageService } from 'primeng/api';
 import { saveAs } from 'file-saver';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-reward-management',
@@ -40,7 +41,7 @@ export class AdminRewardManagementComponent implements OnInit {
   sortField = '';
   sortOrder = '';
 
-  constructor(private rewardService: RewardService, private messageService: MessageService) { }
+  constructor(private rewardService: RewardService, private messageService: MessageService, private router: Router) { }
 
   async ngOnInit() {
     await this.rewardService.getRewardOfferingReq({status: 'pending'}).toPromise().then(
@@ -256,5 +257,9 @@ export class AdminRewardManagementComponent implements OnInit {
     } else {
       return;
     }
+  }
+
+  viewAudit(aId): void {
+    this.router.navigate(['/admin/user-management/profile'], {queryParams: {type: 'reward', id: aId}});
   }
 }

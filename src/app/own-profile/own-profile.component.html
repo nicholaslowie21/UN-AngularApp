@@ -25,7 +25,9 @@
             <h6 class="card-title text-left mt-md-1">{{ user.address }}</h6>
             <h6 class="card-title text-left mt-md-1">{{ user.phone }}</h6>
             <h6 class="card-title text-left mt-md-1">{{ user.bio }}</h6>
-            <h6 class="card-title text-left mt-md-1"><a [href]="user.website">{{ user.website }}</a></h6>
+            <h6 class="card-title text-left mt-md-1">
+                <a [href]="user.website">{{ user.website }}</a>
+            </h6>
         </div>
         <div class="col-2">
             <div *ngIf="isOwner && isLoggedIn">
@@ -34,10 +36,10 @@
                 </a>
                 <br/>
                 <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                <button type="button" class="btn btn-primary mb-md-2" data-toggle="modal" data-target="#exampleModalCenter">
                     <fa-icon [icon]="faShareAlt" size="1x"></fa-icon>
                 </button>
-    
+
                 <!-- Modal -->
                 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -68,20 +70,28 @@
                                 <div class="card">
                                     <div class="card-header" #container>
                                         <div class="row">
-                                            <div class="col-11 mt-md-2"><a href={{shareLink}}>{{shareLink}}</a></div>
-                                            <div class="col-1"><button class="btn float-right" (click)="copied()" ngxClipboard [cbContent]="shareLink" [container]="container">
-                                                <fa-icon style="color: grey;" [icon]="faCopy" size="lg"></fa-icon>
-                                            </button></div>
+                                            <div class="col-11 mt-md-2">
+                                                <a href={{shareLink}}>{{shareLink}}</a>
+                                            </div>
+                                            <div class="col-1">
+                                                <button class="btn float-right" (click)="copied()" ngxClipboard [cbContent]="shareLink" [container]="container">
+                                                    <fa-icon style="color: grey;" [icon]="faCopy" size="lg"></fa-icon>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="card">
                                     <div class="card-header" #container2>
                                         <div class="row">
-                                            <div class="col-11"><code>&lt;iframe src="{{iFrameLink}}" title="User Profile" width="500" height="500"&gt;&lt;/iframe&gt;</code></div>
-                                            <div class="col-1"><button class="btn float-right" (click)="copied()" ngxClipboard [cbContent]="copyIFrameLink" [container]="container2">
-                                                <fa-icon style="color: grey;" [icon]="faCopy" size="lg"></fa-icon>
-                                            </button></div>
+                                            <div class="col-11">
+                                                <code>&lt;iframe src="{{iFrameLink}}" title="User Profile" width="500" height="500"&gt;&lt;/iframe&gt;</code>
+                                            </div>
+                                            <div class="col-1">
+                                                <button class="btn float-right" (click)="copied()" ngxClipboard [cbContent]="copyIFrameLink" [container]="container2">
+                                                    <fa-icon style="color: grey;" [icon]="faCopy" size="lg"></fa-icon>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -104,7 +114,8 @@
                     <i class="pi pi-ellipsis-h"></i>
                 </button>
 
-                <div class="modal fade text-dark" data-backdrop="static" id="ReportModal" tabindex="-1" role="dialog" aria-labelledby="ReportModal" aria-hidden="true">
+                <div class="modal fade text-dark" data-backdrop="static" id="ReportModal" tabindex="-1" role="dialog" aria-labelledby="ReportModal"
+                    aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div *ngIf="isReport" class="modal-header">
@@ -201,19 +212,19 @@
                                             <div class="form-group">
                                                 <label for="title" class="col-form-label">Title</label>
                                                 <div>
-                                                  <input type="text" class="form-control" name="title" [(ngModel)]="form.title" required #title="ngModel" />
+                                                    <input type="text" class="form-control" name="title" [(ngModel)]="form.title" required #title="ngModel" />
                                                 </div>
                                                 <div class="alert-danger" *ngIf="f.submitted && title.invalid">
-                                                  <div *ngIf="title.errors.required">Title is required</div>
+                                                    <div *ngIf="title.errors.required">Title is required</div>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="summary" class="col-form-label">Summary</label>
                                                 <div>
-                                                  <textarea rows="5" class="form-control" name="summary" [(ngModel)]="form.summary" required #summary="ngModel"></textarea>
+                                                    <textarea rows="5" class="form-control" name="summary" [(ngModel)]="form.summary" required #summary="ngModel"></textarea>
                                                 </div>
                                                 <div class="alert-danger" *ngIf="f.submitted && summary.invalid">
-                                                  <div *ngIf="summary.errors.required">Summary is required</div>
+                                                    <div *ngIf="summary.errors.required">Summary is required</div>
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -223,8 +234,9 @@
                                     </div>
                                     <div *ngIf="isReportSuccessful">
                                         <div class="alert alert-success">
-                                            Your report has been submitted successfully. <br>
-                                            You can monitor the status of your report under <a href="/reports-submitted">My Reports</a>.
+                                            Your report has been submitted successfully.
+                                            <br> You can monitor the status of your report under
+                                            <a href="/reports-submitted">My Reports</a>.
                                         </div>
                                     </div>
                                 </div>
@@ -233,7 +245,7 @@
                     </div>
                 </div>
             </div>
-            
+
         </div>
     </div>
 </div>
@@ -241,7 +253,7 @@
 <div class="container p-3 my-3 bg-primary text-white">
     <div class="row">
         <div class="col-6 bg-primary text-white border-0">
-            <h6 class="card-title text-left mt-md-3" style="margin: 15px">SDGs: 
+            <h6 class="card-title text-left mt-md-3" style="margin: 15px">SDGs:
                 <div *ngIf="user.SDGs.length == 0" style="display:inline-block;">
                     -
                 </div>
@@ -257,12 +269,54 @@
                     <button class="btn btn-secondary mr-md-1 rounded-pill">{{s}}</button>
                 </div>
             </h6>
+            <h6 class="card-title text-left mt-md-3" style="margin: 15px">
+                <button type="button" class="btn btn-warning ml-md-2 mt-md-4" data-toggle="modal" data-target="#SDGtargets">
+                    SDG Targets
+                </button>
+            </h6>
+            <!-- Modal -->
+            <div class="modal fade" id="SDGtargets" tabindex="-1" role="dialog" aria-labelledby="SDGtargetsTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-dark" id="exampleModalLongTitle">SDG Targets</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body text-dark">
+                            <div *ngIf="targets.length == 0">
+                                No SDG targets.
+                            </div>
+                            <div *ngFor="let t of targets">
+                                <div class="card">
+                                    <div class="row p-2">
+                                        <div class="col-1">
+                                            <button class="sdg sdg{{t.SDG}} mr-md-1">{{t.SDG}}.{{t.targetCode}}</button>
+                                        </div>
+                                        <div class="col-11 mt-md-2">
+                                            <h6>{{t.desc}}</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer" *ngIf="isOwner && isLoggedIn">
+                            <a class="btn btn-primary mb-md-2" href="/edit-target?type=user">
+                                <fa-icon [icon]="faPencilAlt" size="1x">Edit SDG Targets</fa-icon>
+                            </a>
+                            <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="col-6">
             <div class="row">
                 <div class="col-6 bg-primary text-white border-0" *ngIf="isIndividual">
                     <h6 *ngIf="isOwner" class="card-title text-left mt-md-3">My Points: {{ user.points }}</h6>
-                    Tier: <span class="rounded-pill pl-2 pr-2 {{user.tier}}">{{ user.tier }}</span>
+                    Tier:
+                    <span class="rounded-pill pl-2 pr-2 {{user.tier}}">{{ user.tier }}</span>
                 </div>
                 <div class="col-6 bg-primary text-white border-0" *ngIf="isIndividual && isOwner">
                     <h6 class="card-title text-left mt-md-3">My Wallet: {{ user.wallet }}</h6>
@@ -274,7 +328,8 @@
                 </button>
 
                 <!-- Modal -->
-                <div class="modal fade" id="individualAffiliations" tabindex="-1" role="dialog" aria-labelledby="individualAffiliationsTitle" aria-hidden="true">
+                <div class="modal fade" id="individualAffiliations" tabindex="-1" role="dialog" aria-labelledby="individualAffiliationsTitle"
+                    aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -291,11 +346,15 @@
                                     <div class="card">
                                         <div class="row p-2">
                                             <div class="col-3">
-                                                <img *ngIf="a.profilePic.length == 0" src="../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle" style="height: 90px; width: 90px; object-fit: cover;" alt="Profile pic">
-                                                <img *ngIf="a.profilePic.length > 0" src={{a.profilePic}} class="img-fluid rounded-circle" style="height: 90px; width: 90px; object-fit: cover;" alt="Profile pic">
+                                                <img *ngIf="a.profilePic.length == 0" src="../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle"
+                                                    style="height: 90px; width: 90px; object-fit: cover;" alt="Profile pic">
+                                                <img *ngIf="a.profilePic.length > 0" src={{a.profilePic}} class="img-fluid rounded-circle" style="height: 90px; width: 90px; object-fit: cover;"
+                                                    alt="Profile pic">
                                             </div>
                                             <div class="col-9 mt-md-2">
-                                                <h5><a href="/profile?username={{a.username}}&userType=institution">{{a.name}}</a></h5>
+                                                <h5>
+                                                    <a href="/profile?username={{a.username}}&userType=institution">{{a.name}}</a>
+                                                </h5>
                                                 {{a.username}}
                                             </div>
                                         </div>
@@ -344,7 +403,9 @@
                                             </div>
                                         </div>
                                         <div class="card border-0" style="width:80%">
-                                            <h5 class="card-title text-left mt-md-3" style="margin-left: 5%;"><a href="/project/projectDetails?id={{proj.id}}">{{proj.title}}</a></h5>
+                                            <h5 class="card-title text-left mt-md-3" style="margin-left: 5%;">
+                                                <a href="/project/projectDetails?id={{proj.id}}">{{proj.title}}</a>
+                                            </h5>
                                             <h6 class="card-title text-left text-secondary mt-md-1 p-text-nowrap p-text-truncate" style="width: 90%; margin-left: 5%;">{{proj.desc}} </h6>
                                         </div>
                                     </div>

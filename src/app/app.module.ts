@@ -86,6 +86,7 @@ import { TestimonialComponent } from './testimonial/testimonial.component';
 import { PaidResourceDetailsComponent } from './resource/paid-resource-details/paid-resource-details.component';
 import { DonateComponent } from './donate/donate.component';
 import { MyPurchasesComponent } from './my-purchases/my-purchases.component';
+import { EditTargetComponent } from './edit-target/edit-target.component';
 
 @NgModule({
   declarations: [
@@ -144,7 +145,8 @@ import { MyPurchasesComponent } from './my-purchases/my-purchases.component';
     TestimonialComponent,
     PaidResourceDetailsComponent,
     DonateComponent,
-    MyPurchasesComponent
+    MyPurchasesComponent,
+    EditTargetComponent
   ],
   imports: [
     BrowserModule,
