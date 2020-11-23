@@ -144,12 +144,9 @@ import { MyTransactionsComponent } from './my-transactions/my-transactions.compo
     SearchAccountsComponent,
     AdminDataManagementComponent,
     TestimonialComponent,
-<<<<<<< HEAD
-    DataProjectComponent
-=======
+    DataProjectComponent,
     PaidResourceDetailsComponent,
     MyTransactionsComponent
->>>>>>> 85553e40608b15cbecd7b26cd8957f5599280892
   ],
   imports: [
     BrowserModule,
