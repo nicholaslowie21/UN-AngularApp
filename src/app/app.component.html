@@ -177,16 +177,15 @@
                         style="height: 40px; width: 40px; object-fit: cover;">
                     </span>
                   </div>
-                  <div class="col-6">
+                  <div class="col-7">
                     <span *ngIf="cr.user1username != username">{{cr.user1username}}</span>
                     <span *ngIf="cr.user2username != username">{{cr.user2username}}</span>
                     <div class="text-secondary p-text-nowrap p-text-truncate" style="width: 90%;">{{cr.lastMessage}}
                     </div>
                   </div>
-                  <div class="col-3">
-                    <small> {{formatTime(cr.updatedAt)}} </small>
-                    <span *ngIf="cr.user1username != username && cr.user2read == false" class="dot"></span>
-                    <span *ngIf="cr.user2username != username && cr.user1read == false" class="dot"></span>
+                  <div class="col-2">
+                    <span *ngIf="cr.user1username != username && cr.user2read == false" class="dot float-right"></span>
+                    <span *ngIf="cr.user2username != username && cr.user1read == false" class="dot float-right"></span>
                   </div>
                 </div>
               </div>
@@ -201,9 +200,12 @@
               class="text-center bg-warning rounded-sm"><small>You are now chatting with an admin</small></div>
             <div *ngFor="let msg of chatMsgs" class="p-2">
               <div *ngIf="msg.accountUsername != username" class="bg-secondary rounded-pill p-2 pl-3 pr-3 text-white">
-                {{msg.message}}</div>
+                {{msg.message}}
+              </div>
               <div *ngIf="msg.accountUsername == username" class="bg-primary rounded-pill p-2 pl-3 pr-3 text-white">
-                {{msg.message}}</div>
+                {{msg.message}}
+              </div>
+              <small>{{formatTime(msg.updatedAt)}}</small>
             </div>
           </div>
         </div>
