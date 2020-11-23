@@ -1,6 +1,13 @@
 <a href="/dashboard"><< Back to Data Dashboard</a>
 <br>
-<h2>Data By SDG and Country</h2>
+<div class="p-fluid p-grid p-formgrid">
+    <div class="p-field p-col-6 p-md-8" >
+        <h2>Data By SDG and Country</h2>
+    </div>
+    <div class="p-field p-col-6 p-md-4" style="float: right">
+        <p-calendar [(ngModel)]="rangeDates" selectionMode="range" inputId="range" baseZIndex=1000 [yearNavigator]="true" yearRange="{{firstYear}}:{{thisYear}}" [minDate]="minDateValue" [maxDate]="maxDateValue" (onSelect)="update($event)" showButtonBar="true" placeholder="All Dates" showIcon="true" (onClearClick)="showAll($event)"></p-calendar>
+    </div>
+</div>
 
 <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item">
@@ -10,7 +17,7 @@
         <a class="nav-link" id="knowledge-tab" data-toggle="tab" href="#knowledge" role="tab" aria-controls="knowledge" aria-selected="false">Based on Country</a>
     </li>
 </ul>
-<!-- [loading]="loading" used to be in p-table, but caused some errors -->
+
 <div class="tab-content">
     <div class="tab-pane fade show active" id="personal" role="tabpanel" aria-labelledby="personal-tab">
     <p-table #dt1 [value]="dataBySDG" dataKey="id"
