@@ -6,6 +6,7 @@ import { ResourceService } from '../../services/resource.service';
 import { Galleria } from 'primeng/galleria';
 import { MessageService } from 'primeng/api';
 import { _DisposeViewRepeaterStrategy } from '@angular/cdk/collections';
+import { PaidResourceService } from 'src/app/services/paid-resource.service';
 
 @Component({
   selector: 'app-edit-resource-details',
@@ -26,11 +27,11 @@ export class EditResourceDetailsComponent implements OnInit {
   itemImage: any;
   isUploadItemPicSuccessful = false;
   toBeAdded: FileList;
-  isUploadVenuePicSuccessful = false;
+  isUploadPicSuccessful = false;
   errorMsgUploadPic = '';
   // array of 10 booleans for max 10 pics
   toBeDeleted: boolean[] = [false, false, false, false, false, false, false, false, false, false];
-  isDeleteItemVenuePicSuccessful;
+  isDeletePicSuccessful;
   errorMsgDeletePic = '';
 
   attachmentPath: any;
@@ -56,11 +57,11 @@ export class EditResourceDetailsComponent implements OnInit {
 
   countries = ["Afghanistan","Albania","Algeria","Andorra","Angola","Anguilla","Antigua and Barbuda","Argentina","Armenia","Aruba","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bermuda","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi","Cambodia","Cameroon","Canada","Cape Verde","Cayman Islands","Central African Republic","Chad","Chile","China","Colombia","Congo","Cook Islands","Costa Rica","Côte d'Ivoire","Croatia","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","East Timor","Ecuador","Egypt","El Salvador","Equatorial Guinea","Estonia","Ethiopia","Falkland Islands","Faroe Islands","Fiji","Finland","France","French Polynesia","Gabon","Gambia","Georgia","Germany","Ghana","Gibraltar","Greece","Greenland","Grenada","Guam","Guatemala","Guernsey","Guinea","Guinea Bissau","Guyana","Haiti","Honduras","Hong Kong","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Isle of Man","Israel","Italy","Jamaica","Japan","Jersey","Jordan","Kazakhstan","Kenya","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Macau","Macedonia","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Mauritania","Mauritius","Mexico","Moldova","Monaco","Mongolia","Montenegro","Montserrat","Morocco","Mozambique","Namibia","Nepal","Netherlands","Netherlands Antilles","New Caledonia","New Zealand","Nicaragua","Niger","Nigeria","Norway","Oman","Pakistan","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Puerto Rico","Qatar","Reunion","Romania","Russia","Rwanda","Saint Pierre and Miquelon","Samoa","San Marino","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","South Africa","South Korea","Spain","Sri Lanka","Saint Kitts and Nevis","Saint Lucia","Saint Vincent And The Grenadines","Sudan","Suriname","Swaziland","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Turks and Caicos Islands","Uganda","Ukraine","United Arab Emirates","United Kingdom","Uruguay","Uzbekistan","Venezuela","Vietnam", "Virgin Islands (British)", "Virgin Islands (US)","Yemen","Zambia","Zimbabwe"];
 
-  // containing filenames of the venue images
-  venueImgFileNames: any[];
+  // containing filenames of the images
+  imgFileNames: any[];
 
   // for venue images galleria
-  itemVenueImages: any[];
+  images: any[];
   showThumbnails: boolean;
   fullscreen: boolean = false;
   activeIndex: number = 0;
@@ -81,8 +82,8 @@ export class EditResourceDetailsComponent implements OnInit {
     }
   ];
 
-  constructor(private route: ActivatedRoute, private institutionService: InstitutionService, private resourceService: ResourceService, 
-    private tokenStorageService: TokenStorageService, private messageService: MessageService) { }
+  constructor(private route: ActivatedRoute, private institutionService: InstitutionService, private paidResourceService: PaidResourceService,
+    private resourceService: ResourceService, private tokenStorageService: TokenStorageService, private messageService: MessageService) { }
 
   async ngOnInit() {
     this.route.queryParams.subscribe(
@@ -93,26 +94,32 @@ export class EditResourceDetailsComponent implements OnInit {
     );
     
     if (this.type == 'item') {
-      await this.resourceService.viewItemDetails({id: this.id}).toPromise().then(res => {this.resource = res.data.item, this.itemVenueImages = res.data.item.imgPath});
-      for (let i = 0; i < this.itemVenueImages.length; i++) {
-        this.itemVenueImages[i] = "https://localhost:8080" + this.itemVenueImages[i];
+      await this.resourceService.viewItemDetails({id: this.id}).toPromise().then(res => {this.resource = res.data.item, this.images = res.data.item.imgPath});
+      for (let i = 0; i < this.images.length; i++) {
+        this.images[i] = "https://localhost:8080" + this.images[i];
       }
       this.generateFilenames();
     } else if (this.type == 'manpower') {
       await this.resourceService.viewManpowerDetails({id: this.id}).toPromise().then(res => {this.resource = res.data.manpower});
     } else if (this.type == 'venue') {
-      await this.resourceService.viewVenueDetails({id: this.id}).toPromise().then(res => {this.resource = res.data.venue, this.itemVenueImages = res.data.venue.imgPath});
-      for (let i = 0; i < this.itemVenueImages.length; i++) {
-        this.itemVenueImages[i] = "https://localhost:8080" + this.itemVenueImages[i];
+      await this.resourceService.viewVenueDetails({id: this.id}).toPromise().then(res => {this.resource = res.data.venue, this.images = res.data.venue.imgPath});
+      for (let i = 0; i < this.images.length; i++) {
+        this.images[i] = "https://localhost:8080" + this.images[i];
       }
-      console.log(this.itemVenueImages);
+      console.log(this.images);
       this.generateFilenames();
-      console.log(this.venueImgFileNames);
+      console.log(this.imgFileNames);
       // this.emptyPlaceholder = new Array(10 - this.resource.imgPath.length);
       // console.log(this.emptyPlaceholder);
     } else if (this.type == 'knowledge') {
       await this.resourceService.viewKnowledgeDetails({id: this.id}).toPromise().then(res => {this.resource = res.data.knowledge, this.userOwners = res.data.userOwner, this.institutionOwners = res.data.institutionOwner, this.attachmentPath = res.data.knowledge.attachment, this.knowType = res.data.knowledge.knowType});
-      console.log(this.resource);
+    } else if (this.type == 'paid') {
+      await this.paidResourceService.getPaidResourceDetails({id: this.id}).toPromise().then(res => {this.resource = res.data.paidresource, this.images = res.data.paidresource.imgPath});
+      for (let i = 0; i < this.images.length; i++) {
+        this.images[i] = "https://localhost:8080" + this.images[i];
+      }
+      console.log(this.images);
+      this.generateFilenames();
     }
 
     if (this.type == 'knowledge') {
@@ -183,28 +190,39 @@ export class EditResourceDetailsComponent implements OnInit {
     // if no pictures selected, alert user
     if (indexToDelete.length == 0) {
       this.errorMsgDeletePic = "No picture selected!";
-      this.isDeleteItemVenuePicSuccessful = false;
+      this.isDeletePicSuccessful = false;
     } else {
-      if(this.type == 'item') {
+      if (this.type == 'item') {
         this.resourceService.deleteItemPicture({itemId: this.resource.id, indexes: indexToDelete}).subscribe(
           response => {
-            this.isDeleteItemVenuePicSuccessful = true;
+            this.isDeletePicSuccessful = true;
             this.reloadPage();
           },
           err => {
             this.errorMsgDeletePic = err.error.msg;
-            this.isDeleteItemVenuePicSuccessful = false;
+            this.isDeletePicSuccessful = false;
           }
         );
-      } else if(this.type == 'venue') {
+      } else if (this.type == 'venue') {
         this.resourceService.deleteVenuePicture({venueId: this.resource.id, indexes: indexToDelete}).subscribe(
           response => {
-            this.isDeleteItemVenuePicSuccessful = true;
+            this.isDeletePicSuccessful = true;
             this.reloadPage();
           },
           err => {
             this.errorMsgDeletePic = err.error.msg;
-            this.isDeleteItemVenuePicSuccessful = false;
+            this.isDeletePicSuccessful = false;
+          }
+        );
+      } else if (this.type == 'paid') {
+        this.paidResourceService.deletePaidResourcePicture({paidResourceId: this.resource.id, indexes: indexToDelete}).subscribe(
+          response => {
+            this.isDeletePicSuccessful = true;
+            this.reloadPage();
+          },
+          err => {
+            this.errorMsgDeletePic = err.error.msg;
+            this.isDeletePicSuccessful = false;
           }
         );
       }
@@ -215,42 +233,57 @@ export class EditResourceDetailsComponent implements OnInit {
     this.toBeAdded = event.target.files;
   }
 
-  onSubmitItemVenueImages(): void {
+  onSubmitImages(): void {
     if (this.toBeAdded.length == 0) {
       this.errorMsgUploadPic = 'Choose a file!';
-      this.isUploadVenuePicSuccessful = false;
+      this.isUploadPicSuccessful = false;
       return;
     }
 
     const formData = new FormData();
-    if(this.type == 'venue') {
+    if (this.type == 'venue') {
       formData.append("venueId", this.id);
       for (let i = 0; i < this.toBeAdded.length; i++) {
         formData.append("venuePics", this.toBeAdded[i]);
       }
       this.resourceService.uploadVenuePicture(formData).subscribe(
         response => {
-          this.isUploadVenuePicSuccessful = true;
+          this.isUploadPicSuccessful = true;
           this.reloadPage();
         },
         err => {
           this.errorMsgUploadPic = err.error.msg;
-          this.isUploadVenuePicSuccessful = false;
+          this.isUploadPicSuccessful = false;
         }
       );
-    } else if(this.type == 'item') {
+    } else if (this.type == 'item') {
       formData.append("itemId", this.id);
       for (let i = 0; i < this.toBeAdded.length; i++) {
         formData.append("itemPics", this.toBeAdded[i]);
       }
       this.resourceService.uploadItemPicture(formData).subscribe(
         response => {
-          this.isUploadVenuePicSuccessful = true;
+          this.isUploadPicSuccessful = true;
           this.reloadPage();
         },
         err => {
           this.errorMsgUploadPic = err.error.msg;
-          this.isUploadVenuePicSuccessful = false;
+          this.isUploadPicSuccessful = false;
+        }
+      );
+    } else if (this.type == 'paid') {
+      formData.append("paidResourceId", this.id);
+      for (let i = 0; i < this.toBeAdded.length; i++) {
+        formData.append("paidResPics", this.toBeAdded[i]);
+      }
+      this.paidResourceService.uploadPaidResourcePicture(formData).subscribe(
+        response => {
+          this.isUploadPicSuccessful = true;
+          this.reloadPage();
+        },
+        err => {
+          this.errorMsgUploadPic = err.error.msg;
+          this.isUploadPicSuccessful = false;
         }
       );
     }
@@ -403,7 +436,25 @@ export class EditResourceDetailsComponent implements OnInit {
 
   onSubmit(): void {
     console.log(this.id);
-    if (this.type == 'item') {
+    if (this.type == 'paid') {
+      const formUpdatePaid = {
+        id: this.id,
+        title: this.resource.title,
+        desc: this.resource.desc,
+        category: this.resource.category,
+        country: this.resource.country,
+        price: this.resource.price,
+      }
+      this.paidResourceService.updatePaidResource(formUpdatePaid).subscribe(
+        response => {
+          this.isUpdateSuccessful = true;
+        },
+        err => {
+          this.errorMessage = err.error.msg;
+          this.isUpdateSuccessful = false;
+        }
+      );
+    } else if (this.type == 'item') {
       const formUpdateItem = {
         id: this.id,
         title: this.resource.title,
@@ -418,7 +469,7 @@ export class EditResourceDetailsComponent implements OnInit {
           this.errorMessage = err.error.msg;
           this.isUpdateSuccessful = false;
         }
-      )
+      );
     } else if (this.type == 'knowledge') {
       const formUpdateKnowledge = {
         id: this.id,
@@ -493,8 +544,8 @@ export class EditResourceDetailsComponent implements OnInit {
   }
 
   generateFilenames(): void {
-    for (let i = 0; i < this.itemVenueImages.length; i++) {
-      var currFileName = this.itemVenueImages[i];
+    for (let i = 0; i < this.images.length; i++) {
+      var currFileName = this.images[i];
       this.startIndexFound = false;
       var startIndex = 0;
       var endIndex = 0;
@@ -511,7 +562,7 @@ export class EditResourceDetailsComponent implements OnInit {
         }
       }
       var newFileName = currFileName.slice(startIndex+1, endIndex) + currFileName.slice(extensionIndex);
-      this.venueImgFileNames.push(newFileName);
+      this.imgFileNames.push(newFileName);
     }
   }
 
