@@ -23,7 +23,7 @@ export class DataDashboardComponent implements OnInit {
 
 
   constructor() {
-    this.year = "All years";
+    this.year = "2020";
    }
 
   ngOnInit() {
@@ -35,11 +35,8 @@ export class DataDashboardComponent implements OnInit {
     this.projectsOngoingNum= 122;
     this.projectsCompletedNum = 208;
     //Probably need to populate the years depending on until which year of data we have
-    this.years = ["All years", 2022, 2021, 2020, 2019];
-    this.initAllYears();
-  }
+    this.years = [2022, 2021, 2020, 2019];
 
-  initAllYears() {
     this.resources = {
         labels: ['Manpower','Item','Venue','Knowledge'],
         datasets: [
@@ -115,10 +112,6 @@ export class DataDashboardComponent implements OnInit {
 
   update(event) {
       console.log(event.target.value);
-      if (event.target.value == "All years") {
-        this.initAllYears();
-
-      } else {
         //   Fetch data based on year passed in the drop down
         this.resources = {
             labels: ['Manpower','Item','Venue','Knowledge'],
@@ -191,7 +184,6 @@ export class DataDashboardComponent implements OnInit {
                 },
             ]
         }
-      }
 
   }
 
