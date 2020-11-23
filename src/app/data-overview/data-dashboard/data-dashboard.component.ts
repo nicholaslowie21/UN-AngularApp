@@ -9,6 +9,7 @@ import {ChartModule} from 'primeng/chart';
 export class DataDashboardComponent implements OnInit {
   activeAccNum: any;
   resourcesNum: any;
+  paidResourcesNum: any;
   contributionsNum: any;
   fundingNum: any;
   projectsOngoingNum: any;
@@ -27,13 +28,14 @@ export class DataDashboardComponent implements OnInit {
 
   ngOnInit() {
     this.activeAccNum = 123;
+    this.paidResourcesNum = 22;
     this.resourcesNum= 100;
     this.contributionsNum= 34;
     this.fundingNum= "2,999"; //Please return me in string, where there is commas?
     this.projectsOngoingNum= 122;
     this.projectsCompletedNum = 208;
     //Probably need to populate the years depending on until which year of data we have
-    this.years = ["All years", 2020, 2019, 2018];
+    this.years = ["All years", 2022, 2021, 2020, 2019];
     this.initAllYears();
   }
 

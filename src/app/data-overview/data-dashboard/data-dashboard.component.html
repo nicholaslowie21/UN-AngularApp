@@ -11,11 +11,11 @@
     </div>
     <div class="row">
         <div class="col">
-            <h5>Numbers at A Glance</h5>
+            <h5>A Glance of Overall Numbers</h5>
         </div>
     </div>
     <div class="row">
-        <div class="col-3">
+        <div class="col-4">
             <div class="card">
             <div class="card-title">
                 <h6 class="card-title text-center mt-md-3">
@@ -25,11 +25,44 @@
             </div>
             </div>
         </div>
+        <div class="col-4">
+            <div class="card">
+            <div class="card-title">
+                <h6 class="card-title text-center mt-md-3">
+                    Number of ongoing projects
+                </h6>
+                <h3 style="text-align: center">{{projectsOngoingNum}}</h3>
+            </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="card">
+                <div class="card-title">
+                    <h6 class="card-title text-center mt-md-3">
+                        Number of completed projects
+                    </h6>
+                    <h3 style="text-align: center">{{projectsCompletedNum}}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row">
         <div class="col-3">
             <div class="card">
             <div class="card-title">
                 <h6 class="card-title text-center mt-md-3">
-                    Number of resource listings created
+                    Number of paid resource listings created
+                </h6>
+                <h3 style="text-align: center">{{paidResourcesNum}}</h3>
+            </div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="card">
+            <div class="card-title">
+                <h6 class="card-title text-center mt-md-3">
+                    Number of free resource listings created
                 </h6>
                 <h3 style="text-align: center">{{resourcesNum}}</h3>
             </div>
@@ -39,7 +72,7 @@
             <div class="card">
             <div class="card-title">
                 <h6 class="card-title text-center mt-md-3">
-                    Numbers of successful contributions
+                    Numbers of successful free contributions
                 </h6>
                 <h3 style="text-align: center">{{contributionsNum}}</h3>
             </div>
@@ -49,36 +82,14 @@
             <div class="card">
             <div class="card-title">
                 <h6 class="card-title text-center mt-md-3">
-                    Amount of funding raised
+                    Amount of funding raised for projects
                 </h6>
-                <h3 style="text-align: center">{{fundingNum}}</h3>
+                <h3 style="text-align: center">${{fundingNum}}</h3>
             </div>
             </div>
         </div>
     </div>
-    <br>
-    <div class="row">
-        <div class="col-6">
-            <div class="card">
-            <div class="card-title">
-                <h6 class="card-title text-center mt-md-3">
-                    Overall number of ongoing projects
-                </h6>
-                <h3 style="text-align: center">{{projectsOngoingNum}}</h3>
-            </div>
-            </div>
-        </div>
-        <div class="col-6">
-            <div class="card">
-                <div class="card-title">
-                    <h6 class="card-title text-center mt-md-3">
-                        Overall number of completed projects
-                    </h6>
-                    <h3 style="text-align: center">{{projectsCompletedNum}}</h3>
-                </div>
-            </div>
-        </div>
-    </div>
+
     <br>
     <div class="row">
         <div class="col-6">

@@ -19,8 +19,8 @@ export class DataProjectComponent implements OnInit {
 
   ngOnInit(): void {
     // Set as date of the app creation
-    this.firstYear = 2018;
-    this.thisYear = 2020;
+    this.firstYear = 2019;
+    this.thisYear = 2022;
     this.minDateValue = new Date();
     this.minDateValue.setFullYear(this.firstYear);
     this.minDateValue.setMonth(0);
@@ -49,6 +49,7 @@ export class DataProjectComponent implements OnInit {
     // Will return me [Mon Nov 09 2020 00:00:00 GMT+0800 (Singapore Standard Time), Thu Nov 12 2020 00:00:00 GMT+0800 (Singapore Standard Time)]
     if (this.rangeDates[1] != null) {
       console.log("fetch data based on dates here and reinitialise table");
+      // use moment js to convert Date to 2020-12-23 then feed to back end
         this.dataBySDG = [
           { sdgTitle: '1: Alleviate Poverty', accountsNum:'10', projectsNum: '23', contributionsNum: '11', fundingNum: '506.00'},
           { sdgTitle: '2: Food', accountsNum:'20', projectsNum: '21', contributionsNum: '11', fundingNum: '246.00'},
