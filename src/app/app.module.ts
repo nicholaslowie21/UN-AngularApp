@@ -84,8 +84,8 @@ import { SearchAccountsComponent } from './search-accounts/search-accounts.compo
 import { AdminDataManagementComponent } from './admin/admin-data-management/admin-data-management.component';
 import { TestimonialComponent } from './testimonial/testimonial.component';
 import { PaidResourceDetailsComponent } from './resource/paid-resource-details/paid-resource-details.component';
-import { MyTransactionsComponent } from './my-transactions/my-transactions.component';
 import { DonateComponent } from './donate/donate.component';
+import { MyPurchasesComponent } from './my-purchases/my-purchases.component';
 
 @NgModule({
   declarations: [
@@ -143,8 +143,8 @@ import { DonateComponent } from './donate/donate.component';
     AdminDataManagementComponent,
     TestimonialComponent,
     PaidResourceDetailsComponent,
-    MyTransactionsComponent,
-    DonateComponent
+    DonateComponent,
+    MyPurchasesComponent
   ],
   imports: [
     BrowserModule,
