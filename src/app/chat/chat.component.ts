@@ -167,10 +167,14 @@ export class ChatComponent implements OnInit {
   }
 
   formatDate(date): any {
-    // const format1 = "HH:mm";
-    // console.log(moment(date).format(format1));
     let formattedDate = new Date(date).toDateString();
     return formattedDate.substring(4, formattedDate.length - 5);
+  }
+
+  formatTime(date): any {
+    let formattedDate = moment(date).format("MMM DD");
+    let formattedTime = moment(date).format("h:mm a");
+    return formattedTime + ' | ' + formattedDate;
   }
 
   sortFunction(a, b) {

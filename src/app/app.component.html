@@ -116,8 +116,8 @@
         <div class="card-header p-2"
           [ngClass]="{'bg-warning': chatStatus.status == 'room' && selectedChatRoom.chatType == 'admin'}">
           <div *ngIf="chatStatus.status == 'open'">
-            <h5 class="mt-2" style="display: inline-block;">Chat <span *ngIf="showAdmin">as</span></h5>
-            <select *ngIf="showAdmin" class="form-control ml-2" [(ngModel)]="chatStatus.selectedChatType"
+            <h5 class="mt-2" style="display: inline-block;">Filter type </h5>
+            <select class="form-control ml-2" [(ngModel)]="chatStatus.selectedChatType"
               (change)="onChangeChatType()" style="display: inline-block; width: fit-content;">
               <option selected value="user">User</option>
               <option value="admin">Admin</option>
@@ -177,13 +177,14 @@
                         style="height: 40px; width: 40px; object-fit: cover;">
                     </span>
                   </div>
-                  <div class="col-7">
+                  <div class="col-6">
                     <span *ngIf="cr.user1username != username">{{cr.user1username}}</span>
                     <span *ngIf="cr.user2username != username">{{cr.user2username}}</span>
                     <div class="text-secondary p-text-nowrap p-text-truncate" style="width: 90%;">{{cr.lastMessage}}
                     </div>
                   </div>
-                  <div class="col-2">
+                  <div class="col-3">
+                    <small> {{formatTime(cr.updatedAt)}} </small>
                     <span *ngIf="cr.user1username != username && cr.user2read == false" class="dot"></span>
                     <span *ngIf="cr.user2username != username && cr.user1read == false" class="dot"></span>
                   </div>

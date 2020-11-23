@@ -46,7 +46,7 @@
                                 <div class="chat_ib">
                                     <h5><span *ngIf="cr.user1username != username">{{cr.user1username}}</span>
                                         <span *ngIf="cr.user2username != username">{{cr.user2username}}</span> 
-                                        <span class="chat_date">{{formatDate(cr.updatedAt)}}</span>
+                                        <span class="chat_date">{{formatTime(cr.updatedAt)}}</span>
                                     </h5>
                                     <p class="p-text-nowrap p-text-truncate" style="width: 90%;display: inline-block;">{{cr.lastMessage}}</p>
                                     
@@ -113,14 +113,14 @@
                                 <div class="received_msg">
                                     <div class="received_withd_msg">
                                         <p>{{msg.message}}</p>
-                                        <span class="time_date"> 11:01 AM | {{formatDate(msg.updatedAt)}}</span>
+                                        <span class="time_date"> {{formatTime(msg.updatedAt)}} </span>
                                     </div>
                                 </div>
                             </div>
                             <div *ngIf="msg.accountUsername == username" class="outgoing_msg">
                                 <div class="sent_msg">
                                     <p>{{msg.message}}</p>
-                                    <span class="time_date"> 11:01 AM | {{formatDate(msg.updatedAt)}}</span>
+                                    <span class="time_date"> {{formatTime(msg.updatedAt)}} </span>
                                 </div>
                             </div>
                         </div>

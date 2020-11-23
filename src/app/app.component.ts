@@ -3,6 +3,7 @@ import { TokenStorageService } from './services/token-storage.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommunicationService } from './services/communication.service';
 import { MessageService } from 'primeng/api';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-root',
@@ -76,16 +77,13 @@ export class AppComponent implements OnInit {
     console.log(this.chatRooms);
     console.log(this.chatRoomsAdmin);
 
-    if(this.showAdmin == true) {
+    
       if(this.chatStatus.selectedChatType == 'user') {
         this.displayChatRooms = this.chatRooms;
       } else {
         this.displayChatRooms = this.chatRoomsAdmin;
       }
-    } else {
-      this.displayChatRooms = this.chatRooms.concat(this.chatRoomsAdmin);
-      this.displayChatRooms.sort(this.sortFunction);
-    }
+    
 
     if (this.chatStatus.status == 'room') {
       await this.communicationService.getChatMsgs({ id: this.chatStatus.id }).toPromise().then(
@@ -177,6 +175,12 @@ export class AppComponent implements OnInit {
         this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
       }
     )
+  }
+
+  formatTime(date): any {
+    let formattedDate = moment(date).format("MMM DD");
+    let formattedTime = moment(date).format("h:mm a");
+    return formattedTime + ' | ' + formattedDate;
   }
 
   sortFunction(a, b) {
