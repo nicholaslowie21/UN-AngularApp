@@ -1,124 +1,137 @@
 <p-toast key="toastMsg" [baseZIndex]="100"></p-toast>
-<div class="row">
-    <div class="col">
-        <h3>
-            Report: {{report.title}}
-        </h3>
-        <div class="text-secondary mb-md-1">Submitted at {{formatDate(report.createdAt)}}</div>
-        <div class="mb-md-1">Status:
-            <span class="rounded-pill {{report.status}}Status pl-2 pr-2">
-                <span *ngIf="report.status == 'progress'">in</span> {{report.status}}
-            </span>
+<div class="container p-3 my-3 bg-secondary text-white col-9">
+    <div class="row">
+        <div class="col-6">
+            <h3>
+                Report: {{report.title}}
+            </h3>
+            <div class="text mb-md-1">Submitted at {{formatDate(report.createdAt)}}</div>
+            <div class="mb-md-1">Status:
+                <span class="rounded-pill {{report.status}}Status pl-2 pr-2">
+                    <span *ngIf="report.status == 'progress'">in</span> {{report.status}}
+                </span>
+            </div>
+        </div>
+        <div class="col-6">
+            <div *ngIf="report.status == 'pending'">
+                <button class="btn btn-danger float-right" (click)="updateReport(report.id, 'declined')">
+                    <i class="pi pi-times"></i>&nbsp;Decline</button>
+                <button class="btn btn-success mr-md-2 float-right" (click)="updateReport(report.id, 'progress')">
+                    <i class="pi pi-check"></i>&nbsp;Accept</button>
+            </div>
+            <div *ngIf="report.status == 'progress'">
+                <button class="btn btn-success float-right" (click)="updateReport(report.id, 'solved')">
+                    <i class="pi pi-check"></i>&nbsp;Mark as Solved</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col ">
+            <div class="strike">
+                <span></span>
+            </div>
+            <strong>Summary:</strong>
+            <br>
+            <div class="text-justify">{{report.summary}}</div>
         </div>
     </div>
 </div>
-<br>
-
-<div class="row">
-    <div class="col-6">
-        Report on:
-        <br>
-        <div *ngIf="type=='project'">
-            <a href="/project/projectDetails?id={{report.targetId}}">{{report.targetTitle}}</a>
+<div class="container bg-light p-3 my-3 col-9">
+    <div class="row">
+        <div class="col-6 border-right border-dark">
+            Report on:
             <br>
+            <div *ngIf="type=='project'">
+                <a href="/project/projectDetails?id={{report.targetId}}">{{report.targetTitle}}</a>
+                <br>
 
-            <!--button *ngIf="disableActivate" disabled class="btn btn-success float-right mt-3" type="button" aria-haspopup="true" aria-expanded="false">
+                <!--button *ngIf="disableActivate" disabled class="btn btn-success float-right mt-3" type="button" aria-haspopup="true" aria-expanded="false">
                 Activate
             </button-->
-        </div>
-        <div *ngIf="type=='user'">
-            <span *ngIf="report.targetImg.length == 0">
-                <img src="../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
-            </span>
-            <span *ngIf="report.targetImg.length != 0">
-                <img src="https://localhost:8080{{report.targetImg}}" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
-            </span>
-            <a href="/profile?username={{report.targetUsername}}&userType=individual">{{report.targetName}}</a>
-            <br>
+            </div>
+            <div *ngIf="type=='user'">
+                <span *ngIf="report.targetImg.length == 0">
+                    <img src="../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                </span>
+                <span *ngIf="report.targetImg.length != 0">
+                    <img src="https://localhost:8080{{report.targetImg}}" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                </span>
+                <a href="/profile?username={{report.targetUsername}}&userType=individual">{{report.targetName}}</a>
+                <br>
 
+            </div>
+            <div *ngIf="type=='institution'">
+                <span *ngIf="report.targetImg.length == 0">
+                    <img src="../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                </span>
+                <span *ngIf="report.targetImg.length != 0">
+                    <img src="https://localhost:8080{{report.targetImg}}" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                </span>
+                <a href="/profile?username={{report.targetUsername}}&userType=institution">{{report.targetName}}</a>
+            </div>
         </div>
-        <div *ngIf="type=='institution'">
-            <span *ngIf="report.targetImg.length == 0">
-                <img src="../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+        <div class="col-6">
+            Submitted by:
+            <br>
+            <span *ngIf="(report.reporterImgPath.length == 0)">
+                <img src="../../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
             </span>
-            <span *ngIf="report.targetImg.length != 0">
-                <img src="https://localhost:8080{{report.targetImg}}" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+            <span *ngIf="report.reporterImgPath.length != 0">
+                <img src="https://localhost:8080{{report.reporterImgPath}}" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
             </span>
-            <a href="/profile?username={{report.targetUsername}}&userType=institution">{{report.targetName}}</a>
+            <span *ngIf="report.reporterType == 'user'">
+                <a href="/profile?username={{report.reporterUsername}}&userType=individual">{{report.reporterName}}</a>
+            </span>
+            <span *ngIf="report.reporterType == 'institution'">
+                <a href="/profile?username={{report.reporterUsername}}&userType=institution">{{report.reporterName}}</a>
+            </span>
         </div>
     </div>
-    <div class="col-6">
-        Submitted by:
-        <br>
-        <span *ngIf="(report.reporterImgPath.length == 0)">
-            <img src="../../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
-        </span>
-        <span *ngIf="report.reporterImgPath.length != 0">
-            <img src="https://localhost:8080{{report.reporterImgPath}}" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
-        </span>
-        <span *ngIf="report.reporterType == 'user'">
-            <a href="/profile?username={{report.reporterUsername}}&userType=individual">{{report.reporterName}}</a>
-        </span>
-        <span *ngIf="report.reporterType == 'institution'">
-            <a href="/profile?username={{report.reporterUsername}}&userType=institution">{{report.reporterName}}</a>
-        </span>
-    </div>
-</div>
-<div class="row">
-    <div class="col-6">
-        <div *ngIf="type=='project'">
-            <button class="btn btn-success float-left mt-3" type="button" aria-haspopup="true" aria-expanded="false" (click)="activateProject(report.targetId)">
-                Activate
-            </button>
-            <button class="btn btn-danger float-left ml-2 mt-3" type="button" aria-haspopup="true" aria-expanded="false" (click)="suspendProject(report.targetId)">
-                Suspend
-            </button>
-            <button type="button" (click)="viewReported()" class="btn btn-primary float-left ml-2 mt-3">Audit</button>
+    <div class="row">
+        <div class="col-6 border-right border-dark">
+            <div *ngIf="type=='project'">
+                <button class="btn btn-success float-left mt-3" type="button" aria-haspopup="true" aria-expanded="false" (click)="activateProject(report.targetId)">
+                    Activate
+                </button>
+                <button class="btn btn-danger float-left ml-2 mt-3" type="button" aria-haspopup="true" aria-expanded="false" (click)="suspendProject(report.targetId)">
+                    Suspend
+                </button>
+                <button type="button" (click)="viewReported()" class="btn btn-primary float-left ml-2 mt-3">Audit</button>
+            </div>
+            <div *ngIf="type=='user'">
+                <button class="btn btn-success float-left mt-3" type="button" aria-haspopup="true" aria-expanded="false" (click)="activateUser(report.targetId)">
+                    Activate
+                </button>
+                <button class="btn btn-danger float-left ml-2 mt-3" type="button" aria-haspopup="true" aria-expanded="false" (click)="suspendUser(report.targetId)">
+                    Suspend
+                </button>
+                <button type="button" (click)="viewReported()" class="btn btn-primary float-left ml-2 mt-3">Audit</button>
+            </div>
+            <div *ngIf="type=='institution'">
+                <button class="btn btn-success float-left mt-3" type="button" aria-haspopup="true" aria-expanded="false" (click)="activateInstitution(report.targetId)">
+                    Activate
+                </button>
+                <button class="btn btn-danger float-left ml-2 mt-3" type="button" aria-haspopup="true" aria-expanded="false" (click)="suspendInstitution(report.targetId)">
+                    Suspend
+                </button>
+                <button type="button" (click)="viewReported()" class="btn btn-primary float-left ml-2 mt-3">Audit</button>
+            </div>
+            <br>
         </div>
-        <div *ngIf="type=='user'">
-            <button class="btn btn-success float-left mt-3" type="button" aria-haspopup="true" aria-expanded="false" (click)="activateUser(report.targetId)">
-                Activate
-            </button>
-            <button class="btn btn-danger float-left ml-2 mt-3" type="button" aria-haspopup="true" aria-expanded="false" (click)="suspendUser(report.targetId)">
-                Suspend
-            </button>
-            <button type="button" (click)="viewReported()" class="btn btn-primary float-left ml-2 mt-3">Audit</button>
-        </div>
-        <div *ngIf="type=='institution'">
-            <button class="btn btn-success float-left mt-3" type="button" aria-haspopup="true" aria-expanded="false" (click)="activateInstitution(report.targetId)">
-                Activate
-            </button>
-            <button class="btn btn-danger float-left ml-2 mt-3" type="button" aria-haspopup="true" aria-expanded="false" (click)="suspendInstitution(report.targetId)">
-                Suspend
-            </button>
-            <button type="button" (click)="viewReported()" class="btn btn-primary float-left ml-2 mt-3">Audit</button>
+        <div class="col-6">
+            <button type="button" (click)="viewReporter()" class="btn btn-primary float-left ml-2 mt-3">Audit</button>
+            <br>
         </div>
     </div>
-    <div class="col-6">
-        <button type="button" (click)="viewReporter()" class="btn btn-primary float-left ml-2 mt-3">Audit</button>
-    </div>
-</div>
-<br>
-<div class="row">
-    <div class="col-9">
-        Summary:
-        <br>
-        <div class="text-justify">{{report.summary}}</div>
-    </div>
-</div>
-<br>
-<br>
-<div class="row">
-    <div class="col-9">
-        <div *ngIf="report.status == 'pending'">
-            <button class="btn btn-danger float-right" (click)="updateReport(report.id, 'declined')">
-                <i class="pi pi-times"></i>&nbsp;Decline</button>
-            <button class="btn btn-success mr-md-2 float-right" (click)="updateReport(report.id, 'progress')">
-                <i class="pi pi-check"></i>&nbsp;Accept</button>
+    <!-- <div class="row">
+        <div class="col ">
+            <div class="strike">
+                <span></span>
+            </div>
+            <strong>Summary:</strong>
+            <br>
+            <div class="text-justify">{{report.summary}}</div>
+            <br>
         </div>
-        <div *ngIf="report.status == 'progress'">
-            <button class="btn btn-success float-right" (click)="updateReport(report.id, 'solved')">
-                <i class="pi pi-check"></i>&nbsp;Mark as Solved</button>
-        </div>
-    </div>
+    </div> -->
 </div>

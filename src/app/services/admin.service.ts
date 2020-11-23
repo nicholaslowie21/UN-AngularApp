@@ -104,4 +104,16 @@ export class AdminService {
     return this.http.get(API_URL + '/export/auditLogs?targetId=' + data.id +
     '&targetType=' + data.type);
   }
+
+  getAllProjects(): Observable<any> {
+    return this.http.get(API_URL + '/allProjects');
+  }
+
+  getAllUsers(): Observable<any> {
+    return this.http.get('https://localhost:8080/api/mapping/users');
+  }
+
+  getAllInstitutions(): Observable<any> {
+    return this.http.get('https://localhost:8080/api/mapping/institutions');
+  }
 }

@@ -268,4 +268,19 @@ export class ResourceService {
   getAttachmentFile(filePath): Observable<any> {
     return this.http.get(base_url+filePath, {responseType: 'blob'});
   }
+
+  getUserPaid(): Observable<any> {
+    return this.http.get('https://localhost:8080/api/paidresource/all/my');
+  }
+
+  updatePaidStatus(data): Observable<any> {
+    return this.http.post('https://localhost:8080/api/paidresource/status', {
+      paidResourceId: data.id,
+      status: data.status
+    }, httpOptions);
+  }
+  
+  getOthersPaid(data): Observable<any> {
+    return this.http.get('https://localhost:8080/api/paidresource/all/others?accountId='+ data.id + '&accountType=' + data.type);
+  }
 }

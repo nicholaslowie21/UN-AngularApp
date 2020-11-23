@@ -4,25 +4,30 @@
 
 <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item">
-      <a class="nav-link active" id="item-tab" data-toggle="tab" href="#item" role="tab" aria-controls="item" aria-selected="true">Item</a>
+        <a class="nav-link active" id="item-tab" data-toggle="tab" href="#item" role="tab" aria-controls="item" aria-selected="true">Item</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" id="manpower-tab" data-toggle="tab" href="#manpower" role="tab" aria-controls="manpower" aria-selected="false">Manpower</a>
+        <a class="nav-link" id="manpower-tab" data-toggle="tab" href="#manpower" role="tab" aria-controls="manpower" aria-selected="false">Manpower</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" id="venue-tab" data-toggle="tab" href="#venue" role="tab" aria-controls="venue" aria-selected="false">Venue</a>
+        <a class="nav-link" id="venue-tab" data-toggle="tab" href="#venue" role="tab" aria-controls="venue" aria-selected="false">Venue</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" id="knowledge-tab" data-toggle="tab" href="#knowledge" role="tab" aria-controls="knowledge" aria-selected="false">Knowledge</a>
+        <a class="nav-link" id="knowledge-tab" data-toggle="tab" href="#knowledge" role="tab" aria-controls="knowledge" aria-selected="false">Knowledge</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="paid-tab" data-toggle="tab" href="#paid" role="tab" aria-controls="paid" aria-selected="false">Paid</a>
     </li>
 </ul>
 <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="item" role="tabpanel" aria-labelledby="item-tab">
         <div class="card">
-            <p-dataView #dv [value]="items" [paginator]="true" [rows]="9" filterBy="title" [sortField]="sortField" [sortOrder]="sortOrder" layout="grid">
+            <p-dataView #dv [value]="items" [paginator]="true" [rows]="9" filterBy="title" [sortField]="sortField" [sortOrder]="sortOrder"
+                layout="grid">
                 <ng-template pTemplate="header">
                     <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
-                        <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyItem" placeholder="Sort By Date" (onChange)="onSortChangeItem($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                        <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyItem" placeholder="Sort By Date" (onChange)="onSortChangeItem($event)"
+                            styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
                         <p-dropdown [options]="countryOptions" [(ngModel)]="filterKeyCountryItem" placeholder="Filter By Country" (onChange)="filterCountryItems($event)"
                             styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
                         <span class="p-input-icon-left p-mb-2 p-mb-md-0">
@@ -42,13 +47,18 @@
                                 <div class="float-right">{{formatDate(item.updatedAt)}}</div>
                             </div>
                             <div class="product-grid-item-content">
-                                <img *ngIf="item.imgPath.length == 0" src="../../../assets/img/item.png" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;" [alt]="item.title"/>
-                                <img *ngIf="item.imgPath.length != 0" src="https://localhost:8080{{item.imgPath[0]}}" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;" [alt]="item.title"/>
-                                <div class="product-name"><a href="/resource/resourceDetails?id={{item.id}}&type=item">{{item.title}}</a></div>
+                                <img *ngIf="item.imgPath.length == 0" src="../../../assets/img/item.png" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;"
+                                    [alt]="item.title" />
+                                <img *ngIf="item.imgPath.length != 0" src="https://localhost:8080{{item.imgPath[0]}}" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;"
+                                    [alt]="item.title" />
+                                <div class="product-name">
+                                    <a href="/resource/resourceDetails?id={{item.id}}&type=item">{{item.title}}</a>
+                                </div>
                                 <div class="product-description">{{item.country}}</div>
                             </div>
                             <div class="mt-md-3">
-                                <button *ngIf="item.ownerUsername != loggedInUsername" (click)="setResourceId(item.id); setResourceType('item')" class="btn btn-primary" style="bottom: 3%; right: 3%; position: absolute;" data-toggle="modal" data-target="#requestModal">Request</button>
+                                <button *ngIf="item.ownerUsername != loggedInUsername" (click)="setResourceId(item.id); setResourceType('item')" class="btn btn-primary"
+                                    style="bottom: 3%; right: 3%; position: absolute;" data-toggle="modal" data-target="#requestModal">Request</button>
                             </div>
                         </div>
                     </div>
@@ -56,13 +66,15 @@
             </p-dataView>
         </div>
     </div>
-    
+
     <div class="tab-pane fade" id="manpower" role="tabpanel" aria-labelledby="manpower-tab">
         <div class="card">
-            <p-dataView #mp [value]="manpowers" [paginator]="true" [rows]="9" filterBy="title" [sortField]="sortFieldMpw" [sortOrder]="sortOrderMpw" layout="grid">
+            <p-dataView #mp [value]="manpowers" [paginator]="true" [rows]="9" filterBy="title" [sortField]="sortFieldMpw" [sortOrder]="sortOrderMpw"
+                layout="grid">
                 <ng-template pTemplate="header">
                     <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
-                        <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyMpw" placeholder="Sort By Date" (onChange)="onSortChangeManpower($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                        <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyMpw" placeholder="Sort By Date" (onChange)="onSortChangeManpower($event)"
+                            styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
                         <p-dropdown [options]="countryOptions" [(ngModel)]="filterKeyCountryMpw" placeholder="Filter By Country" (onChange)="filterCountryMpws($event)"
                             styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
                         <span class="p-input-icon-left p-mb-2 p-mb-md-0">
@@ -82,13 +94,19 @@
                                 <div class="float-right">{{formatDate(manpower.updatedAt)}}</div>
                             </div>
                             <div class="product-grid-item-content">
-                                <img *ngIf="manpower.ownerImg.length == 0" src="../../../assets/img/profilePic_Placeholder.png" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;" alt="Profile pic"/>
-                                <img *ngIf="manpower.ownerImg.length != 0" src="https://localhost:8080{{manpower.ownerImg}}" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;" alt="Profile pic"/>
-                                <div class="product-name"><a href="/resource/resourceDetails?id={{manpower.id}}&type=manpower">{{manpower.title}}</a></div>
+                                <img *ngIf="manpower.ownerImg.length == 0" src="../../../assets/img/profilePic_Placeholder.png" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;"
+                                    alt="Profile pic" />
+                                <img *ngIf="manpower.ownerImg.length != 0" src="https://localhost:8080{{manpower.ownerImg}}" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;"
+                                    alt="Profile pic" />
+                                <div class="product-name">
+                                    <a href="/resource/resourceDetails?id={{manpower.id}}&type=manpower">{{manpower.title}}</a>
+                                </div>
                                 <div class="product-description">{{manpower.country}}</div>
                             </div>
                             <div class="mt-md-3">
-                                <button *ngIf="manpower.ownerUsername != loggedInUsername" (click)="setResourceId(manpower.id); setResourceType('manpower')" class="btn btn-primary" style="bottom: 3%; right: 3%; position: absolute;" data-toggle="modal" data-target="#requestModal">Request</button>
+                                <button *ngIf="manpower.ownerUsername != loggedInUsername" (click)="setResourceId(manpower.id); setResourceType('manpower')"
+                                    class="btn btn-primary" style="bottom: 3%; right: 3%; position: absolute;" data-toggle="modal"
+                                    data-target="#requestModal">Request</button>
                             </div>
                         </div>
                     </div>
@@ -99,10 +117,12 @@
 
     <div class="tab-pane fade" id="venue" role="tabpanel" aria-labelledby="venue-tab">
         <div class="card">
-            <p-dataView #ve [value]="venues" [paginator]="true" [rows]="9" filterBy="title" [sortField]="sortFieldVen" [sortOrder]="sortOrderVen" layout="grid">
+            <p-dataView #ve [value]="venues" [paginator]="true" [rows]="9" filterBy="title" [sortField]="sortFieldVen" [sortOrder]="sortOrderVen"
+                layout="grid">
                 <ng-template pTemplate="header">
                     <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
-                        <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyVen" placeholder="Sort By Date" (onChange)="onSortChangeVenue($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                        <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyVen" placeholder="Sort By Date" (onChange)="onSortChangeVenue($event)"
+                            styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
                         <p-dropdown [options]="countryOptions" [(ngModel)]="filterKeyCountryVen" placeholder="Filter By Country" (onChange)="filterCountryVens($event)"
                             styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
                         <span class="p-input-icon-left p-mb-2 p-mb-md-0">
@@ -122,13 +142,18 @@
                                 <div class="float-right">{{formatDate(venue.updatedAt)}}</div>
                             </div>
                             <div class="product-grid-item-content">
-                                <img *ngIf="venue.imgPath.length == 0" src="../../../assets/img/venue.png" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;" [alt]="venue.title"/>
-                                <img *ngIf="venue.imgPath.length != 0" src="https://localhost:8080{{venue.imgPath[0]}}" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;" [alt]="venue.title"/>
-                                <div class="product-name"><a href="/resource/resourceDetails?id={{venue.id}}&type=venue">{{venue.title}}</a></div>
+                                <img *ngIf="venue.imgPath.length == 0" src="../../../assets/img/venue.png" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;"
+                                    [alt]="venue.title" />
+                                <img *ngIf="venue.imgPath.length != 0" src="https://localhost:8080{{venue.imgPath[0]}}" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;"
+                                    [alt]="venue.title" />
+                                <div class="product-name">
+                                    <a href="/resource/resourceDetails?id={{venue.id}}&type=venue">{{venue.title}}</a>
+                                </div>
                                 <div class="product-description">{{venue.country}}</div>
                             </div>
                             <div class="mt-md-3">
-                                <button *ngIf="venue.ownerUsername != loggedInUsername" (click)="setResourceId(venue.id); setResourceType('venue')" class="btn btn-primary" style="bottom: 3%; right: 3%; position: absolute;" data-toggle="modal" data-target="#requestModal">Request</button>
+                                <button *ngIf="venue.ownerUsername != loggedInUsername" (click)="setResourceId(venue.id); setResourceType('venue')" class="btn btn-primary"
+                                    style="bottom: 3%; right: 3%; position: absolute;" data-toggle="modal" data-target="#requestModal">Request</button>
                             </div>
                         </div>
                     </div>
@@ -137,7 +162,8 @@
         </div>
     </div>
 
-    <div class="modal fade" data-backdrop="static" id="requestModal" tabindex="-1" role="dialog" aria-labelledby="requestModalLabel" aria-hidden="true">
+    <div class="modal fade" data-backdrop="static" id="requestModal" tabindex="-1" role="dialog" aria-labelledby="requestModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -148,7 +174,9 @@
                 </div>
                 <div class="modal-body">
                     <div *ngIf="!isRequestSuccessful">
-                        Select the project and specific resource need that you would like to request this resource for.<br/><br/>
+                        Select the project and specific resource need that you would like to request this resource for.
+                        <br/>
+                        <br/>
                         <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
                             <!-- show current user's projects and get them to choose one -->
                             <div class="form-group row">
@@ -170,13 +198,15 @@
                                 <label class="form-check-label" for="autogenerate">
                                     I don't have a resource need for this yet, auto-generate it for me
                                 </label>
-                            </div><br/>
+                            </div>
+                            <br/>
                             <!-- show resource needs of selected project and get user to choose one -->
-                            <div class="form-group row" *ngIf= "!autogenerateYes">
+                            <div class="form-group row" *ngIf="!autogenerateYes">
                                 <label for="resourceNeed" class="col-sm-3 col-form-label">Select Resource Need</label>
                                 <div class="col-sm-9">
                                     <p *ngIf="projectSelected && resourceNeeds.length == 0">There are no {{type}} resource needs for this project.</p>
-                                    <select *ngIf="projectSelected && resourceNeeds.length != 0" class="form-control" name="resourceNeed" [(ngModel)]="selectedResourceNeedId" required #resourceNeed="ngModel" (click)="updateSelectedResourceNeed($event)">
+                                    <select *ngIf="projectSelected && resourceNeeds.length != 0" class="form-control" name="resourceNeed" [(ngModel)]="selectedResourceNeedId"
+                                        required #resourceNeed="ngModel" (click)="updateSelectedResourceNeed($event)">
                                         <option *ngFor="let r of resourceNeeds" value={{r.id}}>{{r.title}}</option>
                                     </select>
                                 </div>
@@ -198,8 +228,8 @@
                     </div>
                     <div *ngIf="isRequestSuccessful">
                         <div class="alert alert-success">
-                            Your request has been submitted successfully! <br>
-                            Check your request status at your project requests page > Outgoing Requests
+                            Your request has been submitted successfully!
+                            <br> Check your request status at your project requests page > Outgoing Requests
                         </div>
                     </div>
                 </div>
@@ -209,10 +239,12 @@
 
     <div class="tab-pane fade" id="knowledge" role="tabpanel" aria-labelledby="knowledge-tab">
         <div class="card">
-            <p-dataView #kn [value]="knowledges" [paginator]="true" [rows]="9" filterBy="title" [sortField]="sortFieldKno" [sortOrder]="sortOrderKno"  layout="grid">
+            <p-dataView #kn [value]="knowledges" [paginator]="true" [rows]="9" filterBy="title" [sortField]="sortFieldKno" [sortOrder]="sortOrderKno"
+                layout="grid">
                 <ng-template pTemplate="header">
                     <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
-                        <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyKno" placeholder="Sort By Date" (onChange)="onSortChangeKnowledge($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                        <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyKno" placeholder="Sort By Date" (onChange)="onSortChangeKnowledge($event)"
+                            styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
                         <span class="p-input-icon-left p-mb-2 p-mb-md-0">
                             <i class="pi pi-search"></i>
                             <input type="search" pInputText placeholder="Search by Title" (input)="kn.filter($event.target.value)">
@@ -230,7 +262,10 @@
                                 <div class="float-right">{{formatDate(knowledge.updatedAt)}}</div>
                             </div>
                             <div class="product-grid-item-content">
-                                <div class="product-name"><a href="/resource/resourceDetails?id={{knowledge.id}}&type=knowledge">{{knowledge.title}}</a></div><br/>
+                                <div class="product-name">
+                                    <a href="/resource/resourceDetails?id={{knowledge.id}}&type=knowledge">{{knowledge.title}}</a>
+                                </div>
+                                <br/>
                                 <div class="product-description text-secondary" *ngIf="60 >= knowledge.desc.length">
                                     {{knowledge.desc}}
                                 </div>
@@ -239,13 +274,16 @@
                                 </div>
                             </div>
                             <div class="mt-md-3">
-                                <button *ngIf="knowledge.ownerUsername != loggedInUsername" (click)="setResourceId(knowledge.id); setResourceType('knowledge')" class="btn btn-primary" style="bottom: 3%; right: 3%; position: absolute;" data-toggle="modal" data-target="#useKnowledgeModal">Use in My Project</button>
+                                <button *ngIf="knowledge.ownerUsername != loggedInUsername" (click)="setResourceId(knowledge.id); setResourceType('knowledge')"
+                                    class="btn btn-primary" style="bottom: 3%; right: 3%; position: absolute;" data-toggle="modal"
+                                    data-target="#useKnowledgeModal">Use in My Project</button>
                             </div>
                         </div>
                     </div>
                 </ng-template>
             </p-dataView>
-            <div class="modal fade" id="useKnowledgeModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="useKnowledgeModal" aria-hidden="true">
+            <div class="modal fade" id="useKnowledgeModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="useKnowledgeModal"
+                aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -257,7 +295,9 @@
                         <div class="modal-body">
                             <div *ngIf="!isUseKnowledgeSuccessful">
                                 <form name="form" (ngSubmit)="fs.form.valid && onSubmitKnowledge()" #fs="ngForm" novalidate>
-                                    This will notify the owner(s) of the knowledge resource that you have used their knowledge in your project.<br/><br/>
+                                    This will notify the owner(s) of the knowledge resource that you have used their knowledge in your project.
+                                    <br/>
+                                    <br/>
                                     <!-- show current user's projects and get them to choose one -->
                                     <div class="form-group row">
                                         <label for="project" class="col-sm-3 col-form-label">Select Project</label>
@@ -278,9 +318,10 @@
                                         <label class="form-check-label" for="autogenerate">
                                             I don't have a resource need for this yet, auto-generate it for me
                                         </label>
-                                    </div><br/>
+                                    </div>
+                                    <br/>
                                     <!-- show resource needs of selected project and get user to choose one -->
-                                    <div class="form-group row" *ngIf= "!autogenerateYes">
+                                    <div class="form-group row" *ngIf="!autogenerateYes">
                                         <label for="resourceNeed" class="col-sm-3 col-form-label">Select Resource Need:</label>
                                         <div class="col-sm-9">
                                             <select class="form-control" name="resourceNeed" [(ngModel)]="selectedResourceNeedId" required #resourceNeed="ngModel" (click)="updateSelectedResourceNeed($event)">
@@ -302,14 +343,62 @@
                             </div>
                             <div *ngIf="isUseKnowledgeSuccessful">
                                 <div class="alert alert-success">
-                                    You have successfully used this knowledge for your project! <br>
-                                    The resource has been listed under your project resources > Resources Obtained.
+                                    You have successfully used this knowledge for your project!
+                                    <br> The resource has been listed under your project resources > Resources Obtained.
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="tab-pane fade" id="paid" role="tabpanel" aria-labelledby="paid-tab">
+        <div class="card">
+            <p-dataView #pv [value]="paids" [paginator]="true" [rows]="9" filterBy="title" [sortField]="sortField" [sortOrder]="sortOrder"
+                layout="grid">
+                <ng-template pTemplate="header">
+                    <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                        <!-- <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyItem" placeholder="Sort By Date" (onChange)="onSortChangeItem($event)"
+                            styleClass="p-mb-2 p-mb-md-0"></p-dropdown> -->
+                        <p-dropdown [options]="countryOptions" [(ngModel)]="filterKeyCountryPaid" placeholder="Filter By Country" (onChange)="filterCountryPaids($event)"
+                            styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                        <span class="p-input-icon-left p-mb-2 p-mb-md-0">
+                            <i class="pi pi-search"></i>
+                            <input type="search" pInputText placeholder="Search by Title" (input)="pv.filter($event.target.value)">
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template let-paid pTemplate="gridItem">
+                    <div class="p-col-12 p-md-4">
+                        <div class="product-grid-item card p-3">
+                            <div class="mb-md-2">
+                                <span>
+                                    <i class="pi pi-tag product-category-icon"></i>
+                                    <span class="product-category paidtype rounded-sm text-white"> Paid&nbsp;</span>
+                                </span>
+                                <!-- <div class="float-right">{{formatDate(item.updatedAt)}}</div> -->
+                            </div>
+                            <div class="product-grid-item-content">
+                                <img *ngIf="paid.imgPaths.length == 0" src="../../../assets/img/item.png" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;"
+                                    [alt]="paid.title" />
+                                <img *ngIf="paid.imgPaths.length != 0" src="https://localhost:8080{{paid.imgPaths[0]}}" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;"
+                                    [alt]="paid.title" />
+                                <div class="product-name">
+                                    {{paid.title}}
+                                    <!-- <a href="/resource/resourceDetails?id={{item.id}}&type=item">{{item.title}}</a> -->
+                                </div>
+                                <div class="product-description">{{paid.country}}</div>
+                            </div>
+                            <!-- <div class="mt-md-3">
+                                <button *ngIf="item.ownerUsername != loggedInUsername" (click)="setResourceId(item.id); setResourceType('item')" class="btn btn-primary"
+                                    style="bottom: 3%; right: 3%; position: absolute;" data-toggle="modal" data-target="#requestModal">Request</button>
+                            </div> -->
+                        </div>
+                    </div>
+                </ng-template>
+            </p-dataView>
         </div>
     </div>
 </div>

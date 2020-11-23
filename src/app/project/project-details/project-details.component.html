@@ -72,9 +72,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="modal-footer">
+                                <!-- <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -103,8 +103,10 @@
                                             <hr>
                                         </div>
                                         <div *ngIf="isAdmin || isCreator">
-                                            <button *ngIf=isOngoing class="btn btn-block" style="color: rgb(162, 0, 255);" (click)="viewTarget()">
-                                                <i class="pi pi-map-marker"></i>&nbsp;Edit SDG Targets
+                                            <button *ngIf=isOngoing class="btn btn-block" style="color: rgb(162, 0, 255);">
+                                                <a href="/edit-target?type=project&id={{project.id}}">
+                                                    <i class="pi pi-map-marker"></i>&nbsp;Edit SDG Targets
+                                                </a>
                                             </button>
                                             <button *ngIf=!isOngoing class="btn btn-block disabled">
                                                 <i class="pi pi-map-marker"></i>&nbsp;Edit SDG Targets

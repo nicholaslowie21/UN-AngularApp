@@ -1,5 +1,6 @@
 <p-toast key="toastMsg" [baseZIndex]="100"></p-toast>
-<h2>SDG Targets:</h2>
+<h2>{{title}}'s SDG Targets
+</h2>
 <!--div class="row">
     <div *ngFor="let sdg of SDGs" style="display:inline-block;">
         <button class="sdg sdg{{sdg}} mr-md-1">{{sdg}}</button>
@@ -78,7 +79,8 @@
         <div class="form-check" *ngFor="let t1 of targets; let i1 = index">
             <label>
                 <input type="checkbox" name="targets" value="i1" [checked]="checkTarget[i1]" (change)="updateCheckedTargets(i1, $event)"
-                />&nbsp;&nbsp;<strong>{{t1.SDG}}.{{t1.targetCode}}</strong> {{t1.desc}}
+                />&nbsp;&nbsp;
+                <strong>{{t1.SDG}}.{{t1.targetCode}}</strong> {{t1.desc}}
             </label>
         </div>
         <button class="btn btn-primary" (click)="updateTarget(1)">Update</button>
@@ -90,7 +92,8 @@
         <div class="form-check" *ngFor="let t2 of targets; let i2 = index">
             <label>
                 <input type="checkbox" name="targets" value="i2" [checked]="checkTarget[i2]" (change)="updateCheckedTargets(i2, $event)"
-                />&nbsp;&nbsp;<strong>{{t2.SDG}}.{{t2.targetCode}}</strong> {{t2.desc}}
+                />&nbsp;&nbsp;
+                <strong>{{t2.SDG}}.{{t2.targetCode}}</strong> {{t2.desc}}
             </label>
         </div>
         <button class="btn btn-primary" (click)="updateTarget(2)">Update</button>
@@ -102,7 +105,8 @@
         <div class="form-check" *ngFor="let t3 of targets; let i3 = index">
             <label>
                 <input type="checkbox" name="targets" value="i3" [checked]="checkTarget[i3]" (change)="updateCheckedTargets(i3, $event)"
-                />&nbsp;&nbsp;<strong>{{t3.SDG}}.{{t3.targetCode}}</strong> {{t3.desc}}
+                />&nbsp;&nbsp;
+                <strong>{{t3.SDG}}.{{t3.targetCode}}</strong> {{t3.desc}}
             </label>
         </div>
         <button class="btn btn-primary" (click)="updateTarget(3)">Update</button>
@@ -114,7 +118,8 @@
         <div class="form-check" *ngFor="let t4 of targets; let i4 = index">
             <label>
                 <input type="checkbox" name="targets" value="i4" [checked]="checkTarget[i4]" (change)="updateCheckedTargets(i4, $event)"
-                />&nbsp;&nbsp;<strong>{{t4.SDG}}.{{t4.targetCode}}</strong> {{t4.desc}}
+                />&nbsp;&nbsp;
+                <strong>{{t4.SDG}}.{{t4.targetCode}}</strong> {{t4.desc}}
                 <!--input type="checkbox" name="targets" value="i" [checked]="SDGsMap[i]" (change)="updateCheckedSDGs(i, $event); isUpdateSuccessful=false; f.submitted=false"
                 /-->
             </label>
@@ -128,7 +133,8 @@
         <div class="form-check" *ngFor="let t5 of targets; let i5 = index">
             <label>
                 <input type="checkbox" name="targets" value="i5" [checked]="checkTarget[i5]" (change)="updateCheckedTargets(i5, $event)"
-                />&nbsp;&nbsp;<strong>{{t5.SDG}}.{{t5.targetCode}}</strong> {{t5.desc}}
+                />&nbsp;&nbsp;
+                <strong>{{t5.SDG}}.{{t5.targetCode}}</strong> {{t5.desc}}
             </label>
         </div>
         <button class="btn btn-primary" (click)="updateTarget(5)">Update</button>
@@ -140,7 +146,8 @@
         <div class="form-check" *ngFor="let t6 of targets; let i6 = index">
             <label>
                 <input type="checkbox" name="targets" value="i6" [checked]="checkTarget[i6]" (change)="updateCheckedTargets(i6, $event)"
-                />&nbsp;&nbsp;<strong>{{t6.SDG}}.{{t6.targetCode}}</strong> {{t6.desc}}
+                />&nbsp;&nbsp;
+                <strong>{{t6.SDG}}.{{t6.targetCode}}</strong> {{t6.desc}}
             </label>
         </div>
         <button class="btn btn-primary" (click)="updateTarget(6)">Update</button>
@@ -152,7 +159,8 @@
         <div class="form-check" *ngFor="let t7 of targets; let i7 = index">
             <label>
                 <input type="checkbox" name="targets" value="i7" [checked]="checkTarget[i7]" (change)="updateCheckedTargets(i7, $event)"
-                />&nbsp;&nbsp;<strong>{{t7.SDG}}.{{t7.targetCode}}</strong> {{t7.desc}}
+                />&nbsp;&nbsp;
+                <strong>{{t7.SDG}}.{{t7.targetCode}}</strong> {{t7.desc}}
             </label>
         </div>
         <button class="btn btn-primary" (click)="updateTarget(7)">Update</button>
@@ -164,7 +172,8 @@
         <div class="form-check" *ngFor="let t8 of targets; let i8 = index">
             <label>
                 <input type="checkbox" name="targets" value="i8" [checked]="checkTarget[i8]" (change)="updateCheckedTargets(i8, $event)"
-                />&nbsp;&nbsp;<strong>{{t8.SDG}}.{{t8.targetCode}}</strong> {{t8.desc}}
+                />&nbsp;&nbsp;
+                <strong>{{t8.SDG}}.{{t8.targetCode}}</strong> {{t8.desc}}
             </label>
         </div>
         <button class="btn btn-primary" (click)="updateTarget(8)">Update</button>
@@ -176,7 +185,8 @@
         <div class="form-check" *ngFor="let t9 of targets; let i9 = index">
             <label>
                 <input type="checkbox" name="targets" value="i9" [checked]="checkTarget[i9]" (change)="updateCheckedTargets(i9, $event)"
-                />&nbsp;&nbsp;<strong>{{t9.SDG}}.{{t9.targetCode}}</strong>  {{t9.desc}}
+                />&nbsp;&nbsp;
+                <strong>{{t9.SDG}}.{{t9.targetCode}}</strong> {{t9.desc}}
             </label>
         </div>
         <button class="btn btn-primary" (click)="updateTarget(9)">Update</button>
@@ -188,7 +198,8 @@
         <div class="form-check" *ngFor="let t10 of targets; let i10 = index">
             <label>
                 <input type="checkbox" name="targets" value="i10" [checked]="checkTarget[i10]" (change)="updateCheckedTargets(i10, $event)"
-                />&nbsp;&nbsp;<strong>{{t10.SDG}}.{{t10.targetCode}}</strong>  {{t10.desc}}
+                />&nbsp;&nbsp;
+                <strong>{{t10.SDG}}.{{t10.targetCode}}</strong> {{t10.desc}}
             </label>
         </div>
         <button class="btn btn-primary" (click)="updateTarget(10)">Update</button>
@@ -200,7 +211,8 @@
         <div class="form-check" *ngFor="let t11 of targets; let i11 = index">
             <label>
                 <input type="checkbox" name="targets" value="i11" [checked]="checkTarget[i11]" (change)="updateCheckedTargets(i11, $event)"
-                />&nbsp;&nbsp;<strong>{{t11.SDG}}.{{t11.targetCode}}</strong> {{t11.desc}}
+                />&nbsp;&nbsp;
+                <strong>{{t11.SDG}}.{{t11.targetCode}}</strong> {{t11.desc}}
             </label>
         </div>
         <button class="btn btn-primary" (click)="updateTarget(11)">Update</button>
@@ -212,7 +224,8 @@
         <div class="form-check" *ngFor="let t12 of targets; let i12 = index">
             <label>
                 <input type="checkbox" name="targets" value="i12" [checked]="checkTarget[i12]" (change)="updateCheckedTargets(i12, $event)"
-                />&nbsp;&nbsp;<strong>{{t12.SDG}}.{{t12.targetCode}}</strong> {{t12.desc}}
+                />&nbsp;&nbsp;
+                <strong>{{t12.SDG}}.{{t12.targetCode}}</strong> {{t12.desc}}
             </label>
         </div>
         <button class="btn btn-primary" (click)="updateTarget(12)">Update</button>
@@ -224,7 +237,8 @@
         <div class="form-check" *ngFor="let t13 of targets; let i13 = index">
             <label>
                 <input type="checkbox" name="targets" value="i13" [checked]="checkTarget[i13]" (change)="updateCheckedTargets(i13, $event)"
-                />&nbsp;&nbsp;<strong>{{t13.SDG}}.{{t13.targetCode}}</strong> {{t13.desc}}
+                />&nbsp;&nbsp;
+                <strong>{{t13.SDG}}.{{t13.targetCode}}</strong> {{t13.desc}}
             </label>
         </div>
         <button class="btn btn-primary" (click)="updateTarget(13)">Update</button>
@@ -236,7 +250,8 @@
         <div class="form-check" *ngFor="let t14 of targets; let i14 = index">
             <label>
                 <input type="checkbox" name="targets" value="i14" [checked]="checkTarget[i14]" (change)="updateCheckedTargets(i14, $event)"
-                />&nbsp;&nbsp;<strong>{{t14.SDG}}.{{t14.targetCode}}</strong> {{t14.desc}}
+                />&nbsp;&nbsp;
+                <strong>{{t14.SDG}}.{{t14.targetCode}}</strong> {{t14.desc}}
             </label>
         </div>
         <button class="btn btn-primary" (click)="updateTarget(14)">Update</button>
@@ -248,7 +263,8 @@
         <div class="form-check" *ngFor="let t15 of targets; let i15 = index">
             <label>
                 <input type="checkbox" name="targets" value="i15" [checked]="checkTarget[i15]" (change)="updateCheckedTargets(i15, $event)"
-                />&nbsp;&nbsp;<strong>{{t15.SDG}}.{{t15.targetCode}}</strong> {{t15.desc}}
+                />&nbsp;&nbsp;
+                <strong>{{t15.SDG}}.{{t15.targetCode}}</strong> {{t15.desc}}
             </label>
         </div>
         <button class="btn btn-primary" (click)="updateTarget(15)">Update</button>
@@ -260,7 +276,8 @@
         <div class="form-check" *ngFor="let t16 of targets; let i16 = index">
             <label>
                 <input type="checkbox" name="targets" value="i16" [checked]="checkTarget[i16]" (change)="updateCheckedTargets(i16, $event)"
-                />&nbsp;&nbsp;<strong>{{t16.SDG}}.{{t16.targetCode}}</strong> {{t16.desc}}
+                />&nbsp;&nbsp;
+                <strong>{{t16.SDG}}.{{t16.targetCode}}</strong> {{t16.desc}}
             </label>
         </div>
         <button class="btn btn-primary" (click)="updateTarget(16)">Update</button>
@@ -272,7 +289,8 @@
         <div class="form-check" *ngFor="let t17 of targets; let i17 = index">
             <label>
                 <input type="checkbox" name="targets" value="i17" [checked]="checkTarget[i17]" (change)="updateCheckedTargets(i17, $event)"
-                />&nbsp;&nbsp;<strong>{{t17.SDG}}.{{t17.targetCode}}</strong> {{t17.desc}}
+                />&nbsp;&nbsp;
+                <strong>{{t17.SDG}}.{{t17.targetCode}}</strong> {{t17.desc}}
             </label>
         </div>
         <button class="btn btn-primary" (click)="updateTarget(17)">Update</button>

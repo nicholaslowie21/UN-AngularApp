@@ -178,4 +178,8 @@ export class MarketplaceService {
     
   }
 
+  getPaidOffers(): Observable<any> {
+    return this.http.get(API_URL + '/paidresources');
+  }
+
 }

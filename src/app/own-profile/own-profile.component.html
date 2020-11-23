@@ -35,10 +35,6 @@
                     <fa-icon [icon]="faPencilAlt" size="1x"></fa-icon>
                 </a>
                 <br/>
-                <button class="btn btn-primary mb-md-2" (click)="viewTarget()">
-                    <i class="pi pi-map-marker"></i>
-                </button>
-                <br/>
                 <!-- Button trigger modal -->
                 <button type="button" class="btn btn-primary mb-md-2" data-toggle="modal" data-target="#exampleModalCenter">
                     <fa-icon [icon]="faShareAlt" size="1x"></fa-icon>
@@ -203,12 +199,11 @@
                 </button>
             </h6>
             <!-- Modal -->
-            <div class="modal fade" id="SDGtargets" tabindex="-1" role="dialog" aria-labelledby="SDGtargetsTitle"
-                aria-hidden="true">
+            <div class="modal fade" id="SDGtargets" tabindex="-1" role="dialog" aria-labelledby="SDGtargetsTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title text-dark" id="exampleModalLongTitle">My SDG Targets</h5>
+                            <h5 class="modal-title text-dark" id="exampleModalLongTitle">SDG Targets</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -221,7 +216,7 @@
                                 <div class="card">
                                     <div class="row p-2">
                                         <div class="col-1">
-                                                <button class="sdg sdg{{t.SDG}} mr-md-1">{{t.SDG}}.{{t.targetCode}}</button>
+                                            <button class="sdg sdg{{t.SDG}} mr-md-1">{{t.SDG}}.{{t.targetCode}}</button>
                                         </div>
                                         <div class="col-11 mt-md-2">
                                             <h6>{{t.desc}}</h6>
@@ -230,8 +225,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <div class="modal-footer" *ngIf="isOwner && isLoggedIn">
+                            <a class="btn btn-primary mb-md-2" href="/edit-target?type=user">
+                                <fa-icon [icon]="faPencilAlt" size="1x">Edit SDG Targets</fa-icon>
+                            </a>
+                            <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
                         </div>
                     </div>
                 </div>

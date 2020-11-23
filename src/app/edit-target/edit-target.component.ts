@@ -33,6 +33,7 @@ export class EditTargetComponent implements OnInit {
   projTargets: any;
   project: any;
   accountType: any;
+  title: any;
   //rdata: { SDGs: any; };
 
   constructor(private targetService: TargetService, private userService: UserService, private tokenStorage: TokenStorageService,
@@ -53,6 +54,7 @@ export class EditTargetComponent implements OnInit {
         response => {
           this.project = response.data.targetProject;
           this.SDGs = this.project.SDGs;
+          this.title = this.project.title;
           console.log(this.SDGs);
         }
       );
@@ -62,6 +64,7 @@ export class EditTargetComponent implements OnInit {
         this.user = this.tokenStorage.getUser();
         this.id = this.user.id;
         this.SDGs = this.user.SDGs;
+        this.title = this.user.name;
         this.accountType = this.tokenStorage.getAccountType();
         console.log(this.accountType);
       }
