@@ -21,10 +21,14 @@ export class DataDashboardComponent implements OnInit {
   projectsLine: any;
   years: any;
   year: any;
+  noResourceBoolean: boolean;
+  noContributionBoolean: boolean;
 
   constructor(private dataService: DataService) {
     this.year = new Date().getFullYear();
     this.years = [2022, 2021, 2020, 2019];
+    this.noResourceBoolean = false;
+    this.noContributionBoolean = false;
    }
 
   async ngOnInit() {
@@ -43,7 +47,12 @@ export class DataDashboardComponent implements OnInit {
 
       await this.dataService.getResourceTypes(this.year).toPromise().then(
         res => {
-            this.resources = {
+            console.log(res.data.resourcesTypesNum);
+            if(JSON.stringify(res.data.resourcesTypesNum) == JSON.stringify([0, 0, 0, 0])) {
+                this.noResourceBoolean = true;
+            } else {
+                this.noResourceBoolean = false;
+                this.resources = {
                 labels: ['Manpower','Item','Venue','Knowledge'],
                 datasets: [
                     {
@@ -62,13 +71,18 @@ export class DataDashboardComponent implements OnInit {
                         ]
                     }]    
                 };
-          
+            }
         }
       );
 
       await this.dataService.getContributionTypes(this.year).toPromise().then(
         res => {
-            this.contributions = {
+            console.log(res.data.contributionsTypesNum);
+            if(JSON.stringify(res.data.contributionsTypesNum) == JSON.stringify([0, 0, 0, 0, 0])) {
+                this.noContributionBoolean = true;
+            } else {
+                this.noContributionBoolean = false;
+                this.contributions = {
                 labels: ['Manpower','Item','Venue','Knowledge','Funding'],
                 datasets: [
                     {
@@ -89,8 +103,7 @@ export class DataDashboardComponent implements OnInit {
                         ]
                     }]    
               };
-
-        });
+        }});
 
         await this.dataService.getAccountsChart(this.year).toPromise().then(
             res => {
@@ -134,7 +147,12 @@ export class DataDashboardComponent implements OnInit {
 
       await this.dataService.getResourceTypes(event.target.value).toPromise().then(
         res => {
-            this.resources = {
+            console.log(res.data.resourcesTypesNum);
+            if(JSON.stringify(res.data.resourcesTypesNum) == JSON.stringify([0, 0, 0, 0])) {
+                this.noResourceBoolean = true;
+            } else {
+                this.noResourceBoolean = false;
+                this.resources = {
                 labels: ['Manpower','Item','Venue','Knowledge'],
                 datasets: [
                     {
@@ -153,13 +171,18 @@ export class DataDashboardComponent implements OnInit {
                         ]
                     }]    
                 };
-          
+            }
         }
       );
 
       await this.dataService.getContributionTypes(event.target.value).toPromise().then(
         res => {
-            this.contributions = {
+            console.log(res.data.contributionsTypesNum);
+            if(JSON.stringify(res.data.contributionsTypesNum) == JSON.stringify([0, 0, 0, 0, 0])) {
+                this.noContributionBoolean = true;
+            } else {
+                this.noContributionBoolean = false;
+                this.contributions = {
                 labels: ['Manpower','Item','Venue','Knowledge','Funding'],
                 datasets: [
                     {
@@ -180,7 +203,7 @@ export class DataDashboardComponent implements OnInit {
                         ]
                     }]    
               };
-
+            } 
         });
 
         await this.dataService.getAccountsChart(event.target.value).toPromise().then(

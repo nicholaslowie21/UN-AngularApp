@@ -110,7 +110,8 @@
                 <h6 class="card-title text-center mt-md-3">
                     Resource listings based on Resource Type
                 </h6>
-                <p-chart type="doughnut" [data]="resources"></p-chart>
+                <p *ngIf="noResourceBoolean == true" style="color: red; text-align: center;">No resource listings are created in the year</p>
+                <p-chart *ngIf="noResourceBoolean == false" type="doughnut" [data]="resources"></p-chart>
             </div>
             </div>
         </div>
@@ -120,7 +121,8 @@
                 <h6 class="card-title text-center mt-md-3">
                     Successful Resource Contribution based on Resource Type
                 </h6>
-                <p-chart type="doughnut" [data]="contributions"></p-chart>
+                <p *ngIf="noContributionBoolean == true" style="color: red; text-align: center;">No successful contributions done in the year</p>
+                <p-chart *ngIf="noContributionBoolean == false" type="doughnut" [data]="contributions"></p-chart>
             </div>
             </div>
         </div>
