@@ -5,7 +5,7 @@
         <h2>Data By SDG and Country</h2>
     </div>
     <div class="p-field p-col-6 p-md-4" style="float: right">
-        <p-calendar [(ngModel)]="rangeDates" selectionMode="range" inputId="range" baseZIndex=1000 [yearNavigator]="true" yearRange="{{firstYear}}:{{thisYear}}" [minDate]="minDateValue" [maxDate]="maxDateValue" (onSelect)="update($event)" showButtonBar="true" placeholder="All Dates" showIcon="true" (onClearClick)="showAll($event)"></p-calendar>
+        <p-calendar [(ngModel)]="rangeDates" selectionMode="range" inputId="range" baseZIndex=1000 [yearNavigator]="true" yearRange="{{firstYear}}:{{thisYear}}" [minDate]="minDateValue" [maxDate]="maxDateValue" (onSelect)="update($event)" showButtonBar="true" placeholder="All Dates" showIcon="true" (onClearClick)="showAll($event)" dateFormat="yy/mm/dd"></p-calendar>
     </div>
 </div>
 
@@ -21,8 +21,8 @@
 <div class="tab-content">
     <div class="tab-pane fade show active" id="personal" role="tabpanel" aria-labelledby="personal-tab">
     <p-table #dt1 [value]="dataBySDG" dataKey="id"
-        [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" styleClass="p-datatable-customers p-datatable-gridlines"
-        [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [rows]="20" [showCurrentPageReport]="true" styleClass="p-datatable-customers p-datatable-gridlines"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
         [globalFilterFields]="['sdgTitle','accountsNum','projectsNum','contributionsNum', 'fundingNum']">
         <ng-template pTemplate="caption">
             <div class="p-d-flex">
@@ -44,10 +44,10 @@
                 </th>
                 <th pSortableColumn="projectsNum">Projects<p-sortIcon field="projectsNum"></p-sortIcon></th>
                 <th pSortableColumn="contributionsNum">Contributions<p-sortIcon field="contributionsNum"></p-sortIcon></th>
-                <th pSortableColumn="fundingNum">
+                <th pSortableColumn="fundingRaisedSum">
                     <!-- <div class="p-d-flex p-jc-between p-ai-center"> -->
                         Funding
-                        <p-sortIcon field="fundingNum"></p-sortIcon>
+                        <p-sortIcon field="fundingRaisedSum"></p-sortIcon>
                         <!-- <p-columnFilter type="numeric" field="balance" display="menu" currency="USD"></p-columnFilter>
                     </div> -->
                 </th>
@@ -59,7 +59,7 @@
                 <td>{{sdg.accountsNum}}</td>
                 <td>{{sdg.projectsNum}}</td>
                 <td>{{sdg.contributionsNum}}</td>
-                <td>{{sdg.fundingNum | currency: 'SGD'}}</td>
+                <td>{{sdg.fundingRaisedSum | currency: 'USD'}}</td>
             </tr>
         </ng-template>
         <ng-template pTemplate="emptymessage">
@@ -95,10 +95,10 @@
                 </th>
                 <th pSortableColumn="projectsNum">Projects<p-sortIcon field="projectsNum"></p-sortIcon></th>
                 <th pSortableColumn="contributionsNum">Contributions<p-sortIcon field="contributionsNum"></p-sortIcon></th>
-                <th pSortableColumn="fundingNum">
+                <th pSortableColumn="fundingRaisedSum">
                     <!-- <div class="p-d-flex p-jc-between p-ai-center"> -->
                         Funding
-                        <p-sortIcon field="fundingNum"></p-sortIcon>
+                        <p-sortIcon field="fundingRaisedSum"></p-sortIcon>
                         <!-- <p-columnFilter type="numeric" field="balance" display="menu" currency="SGD"></p-columnFilter>
                     </div> -->
                 </th>
@@ -110,7 +110,7 @@
                 <td>{{bycountry.accountsNum}}</td>
                 <td>{{bycountry.projectsNum}}</td>
                 <td>{{bycountry.contributionsNum}}</td>
-                <td>{{bycountry.fundingNum | currency: 'SGD'}}</td>
+                <td>{{bycountry.fundingRaisedSum | currency: 'USD'}}</td>
             </tr>
         </ng-template>
         <ng-template pTemplate="emptymessage">

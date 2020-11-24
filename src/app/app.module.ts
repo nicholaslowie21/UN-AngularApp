@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
+import { DatePipe } from '@angular/common';
 
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule } from '@angular/forms';
@@ -178,7 +179,7 @@ import { EditTargetComponent } from './edit-target/edit-target.component';
     ChartModule,
     TableModule
   ],
-  providers: [authInterceptorProviders, AuthGuardService],
+  providers: [authInterceptorProviders, AuthGuardService, DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

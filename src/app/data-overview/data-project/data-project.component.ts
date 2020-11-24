@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {TableModule} from 'primeng/table';
+import { DataService } from '../../services/data.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-data-project',
@@ -14,10 +16,11 @@ export class DataProjectComponent implements OnInit {
   maxDateValue: any;
   firstYear: any;
   thisYear: any;
+  data: any;
 
-  constructor() { }
+  constructor(private dataService: DataService, private datePipe: DatePipe) { }
 
-  ngOnInit(): void {
+  async ngOnInit() {
     // Set as date of the app creation
     this.firstYear = 2019;
     this.thisYear = 2022;
@@ -28,13 +31,18 @@ export class DataProjectComponent implements OnInit {
     this.initAll();
   }
 
-  initAll() {
-    this.dataBySDG = [
-      { sdgTitle: '1: Alleviate Poverty', accountsNum:'100', projectsNum: '231', contributionsNum: '1231', fundingNum: '54406.00'},
-      { sdgTitle: '2: Food', accountsNum:'200', projectsNum: '211', contributionsNum: '1231', fundingNum: '24406.00'},
-      { sdgTitle: '3: Animal Protection', accountsNum:'300', projectsNum: '31', contributionsNum: '131', fundingNum: '4406.00'},
-      { sdgTitle: '4: Water Safety', accountsNum:'400', projectsNum: '121', contributionsNum: '1231', fundingNum: '14406.00'},
-    ]
+  async initAll() {
+    this.data = {
+      'startDate': this.datePipe.transform(this.minDateValue, "yyyy-MM-dd"),
+      'endDate': this.datePipe.transform(this.maxDateValue, "yyyy-MM-dd")
+    };
+
+    await this.dataService.getDatabySDG(this.data).toPromise().then(
+      res => {
+        this.dataBySDG = res.data.dataBySDGs;
+        console.log(res);
+      }
+    );
 
     this.dataByCountry = [
       { country: 'Singapore', accountsNum:'100', projectsNum: '231', contributionsNum: '1231', fundingNum: '54406.00'},
@@ -44,18 +52,17 @@ export class DataProjectComponent implements OnInit {
     ]
   }
 
-  update(event) {
-    console.log(this.rangeDates);
-    // Will return me [Mon Nov 09 2020 00:00:00 GMT+0800 (Singapore Standard Time), Thu Nov 12 2020 00:00:00 GMT+0800 (Singapore Standard Time)]
+
+  async update(event) {
     if (this.rangeDates[1] != null) {
-      console.log("fetch data based on dates here and reinitialise table");
-      // use moment js to convert Date to 2020-12-23 then feed to back end
-        this.dataBySDG = [
-          { sdgTitle: '1: Alleviate Poverty', accountsNum:'10', projectsNum: '23', contributionsNum: '11', fundingNum: '506.00'},
-          { sdgTitle: '2: Food', accountsNum:'20', projectsNum: '21', contributionsNum: '11', fundingNum: '246.00'},
-          { sdgTitle: '3: Animal Protection', accountsNum:'30', projectsNum: '31', contributionsNum: '1', fundingNum: '46.00'},
-          { sdgTitle: '4: Water Safety', accountsNum:'40', projectsNum: '21', contributionsNum: '11', fundingNum: '16.00'},
-        ]
+      this.data = {
+        'startDate': this.datePipe.transform(this.rangeDates[0], "yyyy-MM-dd"),
+        'endDate': this.datePipe.transform(this.rangeDates[1], "yyyy-MM-dd")
+      };
+  
+      await this.dataService.getDatabySDG(this.data).toPromise().then(
+        res => this.dataBySDG = res.data.dataBySDGs
+      );
     
         this.dataByCountry = [
           { country: 'Singapore', accountsNum:'10', projectsNum: '21', contributionsNum: '31', fundingNum: '546.00'},

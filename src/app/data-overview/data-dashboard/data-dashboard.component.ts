@@ -1,5 +1,6 @@
 import { Component, OnInit, ɵɵqueryRefresh } from '@angular/core';
 import {ChartModule} from 'primeng/chart';
+import { DataService } from '../../services/data.service';
 
 @Component({
   selector: 'app-data-dashboard',
@@ -21,169 +22,202 @@ export class DataDashboardComponent implements OnInit {
   years: any;
   year: any;
 
-
-  constructor() {
-    this.year = "2020";
+  constructor(private dataService: DataService) {
+    this.year = new Date().getFullYear();
+    this.years = [2022, 2021, 2020, 2019];
    }
 
-  ngOnInit() {
-    this.activeAccNum = 123;
-    this.paidResourcesNum = 22;
-    this.resourcesNum= 100;
-    this.contributionsNum= 34;
-    this.fundingNum= "2,999"; //Please return me in string, where there is commas?
-    this.projectsOngoingNum= 122;
-    this.projectsCompletedNum = 208;
-    //Probably need to populate the years depending on until which year of data we have
-    this.years = [2022, 2021, 2020, 2019];
-
-    this.resources = {
-        labels: ['Manpower','Item','Venue','Knowledge'],
-        datasets: [
-            {
-                data: [200, 150, 100, 12],
-                backgroundColor: [
-                    "#FF6384",
-                    "#36A2EB",
-                    "#FFCE56",
-                    "#eb803d"
-                ],
-                hoverBackgroundColor: [
-                    "#FF6384",
-                    "#36A2EB",
-                    "#FFCE56",
-                    "#eb803d"
-                ]
-            }]    
-        };
-  
-        this.contributions = {
-          labels: ['Manpower','Item','Venue','Knowledge','Funding'],
-          datasets: [
-              {
-                  data: [200, 150, 100, 12, 30],
-                  backgroundColor: [
-                      "#FF6384",
-                      "#36A2EB",
-                      "#FFCE56",
-                      "#eb803d",
-                      "#2B9093"
-                  ],
-                  hoverBackgroundColor: [
-                      "#FF6384",
-                      "#36A2EB",
-                      "#FFCE56",
-                      "#eb803d",
-                      "#2B9093"
-                  ]
-              }]    
-        };
-        
-        this.accBar = {
-          labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
-          datasets: [
-              {
-                  label: 'User Accounts',
-                  backgroundColor: '#42A5F5',
-                  borderColor: '#1E88E5',
-                  data: [65, 59, 80, 81, 56, 55, 40, 80, 81, 56, 55, 40]
-              },
-              {
-                  label: 'Institution Accounts',
-                  backgroundColor: '#9CCC65',
-                  borderColor: '#7CB342',
-                  data: [28, 48, 40, 19, 86, 27, 90, 28, 48, 40, 19, 86]
-              }
-          ]
+  async ngOnInit() {
+      await this.dataService.getDashboard().toPromise().then(
+        res => {
+            this.activeAccNum = res.data.activeAccNum;
+            this.paidResourcesNum = res.data.paidResourcesNum;
+            this.resourcesNum= res.data.resourcesNum;
+            this.contributionsNum= res.data.contributionsNum;
+            this.fundingNum= res.data.fundingRaised;
+            this.projectsOngoingNum= res.data.projectsOngoingNum;
+            this.projectsCompletedNum = res.data.projectsCompletedNum;
+            console.log(res);
         }
-  
-        this.projectsLine = {
-          labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
-          datasets: [
-              {
-                  label: 'Projects',
-                  data: [65, 59, 80, 81, 56, 55, 40, 59, 80, 81, 56, 55],
-                  fill: false,
-                  borderColor: '#4bc0c0'
-              },
-          ]
-      }
+      );
+
+      await this.dataService.getResourceTypes(this.year).toPromise().then(
+        res => {
+            this.resources = {
+                labels: ['Manpower','Item','Venue','Knowledge'],
+                datasets: [
+                    {
+                        data: res.data.resourcesTypesNum,
+                        backgroundColor: [
+                            "#FF6384",
+                            "#36A2EB",
+                            "#FFCE56",
+                            "#eb803d"
+                        ],
+                        hoverBackgroundColor: [
+                            "#FF6384",
+                            "#36A2EB",
+                            "#FFCE56",
+                            "#eb803d"
+                        ]
+                    }]    
+                };
+          
+        }
+      );
+
+      await this.dataService.getContributionTypes(this.year).toPromise().then(
+        res => {
+            this.contributions = {
+                labels: ['Manpower','Item','Venue','Knowledge','Funding'],
+                datasets: [
+                    {
+                        data: res.data.contributionsTypesNum,
+                        backgroundColor: [
+                            "#FF6384",
+                            "#36A2EB",
+                            "#FFCE56",
+                            "#eb803d",
+                            "#2B9093"
+                        ],
+                        hoverBackgroundColor: [
+                            "#FF6384",
+                            "#36A2EB",
+                            "#FFCE56",
+                            "#eb803d",
+                            "#2B9093"
+                        ]
+                    }]    
+              };
+
+        });
+
+        await this.dataService.getAccountsChart(this.year).toPromise().then(
+            res => {
+                this.accBar = {
+                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
+                    datasets: [
+                        {
+                            label: 'User Accounts',
+                            backgroundColor: '#42A5F5',
+                            borderColor: '#1E88E5',
+                            data: res.data.usersPerMonth
+                        },
+                        {
+                            label: 'Institution Accounts',
+                            backgroundColor: '#9CCC65',
+                            borderColor: '#7CB342',
+                            data: res.data.institutionsPerMonth
+                        }
+                    ]
+                  }
+            });
+        
+        await this.dataService.getCumulativeProjects(this.year).toPromise().then(
+            res => {
+                this.projectsLine = {
+                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
+                    datasets: [
+                        {
+                            label: 'Projects',
+                            data: res.data.cumulativeThisYear,
+                            fill: false,
+                            borderColor: '#4bc0c0'
+                        },
+                    ]
+                }
+            });
   }
 
-  update(event) {
+  async update(event) {
       console.log(event.target.value);
-        //   Fetch data based on year passed in the drop down
-        this.resources = {
-            labels: ['Manpower','Item','Venue','Knowledge'],
-            datasets: [
-                {
-                    data: [0, 20, 10, 12],
-                    backgroundColor: [
-                        "#FF6384",
-                        "#36A2EB",
-                        "#FFCE56",
-                        "#eb803d"
-                    ],
-                    hoverBackgroundColor: [
-                        "#FF6384",
-                        "#36A2EB",
-                        "#FFCE56",
-                        "#eb803d"
-                    ]
-                }]    
-            };
 
-        this.contributions = {
-            labels: ['Manpower','Item','Venue','Knowledge','Funding'],
-            datasets: [
-                {
-                    data: [20, 15, 10, 12, 30],
-                    backgroundColor: [
-                        "#FF6384",
-                        "#36A2EB",
-                        "#FFCE56",
-                        "#eb803d",
-                        "#2B9093"
-                    ],
-                    hoverBackgroundColor: [
-                        "#FF6384",
-                        "#36A2EB",
-                        "#FFCE56",
-                        "#eb803d",
-                        "#2B9093"
-                    ]
-                }]    
-            };
-            
-            this.accBar = {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
-            datasets: [
-                {
-                    label: 'User Accounts',
-                    backgroundColor: '#42A5F5',
-                    borderColor: '#1E88E5',
-                    data: [25, 9, 8, 1, 6, 5, 4, 18, 21, 5, 10, 4]
-                },
-                {
-                    label: 'Institution Accounts',
-                    backgroundColor: '#9CCC65',
-                    borderColor: '#7CB342',
-                    data: [28, 48, 40, 19, 86, 27, 90, 28, 48, 40, 19, 86]
-                }
-            ]
-            }
-    
-            this.projectsLine = {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
-            datasets: [
-                {
-                    label: 'Projects',
-                    data: [15, 5, 8, 18, 6, 5, 4, 9, 8, 18, 5, 5],
-                    fill: false,
-                    borderColor: '#4bc0c0'
-                },
-            ]
+      await this.dataService.getResourceTypes(event.target.value).toPromise().then(
+        res => {
+            this.resources = {
+                labels: ['Manpower','Item','Venue','Knowledge'],
+                datasets: [
+                    {
+                        data: res.data.resourcesTypesNum,
+                        backgroundColor: [
+                            "#FF6384",
+                            "#36A2EB",
+                            "#FFCE56",
+                            "#eb803d"
+                        ],
+                        hoverBackgroundColor: [
+                            "#FF6384",
+                            "#36A2EB",
+                            "#FFCE56",
+                            "#eb803d"
+                        ]
+                    }]    
+                };
+          
         }
+      );
+
+      await this.dataService.getContributionTypes(event.target.value).toPromise().then(
+        res => {
+            this.contributions = {
+                labels: ['Manpower','Item','Venue','Knowledge','Funding'],
+                datasets: [
+                    {
+                        data: res.data.contributionsTypesNum,
+                        backgroundColor: [
+                            "#FF6384",
+                            "#36A2EB",
+                            "#FFCE56",
+                            "#eb803d",
+                            "#2B9093"
+                        ],
+                        hoverBackgroundColor: [
+                            "#FF6384",
+                            "#36A2EB",
+                            "#FFCE56",
+                            "#eb803d",
+                            "#2B9093"
+                        ]
+                    }]    
+              };
+
+        });
+
+        await this.dataService.getAccountsChart(event.target.value).toPromise().then(
+            res => {
+                this.accBar = {
+                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
+                    datasets: [
+                        {
+                            label: 'User Accounts',
+                            backgroundColor: '#42A5F5',
+                            borderColor: '#1E88E5',
+                            data: res.data.usersPerMonth
+                        },
+                        {
+                            label: 'Institution Accounts',
+                            backgroundColor: '#9CCC65',
+                            borderColor: '#7CB342',
+                            data: res.data.institutionsPerMonth
+                        }
+                    ]
+                  }
+            });
+        
+        await this.dataService.getCumulativeProjects(event.target.value).toPromise().then(
+            res => {
+                this.projectsLine = {
+                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
+                    datasets: [
+                        {
+                            label: 'Projects',
+                            data: res.data.cumulativeThisYear,
+                            fill: false,
+                            borderColor: '#4bc0c0'
+                        },
+                    ]
+                }
+            });
 
   }
 
