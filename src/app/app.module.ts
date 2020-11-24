@@ -87,7 +87,9 @@ import { AdminDataManagementComponent } from './admin/admin-data-management/admi
 import { TestimonialComponent } from './testimonial/testimonial.component';
 import { DataProjectComponent } from './data-overview/data-project/data-project.component';
 import { PaidResourceDetailsComponent } from './resource/paid-resource-details/paid-resource-details.component';
-import { MyTransactionsComponent } from './my-transactions/my-transactions.component';
+import { DonateComponent } from './donate/donate.component';
+import { MyPurchasesComponent } from './my-purchases/my-purchases.component';
+import { EditTargetComponent } from './edit-target/edit-target.component';
 
 @NgModule({
   declarations: [
@@ -146,7 +148,9 @@ import { MyTransactionsComponent } from './my-transactions/my-transactions.compo
     TestimonialComponent,
     DataProjectComponent,
     PaidResourceDetailsComponent,
-    MyTransactionsComponent
+    DonateComponent,
+    MyPurchasesComponent,
+    EditTargetComponent
   ],
   imports: [
     BrowserModule,

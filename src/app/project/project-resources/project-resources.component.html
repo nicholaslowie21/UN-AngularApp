@@ -1,14 +1,12 @@
 <div>
     <a href="/project/projectDetails?id={{projectId}}">
         <u>Project Details </u>
-    </a> |
-
-    Project Resources
+    </a> | Project Resources
 
     <span *ngIf="isOwnerAdmin">|
-    <a href="/project/requests?id={{projectId}}">
-        <u>Project Requests</u>
-    </a>
+        <a href="/project/requests?id={{projectId}}">
+            <u>Project Requests</u>
+        </a>
     </span>
 </div>
 <div class="dropdown-divider"></div>
@@ -25,7 +23,8 @@ Overall Need Progress:
 
 <p-toast key="toastMsg" [baseZIndex]="100"></p-toast>
 
-<div class="modal fade" data-backdrop="static" id="donateModal" tabindex="-1" role="dialog" aria-labelledby="donateModalTitle" aria-hidden="true">
+<div class="modal fade" data-backdrop="static" id="donateModal" tabindex="-1" role="dialog" aria-labelledby="donateModalTitle"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -67,9 +66,10 @@ Overall Need Progress:
                 </div>
                 <div *ngIf="isDonateSuccessful">
                     <div class="alert alert-success">
-                        Your request to donate has been submitted successfully!<br>
-                        Please proceed to make the payment to this project.
-                        <br><br> You can check your request status under
+                        Your request to donate has been submitted successfully!
+                        <br> Please proceed to make the payment to this project.
+                        <br>
+                        <br> You can check your request status under
                         <a href="/myRequests">My Outgoing Requests</a>
                     </div>
                 </div>
@@ -246,6 +246,9 @@ Overall Need Progress:
         </li>
         <li class="nav-item">
             <a class="nav-link" id="obtained-tab" data-toggle="tab" href="#obtained" role="tab" aria-controls="obtained" aria-selected="false">Resources Obtained</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="paid-tab" data-toggle="tab" href="#paid" role="tab" aria-controls="paid" aria-selected="false">Paid Resources</a>
         </li>
     </ul>
 
@@ -593,8 +596,13 @@ Overall Need Progress:
                 </div>
             </div>
         </div>
+
+        <div class="tab-pane fade" id="paid" role="tabpanel" aria-labelledby="paid-tab">
+            <div class="row">
+                <div class="col-8">
+                    Paid Resources
+                </div>
+            </div>
+        </div>
     </div>
-
-
-
 </div>

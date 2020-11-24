@@ -109,6 +109,7 @@
                             </div>
                             Download verification file: <button pButton class="p-button-rounded" title="Download attachment" icon="pi pi-download" (click)="downloadAttachment(editForm.verifyFile)"></button>
                             <br>
+                            <a href="/admin/user-management/profile?type=reward&id={{editForm.id}}" class="btn btn-primary">View Audit</a>
                             <button class="btn btn-danger ml-1 float-right" (click)="rejectReq(editForm.id)">Reject</button>
                             <button class="btn btn-success mr-md-2 float-right" (click)="approveReq(editForm.id)">Approve</button>
                         </div>
@@ -214,6 +215,7 @@
                                 <button class="btn btn-primary mr-md-2 float-right" (click)=editReward() title="Edit">
                                     <i class="pi pi-pencil"></i>&nbsp;Edit
                                 </button>
+                                <a href="/admin/user-management/profile?type=reward&id={{editForm.id}}" class="btn btn-primary">View Audit</a>
                             </div>
                             <div *ngIf="isEdit">
                                 <form name="form" (ngSubmit)="fs.form.valid && updateReward()" #fs="ngForm" novalidate>
@@ -628,7 +630,7 @@
                                 </div>
                             </div>
                             Download verification file: <button pButton class="p-button-rounded" title="Download attachment" icon="pi pi-download" (click)="downloadAttachment(editForm.verifyFile)"></button>
-                            
+                            <br><button class="btn btn-primary" (click)="viewAudit(editForm.id)">View Audit</button>
                         </div>
                     </div>
                 </div>
@@ -725,6 +727,8 @@
                                     End Date: {{formatDate(editForm.endDate)}}
                                 </div>
                             </div>
+                            Download verification file: <button pButton class="p-button-rounded" title="Download attachment" icon="pi pi-download" (click)="downloadAttachment(editForm.verifyFile)"></button>
+                            <br><button class="btn btn-primary" (click)="viewAudit(editForm.id)">View Audit</button>
                         </div>
                     </div>
                 </div>

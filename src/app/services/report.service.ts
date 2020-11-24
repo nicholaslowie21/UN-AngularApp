@@ -43,4 +43,8 @@ export class ReportService {
       status: data.status
     }, httpOptions);
   }
+
+  getReportDetails(data): Observable<any> {
+    return this.http.get(API_URL + '/detail?reportId=' + data.id);
+  }
 }

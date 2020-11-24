@@ -22,6 +22,17 @@
             </div>
         </div>
 
+        <div *ngIf="isReward" class="card-body">
+            <div *ngIf="reward.imgPath.length == 0">
+                <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src="../../assets/img/rewardPlaceholder.png" style="margin: 10px; width: 80px; height: 80px; object-fit: cover;"
+                    alt="Profile picture">
+            </div>
+            <div *ngIf="reward.imgPath.length != 0">
+                <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src={{imgString}} style="margin: 10px; width: 80px; height: 80px; object-fit: cover;"
+                    alt="Profile picture">
+            </div>
+        </div>
+
     </div>
     <div class="card border-0" style="width: 40%">
         <div *ngIf="isUser" class="card-body">
@@ -29,6 +40,7 @@
                 <a [href]="viewUser(user)" class="text-dark">{{ user.name }}</a>
             </h4>
             <div style="font-size:medium;">{{ user.username }}</div>
+            <div style="font-size:medium;">{{ user.country }}</div>
             <div *ngIf="user.role" class="text-secondary">{{user.role}}</div>
             <div class="text-secondary">{{user.status}}</div>
         </div>
@@ -38,6 +50,14 @@
             </h4>
             <div style="font-size:medium;">{{ project.country }}</div>
             <div class="text-secondary">{{project.status}}</div>
+        </div>
+        <div *ngIf="isReward" class="card-body">
+            <h4 class="card-title text-left mt-md-3 mb-md-0">
+                {{ reward.title }}
+            </h4>
+            <div style="font-size:medium;">{{ reward.country }}</div>
+            <div class="text-secondary">{{reward.minTier}}</div>
+            <div class="text-secondary">{{reward.status}}</div>
         </div>
     </div>
     <div class="card border-0">
@@ -72,11 +92,15 @@
     </div>
 </div>
 <div class="row">
-    <div class="card border-0" style="width: 80%">
-        <div class="row">
-            <h5 class="card-title text-left mt-md-3 mb-md-0" style="margin: 5%">
+    <div class="card border-0">
+        <div class="card-body">
+            <h5 class="card-title text-left">
                 Audit Log
             </h5>
+        </div>
+    </div>
+    <div class="card border-0">
+        <div class="card-body">
             <div *ngIf="(isAdminLead&&checkAdmin)">
                 <select class="form-control" name="type" [(ngModel)]="auditType" required #type="ngModel">
                     <option value="user">User</option>
@@ -84,21 +108,131 @@
                 </select>
             </div>
         </div>
+    </div>
+    <div class="card border-0">
+        <div *ngIf="(auditType=='admin')&&(isAdminLead&&checkAdmin)" class="card-body">
+            <a href="https://localhost:8080{{adminAuditFile}}" class="btn btn-info float-right text-white" type="button" aria-haspopup="true"
+                aria-expanded="false">
+                Export
+            </a>
+        </div>
+    </div>
+    <div class="card border-0">
+        <div *ngIf="(auditType=='user')&&(isAdminLead&&checkAdmin)" class="card-body">
+            <a href="https://localhost:8080{{userAuditFile}}" class="btn btn-info float-right text-white" type="button" aria-haspopup="true"
+                aria-expanded="false">
+                Export
+            </a>
+        </div>
+    </div>
+    <div class="card border-0">
+        <div *ngIf="(auditType==null)&&(isNullUser || isNullProj || isNullReward)" class="card-body">
+            <a href="https://localhost:8080{{userAuditFile}}" class="btn btn-info float-right text-white" type="button" aria-haspopup="true"
+                aria-expanded="false">
+                Export
+            </a>
+        </div>
+    </div>
+</div>
 
-        <div *ngIf="auditType=='user' " class="card-body">
-            User Audit
+<div class="row">
+    <div *ngIf="auditType=='user' " class="card-body">
+        <!--User Audit
             <br>Action: ...
-            <br> Date created: 5 Nov 2020
+            <br> Date created: 5 Nov 2020-->
+        <div *ngIf="userAudit.length==0">
+            There are no user audit logs for now.
         </div>
-        <div *ngIf="auditType=='admin' " class="card-body">
-            Admin Audit
+        <div *ngFor="let user of userAudit">
+            <div class="card" style="width:80%">
+                <div class="card-body">
+                    Action: {{user.action}}
+                    <br/> Target Type: {{user.targetType}}
+                    <br/>
+                    <small>Created At: {{formatDate(user.createdAt)}}</small>
+                    <br/>
+                    <small>Updated At: {{formatDate(user.updatedAt)}}</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="auditType=='admin' " class="card-body">
+        <!--Admin Audit
             <br>Action: ...
-            <br> Date created: 5 Nov 2020
+            <br> Date created: 5 Nov 2020-->
+        <div *ngIf="adminAudit.length==0">
+            There are no admin audit logs for now.
         </div>
-        <div *ngIf="auditType==null " class="card-body">
-            Other Audits
-            <br>Action: ...
-            <br> Date created: 5 Nov 2020
+        <div *ngFor="let admin of adminAudit">
+            <div class="card" style="width:80%">
+                <div class="card-body">
+                    Action: {{admin.action}}
+                    <br/> Target Type: {{admin.targetType}}
+                    <br/>
+                    <small>Created At: {{formatDate(admin.createdAt)}}</small>
+                    <br/>
+                    <small>Updated At: {{formatDate(admin.updatedAt)}}</small>
+                </div>
+            </div>
         </div>
+    </div>
+    <div *ngIf="(auditType==null)&&(isNullUser)" class="card-body">
+        <div *ngIf="userAudit.length==0">
+            There are no user audit logs for now.
+        </div>
+        <div *ngFor="let user of userAudit">
+            <div class="card" style="width:80%">
+                <div class="card-body">
+                    Action: {{user.action}}
+                    <br/> Target Type: {{user.targetType}}
+                    <br/>
+                    <small>Created At: {{formatDate(user.createdAt)}}</small>
+                    <br/>
+                    <small>Updated At: {{formatDate(user.updatedAt)}}</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="(auditType==null)&&(isNullProj)" class="card-body">
+        <div *ngIf="userAudit.length==0">
+            There are no project audit logs for now.
+        </div>
+        <div *ngFor="let user of userAudit">
+            <div class="card" style="width:80%">
+                <div class="card-body">
+                    Action: {{user.action}}
+                    <br/> Target Type: {{user.targetType}}
+                    <br/>
+                    <small>Created At: {{formatDate(user.createdAt)}}</small>
+                    <br/>
+                    <small>Updated At: {{formatDate(user.updatedAt)}}</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="(auditType==null)&&(isNullReward)" class="card-body">
+        <div *ngIf="userAudit.length==0">
+            There are no reward audit logs for now.
+        </div>
+        <div *ngFor="let user of userAudit">
+            <div class="card" style="width:80%">
+                <div class="card-body">
+                    Action: {{user.action}}
+                    <br/> Target Type: {{user.targetType}}
+                    <br/>
+                    <small>Created At: {{formatDate(user.createdAt)}}</small>
+                    <br/>
+                    <small>Updated At: {{formatDate(user.updatedAt)}}</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--div *ngIf="auditType==null&&!(isAdminLead&&checkAdmin)" class="card-body">
+        Other Audits
+        <br>Action: ...
+        <br> Date created: 5 Nov 2020
+    </div-->
+    <div *ngIf="(auditType==null)&&(isAdminLead&&checkAdmin)" class="card-body">
+        Please select audit type
     </div>
 </div>

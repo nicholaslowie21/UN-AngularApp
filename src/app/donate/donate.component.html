@@ -1,0 +1,37 @@
+<h2>Donate to KoCoSD</h2>
+<div>
+    Help us sustain our operations by donating to us. Some other text here 
+</div>
+
+<br>
+
+<p-toast key="toastMsg" [baseZIndex]="100"></p-toast>
+
+<div class="card bg-light" style="width: 40%;">
+    <div class="card-body">
+        <div class="text-center mb-4" style="font-size: x-large;">
+            Your support matters
+        </div>
+        <label for="amount" class="form-label">Input an amount</label>
+        <div class="input-group mb-2">
+            <div class="input-group-prepend">
+                <div class="input-group-text">USD</div>
+            </div>
+            <input type="number" class="form-control" name="amount"
+                [(ngModel)]="finalAmount" required />
+        </div>
+        <!-- <input type="number" name="amount" class="form-control" [(ngModel)]="finalAmount"> -->
+        
+        <div class="mb-2">
+            <small class="form-text">As you proceed, you will be taken to a secure payment page, where you perform the transfer of your gift.</small>
+        </div>
+        
+        <div id="paypal-checkout-btn" class="float-right"></div>
+    </div>
+</div>
+
+
+<div class="alert alert-success" *ngIf="isSuccess">
+  Payment is successful!<br/>
+  Details: {{paymentDeets}}
+</div>

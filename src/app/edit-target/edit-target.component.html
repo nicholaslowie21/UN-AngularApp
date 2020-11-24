@@ -1,0 +1,298 @@
+<p-toast key="toastMsg" [baseZIndex]="100"></p-toast>
+<h2>{{title}}'s SDG Targets
+</h2>
+<!--div class="row">
+    <div *ngFor="let sdg of SDGs" style="display:inline-block;">
+        <button class="sdg sdg{{sdg}} mr-md-1">{{sdg}}</button>
+    </div>
+</div>
+<form>
+    <input type="file" name="CSV" (change)="selectFile($event)" />
+    <button type="submit" (click)="uploadCSV()">Upload CSV</button>
+</form-->
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li *ngIf="SDGsMap[0]" class="nav-item">
+        <a class="nav-link" id="sdg1-tab" data-toggle="tab" href="#sdg1" role="tab" aria-controls="sdg1" aria-selected="false" (click)="getTarget(1)">SDG 1</a>
+    </li>
+    <li *ngIf="SDGsMap[1]" class="nav-item">
+        <a class="nav-link" id="sdg2-tab" data-toggle="tab" href="#sdg2" role="tab" aria-controls="sdg2" aria-selected="false" (click)="getTarget(2)">SDG 2</a>
+    </li>
+    <li *ngIf="SDGsMap[2]" class="nav-item">
+        <a class="nav-link" id="sdg3-tab" data-toggle="tab" href="#sdg3" role="tab" aria-controls="sdg3" aria-selected="false" (click)="getTarget(3)">SDG 3</a>
+    </li>
+    <li *ngIf="SDGsMap[3]" class="nav-item">
+        <a class="nav-link" id="sdg4-tab" data-toggle="tab" href="#sdg4" role="tab" aria-controls="sdg4" aria-selected="false" (click)="getTarget(4)">SDG 4</a>
+    </li>
+    <li *ngIf="SDGsMap[4]" class="nav-item">
+        <a class="nav-link" id="sdg5-tab" data-toggle="tab" href="#sdg5" role="tab" aria-controls="sdg5" aria-selected="false" (click)="getTarget(5)">SDG 5</a>
+    </li>
+    <li *ngIf="SDGsMap[5]" class="nav-item">
+        <a class="nav-link" id="sdg6-tab" data-toggle="tab" href="#sdg6" role="tab" aria-controls="sdg6" aria-selected="false" (click)="getTarget(6)">SDG 6</a>
+    </li>
+    <li *ngIf="SDGsMap[6]" class="nav-item">
+        <a class="nav-link" id="sdg7-tab" data-toggle="tab" href="#sdg7" role="tab" aria-controls="sdg7" aria-selected="false" (click)="getTarget(7)">SDG 7</a>
+    </li>
+    <li *ngIf="SDGsMap[7]" class="nav-item">
+        <a class="nav-link" id="sdg8-tab" data-toggle="tab" href="#sdg8" role="tab" aria-controls="sdg8" aria-selected="false" (click)="getTarget(8)">SDG 8</a>
+    </li>
+    <li *ngIf="SDGsMap[8]" class="nav-item">
+        <a class="nav-link" id="sdg9-tab" data-toggle="tab" href="#sdg9" role="tab" aria-controls="sdg9" aria-selected="false" (click)="getTarget(9)">SDG 9</a>
+    </li>
+    <li *ngIf="SDGsMap[9]" class="nav-item">
+        <a class="nav-link" id="sdg10-tab" data-toggle="tab" href="#sdg10" role="tab" aria-controls="sdg10" aria-selected="false"
+            (click)="getTarget(10)">SDG 10</a>
+    </li>
+    <li *ngIf="SDGsMap[10]" class="nav-item">
+        <a class="nav-link" id="sdg11-tab" data-toggle="tab" href="#sdg11" role="tab" aria-controls="sdg11" aria-selected="false"
+            (click)="getTarget(11)">SDG 11</a>
+    </li>
+    <li *ngIf="SDGsMap[11]" class="nav-item">
+        <a class="nav-link" id="sdg12-tab" data-toggle="tab" href="#sdg12" role="tab" aria-controls="sdg12" aria-selected="false"
+            (click)="getTarget(12)">SDG 12</a>
+    </li>
+    <li *ngIf="SDGsMap[12]" class="nav-item">
+        <a class="nav-link" id="sdg13-tab" data-toggle="tab" href="#sdg13" role="tab" aria-controls="sdg13" aria-selected="false"
+            (click)="getTarget(13)">SDG 13</a>
+    </li>
+    <li *ngIf="SDGsMap[13]" class="nav-item">
+        <a class="nav-link" id="sdg14-tab" data-toggle="tab" href="#sdg14" role="tab" aria-controls="sdg14" aria-selected="false"
+            (click)="getTarget(14)">SDG 14</a>
+    </li>
+    <li *ngIf="SDGsMap[14]" class="nav-item">
+        <a class="nav-link" id="sdg15-tab" data-toggle="tab" href="#sdg15" role="tab" aria-controls="sdg15" aria-selected="false"
+            (click)="getTarget(15)">SDG 15</a>
+    </li>
+    <li *ngIf="SDGsMap[15]" class="nav-item">
+        <a class="nav-link" id="sdg16-tab" data-toggle="tab" href="#sdg16" role="tab" aria-controls="sdg16" aria-selected="false"
+            (click)="getTarget(16)">SDG 16</a>
+    </li>
+    <li *ngIf="SDGsMap[16]" class="nav-item">
+        <a class="nav-link" id="sdg17-tab" data-toggle="tab" href="#sdg17" role="tab" aria-controls="sdg17" aria-selected="false"
+            (click)="getTarget(17)">SDG 17</a>
+    </li>
+</ul>
+<div class="tab-content">
+    <div class="tab-pane fade" id="sdg1" role="tabpanel" aria-labelledby="sdg1-tab">
+        <br/>
+        <h4>No Poverty</h4>
+        <br/>
+        <div class="form-check" *ngFor="let t1 of targets; let i1 = index">
+            <label>
+                <input type="checkbox" name="targets" value="i1" [checked]="checkTarget[i1]" (change)="updateCheckedTargets(i1, $event)"
+                />&nbsp;&nbsp;
+                <strong>{{t1.SDG}}.{{t1.targetCode}}</strong> {{t1.desc}}
+            </label>
+        </div>
+        <button class="btn btn-primary" (click)="updateTarget(1)">Update</button>
+    </div>
+    <div class="tab-pane fade" id="sdg2" role="tabpanel" aria-labelledby="sdg2-tab">
+        <br/>
+        <h4>Zero Hunger</h4>
+        <br/>
+        <div class="form-check" *ngFor="let t2 of targets; let i2 = index">
+            <label>
+                <input type="checkbox" name="targets" value="i2" [checked]="checkTarget[i2]" (change)="updateCheckedTargets(i2, $event)"
+                />&nbsp;&nbsp;
+                <strong>{{t2.SDG}}.{{t2.targetCode}}</strong> {{t2.desc}}
+            </label>
+        </div>
+        <button class="btn btn-primary" (click)="updateTarget(2)">Update</button>
+    </div>
+    <div class="tab-pane fade" id="sdg3" role="tabpanel" aria-labelledby="sdg3-tab">
+        <br/>
+        <h4>Good Health and Well-being</h4>
+        <br/>
+        <div class="form-check" *ngFor="let t3 of targets; let i3 = index">
+            <label>
+                <input type="checkbox" name="targets" value="i3" [checked]="checkTarget[i3]" (change)="updateCheckedTargets(i3, $event)"
+                />&nbsp;&nbsp;
+                <strong>{{t3.SDG}}.{{t3.targetCode}}</strong> {{t3.desc}}
+            </label>
+        </div>
+        <button class="btn btn-primary" (click)="updateTarget(3)">Update</button>
+    </div>
+    <div class="tab-pane fade" id="sdg4" role="tabpanel" aria-labelledby="sdg4-tab">
+        <br/>
+        <h4>Quality Education</h4>
+        <br/>
+        <div class="form-check" *ngFor="let t4 of targets; let i4 = index">
+            <label>
+                <input type="checkbox" name="targets" value="i4" [checked]="checkTarget[i4]" (change)="updateCheckedTargets(i4, $event)"
+                />&nbsp;&nbsp;
+                <strong>{{t4.SDG}}.{{t4.targetCode}}</strong> {{t4.desc}}
+                <!--input type="checkbox" name="targets" value="i" [checked]="SDGsMap[i]" (change)="updateCheckedSDGs(i, $event); isUpdateSuccessful=false; f.submitted=false"
+                /-->
+            </label>
+        </div>
+        <button class="btn btn-primary" (click)="updateTarget(4)">Update</button>
+    </div>
+    <div class="tab-pane fade" id="sdg5" role="tabpanel" aria-labelledby="sdg5-tab">
+        <br/>
+        <h4>Gender Equality</h4>
+        <br/>
+        <div class="form-check" *ngFor="let t5 of targets; let i5 = index">
+            <label>
+                <input type="checkbox" name="targets" value="i5" [checked]="checkTarget[i5]" (change)="updateCheckedTargets(i5, $event)"
+                />&nbsp;&nbsp;
+                <strong>{{t5.SDG}}.{{t5.targetCode}}</strong> {{t5.desc}}
+            </label>
+        </div>
+        <button class="btn btn-primary" (click)="updateTarget(5)">Update</button>
+    </div>
+    <div class="tab-pane fade" id="sdg6" role="tabpanel" aria-labelledby="sdg6-tab">
+        <br/>
+        <h4>Clean Water and Sanitation</h4>
+        <br/>
+        <div class="form-check" *ngFor="let t6 of targets; let i6 = index">
+            <label>
+                <input type="checkbox" name="targets" value="i6" [checked]="checkTarget[i6]" (change)="updateCheckedTargets(i6, $event)"
+                />&nbsp;&nbsp;
+                <strong>{{t6.SDG}}.{{t6.targetCode}}</strong> {{t6.desc}}
+            </label>
+        </div>
+        <button class="btn btn-primary" (click)="updateTarget(6)">Update</button>
+    </div>
+    <div class="tab-pane fade" id="sdg7" role="tabpanel" aria-labelledby="sdg7-tab">
+        <br/>
+        <h4>Affordable and Clean Energy</h4>
+        <br/>
+        <div class="form-check" *ngFor="let t7 of targets; let i7 = index">
+            <label>
+                <input type="checkbox" name="targets" value="i7" [checked]="checkTarget[i7]" (change)="updateCheckedTargets(i7, $event)"
+                />&nbsp;&nbsp;
+                <strong>{{t7.SDG}}.{{t7.targetCode}}</strong> {{t7.desc}}
+            </label>
+        </div>
+        <button class="btn btn-primary" (click)="updateTarget(7)">Update</button>
+    </div>
+    <div class="tab-pane fade" id="sdg8" role="tabpanel" aria-labelledby="sdg8-tab">
+        <br/>
+        <h4>Decent Work and Economic Growth</h4>
+        <br/>
+        <div class="form-check" *ngFor="let t8 of targets; let i8 = index">
+            <label>
+                <input type="checkbox" name="targets" value="i8" [checked]="checkTarget[i8]" (change)="updateCheckedTargets(i8, $event)"
+                />&nbsp;&nbsp;
+                <strong>{{t8.SDG}}.{{t8.targetCode}}</strong> {{t8.desc}}
+            </label>
+        </div>
+        <button class="btn btn-primary" (click)="updateTarget(8)">Update</button>
+    </div>
+    <div class="tab-pane fade" id="sdg9" role="tabpanel" aria-labelledby="sdg9-tab">
+        <br/>
+        <h4>Industry, Innovation and Infrastructure</h4>
+        <br/>
+        <div class="form-check" *ngFor="let t9 of targets; let i9 = index">
+            <label>
+                <input type="checkbox" name="targets" value="i9" [checked]="checkTarget[i9]" (change)="updateCheckedTargets(i9, $event)"
+                />&nbsp;&nbsp;
+                <strong>{{t9.SDG}}.{{t9.targetCode}}</strong> {{t9.desc}}
+            </label>
+        </div>
+        <button class="btn btn-primary" (click)="updateTarget(9)">Update</button>
+    </div>
+    <div class="tab-pane fade" id="sdg10" role="tabpanel" aria-labelledby="sdg10-tab">
+        <br/>
+        <h4>Reduced Inequality</h4>
+        <br/>
+        <div class="form-check" *ngFor="let t10 of targets; let i10 = index">
+            <label>
+                <input type="checkbox" name="targets" value="i10" [checked]="checkTarget[i10]" (change)="updateCheckedTargets(i10, $event)"
+                />&nbsp;&nbsp;
+                <strong>{{t10.SDG}}.{{t10.targetCode}}</strong> {{t10.desc}}
+            </label>
+        </div>
+        <button class="btn btn-primary" (click)="updateTarget(10)">Update</button>
+    </div>
+    <div class="tab-pane fade" id="sdg11" role="tabpanel" aria-labelledby="sdg11-tab">
+        <br/>
+        <h4>Sustainable Cities and Communities</h4>
+        <br/>
+        <div class="form-check" *ngFor="let t11 of targets; let i11 = index">
+            <label>
+                <input type="checkbox" name="targets" value="i11" [checked]="checkTarget[i11]" (change)="updateCheckedTargets(i11, $event)"
+                />&nbsp;&nbsp;
+                <strong>{{t11.SDG}}.{{t11.targetCode}}</strong> {{t11.desc}}
+            </label>
+        </div>
+        <button class="btn btn-primary" (click)="updateTarget(11)">Update</button>
+    </div>
+    <div class="tab-pane fade" id="sdg12" role="tabpanel" aria-labelledby="sdg12-tab">
+        <br/>
+        <h4>Responsible Consumption and Production</h4>
+        <br/>
+        <div class="form-check" *ngFor="let t12 of targets; let i12 = index">
+            <label>
+                <input type="checkbox" name="targets" value="i12" [checked]="checkTarget[i12]" (change)="updateCheckedTargets(i12, $event)"
+                />&nbsp;&nbsp;
+                <strong>{{t12.SDG}}.{{t12.targetCode}}</strong> {{t12.desc}}
+            </label>
+        </div>
+        <button class="btn btn-primary" (click)="updateTarget(12)">Update</button>
+    </div>
+    <div class="tab-pane fade" id="sdg13" role="tabpanel" aria-labelledby="sdg13-tab">
+        <br/>
+        <h4>Climate Action</h4>
+        <br/>
+        <div class="form-check" *ngFor="let t13 of targets; let i13 = index">
+            <label>
+                <input type="checkbox" name="targets" value="i13" [checked]="checkTarget[i13]" (change)="updateCheckedTargets(i13, $event)"
+                />&nbsp;&nbsp;
+                <strong>{{t13.SDG}}.{{t13.targetCode}}</strong> {{t13.desc}}
+            </label>
+        </div>
+        <button class="btn btn-primary" (click)="updateTarget(13)">Update</button>
+    </div>
+    <div class="tab-pane fade" id="sdg14" role="tabpanel" aria-labelledby="sdg14-tab">
+        <br/>
+        <h4>Life Below Water</h4>
+        <br/>
+        <div class="form-check" *ngFor="let t14 of targets; let i14 = index">
+            <label>
+                <input type="checkbox" name="targets" value="i14" [checked]="checkTarget[i14]" (change)="updateCheckedTargets(i14, $event)"
+                />&nbsp;&nbsp;
+                <strong>{{t14.SDG}}.{{t14.targetCode}}</strong> {{t14.desc}}
+            </label>
+        </div>
+        <button class="btn btn-primary" (click)="updateTarget(14)">Update</button>
+    </div>
+    <div class="tab-pane fade" id="sdg15" role="tabpanel" aria-labelledby="sdg15-tab">
+        <br/>
+        <h4>Life on Land</h4>
+        <br/>
+        <div class="form-check" *ngFor="let t15 of targets; let i15 = index">
+            <label>
+                <input type="checkbox" name="targets" value="i15" [checked]="checkTarget[i15]" (change)="updateCheckedTargets(i15, $event)"
+                />&nbsp;&nbsp;
+                <strong>{{t15.SDG}}.{{t15.targetCode}}</strong> {{t15.desc}}
+            </label>
+        </div>
+        <button class="btn btn-primary" (click)="updateTarget(15)">Update</button>
+    </div>
+    <div class="tab-pane fade" id="sdg16" role="tabpanel" aria-labelledby="sdg16-tab">
+        <br/>
+        <h4>Peace and Justice Strong Institutions</h4>
+        <br/>
+        <div class="form-check" *ngFor="let t16 of targets; let i16 = index">
+            <label>
+                <input type="checkbox" name="targets" value="i16" [checked]="checkTarget[i16]" (change)="updateCheckedTargets(i16, $event)"
+                />&nbsp;&nbsp;
+                <strong>{{t16.SDG}}.{{t16.targetCode}}</strong> {{t16.desc}}
+            </label>
+        </div>
+        <button class="btn btn-primary" (click)="updateTarget(16)">Update</button>
+    </div>
+    <div class="tab-pane fade" id="sdg17" role="tabpanel" aria-labelledby="sdg17-tab">
+        <br/>
+        <h4>Partnerships to achieve the Goal</h4>
+        <br/>
+        <div class="form-check" *ngFor="let t17 of targets; let i17 = index">
+            <label>
+                <input type="checkbox" name="targets" value="i17" [checked]="checkTarget[i17]" (change)="updateCheckedTargets(i17, $event)"
+                />&nbsp;&nbsp;
+                <strong>{{t17.SDG}}.{{t17.targetCode}}</strong> {{t17.desc}}
+            </label>
+        </div>
+        <button class="btn btn-primary" (click)="updateTarget(17)">Update</button>
+    </div>
+</div>

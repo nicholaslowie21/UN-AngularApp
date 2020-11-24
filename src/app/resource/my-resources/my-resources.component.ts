@@ -43,13 +43,17 @@ export class MyResourcesComponent implements OnInit {
   sortKeyMpw = '';
   sortKeyVen = '';
   sortKeyKno = '';
+  sortKeyPaid = '';
 
   filterKeyItem = '';
   filterKeyMpw: any;
   filterKeyVen: any;
   filterKeyKno: any;
+  filterKeyPaid: any;
 
   checked = false;
+
+  paids: any = [];
 
   constructor(private tokenStorageService: TokenStorageService, private resourceService: ResourceService,
     private messageService: MessageService, private route: ActivatedRoute, private userService: UserService, private institutionService: InstitutionService) { }
@@ -95,11 +99,13 @@ export class MyResourcesComponent implements OnInit {
         await this.resourceService.getUserPrivateManpower().toPromise().then(res => this.manpowers = res.data.manpowers);
         await this.resourceService.getUserPrivateKnowledge().toPromise().then(res => this.knowledges = res.data.knowledges);
         await this.resourceService.getUserPrivateVenue().toPromise().then(res => this.venues = res.data.venues);
+        await this.resourceService.getUserPaid().toPromise().then(res => this.paids = res.data.paidresource);
       } else {
         await this.resourceService.getUserItem({id: this.user.id}).toPromise().then(res => this.items = res.data.items);
         await this.resourceService.getUserManpower({id: this.user.id}).toPromise().then(res => this.manpowers = res.data.manpowers);
         await this.resourceService.getUserKnowledge({id: this.user.id}).toPromise().then(res => this.knowledges = res.data.knowledges);
         await this.resourceService.getUserVenue({id: this.user.id}).toPromise().then(res => this.venues = res.data.venues);
+        await this.resourceService.getOthersPaid({id: this.user.id, type: "user"}).toPromise().then(res => this.paids = res.data.paidresource);
       }
     } else {
       if(this.isOwner) {
@@ -116,6 +122,7 @@ export class MyResourcesComponent implements OnInit {
     console.log(this.manpowers);
     console.log(this.knowledges);
     console.log(this.venues);
+    console.log(this.paids);
   }
 
   checkStatus(a): boolean {
@@ -424,5 +431,68 @@ export class MyResourcesComponent implements OnInit {
         // alert("Error: " + err.error.msg);
       }
     )
+  }
+
+  async filterPaidStatus(event) {
+    this.filterKeyPaid = event.value;
+    await this.resourceService.getUserPaid().toPromise().then(res => this.paids = res.data.paidresource);
+    let value = event.value;
+    let arr = [];
+    if(value == 'active') {
+      for(var i=0; i<this.paids.length; i++) {
+        if(this.paids[i].status == 'active') {
+          arr.push(this.paids[i]);
+        }
+      }
+    } else if(value == 'inactive') {
+      for(var i=0; i<this.paids.length; i++) {
+        if(this.paids[i].status == 'inactive') {
+          arr.push(this.paids[i]);
+        }
+      }
+    } else {
+      arr = this.paids; 
+    }
+    console.log("FILTER PAID STATUS");
+    this.paids = arr;
+    this.sortKeyPaid = '';
+  }
+
+  handleChangePaid(e, paid) {
+    let isChecked = e.checked;
+    if(isChecked)
+      this.activatePaid(paid);
+    else 
+      this.deactivatePaid(paid);
+  }
+
+  async deactivatePaid(paid) {
+    this.resourceService.updatePaidStatus({id: paid.id, status: "inactive"}).subscribe(
+      response => {
+        // alert("Item " + item.title + " deactivated!");
+        this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Paid Resource '+ paid.title +' deactivated!'});
+        this.filterPaidStatus({"value": this.filterKeyPaid});
+        // this.ngOnInit();
+      }, err => {
+        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+        // alert("Error: " + err.error.msg);
+      }
+    )
+  }
+  
+  async activatePaid(paid) {
+    this.resourceService.updatePaidStatus({id: paid.id, status: "active"}).subscribe(
+      response => {
+        this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Paid Resource '+ paid.title +' activated!'});
+        // alert("Item " + item.title + " activated!");
+        // this.ngOnInit();
+        this.filterPaidStatus({"value": this.filterKeyPaid});
+      }, err => {
+        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+        // alert("Error: " + err.error.msg);
+      }
+    )
+
+
   }
 }

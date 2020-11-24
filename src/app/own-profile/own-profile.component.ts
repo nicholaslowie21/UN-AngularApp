@@ -13,9 +13,10 @@ import { UserService } from '../services/user.service';
 import { ResourceService } from '../services/resource.service';
 import { InstitutionService } from '../services/institution.service';
 import { ReportService } from '../services/report.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { TestimonialService } from '../services/testimonial.service';
+import { TargetService } from '../services/target.service';
 
 @Component({
   selector: 'app-own-profile',
@@ -73,10 +74,13 @@ export class OwnProfileComponent implements OnInit {
   form: any = {};
   isReportSuccessful = false;
 
+  targets = [];
+  accType: any;
+
   constructor(private tokenStorageService: TokenStorageService, private userService: UserService,
     private resourceService: ResourceService, private institutionService: InstitutionService, 
     private route: ActivatedRoute, private reportService: ReportService, private messageService: MessageService,
-    private testimonialService: TestimonialService) { }
+    private testimonialService: TestimonialService, private targetService: TargetService, private router: Router) { }
 
   async ngOnInit() {
     this.route.queryParams.subscribe(
@@ -86,45 +90,46 @@ export class OwnProfileComponent implements OnInit {
       }
     )
 
-    if(this.tokenStorageService.getToken()) {
+    if (this.tokenStorageService.getToken()) {
       this.isLoggedIn = true;
     }
+    this.accType = this.tokenStorageService.getAccountType();
 
-    if(this.userType == "individual") {
+    if (this.userType == "individual") {
       this.isIndividual = true;
-      await this.userService.viewUserProfile({username: this.username}).toPromise().then(
+      await this.userService.viewUserProfile({ username: this.username }).toPromise().then(
         response => {
           this.user = response.data.targetUser;
-          if(this.user.isVerified == "true") {
+          if (this.user.isVerified == "true") {
             this.isVerified = true;
           }
         }
       )
     } else {
       this.isIndividual = false;
-      await this.institutionService.viewInstitutionProfile({username: this.username}).toPromise().then(
+      await this.institutionService.viewInstitutionProfile({ username: this.username }).toPromise().then(
         response => {
           this.user = response.data.targetInstitution;
-          if(this.user.isVerified) {
+          if (this.user.isVerified) {
             this.isVerified = true;
           }
         }
       );
-      await this.institutionService.getAffiliatedUsers({id: this.user.id}).subscribe(
+      await this.institutionService.getAffiliatedUsers({ id: this.user.id }).subscribe(
         response => {
           this.institutionAffiliations = response.data.members;
         }
       );
     }
 
-    if(this.user.id == this.tokenStorageService.getUser().id) {
+    if (this.user.id == this.tokenStorageService.getUser().id) {
       this.isOwner = true;
     }
 
-    this.shareLink = "http://localhost:4200/profile?username=" + this.username+"&userType="+this.userType;
-    this.iFrameLink = "http://localhost:4200/shareProfile?username=" + this.username+"&userType="+this.userType;
+    this.shareLink = "http://localhost:4200/profile?username=" + this.username + "&userType=" + this.userType;
+    this.iFrameLink = "http://localhost:4200/shareProfile?username=" + this.username + "&userType=" + this.userType;
 
-    this.copyIFrameLink = "<iframe src="+ this.iFrameLink +" title=\"User Profile\" width=\"500\" height=\"500\"></iframe>";
+    this.copyIFrameLink = "<iframe src=" + this.iFrameLink + " title=\"User Profile\" width=\"500\" height=\"500\"></iframe>";
 
     this.userId = this.user.id;
     console.log(JSON.stringify(this.userId));
@@ -168,7 +173,7 @@ export class OwnProfileComponent implements OnInit {
       await this.resourceService.getUserItem({ id: this.userId }).toPromise().then(
         response => {
           this.item = response.data.items;
-          for(var i=0; i<response.data.items.length; i++) {
+          for (var i = 0; i < response.data.items.length; i++) {
             response.data.items[i].type = 'item';
           }
           this.resourceOffers = this.resourceOffers.concat(response.data.items);
@@ -178,7 +183,7 @@ export class OwnProfileComponent implements OnInit {
       await this.resourceService.getUserManpower({ id: this.userId }).toPromise().then(
         response => {
           this.manpower = response.data.manpowers;
-          for(var i=0; i<response.data.manpowers.length; i++) {
+          for (var i = 0; i < response.data.manpowers.length; i++) {
             response.data.manpowers[i].type = 'manpower';
           }
           this.resourceOffers = this.resourceOffers.concat(response.data.manpowers);
@@ -188,20 +193,20 @@ export class OwnProfileComponent implements OnInit {
       await this.resourceService.getUserVenue({ id: this.userId }).toPromise().then(
         response => {
           this.venue = response.data.venues;
-          for(var i=0; i<response.data.venues.length; i++) {
+          for (var i = 0; i < response.data.venues.length; i++) {
             response.data.venues[i].type = 'venue';
           }
           this.resourceOffers = this.resourceOffers.concat(response.data.venues);
         }
       );
 
-      await this.userService.getUserAffiliations({id: this.userId}).toPromise().then(
+      await this.userService.getUserAffiliations({ id: this.userId }).toPromise().then(
         response => {
           this.indAffiliations = response.data.affiliations;
         }
       );
 
-      await this.userService.getUserProfileFeeds({id: this.userId}).toPromise().then(
+      await this.userService.getUserProfileFeeds({ id: this.userId }).toPromise().then(
         response => this.feed = response.data.feeds
       );
 
@@ -242,7 +247,7 @@ export class OwnProfileComponent implements OnInit {
       await this.resourceService.getInstitutionItem({ id: this.userId }).toPromise().then(
         response => {
           this.item = response.data.items;
-          for(var i=0; i<response.data.items.length; i++) {
+          for (var i = 0; i < response.data.items.length; i++) {
             response.data.items[i].type = 'item';
           }
           this.resourceOffers = this.resourceOffers.concat(response.data.items);
@@ -252,14 +257,14 @@ export class OwnProfileComponent implements OnInit {
       await this.resourceService.getInstitutionVenue({ id: this.userId }).toPromise().then(
         response => {
           this.venue = response.data.venues;
-          for(var i=0; i<response.data.venues.length; i++) {
+          for (var i = 0; i < response.data.venues.length; i++) {
             response.data.venues[i].type = 'venue';
           }
           this.resourceOffers = this.resourceOffers.concat(response.data.venues);
         }
       );
 
-      await this.institutionService.getInstitutionProfileFeed({id: this.userId}).toPromise().then(
+      await this.institutionService.getInstitutionProfileFeed({ id: this.userId }).toPromise().then(
         response => this.feed = response.data.feeds
       );
 
@@ -268,14 +273,18 @@ export class OwnProfileComponent implements OnInit {
       );
     }
 
+    await this.targetService.getAccountTargets({ id: this.userId, type: this.accType }).toPromise().then(
+      response => this.targets = response.data.targets
+    );
+
     this.resourceOffers.sort(this.sortFunction);
     this.feed.sort(this.sortFeed);
 
     this.isReport = false;
     this.isReportSuccessful = false;
 
-    console.log("BADGES: "+this.badges);
-    console.log("CURR PROJ: "+JSON.stringify(this.currentProj));
+    console.log("BADGES: " + this.badges);
+    console.log("CURR PROJ: " + JSON.stringify(this.currentProj));
     console.log("PAST PROJ: " + this.pastProj);
     console.log("KNO: " + this.knowledge);
     console.log("MPW: " + this.manpower);
@@ -291,7 +300,7 @@ export class OwnProfileComponent implements OnInit {
   }
 
   copied(): void {
-    this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Copied!'});
+    this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Copied!' });
   }
 
   sortFeed(a, b) {
@@ -302,7 +311,7 @@ export class OwnProfileComponent implements OnInit {
 
   formatDate(date): any {
     let formattedDate = new Date(date).toUTCString();
-    return formattedDate.substring(5, formattedDate.length-13);
+    return formattedDate.substring(5, formattedDate.length - 13);
   }
 
   giveTestimonialYes(): void {
@@ -394,7 +403,7 @@ export class OwnProfileComponent implements OnInit {
 
   submitReport(): void {
     let tempType = '';
-    if(this.userType == 'individual') {
+    if (this.userType == 'individual') {
       tempType = 'user';
     } else {
       tempType = 'institution';
@@ -411,9 +420,13 @@ export class OwnProfileComponent implements OnInit {
       response => {
         this.isReportSuccessful = true;
       }, err => {
-        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+        this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: err.error.msg });
       }
     );
+  }
+
+  viewTarget(): void {
+    this.router.navigate(['/edit-target'], {queryParams: {type: 'user'}});
   }
 
 }

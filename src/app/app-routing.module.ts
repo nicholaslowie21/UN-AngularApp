@@ -53,8 +53,10 @@ import { DataDashboardComponent } from './data-overview/data-dashboard/data-dash
 import { SearchAccountsComponent } from './search-accounts/search-accounts.component';
 import { TestimonialComponent } from './testimonial/testimonial.component';
 import { DataProjectComponent } from './data-overview/data-project/data-project.component';
-import { MyTransactionsComponent } from './my-transactions/my-transactions.component';
 import { PaidResourceDetailsComponent } from './resource/paid-resource-details/paid-resource-details.component';
+import { DonateComponent } from './donate/donate.component';
+import { MyPurchasesComponent } from './my-purchases/my-purchases.component';
+import { EditTargetComponent } from './edit-target/edit-target.component';
 
 const routes: Routes = [
   { path: 'landing', component: LandingComponent},
@@ -133,7 +135,9 @@ const routes: Routes = [
   { path: 'chat', component: ChatComponent, canActivate: [AuthGuardService] },
   { path: 'search', component: SearchAccountsComponent},
   { path: 'testimonial', component: TestimonialComponent, canActivate: [AuthGuardService] },
-  { path: 'myTransactions', component: MyTransactionsComponent, canActivate: [AuthGuardService] },
+  { path: 'donate', component: DonateComponent},
+  { path: 'myPurchases', component: MyPurchasesComponent, canActivate: [AuthGuardService] },
+  { path: 'edit-target', component: EditTargetComponent,  canActivate: [AuthGuardService]},
   { path: '', redirectTo: 'home', pathMatch: 'full'}
 ];
 

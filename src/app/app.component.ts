@@ -19,6 +19,7 @@ export class AppComponent implements OnInit {
 
   isNotifOpen = false;
   notifications = [];
+  hasNewNotif = false;
 
   constructor(private tokenStorageService: TokenStorageService, private communicationService: CommunicationService) { 
   }
@@ -47,11 +48,10 @@ export class AppComponent implements OnInit {
 
       this.username = user.username;
 
-      await this.communicationService.getNotifications().toPromise().then(
-        res => this.notifications = res.data.notifications
+      await this.communicationService.checkNewNotifications().toPromise().then(
+        res => this.hasNewNotif = res.data.gotNew
       );
-  
-      console.log(this.notifications)
+      console.log(this.hasNewNotif)
     }
   }
 
@@ -61,8 +61,20 @@ export class AppComponent implements OnInit {
     }
   }
 
-  openNotif(): void {
+  toggleNotif(): void {
     this.isNotifOpen = !this.isNotifOpen;
+    if(this.isNotifOpen == true) {
+      this.loadNotif();
+    }
+  }
+
+  loadNotif(): void {
+    this.communicationService.getNotifications().toPromise().then(
+      res => this.notifications = res.data.notifications
+    );
+    this.hasNewNotif = false;
+
+    console.log(this.notifications);
   }
 
   formatDate(date): any {

@@ -1,0 +1,52 @@
+.pendingStatus {
+    background-color: rgb(235, 141, 33);
+    color: white;
+}
+
+.progressStatus {
+    background-color: rgb(221, 160, 221);
+    color: white;
+}
+
+.solvedStatus {
+    background-color: rgb(83, 207, 10);
+    color: white;
+}
+
+.declinedStatus {
+    background-color: rgb(170, 170, 170);
+    color: white;
+}
+
+.strike {
+    display: block;
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap; 
+}
+
+.strike > span {
+    position: relative;
+    display: inline-block;
+    color: #6d6d6d;
+}
+
+.strike > span:before,
+.strike > span:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 9999px;
+    height: 1px;
+    background: #b3b3b3;
+}
+
+.strike > span:before {
+    right: 100%;
+    margin-right: 0px;
+}
+
+.strike > span:after {
+    left: 100%;
+    margin-left: 0px;
+}
