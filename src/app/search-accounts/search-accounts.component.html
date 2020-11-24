@@ -1,1 +1,95 @@
-<p>search-accounts works!</p>
+<h3>Search Account</h3>
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active" id="personal-tab" data-toggle="tab" href="#personal" role="tab" aria-controls="personal" aria-selected="true">User</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="knowledge-tab" data-toggle="tab" href="#knowledge" role="tab" aria-controls="knowledge" aria-selected="false">Institutions</a>
+    </li>
+</ul>
+<div class="tab-content">
+    <div class="tab-pane fade show active" id="personal" role="tabpanel" aria-labelledby="personal-tab">
+        <div class="card">
+            <p-dataView #dv [value]="users" [paginator]="true" [rows]="9" filterBy="name" layout="list">
+                <ng-template pTemplate="header">
+                    <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                        <span class="p-input-icon-left p-mb-2 p-mb-md-0">
+                            <i class="pi pi-search"></i>
+                            <input type="search" pInputText placeholder="Search by Name" (input)="dv.filter($event.target.value)">
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template let-product pTemplate="listItem">
+                    <div class="p-col-12">
+                        <div class="row p-2">
+                            <div class="col-1">
+                                <div *ngIf="product.profilePic.length != 0">
+                                    <img class="rounded-circle img-fluid" src="{{product.profilePic}}" style="margin: 15px; width: 50px; height: 50px; object-fit: cover;"
+                                        alt="Profile picture">
+                                </div>
+                                <div *ngIf="product.profilePic.length == 0">
+                                    <img class="rounded-circle img-fluid" src="../../../assets/img/profilePic_Placeholder.png" style="margin: 15px; width: 50px; height: 50px; object-fit: cover;"
+                                        alt="Profile picture">
+                                </div>
+                            </div>
+                            <div class="col-8">
+                                <div *ngIf="product.username.length != 0">
+                                    <a class="product-name" href="/profile?username={{product.username}}&userType=individual">{{product.name}}</a>
+                                </div>
+                                <div *ngIf="product.username.length == 0">
+                                    <a class="product-name" href="/view-Profile?id={{product.id}}&userType=individual">{{product.name}}</a>
+                                </div>
+                                <div class="product-description p-text-nowrap p-text-truncate" style="width: 90%">{{product.country}}</div>
+                            </div>
+                            <!-- <div class="col-3">
+                        <div class="float-right role{{checkRole(product)}} rounded-sm">
+                            <i class="pi pi-user"></i>&nbsp;{{checkRole(product)}}&nbsp;</div>
+                        <br/>
+                        <a class="mt-md-1 btn btn-primary float-right" href="/project/projectDetails?id={{product.id}}" role="button">View Project</a>
+                    </div> -->
+                        </div>
+                    </div>
+                </ng-template>
+            </p-dataView>
+        </div>
+    </div>
+    <div class="tab-pane fade" id="knowledge" role="tabpanel" aria-labelledby="knowledge-tab">
+        <div class="card">
+            <p-dataView #pi [value]="institutions" [paginator]="true" [rows]="9" filterBy="name" layout="list">
+                <ng-template pTemplate="header">
+                    <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                        <span class="p-input-icon-left p-mb-2 p-mb-md-0">
+                            <i class="pi pi-search"></i>
+                            <input type="search" pInputText placeholder="Search by Name" (input)="pi.filter($event.target.value)">
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template let-product pTemplate="listItem">
+                    <div class="p-col-12">
+                        <div class="row p-2">
+                            <div class="col-1">
+                                <div *ngIf="product.profilePic.length != 0">
+                                    <img class="rounded-circle img-fluid" src="{{product.profilePic}}" style="margin: 15px; width: 50px; height: 50px; object-fit: cover;"
+                                        alt="Profile picture">
+                                </div>
+                                <div *ngIf="product.profilePic.length == 0">
+                                    <img class="rounded-circle img-fluid" src="../../../assets/img/profilePic_Placeholder.png" style="margin: 15px; width: 50px; height: 50px; object-fit: cover;"
+                                        alt="Profile picture">
+                                </div>
+                            </div>
+                            <div class="col-8">
+                                <div *ngIf="product.username.length != 0">
+                                    <a class="product-name" href="/profile?username={{product.username}}&userType=institution">{{product.name}}</a>
+                                </div>
+                                <div *ngIf="product.username.length == 0">
+                                    <a class="product-name" href="/view-Profile?id={{product.id}}&userType=institution">{{product.name}}</a>
+                                </div>
+                                <div class="product-description p-text-nowrap p-text-truncate" style="width: 90%">{{product.country}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-dataView>
+        </div>
+    </div>
+</div>

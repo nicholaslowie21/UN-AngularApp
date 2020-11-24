@@ -2,11 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../services/user.service';
 import { InstitutionService } from '../services/institution.service';
+import { TokenStorageService } from '../services/token-storage.service';
+import { MessageService } from 'primeng/api/';
 
 @Component({
   selector: 'app-others-profile',
   templateUrl: './others-profile.component.html',
-  styleUrls: ['./others-profile.component.css']
+  styleUrls: ['./others-profile.component.css'],
+  providers: [MessageService]
 })
 export class OthersProfileComponent implements OnInit {
 
@@ -15,32 +18,59 @@ export class OthersProfileComponent implements OnInit {
   user: any;
   isIndividual = false;
   isVerified = false;
+  id: any;
+  isLoggedIn = false;
+  indAffiliations: any;
+  status: any;
+  isUnclaimed = false;
+  form: any = {};
+  file: any;
+  type: any;
+  claimSuccess = false;
 
-  constructor(private route: ActivatedRoute, private userService: UserService, private institutionService: InstitutionService) { }
+  constructor(private route: ActivatedRoute, private userService: UserService, private institutionService: InstitutionService,
+     private tokenStorageService: TokenStorageService, private messageService: MessageService) { }
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.route.queryParams.subscribe(
       params => {
-        this.username = params.username;
         this.userType = params.userType;
+        this.id = params.id;
       }
     )
+
+    if(this.tokenStorageService.getToken()) {
+      this.isLoggedIn = true;
+    }
     
     if(this.userType == "individual") {
       this.isIndividual = true;
-      this.userService.viewUserProfile({username: this.username}).subscribe(
+      this.userService.viewUserById({id: this.id}).subscribe(
         response => {
           this.user = response.data.targetUser;
+          this.status = this.user.status;
+          if(this.status == "unclaimed") {
+            this.isUnclaimed = true;
+          }
           if(this.user.isVerified == "true") {
             this.isVerified = true;
           }
         }
       )
+      await this.userService.getUserAffiliations({id: this.id}).toPromise().then(
+        response => {
+          this.indAffiliations = response.data.affiliations;
+        }
+      );
     } else {
       this.isIndividual = false;
-      this.institutionService.viewInstitutionProfile({username: this.username}).subscribe(
+      this.institutionService.viewInstitutionById({id: this.id}).subscribe(
         response => {
           this.user = response.data.targetInstitution;
+          this.status = this.user.status;
+          if(this.status == "unclaimed") {
+            this.isUnclaimed = true;
+          }
           if(this.user.isVerified) {
             this.isVerified = true;
           }
@@ -48,6 +78,52 @@ export class OthersProfileComponent implements OnInit {
       )
     }
     console.log("others profile: "+this.user);
+  }
+
+  selectImage(event) {
+    if (event.target.files.length > 0) {
+      const file = event.target.files[0];
+      this.file = file;
+    }
+  }
+
+  onSubmit(): void {
+    if (this.file == null) {
+      this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:'Choose a file!'});
+      return;
+    }
+
+    if(this.form.password !== this.form.confirmPassword) {
+      this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:'Your password and confirm password do not match!'});
+      return;
+    }
+
+    if(this.userType == "individual") {
+      this.type = "user";
+    } else {
+      this.type = "institution"
+    }
+
+    const formData = new FormData();
+    console.log(this.id + " " + this.type + " " + this.file + " " + this.form.email + " " + this.form.password + " " + this.form.username);
+    formData.append("accountId", this.id);
+    formData.append("accountType", this.type);
+    formData.append("verifyFile", this.file);
+    formData.append("email", this.form.email);
+    formData.append("password", this.form.password);
+    formData.append("username", this.form.username);
+    
+    this.userService.claimAccount(formData).subscribe(
+      response => {
+        console.log(response);
+        this.claimSuccess = true;
+      },
+      err => {
+        this.claimSuccess = false;
+        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+        console.log(err);
+      }
+    );
   }
 
 }

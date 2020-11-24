@@ -88,4 +88,8 @@ export class InstitutionService {
   getInstitutionProfileFeed(data): Observable<any> {
     return this.http.get(API_URL + '/profileFeed?institutionId=' + data.id);
   }
+
+  viewInstitutionById(data): Observable<any> {
+    return this.http.get(API_URL + '/viewInstitutionById?institutionId=' + data.id);
+  }
 }

@@ -76,4 +76,16 @@ export class UserService {
   getUserProfileFeeds(data): Observable<any> {
     return this.http.get(API_URL + '/profileFeed?userId=' + data.id);
   }
+
+  getAllUsers(): Observable<any> {
+    return this.http.get('https://localhost:8080/api/mapping/users');
+  }
+
+  getAllInstitutions(): Observable<any> {
+    return this.http.get('https://localhost:8080/api/mapping/institutions');
+  }
+
+  claimAccount(formData):Observable<any> {
+    return this.http.post('https://localhost:8080/api/mapping/claim', formData);
+  }
 }

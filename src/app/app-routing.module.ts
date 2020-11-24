@@ -56,6 +56,7 @@ import { PaidResourceDetailsComponent } from './resource/paid-resource-details/p
 import { DonateComponent } from './donate/donate.component';
 import { MyPurchasesComponent } from './my-purchases/my-purchases.component';
 import { EditTargetComponent } from './edit-target/edit-target.component';
+import { OthersProfileComponent } from './others-profile/others-profile.component';
 
 const routes: Routes = [
   { path: 'landing', component: LandingComponent},
@@ -130,6 +131,7 @@ const routes: Routes = [
   { path: 'dashboard', component: DataDashboardComponent},
   { path: 'testimonial', component: TestimonialComponent, canActivate: [AuthGuardService] },
   { path: 'donate', component: DonateComponent},
+  { path: 'view-Profile', component: OthersProfileComponent},
   { path: 'myPurchases', component: MyPurchasesComponent, canActivate: [AuthGuardService] },
   { path: 'edit-target', component: EditTargetComponent,  canActivate: [AuthGuardService]},
   { path: '', redirectTo: 'home', pathMatch: 'full'}
