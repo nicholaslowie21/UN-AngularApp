@@ -61,6 +61,7 @@ import {GalleriaModule} from 'primeng/galleria';
 import {MultiSelectModule} from 'primeng/multiselect';
 import {CalendarModule} from 'primeng/calendar';
 import {FullCalendarModule} from 'primeng/fullcalendar';
+import {TableModule} from 'primeng/table';
 
 import { ProjectMarketplaceComponent } from './marketplace/project-marketplace/project-marketplace.component';
 import { ResourceMarketplaceComponent } from './marketplace/resource-marketplace/resource-marketplace.component';
@@ -170,7 +171,8 @@ import { EditTargetComponent } from './edit-target/edit-target.component';
     GalleriaModule,
     MultiSelectModule,
     CalendarModule,
-    FullCalendarModule
+    FullCalendarModule,
+    TableModule
   ],
   providers: [authInterceptorProviders, AuthGuardService],
   bootstrap: [AppComponent]

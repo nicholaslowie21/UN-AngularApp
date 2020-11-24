@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { InstitutionService } from '../../services/institution.service';
-import { JsonpClientBackend } from '@angular/common/http';
 import { AdminService } from '../../services/admin.service';
 import { TokenStorageService } from '../../services/token-storage.service';
 import { ProjectService } from '../../services/project.service';
@@ -72,7 +71,7 @@ export class AdminUserManagementProfileComponent implements OnInit {
     //for individuals and institutions
     if (this.userType == 'individual') {
       //this.loadUser();
-      await this.userService.viewUserProfile({ username: this.username }).toPromise().then(
+      await this.userService.viewUserById({ id: this.id }).toPromise().then(
         response => {
           console.log(JSON.stringify(response));
           this.user = response.data.targetUser;
@@ -134,7 +133,7 @@ export class AdminUserManagementProfileComponent implements OnInit {
 
     } else if (this.userType == 'institution') {
       //this.loadInstitution();
-      await this.institutionService.viewInstitutionProfile({ username: this.username }).toPromise().then(
+      await this.institutionService.viewInstitutionById({ id: this.id }).toPromise().then(
         response => {
           this.user = response.data.targetInstitution;
         },
