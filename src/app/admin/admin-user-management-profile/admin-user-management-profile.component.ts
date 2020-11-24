@@ -6,11 +6,13 @@ import { AdminService } from '../../services/admin.service';
 import { TokenStorageService } from '../../services/token-storage.service';
 import { ProjectService } from '../../services/project.service';
 import { RewardService } from '../../services/reward.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-admin-user-management-profile',
   templateUrl: './admin-user-management-profile.component.html',
-  styleUrls: ['./admin-user-management-profile.component.css']
+  styleUrls: ['./admin-user-management-profile.component.css'],
+  providers: [MessageService]
 })
 export class AdminUserManagementProfileComponent implements OnInit {
 
@@ -33,7 +35,6 @@ export class AdminUserManagementProfileComponent implements OnInit {
   isReward = false;
   checkAdmin = false;
   auditType: any;
-  disableActivate = false;
 
   userAudit = [];
   adminAudit = [];
@@ -44,10 +45,12 @@ export class AdminUserManagementProfileComponent implements OnInit {
   isNullProj = false;
   isNullReward = false;
 
+  rangeDates: any;
+
   constructor(private route: ActivatedRoute, private userService: UserService,
     private institutionService: InstitutionService, private adminService: AdminService,
     private tokenStorageService: TokenStorageService, private projectService: ProjectService,
-    private rewardService: RewardService) { }
+    private rewardService: RewardService, private messageService: MessageService) { }
 
   async ngOnInit() {
     this.route.queryParams
@@ -73,7 +76,7 @@ export class AdminUserManagementProfileComponent implements OnInit {
       //this.loadUser();
       await this.userService.viewUserById({ id: this.id }).toPromise().then(
         response => {
-          console.log(JSON.stringify(response));
+          // console.log(JSON.stringify(response));
           this.user = response.data.targetUser;
         },
         err => {
@@ -82,12 +85,12 @@ export class AdminUserManagementProfileComponent implements OnInit {
       );
       this.isUser = true;
       
-      if (this.user.role == 'admin' || this.user.role == 'regionaladmin') {
+      if (this.user.role == 'admin' || this.user.role == 'regionaladmin' || this.user.role == 'adminlead') {
         this.checkAdmin = true;  
 
         await this.adminService.getAuditLogs({ id: this.id, type: 'admin' }).toPromise().then(
           response => {
-            console.log(JSON.stringify(response));
+            // console.log(JSON.stringify(response));
             this.adminAudit = response.data.logs;
           },
           err => {
@@ -97,7 +100,7 @@ export class AdminUserManagementProfileComponent implements OnInit {
 
         await this.adminService.exportAuditLogs({ id: this.id, type: 'admin' }).toPromise().then(
           response => {
-            console.log(JSON.stringify(response));
+            // console.log(JSON.stringify(response));
             this.adminAuditFile = response.data.thePath;
           },
           err => {
@@ -113,7 +116,7 @@ export class AdminUserManagementProfileComponent implements OnInit {
 
       await this.adminService.getAuditLogs({ id: this.id, type: 'user' }).toPromise().then(
         response => {
-          console.log(JSON.stringify(response));
+          // console.log(JSON.stringify(response));
           this.userAudit = response.data.logs;
         },
         err => {
@@ -123,7 +126,7 @@ export class AdminUserManagementProfileComponent implements OnInit {
 
       await this.adminService.exportAuditLogs({ id: this.id, type: 'user' }).toPromise().then(
         response => {
-          console.log(JSON.stringify(response));
+          // console.log(JSON.stringify(response));
           this.userAuditFile = response.data.thePath;
         },
         err => {
@@ -147,7 +150,7 @@ export class AdminUserManagementProfileComponent implements OnInit {
 
       await this.adminService.getAuditLogs({ id: this.id, type: 'institution' }).toPromise().then(
         response => {
-          console.log(JSON.stringify(response));
+          // console.log(JSON.stringify(response));
           this.userAudit = response.data.logs;
         },
         err => {
@@ -157,7 +160,7 @@ export class AdminUserManagementProfileComponent implements OnInit {
 
       await this.adminService.exportAuditLogs({ id: this.id, type: 'institution' }).toPromise().then(
         response => {
-          console.log(JSON.stringify(response));
+          // console.log(JSON.stringify(response));
           this.userAuditFile = response.data.thePath;
         },
         err => {
@@ -172,7 +175,7 @@ export class AdminUserManagementProfileComponent implements OnInit {
       this.isProject = true;
       await this.projectService.viewProject({ id: this.id }).toPromise().then(
         response => {
-          console.log(JSON.stringify(response));
+          // console.log(JSON.stringify(response));
           this.project = response.data.targetProject;
           this.imgString = "https://localhost:8080" + this.project.imgPath;
         },
@@ -180,18 +183,13 @@ export class AdminUserManagementProfileComponent implements OnInit {
           alert(err.error.msg);
         }
       );
-      if (this.project.status == 'closed') {
-        this.disableActivate = true;
-      } else if (this.project.status == 'completed') {
-        this.disableActivate = true;
-      }
 
       this.auditType = null;
       this.isNullProj = true;
 
       await this.adminService.getAuditLogs({ id: this.id, type: 'project' }).toPromise().then(
         response => {
-          console.log(JSON.stringify(response));
+          // console.log(JSON.stringify(response));
           this.userAudit = response.data.logs;
         },
         err => {
@@ -201,7 +199,7 @@ export class AdminUserManagementProfileComponent implements OnInit {
 
       await this.adminService.exportAuditLogs({ id: this.id, type: 'project' }).toPromise().then(
         response => {
-          console.log(JSON.stringify(response));
+          // console.log(JSON.stringify(response));
           this.userAuditFile = response.data.thePath;
         },
         err => {
@@ -217,7 +215,7 @@ export class AdminUserManagementProfileComponent implements OnInit {
         response => {
           this.reward = response.data.reward;
           this.imgString = "https://localhost:8080" + this.reward.imgPath;
-          console.log(JSON.stringify(response));
+          // console.log(JSON.stringify(response));
         },
         err => {
           alert(err.error.message);
@@ -229,7 +227,7 @@ export class AdminUserManagementProfileComponent implements OnInit {
 
       await this.adminService.getAuditLogs({ id: this.id, type: 'reward' }).toPromise().then(
         response => {
-          console.log(JSON.stringify(response));
+          // console.log(JSON.stringify(response));
           this.userAudit = response.data.logs;
         },
         err => {
@@ -239,7 +237,7 @@ export class AdminUserManagementProfileComponent implements OnInit {
 
       await this.adminService.exportAuditLogs({ id: this.id, type: 'reward' }).toPromise().then(
         response => {
-          console.log(JSON.stringify(response));
+          // console.log(JSON.stringify(response));
           this.userAuditFile = response.data.thePath;
         },
         err => {
@@ -294,80 +292,130 @@ export class AdminUserManagementProfileComponent implements OnInit {
   }
 
   activateUser(): void {
-    console.log(this.user.id);
-    this.adminService.activateUser({ id: this.user.id }).subscribe(
-      response => {
-        //this.loadUser();
-        alert("User has been activated!");
-        this.ngOnInit();
-      }
-    )
+    let r = confirm("Are you sure you want to activate this account?");
+    if (r == true) {
+      this.adminService.activateUser({ id: this.user.id }).subscribe(
+        response => {
+          this.ngOnInit();
+          this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Account activated successfully!'});
+        },
+        err => {
+          this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+        }
+      );
+    } else {
+      return;
+    }
   }
 
   suspendUser(): void {
-    console.log(this.user.id);
-    this.adminService.suspendUser({ id: this.user.id }).subscribe(
-      response => {
-        //this.loadUser();
-        alert("User has been suspended!");
-        this.ngOnInit();
-      }
-    )
+    let r = confirm("Are you sure you want to suspend this account?");
+    if (r == true) {
+      this.adminService.suspendUser({ id: this.user.id }).subscribe(
+        response => {
+          this.ngOnInit();
+          this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Account suspended successfully!'});
+        },
+        err => {
+          this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+        }
+      );
+    } else {
+      return;
+    }
   }
 
   activateInstitution(): void {
-    this.adminService.activateInstitution({ id: this.user.id }).subscribe(
-      response => {
-        //this.loadInstitution();
-        alert("Institution has been activated!");
-        this.ngOnInit();
-      },
-      err => {
-        alert(err.error.msg);
-      }
-    )
+    let r = confirm("Are you sure you want to activate this account?");
+    if (r == true) {
+      this.adminService.activateInstitution({ id: this.user.id }).subscribe(
+        response => {
+          this.ngOnInit();
+          this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Account activated successfully!'});
+        },
+        err => {
+          this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+        }
+      );
+    } else {
+      return;
+    }
   }
 
   suspendInstitution(): void {
-    this.adminService.suspendInstitution({ id: this.user.id }).subscribe(
-      response => {
-        //this.loadInstitution();
-        alert("Institution has been suspended!");
-        this.ngOnInit();
-      },
-      err => {
-        alert(err.error.msg);
-      }
-    )
+    let r = confirm("Are you sure you want to suspend this account?");
+    if (r == true) {
+      this.adminService.suspendInstitution({ id: this.user.id }).subscribe(
+        response => {
+          this.ngOnInit();
+          this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Account suspended successfully!'});
+        },
+        err => {
+          this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+        }
+      );
+    } else {
+      return;
+    }
   }
 
   activateProject(): void {
-    this.adminService.activateProject({ id: this.id }).subscribe(
-      response => {
-        alert("Project has been activated!");
-        this.ngOnInit();
-      },
-      err => {
-        alert(err.error.msg);
-      }
-    )
+    let r = confirm("Are you sure you want to activate this project?");
+    if (r == true) {
+      this.adminService.activateProject({ id: this.id }).subscribe(
+        response => {
+          this.ngOnInit();
+          this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Project activated successfully!'});
+        },
+        err => {
+          this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+        }
+      );
+    } else {
+      return;
+    }
   }
 
   suspendProject(): void {
-    this.adminService.suspendProject({ id: this.id }).subscribe(
-      response => {
-        alert("Project has been suspended!");
-        this.ngOnInit();
-      },
-      err => {
-        alert(err.error.msg);
-      }
-    )
+    let r = confirm("Are you sure you want to suspend this project?");
+    if (r == true) {
+      this.adminService.suspendProject({ id: this.id }).subscribe(
+        response => {
+          this.ngOnInit();
+          this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Project suspended successfully!'});
+        },
+        err => {
+          this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+        }
+      );
+    } else {
+      return;
+    }
   }
 
   formatDate(date): any {
     let formattedDate = new Date(date);
     return formattedDate.toLocaleString();
+  }
+
+  formatDateNoTime(date): any {
+    let formattedDate = new Date(date).toUTCString();
+    return formattedDate.substring(5, formattedDate.length-13);
+  }
+
+  async filterByDateRange() {
+    console.log(this.rangeDates);
+    await this.ngOnInit();
+    let a = this.rangeDates[0].toUTCString();
+    let b = this.rangeDates[1].toUTCString();
+    let arr = [];
+    for(var i=0; i<this.userAudit.length; i++) {
+      if(new Date(this.userAudit[i].createdAt).toUTCString() >= a && new Date(this.userAudit[i].createdAt).toUTCString() <= b) {
+        console.log("INCLUDED");
+        arr.push(this.userAudit[i]);
+      }
+    }
+    this.userAudit = arr;
   }
 
 }

@@ -225,7 +225,6 @@ export class AdminUserManagementComponent implements OnInit {
     } else {
       return;
     }
-    
   }
 
   suspendUser(y: any): void {

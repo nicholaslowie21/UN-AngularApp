@@ -1,165 +1,188 @@
-<div class="row">
-    <div class="card border-0">
-        <div *ngIf="isUser" class="card-body">
+<div class="row bg-light p-2">
+    <div class="col-2">
+        <div *ngIf="isUser">
             <div *ngIf="user.profilePic.length == 0">
-                <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src="../../assets/img/profilePic_Placeholder.png" style="margin: 10px; width: 80px; height: 80px; object-fit: cover;"
+                <img class="rounded-circle img-fluid" src="../../assets/img/profilePic_Placeholder.png" style="width: 80px; height: 80px; object-fit: cover;"
                     alt="Profile picture">
             </div>
             <div *ngIf="user.profilePic.length != 0">
-                <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src={{user.profilePic}} style="margin: 10px; width: 80px; height: 80px; object-fit: cover;"
+                <img class="rounded-circle img-fluid" src={{user.profilePic}} style="width: 80px; height: 80px; object-fit: cover;"
                     alt="Profile picture">
             </div>
         </div>
 
-        <div *ngIf="isProject" class="card-body">
+        <div *ngIf="isProject">
             <div *ngIf="project.imgPath.length == 0">
-                <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src="../../assets/img/team.jpg" style="margin: 10px; width: 80px; height: 80px; object-fit: cover;"
+                <img class="rounded-circle img-fluid" src="../../assets/img/team.jpg" style="width: 80px; height: 80px; object-fit: cover;"
                     alt="Profile picture">
             </div>
             <div *ngIf="project.imgPath.length != 0">
-                <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src={{imgString}} style="margin: 10px; width: 80px; height: 80px; object-fit: cover;"
+                <img class="rounded-circle img-fluid" src={{imgString}} style="width: 80px; height: 80px; object-fit: cover;"
                     alt="Profile picture">
             </div>
         </div>
 
-        <div *ngIf="isReward" class="card-body">
+        <div *ngIf="isReward">
             <div *ngIf="reward.imgPath.length == 0">
-                <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src="../../assets/img/rewardPlaceholder.png" style="margin: 10px; width: 80px; height: 80px; object-fit: cover;"
+                <img class="rounded-circle img-fluid" src="../../assets/img/rewardPlaceholder.png" style="width: 80px; height: 80px; object-fit: cover;"
                     alt="Profile picture">
             </div>
             <div *ngIf="reward.imgPath.length != 0">
-                <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src={{imgString}} style="margin: 10px; width: 80px; height: 80px; object-fit: cover;"
+                <img class="rounded-circle img-fluid" src={{imgString}} style="width: 80px; height: 80px; object-fit: cover;"
                     alt="Profile picture">
             </div>
         </div>
 
     </div>
-    <div class="card border-0" style="width: 40%">
-        <div *ngIf="isUser" class="card-body">
+    <div [ngClass]="{'col-6': isUser || isProject, 'col-10': isReward}">
+        <div *ngIf="isUser">
             <h4 class="card-title text-left mt-md-3 mb-md-0">
-                <a [href]="viewUser(user)" class="text-dark">{{ user.name }}</a>
+                <a [href]="viewUser(user)">{{ user.name }}</a>
             </h4>
-            <div style="font-size:medium;">{{ user.username }}</div>
-            <div style="font-size:medium;">{{ user.country }}</div>
-            <div *ngIf="user.role" class="text-secondary">{{user.role}}</div>
-            <div class="text-secondary">{{user.status}}</div>
+            <div><b>Username:</b> {{ user.username }}</div>
+            <span><b>Country:</b> {{user.country}}</span> 
+            <span *ngIf="user.role"> | <b>Role:</b> {{user.role}}</span>
+            <span> | <b>Status:</b> {{user.status}}</span>
         </div>
-        <div *ngIf="isProject" class="card-body">
+        <div *ngIf="isProject">
             <h4 class="card-title text-left mt-md-3 mb-md-0">
-                <a href="/project/projectDetails?id={{project.id}}" class="text-dark">{{ project.title }}</a>
+                <a href="/project/projectDetails?id={{project.id}}">{{ project.title }}</a>
             </h4>
-            <div style="font-size:medium;">{{ project.country }}</div>
-            <div class="text-secondary">{{project.status}}</div>
+            <div><b>Code:</b> {{project.code}}</div>
+            <span><b>Country:</b> {{ project.country }}</span>
+            <span> | <b>Status:</b> {{project.status}}</span>
         </div>
-        <div *ngIf="isReward" class="card-body">
+        <div *ngIf="isReward">
             <h4 class="card-title text-left mt-md-3 mb-md-0">
                 {{ reward.title }}
             </h4>
-            <div style="font-size:medium;">{{ reward.country }}</div>
-            <div class="text-secondary">{{reward.minTier}}</div>
-            <div class="text-secondary">{{reward.status}}</div>
+            <span><b>Country:</b> {{ reward.country }}</span>
+            <span> | <b>Status:</b> {{reward.status}}</span>
+            <br>
+            <span><b>Min Tier: </b>{{reward.minTier}}</span>
+            <span> | <b>Points: </b> {{reward.point}}</span>
+            <span> | <b>Quota: </b> {{reward.quota}}</span>
+            <span> | <b>Start Date: </b> {{formatDateNoTime(reward.startDate)}}</span>
+            <span> | <b>End Date: </b> {{formatDateNoTime(reward.endDate)}}</span>
         </div>
     </div>
-    <div class="card border-0">
-        <div class="card-body" *ngIf="userType=='individual'">
-            <button class="btn btn-danger float-right ml-2 mt-3" type="button" aria-haspopup="true" aria-expanded="false" (click)="suspendUser()">
-                Suspend
+    <div [ngClass]="{'col-4': isUser || isProject}">
+        <div *ngIf="userType=='individual'">
+            <button class="p-button p-button-danger float-right ml-2 mt-3" (click)="suspendUser()">
+                <i class="pi pi-times-circle"></i>&nbsp;Suspend
             </button>
-            <button class="btn btn-success float-right mt-3" type="button" aria-haspopup="true" aria-expanded="false" (click)="activateUser()">
-                Activate
-            </button>
-        </div>
-        <div class="card-body" *ngIf="userType=='institution'">
-            <button class="btn btn-danger float-right ml-2 mt-3" type="button" aria-haspopup="true" aria-expanded="false" (click)="suspendInstitution()">
-                Suspend
-            </button>
-            <button class="btn btn-success float-right mt-3" type="button" aria-haspopup="true" aria-expanded="false" (click)="activateInstitution()">
-                Activate
+            <button class="p-button p-button-success float-right mt-3" (click)="activateUser()">
+                <i class="pi pi-check-circle"></i>&nbsp;Activate
             </button>
         </div>
-        <div class="card-body" *ngIf="isProject">
-            <button class="btn btn-danger float-right ml-2 mt-3" type="button" aria-haspopup="true" aria-expanded="false" (click)="suspendProject()">
-                Suspend
+        <div *ngIf="userType=='institution'">
+            <button class="p-button p-button-danger float-right ml-2 mt-3" (click)="suspendInstitution()">
+                <i class="pi pi-times-circle"></i>&nbsp;Suspend
             </button>
-            <button *ngIf="!disableActivate" class="btn btn-success float-right mt-3" type="button" aria-haspopup="true" aria-expanded="false"
+            <button class="p-button p-button-success float-right mt-3" (click)="activateInstitution()">
+                <i class="pi pi-check-circle"></i>&nbsp;Activate
+            </button>
+        </div>
+        <div *ngIf="isProject">
+            <div *ngIf="project.status != 'completed' && project.status != 'close'">
+                <button class="p-button p-button-danger float-right ml-2 mt-3" (click)="suspendProject()">
+                    <i class="pi pi-times-circle"></i>&nbsp;Suspend
+                </button>
+                <button class="p-button p-button-success float-right mt-3" (click)="activateProject()">
+                    <i class="pi pi-check-circle"></i>&nbsp;Activate
+                </button>
+            </div>
+            <div *ngIf="project.status == 'completed' || project.status == 'close'">
+                <button disabled="true" class="p-button p-button-danger float-right ml-2 mt-3">
+                    <i class="pi pi-times-circle"></i>&nbsp;Suspend
+                </button>
+                <button disabled="true" class="p-button p-button-success float-right mt-3">
+                    <i class="pi pi-check-circle"></i>&nbsp;Activate
+                </button>
+            </div>
+            <!-- <button *ngIf="!disableActivate" class="btn btn-success float-right mt-3" type="button" aria-haspopup="true" aria-expanded="false"
                 (click)="activateProject()">
                 Activate
             </button>
             <button *ngIf="disableActivate" disabled class="btn btn-success float-right mt-3" type="button" aria-haspopup="true" aria-expanded="false">
                 Activate
-            </button>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="card border-0">
-        <div class="card-body">
-            <h5 class="card-title text-left">
-                Audit Log
-            </h5>
-        </div>
-    </div>
-    <div class="card border-0">
-        <div class="card-body">
-            <div *ngIf="(isAdminLead&&checkAdmin)">
-                <select class="form-control" name="type" [(ngModel)]="auditType" required #type="ngModel">
-                    <option value="user">User</option>
-                    <option value="admin">Admin</option>
-                </select>
-            </div>
-        </div>
-    </div>
-    <div class="card border-0">
-        <div *ngIf="(auditType=='admin')&&(isAdminLead&&checkAdmin)" class="card-body">
-            <a href="https://localhost:8080{{adminAuditFile}}" class="btn btn-info float-right text-white" type="button" aria-haspopup="true"
-                aria-expanded="false">
-                Export
-            </a>
-        </div>
-    </div>
-    <div class="card border-0">
-        <div *ngIf="(auditType=='user')&&(isAdminLead&&checkAdmin)" class="card-body">
-            <a href="https://localhost:8080{{userAuditFile}}" class="btn btn-info float-right text-white" type="button" aria-haspopup="true"
-                aria-expanded="false">
-                Export
-            </a>
-        </div>
-    </div>
-    <div class="card border-0">
-        <div *ngIf="(auditType==null)&&(isNullUser || isNullProj || isNullReward)" class="card-body">
-            <a href="https://localhost:8080{{userAuditFile}}" class="btn btn-info float-right text-white" type="button" aria-haspopup="true"
-                aria-expanded="false">
-                Export
-            </a>
+            </button> -->
         </div>
     </div>
 </div>
 
+<h4>Audit Log</h4>
+<div *ngIf="(auditType==null)&&(isAdminLead&&checkAdmin)">
+    Please select audit type
+</div>
 <div class="row">
-    <div *ngIf="auditType=='user' " class="card-body">
-        <!--User Audit
-            <br>Action: ...
-            <br> Date created: 5 Nov 2020-->
+    <span *ngIf="(isAdminLead&&checkAdmin)">
+        <select class="form-control" style="width: fit-content;" name="type" [(ngModel)]="auditType" required #type="ngModel">
+            <option value="user">User</option>
+            <option value="admin">Admin</option>
+        </select>
+    </span>
+        <span *ngIf="(auditType=='admin')&&(isAdminLead&&checkAdmin)">
+            <a href="https://localhost:8080{{adminAuditFile}}" class="btn btn-primary float-right" aria-haspopup="true"
+                aria-expanded="false" target="_blank">
+                Export
+            </a>
+        </span>
+        <div *ngIf="(auditType=='user')&&(isAdminLead&&checkAdmin)">
+            <a href="https://localhost:8080{{userAuditFile}}" class="btn btn-primary float-right text-white" type="button" aria-haspopup="true"
+                aria-expanded="false" target="_blank">
+                Export
+            </a>
+        </div>
+        <div *ngIf="(auditType==null)&&(isNullUser || isNullProj || isNullReward)" class="card-body">
+            <a href="https://localhost:8080{{userAuditFile}}" class="btn btn-primary float-right text-white" type="button" aria-haspopup="true"
+                aria-expanded="false" target="_blank">
+                Export
+            </a>
+        </div>
+</div>
+
+<div class="row">
+    <div *ngIf="auditType=='user'">
         <div *ngIf="userAudit.length==0">
             There are no user audit logs for now.
         </div>
+        <p-table #dt1 [value]="userAudit" [rowHover]="true" [rows]="10" [rowsPerPageOptions]="[10,25,50]" [paginator]="true"
+            [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Action</th>
+                    <th pSortableColumn="createdAt">Created at
+                        <p-sortIcon field="createdAt"></p-sortIcon>
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        <input pInputText type="text" (input)="dt1.filter($event.target.value, 'action', 'contains')" [value]="dt1.filters['action']?.value" placeholder="Search by Action" class="p-column-filter">
+                    </th>
+                    <th>
+                        <p-calendar [baseZIndex]="90" [(ngModel)]="rangeDates" [style]="{'width':'60%'}" placeholder="Filter by date range" (onSelect)="filterByDateRange()" selectionMode="range" [readonlyInput]="true" inputId="range" [showIcon]="true" [monthNavigator]="true" [yearNavigator]="true"></p-calendar>
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-a>
+                <tr>
+                    <td>{{a.action}}</td>
+                    <td>{{formatDate(a.createdAt)}}</td>
+                </tr>
+            </ng-template>
+        </p-table>
         <div *ngFor="let user of userAudit">
-            <div class="card" style="width:80%">
+            <div class="card">
                 <div class="card-body">
                     Action: {{user.action}}
-                    <br/> Target Type: {{user.targetType}}
                     <br/>
                     <small>Created At: {{formatDate(user.createdAt)}}</small>
-                    <br/>
-                    <small>Updated At: {{formatDate(user.updatedAt)}}</small>
                 </div>
             </div>
         </div>
     </div>
     <div *ngIf="auditType=='admin' " class="card-body">
-        <!--Admin Audit
-            <br>Action: ...
-            <br> Date created: 5 Nov 2020-->
         <div *ngIf="adminAudit.length==0">
             There are no admin audit logs for now.
         </div>
@@ -167,11 +190,8 @@
             <div class="card" style="width:80%">
                 <div class="card-body">
                     Action: {{admin.action}}
-                    <br/> Target Type: {{admin.targetType}}
                     <br/>
                     <small>Created At: {{formatDate(admin.createdAt)}}</small>
-                    <br/>
-                    <small>Updated At: {{formatDate(admin.updatedAt)}}</small>
                 </div>
             </div>
         </div>
@@ -184,11 +204,8 @@
             <div class="card" style="width:80%">
                 <div class="card-body">
                     Action: {{user.action}}
-                    <br/> Target Type: {{user.targetType}}
                     <br/>
                     <small>Created At: {{formatDate(user.createdAt)}}</small>
-                    <br/>
-                    <small>Updated At: {{formatDate(user.updatedAt)}}</small>
                 </div>
             </div>
         </div>
@@ -201,11 +218,8 @@
             <div class="card" style="width:80%">
                 <div class="card-body">
                     Action: {{user.action}}
-                    <br/> Target Type: {{user.targetType}}
                     <br/>
                     <small>Created At: {{formatDate(user.createdAt)}}</small>
-                    <br/>
-                    <small>Updated At: {{formatDate(user.updatedAt)}}</small>
                 </div>
             </div>
         </div>
@@ -218,21 +232,10 @@
             <div class="card" style="width:80%">
                 <div class="card-body">
                     Action: {{user.action}}
-                    <br/> Target Type: {{user.targetType}}
                     <br/>
                     <small>Created At: {{formatDate(user.createdAt)}}</small>
-                    <br/>
-                    <small>Updated At: {{formatDate(user.updatedAt)}}</small>
                 </div>
             </div>
         </div>
-    </div>
-    <!--div *ngIf="auditType==null&&!(isAdminLead&&checkAdmin)" class="card-body">
-        Other Audits
-        <br>Action: ...
-        <br> Date created: 5 Nov 2020
-    </div-->
-    <div *ngIf="(auditType==null)&&(isAdminLead&&checkAdmin)" class="card-body">
-        Please select audit type
     </div>
 </div>
