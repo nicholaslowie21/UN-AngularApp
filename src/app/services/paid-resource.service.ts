@@ -16,7 +16,8 @@ export class PaidResourceService {
   constructor(private http: HttpClient) { }
 
   createPaidResource(formData): Observable<any> {
-    return this.http.post(API_URL, formData, httpOptions);
+    console.log(formData);
+    return this.http.post(API_URL, formData);
   }
 
   updatePaidResource(data): Observable<any> {
@@ -31,12 +32,12 @@ export class PaidResourceService {
   }
 
   uploadPaidResourcePicture(formData): Observable<any> {
-    return this.http.post(API_URL + '/uploadPaidResourcePicture', formData, httpOptions);
+    return this.http.post(API_URL + '/uploadPaidResourcePicture', formData);
   }
 
   deletePaidResourcePicture(data): Observable<any> {
     return this.http.post(API_URL + '/deletePaidResourcePicture', {
-      paidResourceId: data.id,
+      paidResourceId: data.paidResourceId,
       indexes: data.indexes
     }, httpOptions);
   }

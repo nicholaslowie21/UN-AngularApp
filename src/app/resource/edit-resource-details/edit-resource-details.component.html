@@ -10,7 +10,8 @@
         <div class="col-8">
             <h3>
                 Edit Resource Details
-                <a class="btn btn-primary float-right" href="/resource/resourceDetails?id={{id}}&type={{type}}">Back to Resource details</a>
+                <a *ngIf="type != 'paid'" class="btn btn-primary float-right" href="/resource/resourceDetails?id={{id}}&type={{type}}">Back to Resource details</a>
+                <a *ngIf="type == 'paid'" class="btn btn-primary float-right" href="/resource/paid/details?id={{id}}">Back to Resource details</a>
             </h3>
             <br/>
         </div>
@@ -23,16 +24,17 @@
             #f="ngForm"
             novalidate
             >
-                <!-- display and update pics for Item and Venue Resource -->
-                <div class="form-group" *ngIf="type == 'venue' || type == 'item'">
+                <!-- display and update pics for Item, Venue and Paid Resource -->
+                <div class="form-group" *ngIf="type == 'venue' || type == 'item' || type == 'paid'">
                     <h4>Resource Images</h4>
                     <div *ngIf="resource.imgPath.length == 0">
-                        Currently no images of <span *ngIf="type == 'venue'">venue</span>
+                        Currently no images of this <span *ngIf="type == 'venue'">venue</span>
                         <span *ngIf="type == 'item'">item</span>
+                        <span *ngIf="type == 'paid'">paid resource</span>
                     </div>
                     <div *ngIf="resource.imgPath.length > 0">
                         <!-- advanced galleria version -->
-                        <p-galleria #galleria [(value)]="itemVenueImages" [responsiveOptions]="responsiveOptions" [(activeIndex)]="activeIndex" [numVisible]="5" [containerStyle]="{'max-width':'640px'}" [containerClass]="galleriaClass()" [showThumbnails]="showThumbnails"
+                        <p-galleria #galleria [(value)]="images" [responsiveOptions]="responsiveOptions" [(activeIndex)]="activeIndex" [numVisible]="5" [containerStyle]="{'max-width':'640px'}" [containerClass]="galleriaClass()" [showThumbnails]="showThumbnails"
                             [showItemNavigators]="true" [showItemNavigatorsOnHover]="true" [circular]="true" [autoPlay]="true" [transitionInterval]="3000"> 
                             <ng-template pTemplate="item" let-item>
                                 <img [src]="item" [ngStyle]="{'width': !fullscreen ? '100%' : '', 'display': !fullscreen ? 'block' : ''}" />
@@ -45,10 +47,10 @@
                             <ng-template pTemplate="footer" let-item>
                                 <div class="custom-galleria-footer">
                                     <button type="button" pButton icon="pi pi-list" (click)="onThumbnailButtonClick()"></button>
-                                    <span *ngIf="itemVenueImages"  class="title-container">
-                                        <span>{{activeIndex + 1}}/{{itemVenueImages.length}}</span>
+                                    <span *ngIf="images"  class="title-container">
+                                        <span>{{activeIndex + 1}}/{{images.length}}</span>
                                         <span class="title">Picture {{activeIndex + 1}}</span>
-                                        <!-- <span class="title">{{venueImgFileNames[activeIndex]}}</span> -->
+                                        <!-- <span class="title">{{imgFileNames[activeIndex]}}</span> -->
                                     </span>
                                     <button type="button" pButton [icon]="fullScreenIcon()" (click)="toggleFullScreen()" class="fullscreen-button"></button>
                                 </div>
@@ -111,9 +113,9 @@
                     Uploading images will add to the existing set of images.</p>
                     <form action="/multiple-upload" method="POST" enctype="multipart/form-data">
                         <input type="file" multiple (change)="selectImages($event)">
-                        <button type="submit" (click)="onSubmitItemVenueImages()" class="btn btn-primary">Upload</button>
+                        <button type="submit" (click)="onSubmitImages()" class="btn btn-primary">Upload</button>
                     </form>
-                    <div class="alert alert-warning" *ngIf="errorMsgUploadPic && !isUploadVenuePicSuccessful">
+                    <div class="alert alert-warning" *ngIf="errorMsgUploadPic && !isUploadPicSuccessful">
                         Upload picture failed!<br />{{ errorMsgUploadPic }}
                     </div>
                     <br/>
@@ -136,7 +138,7 @@
                             </div>
                         </div>
                     </form>
-                    <div class="alert alert-warning" *ngIf="errorMsgDeletePic && !isDeleteItemVenuePicSuccessful">
+                    <div class="alert alert-warning" *ngIf="errorMsgDeletePic && !isDeletePicSuccessful">
                         {{ errorMsgDeletePic }}
                     </div>
                     <br/>
@@ -276,6 +278,26 @@
                         </div>
                     </div>
                 </div>
+                <div class="form-group row" *ngIf="type == 'paid'">
+                    <label for="category" class="col-sm-2 col-form-label">Category</label>
+                    <div class="col-sm-10">
+                    <input
+                        type="text"
+                        class="form-control"
+                        name="category"
+                        [(ngModel)]="resource.category"
+                        required
+                        minlength="3"
+                        #category="ngModel"
+                    />
+                    </div>
+                    <div class="alert-danger" *ngIf="f.submitted && category.invalid">
+                        <div *ngIf="category.errors.required">Category is required</div>
+                        <div *ngIf="category.errors.minlength">
+                            Category must be at least 3 characters
+                        </div>
+                    </div>
+                </div>
                 <div class="form-group row" *ngIf="type != 'knowledge'">
                     <label for="country" class="col-sm-2 col-form-label">Country</label>
                     <div class="col-sm-10">
@@ -287,7 +309,27 @@
                         <div *ngIf="country.errors.required">Country is required</div>
                     </div>
                 </div>
-                
+                <div class="form-group row" *ngIf="type == 'paid'">
+                    <label for="category" class="col-sm-2 col-form-label">Price</label>
+                    <div class="col-sm-10">
+                    <input
+                        type="number"
+                        class="form-control"
+                        name="price"
+                        [(ngModel)]="resource.price"
+                        required
+                        min="5"
+                        step=".01"
+                        #price="ngModel"
+                    />
+                    </div>
+                    <div class="alert-danger" *ngIf="f.submitted && price.invalid">
+                        <div *ngIf="price.errors.required">Category is required</div>
+                        <div *ngIf="price.errors.min">
+                            Price cannot be below 5
+                        </div>
+                    </div>
+                </div>
                 <div class="form-group" *ngIf="type == 'knowledge'">
                     <div *ngIf="resource.attachment.length == 0">
                         Attachment: Currently no attachment uploaded

@@ -54,14 +54,15 @@ export class PaidResourceDetailsComponent implements OnInit {
       res => this.resource = res.data.paidresource
     );
 
-    for(var i=0; i<this.resource.imgPaths.length; i++) {
-      this.resourceImages[i] = "https://localhost:8080" + this.resource.imgPaths[i];
+    for(var i=0; i<this.resource.imgPath.length; i++) {
+      this.resourceImages[i] = "https://localhost:8080" + this.resource.imgPath[i];
     }
 
     console.log(this.resource);
     console.log(this.resourceImages);
 
     let username = this.tokenStorageService.getUser().username;
+    console.log(this.resource.ownerUsername);
     if(this.resource.ownerUsername == username) {
       this.isOwner = true;
     }

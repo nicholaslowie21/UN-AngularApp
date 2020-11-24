@@ -63,7 +63,8 @@
             <br>
             <div>
                 <button *ngIf="!isOwner" class="btn btn-primary btn-block">Request to Purchase</button>
-                <button *ngIf="isOwner" class="btn btn-primary" style="width: 48%;"><i class="pi pi-pencil"></i>&nbsp;Edit</button>
+                <!-- <button *ngIf="isOwner" class="btn btn-primary" style="width: 48%;"><i class="pi pi-pencil"></i>&nbsp;Edit</button> -->
+                <a href="/resource/editDetails?id={{id}}&type=paid" *ngIf="isOwner" class="btn btn-primary" style="width: 48%;"><i class="pi pi-pencil"></i>&nbsp;Edit</a>
                 <button *ngIf="isOwner" class="btn btn-danger float-right" style="width: 48%;" (click)="updateStatus('deleted')"><i class="pi pi-trash"></i>&nbsp;Delete</button>
             </div>
         </div>
