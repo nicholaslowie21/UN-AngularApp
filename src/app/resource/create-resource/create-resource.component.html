@@ -285,6 +285,10 @@
         <div class="form-group row">
           <label for="price" class="col-sm-4 col-form-label">Price</label>
           <div class="col-sm-8">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                  <div class="input-group-text">USD</div>
+              </div>
               <input type="number"
                 class="form-control"
                 name="price"
@@ -293,6 +297,7 @@
                 min="5"
                 step=".01"
                 #price="ngModel" />
+            </div>
           </div>
           <div class="alert-danger" *ngIf="f.submitted && price.invalid">
               <div *ngIf="price.errors.required">Price is required</div>
