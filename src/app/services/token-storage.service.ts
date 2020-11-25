@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 const TOKEN_KEY = 'auth-token';
 const USER_KEY = 'auth-user';
 const ACCTYPE_KEY = 'auth-acctype';
+const IS_CHAT_OPEN = 'chat';
 
 @Injectable({
   providedIn: 'root'
@@ -40,5 +41,14 @@ export class TokenStorageService {
 
   public getAccountType(): any {
     return JSON.parse(sessionStorage.getItem(ACCTYPE_KEY));
+  }
+
+  public setChatStatus(state): any {
+    window.sessionStorage.removeItem(IS_CHAT_OPEN);
+    window.sessionStorage.setItem(IS_CHAT_OPEN, JSON.stringify(state));
+  }
+
+  public getChatStatus(): any {
+    return JSON.parse(sessionStorage.getItem(IS_CHAT_OPEN));
   }
 }

@@ -142,6 +142,15 @@
                                     <hr>
                                     <button class="btn btn-block" style="color: blue;" (click)="requestTestimonialYes(); findCommonProjects()">Request testimonial from {{user.name}}</button>
                                     <hr>
+                                </div>
+                                
+                                <div *ngIf="!isReport">
+                                    <button class="btn btn-block" (click)="chatUser('normal')">Chat</button>
+                                    <hr>
+                                    <div *ngIf="isAdmin">
+                                        <button class="btn btn-block" (click)="chatUser('admin')">Chat as Admin</button>
+                                        <hr>
+                                    </div>
                                     <button class="btn btn-block" style="color: red;" (click)="clickReport()">Report User</button>
                                     <hr>
                                     <button class="btn btn-block" data-dismiss="modal">Cancel</button>

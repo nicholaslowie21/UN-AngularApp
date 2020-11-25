@@ -26,3 +26,33 @@
     display: inline-block;
     position: absolute; top: 1%; right: 10%;
 }
+#chatButton {
+    position: fixed;
+    bottom: 0;
+    right: 3%;
+    z-index: 9;
+    width: 27%;
+}
+
+.chatPopUp {
+    position: fixed;
+    bottom: 0;
+    right: 3%;
+    z-index: 9;
+    width: 27%;
+    background-color: #f8f9fa;
+    border: 2px solid #dadada;
+    height: 60%;
+}
+
+.chatRoom:active {
+    border: none;
+}
+
+.dot {
+    height: 20px;
+    width: 20px;
+    background-color: red;
+    border-radius: 50%;
+    display: inline-block;
+}

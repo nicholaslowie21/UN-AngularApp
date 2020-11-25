@@ -14,6 +14,7 @@ import { ResourceService } from '../services/resource.service';
 import { InstitutionService } from '../services/institution.service';
 import { ReportService } from '../services/report.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CommunicationService } from '../services/communication.service';
 import { MessageService } from 'primeng/api';
 import { TestimonialService } from '../services/testimonial.service';
 import { TargetService } from '../services/target.service';
@@ -27,6 +28,7 @@ import { TargetService } from '../services/target.service';
 export class OwnProfileComponent implements OnInit {
 
   isLoggedIn = false;
+  isAdmin = false;
   username: any;
   user: any;
   userType: any;
@@ -80,7 +82,8 @@ export class OwnProfileComponent implements OnInit {
   constructor(private tokenStorageService: TokenStorageService, private userService: UserService,
     private resourceService: ResourceService, private institutionService: InstitutionService, 
     private route: ActivatedRoute, private reportService: ReportService, private messageService: MessageService,
-    private testimonialService: TestimonialService, private targetService: TargetService, private router: Router) { }
+    private testimonialService: TestimonialService, private targetService: TargetService, 
+    private communicationService: CommunicationService, private router: Router) { }
 
   async ngOnInit() {
     this.route.queryParams.subscribe(
@@ -126,8 +129,13 @@ export class OwnProfileComponent implements OnInit {
       this.isOwner = true;
     }
 
-    this.shareLink = "http://localhost:4200/profile?username=" + this.username + "&userType=" + this.userType;
-    this.iFrameLink = "http://localhost:4200/shareProfile?username=" + this.username + "&userType=" + this.userType;
+    let role = this.tokenStorageService.getUser().role;
+    if(role == 'adminlead' || role == 'admin' || role == 'regionaladmin') {
+      this.isAdmin = true;
+    }
+
+    this.shareLink = "http://localhost:4200/profile?username=" + this.username+"&userType="+this.userType;
+    this.iFrameLink = "http://localhost:4200/shareProfile?username=" + this.username+"&userType="+this.userType;
 
     this.copyIFrameLink = "<iframe src=" + this.iFrameLink + " title=\"User Profile\" width=\"500\" height=\"500\"></iframe>";
 
@@ -427,6 +435,30 @@ export class OwnProfileComponent implements OnInit {
 
   viewTarget(): void {
     this.router.navigate(['/edit-target'], {queryParams: {type: 'user'}});
+  }
+  
+  chatUser(chatType): void {
+    let tempType = '';
+    if(this.userType == 'individual') {
+      tempType = 'user';
+    } else {
+      tempType = 'institution';
+    }
+    const chatForm = {
+      chatType: chatType,
+      targetId: this.userId,
+      targetType: tempType
+    }
+    this.communicationService.chatAccount(chatForm).subscribe(
+      response => {
+        console.log(response)
+        let chatStatus = this.tokenStorageService.getChatStatus();
+        this.tokenStorageService.setChatStatus({status:"room", id:response.data.chatRoom.id, selectedChatType: chatStatus.selectedChatType });
+        window.location.reload();
+      }, err => {
+        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+      }
+    )
   }
 
 }

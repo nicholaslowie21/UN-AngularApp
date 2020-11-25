@@ -31,6 +31,7 @@ export class LoginComponent implements OnInit {
         this.tokenStorage.saveToken(response.data.token);
         this.tokenStorage.saveUser(response.data.user);
         this.tokenStorage.saveAccountType(response.data.accountType);
+        this.tokenStorage.setChatStatus({status:"close"});
 
         this.isLoginFailed = false;
         this.isLoggedIn = true;
