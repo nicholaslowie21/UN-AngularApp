@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {TableModule} from 'primeng/table';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import {Table} from 'primeng/table';
 import { DataService } from '../../services/data.service';
 import { DatePipe } from '@angular/common';
 
@@ -27,12 +27,17 @@ export class DataProjectComponent implements OnInit {
   fundingArr: any[];
   sdgColor: any[];
 
+  @ViewChild('dt1')sdgTable: Table;
+  @ViewChild('dt')countryTable: Table;
+
   constructor(private dataService: DataService, private datePipe: DatePipe) {
     this.sdgColor = [
       'rgb(235, 28, 45, 0.99)', 'rgb(211, 160, 41, 0.99)', 'rgb(39, 155, 72, 0.99)', 'rgb(196, 31, 50, 0.99)', 'rgb(239, 64, 43, 0.99)',
       'rgb(0, 174, 217, 0.99)', 'rgb(253, 183, 19, 0.99)', 'rgb(143, 24, 56, 0.99)', 'rgb(243, 109, 36, 0.99)', 'rgb(225, 20, 132, 0.99)',
       'rgb(249, 157, 38, 0.99)', 'rgb(207, 141, 42, 0.99)', 'rgb(72, 119, 62, 0.99)', ' rgb(0, 125, 188, 0.99)', 'rgb(62, 176, 73, 0.99)',
       'rgb(2, 85, 139, 0.99)', 'rgb(24, 54, 104, 0.99)'];
+    // this.min = 0;
+    // this.max = 0;
    }
 
   async ngOnInit() {
@@ -195,5 +200,111 @@ export class DataProjectComponent implements OnInit {
   showAll(event) {
     console.log("I should reinit to all");
     this.initAll();
+  }
+
+  onAccountChange(event) {
+    const value = event.target.value;
+    console.log(value);
+    if (value && value.trim().length) {
+        const input = parseInt(value);
+
+        if (!isNaN(input)) {
+            this.sdgTable.filter(input, 'accountsNum', 'gte');
+        }
+    } else {
+        this.sdgTable.filter(0, 'accountsNum', 'gte');     
+      }
+  }
+
+  onAccountChangeCountry(event) {
+    const value = event.target.value;
+    if (value && value.trim().length) {
+        const input = parseInt(value);
+
+        if (!isNaN(input)) {
+            this.countryTable.filter(input, 'accountsNum', 'gte');
+        }
+    } else {
+      this.countryTable.filter(0, 'accountsNum', 'gte');       
+    }
+  }
+
+  onProjectChange(event) {
+    const value = event.target.value;
+    if (value && value.trim().length) {
+        const input = parseInt(value);
+
+        if (!isNaN(input)) {
+            this.sdgTable.filter(input, 'projectsNum', 'gte');
+        }
+    } else {
+      this.sdgTable.filter(0, 'projectsNum', 'gte');      
+    }
+    
+  }
+
+  onProjectChangeCountry(event) {
+    const value = event.target.value;
+    if (value && value.trim().length) {
+        const input = parseInt(value);
+
+        if (!isNaN(input)) {
+            this.countryTable.filter(input, 'projectsNum', 'gte');
+        }
+    } else {
+      this.countryTable.filter(0, 'projectsNum', 'gte');       
+    }
+  }
+
+  onContributionChange(event) {
+    const value = event.target.value;
+    if (value && value.trim().length) {
+        const input = parseInt(value);
+
+        if (!isNaN(input)) {
+            this.sdgTable.filter(input, 'contributionsNum', 'gte');
+        }
+    } else {
+      this.sdgTable.filter(0, 'contributionsNum', 'gte');        
+    }
+  }
+
+  onContributionChangeCountry(event) {
+    const value = event.target.value;
+    if (value && value.trim().length) {
+        const input = parseInt(value);
+
+        if (!isNaN(input)) {
+            this.countryTable.filter(input, 'contributionsNum', 'gte');
+        }
+    } else {
+      this.countryTable.filter(0, 'contributionsNum', 'gte');       
+    }
+  }
+
+  onFundingChange(event) {
+    const value = event.target.value;
+    if (value && value.trim().length) {
+        const input = parseInt(value);
+
+        if (!isNaN(input)) {
+            this.sdgTable.filter(input, 'fundingRaisedSum', 'gte');
+        }
+    } else {
+      this.sdgTable.filter(0, 'fundingRaisedSum', 'gte');       
+    }
+  }
+
+  onFundingChangeCountry(event) {
+    const value = event.target.value;
+    if (value && value.trim().length) {
+        const input = parseInt(value);
+
+        if (!isNaN(input)) {
+            this.countryTable.filter(input, 'fundingRaised', 'gte');
+        }
+    } else {
+      this.countryTable.filter(0, 'fundingRaised', 'gte');       
+    }
   }
 }
