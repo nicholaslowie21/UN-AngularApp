@@ -7,6 +7,7 @@ import { TokenStorageService } from '../../services/token-storage.service';
 import { ProjectService } from '../../services/project.service';
 import { RewardService } from '../../services/reward.service';
 import { MessageService } from 'primeng/api';
+import { elementClosest } from '@fullcalendar/core';
 
 @Component({
   selector: 'app-admin-user-management-profile',
@@ -66,8 +67,6 @@ export class AdminUserManagementProfileComponent implements OnInit {
       this.isAdminLead = true;
     }
 
-    await this.generateExportLink();
-
     //for individuals and institutions
     if (this.userType == 'individual') {
       await this.userService.viewUserById({ id: this.id }).toPromise().then(
@@ -82,30 +81,17 @@ export class AdminUserManagementProfileComponent implements OnInit {
       
       if (this.user.role == 'admin' || this.user.role == 'regionaladmin' || this.user.role == 'adminlead') {
         this.checkAdmin = true;  
-
-        await this.adminService.getAuditLogs({ id: this.id, type: 'admin' }).toPromise().then(
-          response => {
-            this.adminAudit = response.data.logs;
-          },
-          err => {
-            alert(err.error.message);
-          }
-        );
-        console.log(this.checkAdmin);
+        await this.generateExportLink('admin');
+        console.log(this.adminAuditFile)
+        await this.loadAudit('admin');
+        console.log(this.adminAudit)
       } else {
         //not any admins, set true
         this.isNullUser = true;
         this.auditType = null;
       }
-
-      await this.adminService.getAuditLogs({ id: this.id, type: 'user' }).toPromise().then(
-        response => {
-          this.userAudit = response.data.logs;
-        },
-        err => {
-          alert(err.error.message);
-        }
-      );
+      await this.generateExportLink('user');
+      await this.loadAudit('user');
 
     } else if (this.userType == 'institution') {
       await this.institutionService.viewInstitutionById({ id: this.id }).toPromise().then(
@@ -119,15 +105,8 @@ export class AdminUserManagementProfileComponent implements OnInit {
       this.isUser = true;
       this.isNullUser = true;
       this.auditType = null;
-
-      await this.adminService.getAuditLogs({ id: this.id, type: 'institution' }).toPromise().then(
-        response => {
-          this.userAudit = response.data.logs;
-        },
-        err => {
-          alert(err.error.message);
-        }
-      );
+      await this.generateExportLink('institution');
+      await this.loadAudit('institution');
     }
 
     //for project and rewards
@@ -145,15 +124,8 @@ export class AdminUserManagementProfileComponent implements OnInit {
 
       this.auditType = null;
       this.isNullProj = true;
-
-      await this.adminService.getAuditLogs({ id: this.id, type: 'project' }).toPromise().then(
-        response => {
-          this.userAudit = response.data.logs;
-        },
-        err => {
-          alert(err.error.message);
-        }
-      );
+      await this.generateExportLink('project');
+      await this.loadAudit('project');
     }
 
     if (this.userType == 'reward') {
@@ -170,26 +142,27 @@ export class AdminUserManagementProfileComponent implements OnInit {
 
       this.auditType = null;
       this.isNullReward = true;
-
-      await this.adminService.getAuditLogs({ id: this.id, type: 'reward' }).toPromise().then(
-        response => {
-          this.userAudit = response.data.logs;
-        },
-        err => {
-          alert(err.error.message);
-        }
-      );
+      await this.generateExportLink('reward');
+      await this.loadAudit('reward');
     }
   }
 
-  async generateExportLink() {
-    let tempType = this.userType;
-    if(this.userType == 'individual') {
-      tempType = 'user';
-    }
-    await this.adminService.exportAuditLogs({ id: this.id, type: tempType }).toPromise().then(
+  async generateExportLink(type) {
+    await this.adminService.exportAuditLogs({ id: this.id, type: type }).toPromise().then(
       response => {
-        this.userAuditFile = response.data.thePath;
+        if(type == 'admin') this.adminAuditFile = response.data.thePath;
+        else  this.userAuditFile = response.data.thePath;
+      },
+      err => {
+        alert(err.error.message);
+      }
+    );
+  }
+
+  async loadAudit(type) {
+    await this.adminService.getAuditLogs({ id: this.id, type: type }).toPromise().then(
+      response => {
+        this.userAudit = response.data.logs;
       },
       err => {
         alert(err.error.message);
@@ -198,22 +171,13 @@ export class AdminUserManagementProfileComponent implements OnInit {
   }
 
   viewUser(user): string {
-    let usernameFormatted = '';
-    for (var i = 0; i < user.username.length; i++) {
-      if (user.username.charAt(i) == ' ') {
-        usernameFormatted = usernameFormatted.concat('%20');
-      } else {
-        usernameFormatted = usernameFormatted.concat(user.username.charAt(i));
-      }
-    }
-
     let userType = '';
     if (user.role) {
       userType = 'individual';
     } else {
       userType = 'institution';
     }
-    return "http://localhost:4200/profile?username=" + usernameFormatted + '&userType=' + userType;
+    return "http://localhost:4200/profile?username=" + user.username + '&userType=' + userType;
 
   }
 
@@ -329,18 +293,37 @@ export class AdminUserManagementProfileComponent implements OnInit {
     return formattedDate.substring(5, formattedDate.length-13);
   }
 
-  async filterByDateRange() {
-    await this.ngOnInit();
+  async filterByDateRange(type) {
+    await this.loadAudit(type);
+    console.log(this.rangeDates)
     let a = new Date(this.rangeDates[0]);
-    let b = new Date(this.rangeDates[1]);
+    let b = null;
+    if(this.rangeDates[1] != null) {
+      b = new Date(this.rangeDates[1]);
+    }
+
     let arr = [];
-    for(var i=0; i<this.userAudit.length; i++) {
-      let c = new Date(this.userAudit[i].createdAt);
-      if(c >= a && c <= b) {
-        arr.push(this.userAudit[i]);
+    let tempArr;
+    if(type == 'admin') tempArr = this.adminAudit;
+    else  tempArr = this.userAudit;
+
+    for(var i=0; i<tempArr.length; i++) {
+      let c = new Date(tempArr[i].createdAt);
+      if(b == null) {
+        if(c.toDateString() === a.toDateString()) {
+          arr.push(tempArr[i]);
+        }
+      } else {
+        if((c > a || c.toDateString() === a.toDateString()) && 
+          (c < b || c.toDateString() === b.toDateString())) {
+          arr.push(tempArr[i]);
+        }
       }
     }
-    this.userAudit = arr;
+
+    if(type == 'admin') this.adminAudit = arr;
+    else  this.userAudit = arr;
+    
   }
 
 }
