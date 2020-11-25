@@ -2,33 +2,33 @@
     <div class="col-2">
         <div *ngIf="isUser">
             <div *ngIf="user.profilePic.length == 0">
-                <img class="rounded-circle img-fluid" src="../../assets/img/profilePic_Placeholder.png" style="width: 80px; height: 80px; object-fit: cover;"
+                <img class="rounded-circle img-fluid mt-2" src="../../assets/img/profilePic_Placeholder.png" style="width: 80px; height: 80px; object-fit: cover;"
                     alt="Profile picture">
             </div>
             <div *ngIf="user.profilePic.length != 0">
-                <img class="rounded-circle img-fluid" src={{user.profilePic}} style="width: 80px; height: 80px; object-fit: cover;"
+                <img class="rounded-circle img-fluid mt-2" src={{user.profilePic}} style="width: 80px; height: 80px; object-fit: cover;"
                     alt="Profile picture">
             </div>
         </div>
 
         <div *ngIf="isProject">
             <div *ngIf="project.imgPath.length == 0">
-                <img class="rounded-circle img-fluid" src="../../assets/img/team.jpg" style="width: 80px; height: 80px; object-fit: cover;"
+                <img class="rounded-circle img-fluid mt-2" src="../../assets/img/team.jpg" style="width: 80px; height: 80px; object-fit: cover;"
                     alt="Profile picture">
             </div>
             <div *ngIf="project.imgPath.length != 0">
-                <img class="rounded-circle img-fluid" src={{imgString}} style="width: 80px; height: 80px; object-fit: cover;"
+                <img class="rounded-circle img-fluid mt-2" src={{imgString}} style="width: 80px; height: 80px; object-fit: cover;"
                     alt="Profile picture">
             </div>
         </div>
 
         <div *ngIf="isReward">
             <div *ngIf="reward.imgPath.length == 0">
-                <img class="rounded-circle img-fluid" src="../../assets/img/rewardPlaceholder.png" style="width: 80px; height: 80px; object-fit: cover;"
+                <img class="rounded-circle img-fluid mt-2" src="../../assets/img/rewardPlaceholder.png" style="width: 80px; height: 80px; object-fit: cover;"
                     alt="Profile picture">
             </div>
             <div *ngIf="reward.imgPath.length != 0">
-                <img class="rounded-circle img-fluid" src={{imgString}} style="width: 80px; height: 80px; object-fit: cover;"
+                <img class="rounded-circle img-fluid mt-2" src={{imgString}} style="width: 80px; height: 80px; object-fit: cover;"
                     alt="Profile picture">
             </div>
         </div>
@@ -68,7 +68,7 @@
     </div>
     <div [ngClass]="{'col-4': isUser || isProject}">
         <div *ngIf="userType=='individual'">
-            <div *ngIf="checkAdmin && isAdminLead && user.username != auditUser.username">
+            <div *ngIf="checkAccess()">
                 <button class="p-button p-button-danger float-right ml-2 mt-3" (click)="suspendUser()">
                     <i class="pi pi-times-circle"></i>&nbsp;Suspend
                 </button>
@@ -113,37 +113,18 @@
     </div>
 </div>
 
-<div *ngIf="isAdminLead&&checkAdmin">
+<div class="row mt-2 mb-2">
+<div class="mt-2" *ngIf="isAdminLead&&checkAdmin">
     Please select audit type
 </div>
-<div *ngIf="(isAdminLead&&checkAdmin)">
+
+<div class="ml-2" *ngIf="(isAdminLead&&checkAdmin)">
     <select class="form-control" style="width: fit-content;" name="type" [(ngModel)]="auditType" required #type="ngModel">
         <option value="user">User</option>
         <option value="admin">Admin</option>
     </select>
 </div>
-<div class="row">
-        <!-- <span *ngIf="(auditType=='admin')&&(isAdminLead&&checkAdmin)">
-            <a href="https://localhost:8080{{adminAuditFile}}" class="btn btn-primary float-right" aria-haspopup="true"
-                aria-expanded="false" target="_blank">
-                Export
-            </a>
-        </span>
-        <div *ngIf="(auditType=='user')&&(isAdminLead&&checkAdmin)">
-            <a href="https://localhost:8080{{userAuditFile}}" class="btn btn-primary float-right text-white" type="button" aria-haspopup="true"
-                aria-expanded="false" target="_blank">
-                Export
-            </a>
-        </div>
-        <div *ngIf="(auditType==null)&&(isNullUser || isNullProj || isNullReward)">
-            <a href="https://localhost:8080{{userAuditFile}}" class="btn btn-primary float-right text-white" type="button" aria-haspopup="true"
-                aria-expanded="false" target="_blank">
-                Export
-            </a>
-        </div> -->
-</div>
 
-<!-- <div class="row"> -->
     <div *ngIf="auditType=='user'">
         <h4>User Audit Log
             <a *ngIf="userAudit.length > 0" href="https://localhost:8080{{userAuditFile}}" class="btn btn-primary float-right" target="_blank">
@@ -343,4 +324,25 @@
             </ng-template>
         </p-table>
     </div>
-<!-- </div> -->
+</div>
+
+<div class="row">
+    <!-- <span *ngIf="(auditType=='admin')&&(isAdminLead&&checkAdmin)">
+        <a href="https://localhost:8080{{adminAuditFile}}" class="btn btn-primary float-right" aria-haspopup="true"
+            aria-expanded="false" target="_blank">
+            Export
+        </a>
+    </span>
+    <div *ngIf="(auditType=='user')&&(isAdminLead&&checkAdmin)">
+        <a href="https://localhost:8080{{userAuditFile}}" class="btn btn-primary float-right text-white" type="button" aria-haspopup="true"
+            aria-expanded="false" target="_blank">
+            Export
+        </a>
+    </div>
+    <div *ngIf="(auditType==null)&&(isNullUser || isNullProj || isNullReward)">
+        <a href="https://localhost:8080{{userAuditFile}}" class="btn btn-primary float-right text-white" type="button" aria-haspopup="true"
+            aria-expanded="false" target="_blank">
+            Export
+        </a>
+    </div> -->
+</div>

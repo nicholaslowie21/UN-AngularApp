@@ -170,6 +170,14 @@ export class AdminUserManagementProfileComponent implements OnInit {
     );
   }
 
+  checkAccess() {
+    if(!this.checkAdmin) return true;
+    if(this.checkAdmin) {
+      if(this.isAdminLead && this.user.username != this.auditUser.username)  return true;
+      else  return false;
+    }
+  }
+
   viewUser(user): string {
     let userType = '';
     if (user.role) {
