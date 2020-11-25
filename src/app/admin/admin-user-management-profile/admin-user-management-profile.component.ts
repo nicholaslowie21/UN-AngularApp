@@ -58,25 +58,20 @@ export class AdminUserManagementProfileComponent implements OnInit {
         this.username = params.username;
         this.userType = params.type;
         this.id = params.id;
-      },
-        response => { console.log(JSON.stringify(response)) }
-      );
-    console.log(this.username);
-    console.log(this.userType);
-    console.log(this.id);
+      }
+    );
 
     this.auditUser = this.tokenStorageService.getUser();
-    console.log(this.auditUser);
     if (this.auditUser.role == 'adminlead') {
       this.isAdminLead = true;
     }
 
+    await this.generateExportLink();
+
     //for individuals and institutions
     if (this.userType == 'individual') {
-      //this.loadUser();
       await this.userService.viewUserById({ id: this.id }).toPromise().then(
         response => {
-          // console.log(JSON.stringify(response));
           this.user = response.data.targetUser;
         },
         err => {
@@ -90,18 +85,7 @@ export class AdminUserManagementProfileComponent implements OnInit {
 
         await this.adminService.getAuditLogs({ id: this.id, type: 'admin' }).toPromise().then(
           response => {
-            // console.log(JSON.stringify(response));
             this.adminAudit = response.data.logs;
-          },
-          err => {
-            alert(err.error.message);
-          }
-        );
-
-        await this.adminService.exportAuditLogs({ id: this.id, type: 'admin' }).toPromise().then(
-          response => {
-            // console.log(JSON.stringify(response));
-            this.adminAuditFile = response.data.thePath;
           },
           err => {
             alert(err.error.message);
@@ -116,7 +100,6 @@ export class AdminUserManagementProfileComponent implements OnInit {
 
       await this.adminService.getAuditLogs({ id: this.id, type: 'user' }).toPromise().then(
         response => {
-          // console.log(JSON.stringify(response));
           this.userAudit = response.data.logs;
         },
         err => {
@@ -124,18 +107,7 @@ export class AdminUserManagementProfileComponent implements OnInit {
         }
       );
 
-      await this.adminService.exportAuditLogs({ id: this.id, type: 'user' }).toPromise().then(
-        response => {
-          // console.log(JSON.stringify(response));
-          this.userAuditFile = response.data.thePath;
-        },
-        err => {
-          alert(err.error.message);
-        }
-      );
-
     } else if (this.userType == 'institution') {
-      //this.loadInstitution();
       await this.institutionService.viewInstitutionById({ id: this.id }).toPromise().then(
         response => {
           this.user = response.data.targetInstitution;
@@ -150,18 +122,7 @@ export class AdminUserManagementProfileComponent implements OnInit {
 
       await this.adminService.getAuditLogs({ id: this.id, type: 'institution' }).toPromise().then(
         response => {
-          // console.log(JSON.stringify(response));
           this.userAudit = response.data.logs;
-        },
-        err => {
-          alert(err.error.message);
-        }
-      );
-
-      await this.adminService.exportAuditLogs({ id: this.id, type: 'institution' }).toPromise().then(
-        response => {
-          // console.log(JSON.stringify(response));
-          this.userAuditFile = response.data.thePath;
         },
         err => {
           alert(err.error.message);
@@ -171,11 +132,9 @@ export class AdminUserManagementProfileComponent implements OnInit {
 
     //for project and rewards
     if (this.userType == 'project') {
-      //console.log("98: true");
       this.isProject = true;
       await this.projectService.viewProject({ id: this.id }).toPromise().then(
         response => {
-          // console.log(JSON.stringify(response));
           this.project = response.data.targetProject;
           this.imgString = "https://localhost:8080" + this.project.imgPath;
         },
@@ -189,18 +148,7 @@ export class AdminUserManagementProfileComponent implements OnInit {
 
       await this.adminService.getAuditLogs({ id: this.id, type: 'project' }).toPromise().then(
         response => {
-          // console.log(JSON.stringify(response));
           this.userAudit = response.data.logs;
-        },
-        err => {
-          alert(err.error.message);
-        }
-      );
-
-      await this.adminService.exportAuditLogs({ id: this.id, type: 'project' }).toPromise().then(
-        response => {
-          // console.log(JSON.stringify(response));
-          this.userAuditFile = response.data.thePath;
         },
         err => {
           alert(err.error.message);
@@ -209,13 +157,11 @@ export class AdminUserManagementProfileComponent implements OnInit {
     }
 
     if (this.userType == 'reward') {
-      //console.log("reward type");
       this.isReward = true;
       await this.rewardService.getRewardOfferingDetail({ id: this.id}).toPromise().then(
         response => {
           this.reward = response.data.reward;
           this.imgString = "https://localhost:8080" + this.reward.imgPath;
-          // console.log(JSON.stringify(response));
         },
         err => {
           alert(err.error.message);
@@ -227,49 +173,29 @@ export class AdminUserManagementProfileComponent implements OnInit {
 
       await this.adminService.getAuditLogs({ id: this.id, type: 'reward' }).toPromise().then(
         response => {
-          // console.log(JSON.stringify(response));
           this.userAudit = response.data.logs;
         },
         err => {
           alert(err.error.message);
         }
       );
-
-      await this.adminService.exportAuditLogs({ id: this.id, type: 'reward' }).toPromise().then(
-        response => {
-          // console.log(JSON.stringify(response));
-          this.userAuditFile = response.data.thePath;
-        },
-        err => {
-          alert(err.error.message);
-        }
-      );
     }
-
   }
 
-  /**loadUser(): void {
-    this.userService.viewUserProfile({ username: this.username }).subscribe(
+  async generateExportLink() {
+    let tempType = this.userType;
+    if(this.userType == 'individual') {
+      tempType = 'user';
+    }
+    await this.adminService.exportAuditLogs({ id: this.id, type: tempType }).toPromise().then(
       response => {
-        console.log(JSON.stringify(response));
-        this.user = response.data.targetUser;
+        this.userAuditFile = response.data.thePath;
       },
       err => {
         alert(err.error.message);
       }
     );
-  } **/
-
-  /**loadInstitution(): void {
-    this.institutionService.viewInstitutionProfile({ username: this.username }).subscribe(
-      response => {
-        this.user = response.data.targetInstitution;
-      },
-      err => {
-        alert(err.error.message);
-      }
-    )
-  } **/
+  }
 
   viewUser(user): string {
     let usernameFormatted = '';
@@ -404,14 +330,13 @@ export class AdminUserManagementProfileComponent implements OnInit {
   }
 
   async filterByDateRange() {
-    console.log(this.rangeDates);
     await this.ngOnInit();
-    let a = this.rangeDates[0].toUTCString();
-    let b = this.rangeDates[1].toUTCString();
+    let a = new Date(this.rangeDates[0]);
+    let b = new Date(this.rangeDates[1]);
     let arr = [];
     for(var i=0; i<this.userAudit.length; i++) {
-      if(new Date(this.userAudit[i].createdAt).toUTCString() >= a && new Date(this.userAudit[i].createdAt).toUTCString() <= b) {
-        console.log("INCLUDED");
+      let c = new Date(this.userAudit[i].createdAt);
+      if(c >= a && c <= b) {
         arr.push(this.userAudit[i]);
       }
     }
