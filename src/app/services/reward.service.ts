@@ -67,6 +67,10 @@ export class RewardService {
     return this.http.get(API_URL + '/marketplace');
   }
 
+  getRewardDetails(data): Observable<any> {
+    return this.http.get(API_URL + '/marketplace/rewardDetail?rewardId=' + data.id);
+  }
+
   redeemReward(data): Observable<any> {
     return this.http.post(API_URL + '/redeem', {
       rewardId: data.id

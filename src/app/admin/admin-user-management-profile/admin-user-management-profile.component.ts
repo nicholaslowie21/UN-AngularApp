@@ -129,7 +129,7 @@ export class AdminUserManagementProfileComponent implements OnInit {
 
     if (this.userType == 'reward') {
       this.isReward = true;
-      await this.rewardService.getRewardOfferingDetail({ id: this.id}).toPromise().then(
+      await this.rewardService.getRewardDetails({ id: this.id}).toPromise().then(
         response => {
           this.reward = response.data.reward;
           this.imgString = "https://localhost:8080" + this.reward.imgPath;
