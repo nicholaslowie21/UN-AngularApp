@@ -30,8 +30,7 @@
             <div class="strike">
                 <span></span>
             </div>
-            <strong>Summary:</strong>
-            <br>
+            <h5>Summary:</h5>
             <div class="text-justify">{{report.summary}}</div>
         </div>
     </div>
@@ -39,15 +38,11 @@
 <div class="container bg-light p-3 my-3 col-9">
     <div class="row">
         <div class="col-6 border-right border-dark">
-            Report on:
-            <br>
+            <h5>Report on:</h5>
             <div *ngIf="type=='project'">
                 <a href="/project/projectDetails?id={{report.targetId}}">{{report.targetTitle}}</a>
                 <br>
-
-                <!--button *ngIf="disableActivate" disabled class="btn btn-success float-right mt-3" type="button" aria-haspopup="true" aria-expanded="false">
-                Activate
-            </button-->
+                Status: {{report.targetStatus}}
             </div>
             <div *ngIf="type=='user'">
                 <span *ngIf="report.targetImg.length == 0">
@@ -58,7 +53,7 @@
                 </span>
                 <a href="/profile?username={{report.targetUsername}}&userType=individual">{{report.targetName}}</a>
                 <br>
-
+                Status: {{report.targetStatus}}
             </div>
             <div *ngIf="type=='institution'">
                 <span *ngIf="report.targetImg.length == 0">
@@ -68,11 +63,12 @@
                     <img src="https://localhost:8080{{report.targetImg}}" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
                 </span>
                 <a href="/profile?username={{report.targetUsername}}&userType=institution">{{report.targetName}}</a>
+                <br>
+                Status: {{report.targetStatus}}
             </div>
         </div>
         <div class="col-6">
-            Submitted by:
-            <br>
+            <h5>Submitted by:</h5>
             <span *ngIf="(report.reporterImgPath.length == 0)">
                 <img src="../../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
             </span>
@@ -123,15 +119,4 @@
             <br>
         </div>
     </div>
-    <!-- <div class="row">
-        <div class="col ">
-            <div class="strike">
-                <span></span>
-            </div>
-            <strong>Summary:</strong>
-            <br>
-            <div class="text-justify">{{report.summary}}</div>
-            <br>
-        </div>
-    </div> -->
 </div>
