@@ -4,6 +4,7 @@ import { ReportService } from '../../services/report.service';
 import { AdminService } from '../../services/admin.service';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
+import { TokenStorageService } from '../../services/token-storage.service';
 
 @Component({
   selector: 'app-admin-report-details',
@@ -20,16 +21,19 @@ export class AdminReportDetailsComponent implements OnInit {
   reportedId: any;
   status: any;
 
+  loggedInUser: any;
+
   constructor(private route: ActivatedRoute, private messageService: MessageService, private reportService: ReportService, 
-    private adminService: AdminService, private router: Router) { }
+    private adminService: AdminService, private router: Router, private tokenStorageService: TokenStorageService) { }
 
   async ngOnInit() {
     this.route.queryParams
       .subscribe(params => {
         this.id = params.id;
       }
-      );
-      console.log(this.id);
+    );
+
+    this.loggedInUser = this.tokenStorageService.getUser();
 
       await this.reportService.getReportDetails({ id: this.id }).toPromise().then(
         response => {
@@ -43,6 +47,17 @@ export class AdminReportDetailsComponent implements OnInit {
         }
       );
       console.log(this.type);
+  }
+
+  checkAccess() {
+    let myRole = this.loggedInUser.role;
+    if(this.report.targetRole == 'admin' || this.report.targetRole == 'regionaladmin') {
+      if(myRole == 'admin' || myRole == 'regionaladmin')  return false;
+      if(myRole == 'adminlead') return true;
+    } else if(this.report.targetRole == 'adminlead') {
+      if (myRole == 'adminlead' && this.report.targetUsername != this.loggedInUser.username) return true;
+      else  return false;
+    } else if(this.report.targetRole == 'user')  return true;
   }
 
   formatDate(date): any {
@@ -69,86 +84,129 @@ export class AdminReportDetailsComponent implements OnInit {
   }
 
   activateUser(id): void {
-    console.log(id);
-    this.adminService.activateUser({ id: id }).subscribe(
-      response => {
-        //this.loadUser();
-        alert("User has been activated!");
-        this.ngOnInit();
-      }
-    )
+    let r = confirm("Are you sure you want to activate this account?");
+    if (r == true) {
+      this.adminService.activateUser({ id: id }).subscribe(
+        response => {
+          this.ngOnInit();
+          this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Account activated successfully!'});
+        },
+        err => {
+          this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+        }
+      );
+    } else {
+      return;
+    }
   }
 
   suspendUser(pid): void {
-    console.log(pid);
-    this.adminService.suspendUser({ id: pid }).subscribe(
-      response => {
-        //this.loadUser();
-        alert("User has been suspended!");
-        this.ngOnInit();
-      }
-    )
+    let r = confirm("Are you sure you want to suspend this account?");
+    if (r == true) {
+      this.adminService.suspendUser({ id: pid }).subscribe(
+        response => {
+          this.ngOnInit();
+          this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Account suspended successfully!'});
+        },
+        err => {
+          this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+        }
+      );
+    } else {
+      return;
+    }
   }
 
   activateInstitution(pid): void {
-    this.adminService.activateInstitution({ id: pid }).subscribe(
-      response => {
-        //this.loadInstitution();
-        alert("Institution has been activated!");
-        this.ngOnInit();
-      },
-      err => {
-        alert(err.error.msg);
-      }
-    )
+    let r = confirm("Are you sure you want to activate this account?");
+    if (r == true) {
+      this.adminService.activateInstitution({ id: pid }).subscribe(
+        response => {
+          this.ngOnInit();
+          this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Account activated successfully!'});
+        },
+        err => {
+          this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+        }
+      );
+    } else {
+      return;
+    }
   }
 
   suspendInstitution(pid): void {
-    this.adminService.suspendInstitution({ id: pid }).subscribe(
-      response => {
-        //this.loadInstitution();
-        alert("Institution has been suspended!");
-        this.ngOnInit();
-      },
-      err => {
-        alert(err.error.msg);
-      }
-    )
+    let r = confirm("Are you sure you want to suspend this account?");
+    if (r == true) {
+      this.adminService.suspendInstitution({ id: pid }).subscribe(
+        response => {
+          this.ngOnInit();
+          this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Account suspended successfully!'});
+        },
+        err => {
+          this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+        }
+      );
+    } else {
+      return;
+    }
   }
 
   activateProject(pid): void {
-    this.adminService.activateProject({ id: pid }).subscribe(
-      response => {
-        alert("Project has been activated!");
-        this.ngOnInit();
-      },
-      err => {
-        alert(err.error.msg);
-      }
-    )
+    let r = confirm("Are you sure you want to activate this project?");
+    if (r == true) {
+      this.adminService.activateProject({ id: pid }).subscribe(
+        response => {
+          this.ngOnInit();
+          this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Project activated successfully!'});
+        },
+        err => {
+          this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+        }
+      );
+    } else {
+      return;
+    }
   }
 
   suspendProject(pid): void {
-    this.adminService.suspendProject({ id: pid }).subscribe(
-      response => {
-        alert("Project has been suspended!");
-        this.ngOnInit();
-      },
-      err => {
-        alert(err.error.msg);
-      }
-    )
+    let r = confirm("Are you sure you want to suspend this project?");
+    if (r == true) {
+      this.adminService.suspendProject({ id: pid }).subscribe(
+        response => {
+          this.ngOnInit();
+          this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Project suspended successfully!'});
+        },
+        err => {
+          this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+        }
+      );
+    } else {
+      return;
+    }
   }
 
   updateReport(id, status): void {
-    this.reportService.updateReport({id: id, status: status}).subscribe(
-      response => {
-        this.messageService.add({key:'toastMsg',severity:'success',summary:'Report updated!'});
-        this.ngOnInit();
-      },
-      err => {
-        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
-      }
-    )
+    let r;
+    if(status == 'declined') {
+      r = confirm("Are you sure you want to decline this report?");
+    } else if (status == 'progress') {
+      r = confirm("Are you sure you want to accept this report?");
+    } else {
+      r = confirm("Are you sure you want to mark this report as solved?");
+    }
+
+    if(r == true) {
+      this.reportService.updateReport({id: id, status: status}).subscribe(
+        response => {
+          this.messageService.add({key:'toastMsg',severity:'success',summary:'Report updated!'});
+          this.ngOnInit();
+        },
+        err => {
+          this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+        }
+      );
+    } else {
+      return;
+    }
   }
 }
