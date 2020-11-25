@@ -84,7 +84,6 @@ export class AdminUserManagementProfileComponent implements OnInit {
         await this.generateExportLink('admin');
         console.log(this.adminAuditFile)
         await this.loadAudit('admin');
-        console.log(this.adminAudit)
       } else {
         //not any admins, set true
         this.isNullUser = true;
@@ -162,7 +161,8 @@ export class AdminUserManagementProfileComponent implements OnInit {
   async loadAudit(type) {
     await this.adminService.getAuditLogs({ id: this.id, type: type }).toPromise().then(
       response => {
-        this.userAudit = response.data.logs;
+        if(type == 'admin') this.adminAudit = response.data.logs;
+        else  this.userAudit = response.data.logs;
       },
       err => {
         alert(err.error.message);

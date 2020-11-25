@@ -68,12 +68,14 @@
     </div>
     <div [ngClass]="{'col-4': isUser || isProject}">
         <div *ngIf="userType=='individual'">
-            <button class="p-button p-button-danger float-right ml-2 mt-3" (click)="suspendUser()">
-                <i class="pi pi-times-circle"></i>&nbsp;Suspend
-            </button>
-            <button class="p-button p-button-success float-right mt-3" (click)="activateUser()">
-                <i class="pi pi-check-circle"></i>&nbsp;Activate
-            </button>
+            <div *ngIf="checkAdmin && isAdminLead && user.username != auditUser.username">
+                <button class="p-button p-button-danger float-right ml-2 mt-3" (click)="suspendUser()">
+                    <i class="pi pi-times-circle"></i>&nbsp;Suspend
+                </button>
+                <button class="p-button p-button-success float-right mt-3" (click)="activateUser()">
+                    <i class="pi pi-check-circle"></i>&nbsp;Activate
+                </button>
+            </div>
         </div>
         <div *ngIf="userType=='institution'">
             <button class="p-button p-button-danger float-right ml-2 mt-3" (click)="suspendInstitution()">
@@ -111,16 +113,16 @@
     </div>
 </div>
 
-<div *ngIf="(auditType==null)&&(isAdminLead&&checkAdmin)">
+<div *ngIf="isAdminLead&&checkAdmin">
     Please select audit type
 </div>
+<div *ngIf="(isAdminLead&&checkAdmin)">
+    <select class="form-control" style="width: fit-content;" name="type" [(ngModel)]="auditType" required #type="ngModel">
+        <option value="user">User</option>
+        <option value="admin">Admin</option>
+    </select>
+</div>
 <div class="row">
-    <span *ngIf="(isAdminLead&&checkAdmin)">
-        <select class="form-control" style="width: fit-content;" name="type" [(ngModel)]="auditType" required #type="ngModel">
-            <option value="user">User</option>
-            <option value="admin">Admin</option>
-        </select>
-    </span>
         <!-- <span *ngIf="(auditType=='admin')&&(isAdminLead&&checkAdmin)">
             <a href="https://localhost:8080{{adminAuditFile}}" class="btn btn-primary float-right" aria-haspopup="true"
                 aria-expanded="false" target="_blank">
@@ -141,7 +143,7 @@
         </div> -->
 </div>
 
-<div class="row">
+<!-- <div class="row"> -->
     <div *ngIf="auditType=='user'">
         <h4>User Audit Log
             <a *ngIf="userAudit.length > 0" href="https://localhost:8080{{userAuditFile}}" class="btn btn-primary float-right" target="_blank">
@@ -189,7 +191,7 @@
     </div>
     <div *ngIf="auditType=='admin'">
         <h4>Admin Audit Log
-            <a *ngIf="userAudit.length > 0" href="https://localhost:8080{{adminAuditFile}}" class="btn btn-primary float-right" target="_blank">
+            <a *ngIf="userAudit.length > 0 && isAdminLead" href="https://localhost:8080{{adminAuditFile}}" class="btn btn-primary float-right" target="_blank">
                 <i class="pi pi-upload"></i>&nbsp;Export
             </a>
         </h4>
@@ -341,4 +343,4 @@
             </ng-template>
         </p-table>
     </div>
-</div>
+<!-- </div> -->
