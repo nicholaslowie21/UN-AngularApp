@@ -72,8 +72,8 @@
                     <td>{{a.role}}</td>
                     <td>{{a.status}}</td>
                     <td>
-                        <div *ngIf="checkRole(a)">
-                            <button pButton class="p-button-rounded" icon="pi pi-comment" title="Chat"></button>
+                        <div *ngIf="checkRole(a) && a.status != 'unclaimed'">
+                            <button *ngIf="a.status != 'suspended'" pButton class="p-button-rounded" icon="pi pi-comment" title="Chat" (click)="chatUser('user', a.id)"></button>
                             <button pButton class="p-button-rounded p-button-success ml-2" title="Activate" icon="pi pi-check-circle" (click)="activateUser(a.id)"></button>
                             <button pButton class="p-button-rounded p-button-danger ml-2" title="Suspend" icon="pi pi-times-circle" (click)="suspendUser(a.id)"></button>
                         </div>
@@ -128,8 +128,8 @@
                     <td>{{a.country}}</td>
                     <td>{{a.status}}</td>
                     <td>
-                        <div>
-                            <button pButton class="p-button-rounded" icon="pi pi-comment" title="Chat"></button>
+                        <div *ngIf="a.status != 'unclaimed'">
+                            <button *ngIf="a.status != 'suspended'" pButton class="p-button-rounded" icon="pi pi-comment" title="Chat" (click)="chatUser('institution', a.id)"></button>
                             <button pButton class="p-button-rounded p-button-success ml-2" title="Activate" icon="pi pi-check-circle" (click)="activateInstitution(a.id)"></button>
                             <button pButton class="p-button-rounded p-button-danger ml-2" title="Suspend" icon="pi pi-times-circle" (click)="suspendInstitution(a.id)"></button>
                         </div>
@@ -183,7 +183,8 @@
                     <td>{{a.country}}</td>
                     <td>{{a.status}}</td>
                     <td>
-                        <div>
+                        <div *ngIf="a.status != 'completed' && a.status != 'closed'">
+                            <button pButton class="p-button-rounded" icon="pi pi-comment" title="Chat" (click)="chatUser(a.hostType, a.host)"></button>
                             <button pButton class="p-button-rounded p-button-success ml-2" title="Activate" icon="pi pi-check-circle" (click)="activateProject(a.id)"></button>
                             <button pButton class="p-button-rounded p-button-danger ml-2" title="Suspend" icon="pi pi-times-circle" (click)="suspendProject(a.id)"></button>
                         </div>

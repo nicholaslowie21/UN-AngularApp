@@ -3,6 +3,7 @@ import { AdminService } from '../../services/admin.service';
 import { ProjectService } from '../../services/project.service';
 import { MappingService } from '../../services/mapping.service';
 import { TokenStorageService } from '../../services/token-storage.service';
+import { CommunicationService } from '../../services/communication.service';
 import { faSearch } from '@fortawesome/free-solid-svg-icons/faSearch';
 import { MessageService } from 'primeng/api';
 import { saveAs } from 'file-saver';
@@ -59,7 +60,8 @@ export class AdminUserManagementComponent implements OnInit {
   filterKeyType = '';
 
   constructor(private adminService: AdminService, private tokenStorageService: TokenStorageService, 
-    private projectService: ProjectService, private mappingService: MappingService, private messageService: MessageService) { }
+    private projectService: ProjectService, private mappingService: MappingService, 
+    private messageService: MessageService, private communicationService: CommunicationService) { }
 
   async ngOnInit() {
     this.thisUser = this.tokenStorageService.getUser();
@@ -76,7 +78,8 @@ export class AdminUserManagementComponent implements OnInit {
     await this.adminService.searchUser({ username: '' }).toPromise().then(res => this.allUsers = res.data.users);
     await this.adminService.searchInstitution({ username: '' }).toPromise().then(res => this.allInst = res.data.institutions);
     await this.projectService.searchProject({ code: '' }).toPromise().then(res => this.allProj = res.data.projects);
-
+    console.log(this.allProj)
+    
     if(this.isRegionalAdmin) {
       let arr = [];
       for(var i=0; i<this.allUsers.length; i++) {
@@ -397,6 +400,28 @@ export class AdminUserManagementComponent implements OnInit {
       },
       err => {
         this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:'Something went wrong while downloading the file. Please try again!'});
+      }
+    )
+  }
+
+  chatUser(targetType, userId): void {
+    if(userId == this.thisUser.id) {
+      this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:'You cannot chat yourself'});
+      return;
+    }
+    const chatForm = {
+      chatType: 'admin',
+      targetId: userId,
+      targetType: targetType
+    }
+    this.communicationService.chatAccount(chatForm).subscribe(
+      response => {
+        console.log(response)
+        let chatStatus = this.tokenStorageService.getChatStatus();
+        this.tokenStorageService.setChatStatus({status:"room", id:response.data.chatRoom.id, selectedChatType: chatStatus.selectedChatType });
+        window.location.reload();
+      }, err => {
+        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
       }
     )
   }
