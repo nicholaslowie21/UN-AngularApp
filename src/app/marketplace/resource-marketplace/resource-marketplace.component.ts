@@ -3,7 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { MarketplaceService } from '../../services/marketplace.service';
 import { MessageService } from 'primeng/api';
 import { ProjectService } from '../../services/project.service';
+import { PaidResourceService } from '../../services/paid-resource.service';
 import { TokenStorageService } from '../../services/token-storage.service';
+import { timers } from 'jquery';
 
 @Component({
   selector: 'app-resource-marketplace',
@@ -58,7 +60,7 @@ export class ResourceMarketplaceComponent implements OnInit {
 
   loggedInUsername: any;
 
-  constructor(private route: ActivatedRoute, private marketplaceService: MarketplaceService, private messageService: MessageService, private projectService: ProjectService, private tokenStorageService: TokenStorageService) { }
+  constructor(private route: ActivatedRoute, private marketplaceService: MarketplaceService, private messageService: MessageService, private projectService: ProjectService, private paidResourceService: PaidResourceService, private tokenStorageService: TokenStorageService) { }
 
   async ngOnInit() {
     await this.marketplaceService.getItemOffers().toPromise().then(res => this.items = res.data.items);
@@ -343,6 +345,17 @@ export class ResourceMarketplaceComponent implements OnInit {
     
     this.paids = arr;
     this.sortKeyPaid = '';
+  }
+
+  onSubmitPaid(): void {
+    this.paidResourceService.createPurchaseRequest({id: this.selectedResourceId, projectId: this.selectedProjectId}).subscribe(
+      response => {
+        this.isRequestSuccessful = true;
+      }, 
+      err => {
+        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+      }
+    );
   }
 
 }

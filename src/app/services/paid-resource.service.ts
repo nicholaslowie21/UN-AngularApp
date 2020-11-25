@@ -70,14 +70,14 @@ export class PaidResourceService {
 
   updateBuyerRequestStatus(data): Observable<any> {
     return this.http.post(API_URL + '/buyer/purchase/status', {
-      paidResourceId: data.id,
+      paidRequestId: data.id,
       status: data.status
     }, httpOptions);
   }
 
   updateSellerRequestStatus(data): Observable<any> {
     return this.http.post(API_URL + '/seller/purchase/status', {
-      paidResourceId: data.id,
+      paidRequestId: data.id,
       status: data.status
     }, httpOptions);
   }

@@ -1,1 +1,152 @@
-<p>my-purchases works!</p>
+<h2>My Purchases</h2>
+This page shows your submitted requests to purchase resources for projects. <br>
+For successfully purchased resources, you can view them on the respective project resources page. <br>
+Access your projects under <a [href]="myProjectsLink">My Projects</a>.
+
+<br><br>
+
+<p-toast key="toastMsg" [baseZIndex]="100"></p-toast>
+
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" id="pending-tab" data-toggle="tab" href="#pending" role="tab" aria-controls="pending" aria-selected="true">Pending</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="accepted-tab" data-toggle="tab" href="#accepted" role="tab" aria-controls="accepted" aria-selected="false">Accepted</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="declined-tab" data-toggle="tab" href="#declined" role="tab" aria-controls="declined" aria-selected="false">Declined</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="cancelled-tab" data-toggle="tab" href="#cancelled" role="tab" aria-controls="cancelled" aria-selected="false">Cancelled</a>
+    </li>
+</ul>
+<div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="pending" role="tabpanel" aria-labelledby="pending-tab">
+        <div class="card">
+            <p-dataView #dv [value]="pendingReqs" [paginator]="true" [rows]="9" filterBy="title" layout="list">
+            <ng-template pTemplate="header">
+                <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                    Search bar
+                    <!-- <span class="p-input-icon-left p-mb-2 p-mb-md-0">
+                        <i class="pi pi-search"></i>
+                        <input type="search" pInputText placeholder="Search by Resource Title" (input)="dv.filter($event.target.value)">
+                    </span> -->
+                </div>
+            </ng-template>
+            <ng-template let-req pTemplate="listItem">
+                <div class="p-col-12">
+                    <div class="row p-2">
+                        <div class="col-4">
+                            <div class="req-name">You requested to purchase: <a href="/resource/paid/details?id={{req.paidResourceId}}">{{req.paidresource.title}}</a></div>
+                        </div>
+                        <div class="col-4">
+                            <div class="req-name">For Project: <a href="/project/projectDetails?id={{req.projectId}}">{{req.projectTitle}}</a></div>
+                        </div>
+                        <div class="col-3">
+                            Request sent at: {{formatDate(req.createdAt)}}
+                        </div>
+                        <div class="col-1 d-flex flex-column">
+                            <br/>
+                            <button class="btn btn-danger align-self-end mt-auto" type="button" (click)="cancelPurchaseReq(req.id)">
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+            </p-dataView>
+        </div>
+    </div>
+    <div class="tab-pane fade" id="accepted" role="tabpanel" aria-labelledby="accepted-tab">
+        <div class="card">
+            <p-dataView #dv [value]="acceptedReqs" [paginator]="true" [rows]="9" filterBy="title" layout="list">
+                <ng-template pTemplate="header">
+                    <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                        Search bar
+                    </div>
+                </ng-template>
+                <ng-template let-req pTemplate="listItem">
+                    <div class="p-col-12">
+                        <div class="row p-2">
+                            <div class="col-4">
+                                <div class="req-name">You requested to purchase: <a href="/resource/paid/details?id={{req.paidResourceId}}">{{req.paidresource.title}}</a></div>
+                            </div>
+                            <div class="col-4">
+                                <div class="req-name">For project: <a href="/project/projectDetails?id={{req.projectId}}">{{req.projectTitle}}</a></div>
+                            </div>
+                            <div class="col-2">
+                                Request accepted at: <br/>
+                                {{formatDate(req.updatedAt)}}
+                            </div>
+                            <div class="col-2 d-flex flex-column">
+                                <br/>
+                                <button class="btn btn-primary align-self-end mt-auto" type="button">
+                                    Make Payment
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-dataView>
+        </div>
+    </div>
+    <div class="tab-pane fade" id="declined" role="tabpanel" aria-labelledby="declined-tab">
+        <div class="card">
+            <p-dataView #dv [value]="declinedReqs" [paginator]="true" [rows]="9" filterBy="title" layout="list">
+                <ng-template pTemplate="header">
+                    <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                        Search bar
+                    </div>
+                </ng-template>
+                <ng-template let-req pTemplate="listItem">
+                    <div class="p-col-12">
+                        <div class="row p-2">
+                            <div class="col-4">
+                                <div class="req-name">You requested to purchase: <a href="/resource/paid/details?id={{req.paidResourceId}}">{{req.paidresource.title}}</a></div>
+                            </div>
+                            <div class="col-4">
+                                <div class="req-name">For project: <a href="/project/projectDetails?id={{req.projectId}}">{{req.projectTitle}}</a></div>
+                            </div>
+                            <div class="col-4">
+                                Request declined at: {{formatDate(req.updatedAt)}}<br/><br/>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-dataView>
+        </div>
+    </div>
+    <div class="tab-pane fade" id="cancelled" role="tabpanel" aria-labelledby="cancelled-tab">
+        <div class="card">
+            <p-dataView #dv [value]="cancelledReqs" [paginator]="true" [rows]="9" filterBy="title" layout="list">
+                <ng-template pTemplate="header">
+                    <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                        Search bar
+                    </div>
+                </ng-template>
+                <ng-template let-req pTemplate="listItem">
+                    <div class="p-col-12">
+                        <div class="row p-2">
+                            <div class="col-4">
+                                <div class="req-name">You requested to purchase: <a href="/resource/paid/details?id={{req.paidResourceId}}">{{req.paidresource.title}}</a></div>
+                            </div>
+                            <div class="col-4">
+                                <div class="req-name">For project: <a href="/project/projectDetails?id={{req.projectId}}">{{req.projectTitle}}</a></div>
+                            </div>
+                            <div class="col-4">
+                                Request cancelled at: {{formatDate(req.updatedAt)}}
+                                <p *ngIf="req.cancelType == 'seller'">
+                                    Cancelled by: resource owner
+                                  </p>
+                                <p *ngIf="req.cancelType == 'buyer'">
+                                    Cancelled by: you
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-dataView>
+        </div>
+    </div>
+</div>

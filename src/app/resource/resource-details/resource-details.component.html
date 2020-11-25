@@ -336,7 +336,8 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <button class="btn btn-primary btn-block">Request</button>
+                                <button *ngIf="myProjects.length != 0" class="btn btn-primary btn-block">Request</button>
+                                <button *ngIf="myProjects.length == 0" class="btn btn-primary btn-block" disabled>Request</button>
                             </div>
                         </form>
                     </div>
@@ -409,7 +410,8 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <button class="btn btn-primary btn-block">Submit</button>
+                                <button *ngIf="myProjects.length != 0" class="btn btn-primary btn-block">Submit</button>
+                                <button *ngIf="myProjects.length == 0" class="btn btn-primary btn-block" disabled>Submit</button>
                             </div>
                         </form>
                     </div>

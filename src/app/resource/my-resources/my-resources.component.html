@@ -251,13 +251,12 @@
                                 <!-- <span class="float-right">{{formatDate(item.updatedAt)}}</span> -->
                             </div>
                             <div class="product-grid-item-content">
-                                <img *ngIf="paid.imgPaths.length == 0" src="../../../assets/img/item.png" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;"
+                                <img *ngIf="paid.imgPath.length == 0" src="../../../assets/img/item.png" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;"
                                     [alt]="paid.title" />
-                                <img *ngIf="paid.imgPaths.length != 0" src="https://localhost:8080{{paid.imgPaths[0]}}" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;"
+                                <img *ngIf="paid.imgPath.length != 0" src="https://localhost:8080{{paid.imgPath[0]}}" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;"
                                     [alt]="paid.title" />
                                 <div class="product-name">
-                                    {{paid.title}}
-                                    <!-- <a href="/resource/resourceDetails?id={{item.id}}&type=item">{{paid.title}}</a> -->
+                                    <a href="/resource/paid/details?id={{paid.id}}">{{paid.title}}</a>
                                 </div>
                                 <div class="product-description">{{paid.country}}</div>
                             </div>
