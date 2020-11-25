@@ -39,4 +39,8 @@ export class DataService {
   getDatabySDG(data): Observable<any> {
     return this.http.get(API_URL + '/dataBySDGs?startDate=' + data.startDate + '&endDate=' + data.endDate);
   }
+
+  getDatabyCountries(data):Observable<any> {
+    return this.http.get(API_URL + '/dataByCountries?startDate='+ data.startDate + '&endDate=' + data.endDate);
+  }
 }

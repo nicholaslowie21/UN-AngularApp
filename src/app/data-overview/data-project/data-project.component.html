@@ -1,29 +1,80 @@
 <a href="/dashboard"><< Back to Data Dashboard</a>
 <br>
 <div class="p-fluid p-grid p-formgrid">
-    <div class="p-field p-col-6 p-md-8" >
+    <div class="p-field p-col-12 p-md-8">
         <h2>Data By SDG and Country</h2>
+        <p>Projects that indicate more than one SDG are counted each time under their respective SDGs. Contributions and funding raised that reside within those projects are also counted multiple times.</p>
     </div>
-    <div class="p-field p-col-6 p-md-4" style="float: right">
+    <div class="p-field p-col-12 p-md-4" style="float: right">
         <p-calendar [(ngModel)]="rangeDates" selectionMode="range" inputId="range" baseZIndex=1000 [yearNavigator]="true" yearRange="{{firstYear}}:{{thisYear}}" [minDate]="minDateValue" [maxDate]="maxDateValue" (onSelect)="update($event)" showButtonBar="true" placeholder="All Dates" showIcon="true" (onClearClick)="showAll($event)" dateFormat="yy/mm/dd"></p-calendar>
     </div>
 </div>
 
 <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item">
-        <a class="nav-link active" id="personal-tab" data-toggle="tab" href="#personal" role="tab" aria-controls="personal" aria-selected="true">Based on SDG</a>
+        <a class="nav-link active" id="chart-tab" data-toggle="tab" href="#chart" role="tab" aria-controls="chart" aria-selected="true">Chart on SDG</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" id="knowledge-tab" data-toggle="tab" href="#knowledge" role="tab" aria-controls="knowledge" aria-selected="false">Based on Country</a>
+        <a class="nav-link" id="personal-tab" data-toggle="tab" href="#personal" role="tab" aria-controls="personal" aria-selected="false">Table on SDG</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="knowledge-tab" data-toggle="tab" href="#knowledge" role="tab" aria-controls="knowledge" aria-selected="false">Table on Country</a>
     </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade show active" id="personal" role="tabpanel" aria-labelledby="personal-tab">
-    <p-table #dt1 [value]="dataBySDG" dataKey="id"
+    <div class="tab-pane fade show active" id="chart" role="tabpanel" aria-labelledby="chart-tab">
+        <div class="row">
+            <div class="col-6">
+                <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title text-center mt-md-3">
+                        Accounts based on SDG
+                    </h6>
+                    <p-chart type="doughnut" [data]="accounts"></p-chart>
+                </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title text-center mt-md-3">
+                        Projects based on SDG
+                    </h6>
+                    <p-chart type="doughnut" [data]="projects"></p-chart>
+                </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-6">
+                <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title text-center mt-md-3">
+                        Contributions based on SDG
+                    </h6>
+                    <p-chart type="doughnut" [data]="contributions"></p-chart>
+                </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title text-center mt-md-3">
+                        Funding raised based on SDG (SGD)
+                    </h6>
+                    <p-chart type="doughnut" [data]="funding"></p-chart>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tab-pane fade" id="personal" role="tabpanel" aria-labelledby="personal-tab">
+    <p-table #dt1 [value]="dataBySDG" dataKey="id" [rowHover]="true"
         [rows]="20" [showCurrentPageReport]="true" styleClass="p-datatable-customers p-datatable-gridlines"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-        [globalFilterFields]="['sdgTitle','accountsNum','projectsNum','contributionsNum', 'fundingNum']">
+        [filterDelay]="0" [globalFilterFields]="['sdgTitle']">
         <ng-template pTemplate="caption">
             <div class="p-d-flex">
                 <span class="p-input-icon-left p-ml-auto">
@@ -36,11 +87,11 @@
             <tr>
                 <th pSortableColumn="sdgTitle">SDG<p-sortIcon field="sdgTitle"></p-sortIcon></th>
                 <th pSortableColumn="accountsNum">
-                    <!-- <div class="p-d-flex p-jc-between p-ai-center"> -->
+                    <div class="p-d-flex p-jc-between p-ai-center">
                     Accounts
                     <p-sortIcon field="accountsNum"></p-sortIcon>
-                    <!-- <p-columnFilter type="numeric" field="balance" display="menu"></p-columnFilter>
-                    </div> -->
+                    <p-columnFilter type="numeric" field="accountsNum" ></p-columnFilter>
+                    </div>
                 </th>
                 <th pSortableColumn="projectsNum">Projects<p-sortIcon field="projectsNum"></p-sortIcon></th>
                 <th pSortableColumn="contributionsNum">Contributions<p-sortIcon field="contributionsNum"></p-sortIcon></th>
@@ -71,15 +122,15 @@
 
     </div>
     <div class="tab-pane fade" id="knowledge" role="tabpanel" aria-labelledby="knowledge-tab">
-        <p-table #dt1 [value]="dataByCountry" dataKey="id"
+        <p-table #dt [value]="dataByCountry" dataKey="id" [rowHover]="true"
         [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" styleClass="p-datatable-customers p-datatable-gridlines"
         [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-        [globalFilterFields]="['country','accountsNum','projectsNum','contributionsNum', 'fundingNum']">
+        [filterDelay]= "0" [globalFilterFields]="['country']">
         <ng-template pTemplate="caption">
             <div class="p-d-flex">
                 <span class="p-input-icon-left p-ml-auto">
                     <i class="pi pi-search"></i>
-                    <input pInputText type="text" (input)="dt1.filterGlobal($event.target.value, 'contains')" placeholder="Search keyword" />
+                    <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Search keyword" />
                 </span>
             </div>
         </ng-template>
@@ -87,20 +138,14 @@
             <tr>
                 <th pSortableColumn="country">Country<p-sortIcon field="country"></p-sortIcon></th>
                 <th pSortableColumn="accountsNum">
-                    <!-- <div class="p-d-flex p-jc-between p-ai-center"> -->
                     Accounts
                     <p-sortIcon field="accountsNum"></p-sortIcon>
-                    <!-- <p-columnFilter type="numeric" field="balance" display="menu"></p-columnFilter>
-                    </div> -->
                 </th>
                 <th pSortableColumn="projectsNum">Projects<p-sortIcon field="projectsNum"></p-sortIcon></th>
                 <th pSortableColumn="contributionsNum">Contributions<p-sortIcon field="contributionsNum"></p-sortIcon></th>
-                <th pSortableColumn="fundingRaisedSum">
-                    <!-- <div class="p-d-flex p-jc-between p-ai-center"> -->
-                        Funding
-                        <p-sortIcon field="fundingRaisedSum"></p-sortIcon>
-                        <!-- <p-columnFilter type="numeric" field="balance" display="menu" currency="SGD"></p-columnFilter>
-                    </div> -->
+                <th pSortableColumn="fundingRaised">
+                    Funding
+                    <p-sortIcon field="fundingRaised"></p-sortIcon>
                 </th>
             </tr>
         </ng-template>
@@ -110,7 +155,7 @@
                 <td>{{bycountry.accountsNum}}</td>
                 <td>{{bycountry.projectsNum}}</td>
                 <td>{{bycountry.contributionsNum}}</td>
-                <td>{{bycountry.fundingRaisedSum | currency: 'USD'}}</td>
+                <td>{{bycountry.fundingRaised | currency: 'USD'}}</td>
             </tr>
         </ng-template>
         <ng-template pTemplate="emptymessage">
