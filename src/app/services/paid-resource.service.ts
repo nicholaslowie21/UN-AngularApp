@@ -60,4 +60,37 @@ export class PaidResourceService {
   getAllOthersPaidResources(data): Observable<any> {
     return this.http.get(API_URL + '/all/others?accountId=' + data.id + '&accountType=' + data.type);
   }
+
+  createPurchaseRequest(data): Observable<any> {
+    return this.http.post(API_URL + '/purchase/request', {
+      paidResourceId: data.id,
+      projectId: data.projectId
+    }, httpOptions);
+  }
+
+  updateBuyerRequestStatus(data): Observable<any> {
+    return this.http.post(API_URL + '/buyer/purchase/status', {
+      paidResourceId: data.id,
+      status: data.status
+    }, httpOptions);
+  }
+
+  updateSellerRequestStatus(data): Observable<any> {
+    return this.http.post(API_URL + '/seller/purchase/status', {
+      paidResourceId: data.id,
+      status: data.status
+    }, httpOptions);
+  }
+
+  getMyPurchases(data): Observable<any> {
+    return this.http.get(API_URL + '/my/purchase?status=' + data.status);
+  }
+
+  getPaidResIncomingRequest(data): Observable<any> {
+    return this.http.get(API_URL + '/seller/requests?status=' + data.status + '&paidResourceId=' + data.id);
+  }
+
+  getProjectPurchases(data): Observable<any> {
+    return this.http.get(API_URL + '/project/purchase?projectId=' + data.projectId);
+  }
 }
