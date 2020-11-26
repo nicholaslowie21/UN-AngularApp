@@ -123,6 +123,7 @@
             <button (click)="closeChatPopUp()" class="btn float-right"><i class="pi pi-times"></i></button>
             <a href="/chat" class="btn float-right"><i class="pi pi-external-link"></i></a>
           </div>
+
           <div *ngIf="chatStatus.status == 'room'">
             <button (click)="closeChatRoom()" class="btn mt-1"><i class="pi pi-chevron-left"></i></button>
             <span *ngIf="selectedChatImg.length == 0">
@@ -192,10 +193,9 @@
 
           <!-- Open a Chat Room -->
           <div *ngIf="chatStatus.status == 'room'" class="">
-            <div *ngIf="selectedChatRoom.chatType == 'admin' && chatStatus.selectedChatType == 'admin'"
-              class="text-center bg-warning rounded-sm"><small>You are now chatting as an admin</small></div>
-            <div *ngIf="selectedChatRoom.chatType == 'admin' && chatStatus.selectedChatType == 'user'"
-              class="text-center bg-warning rounded-sm"><small>You are now chatting with an admin</small></div>
+            <div *ngIf="selectedChatRoom.chatType == 'admin'" class="text-center bg-warning rounded-sm">
+              <small>This is an administrative chat</small>
+            </div>
             <div *ngFor="let msg of chatMsgs" class="p-2">
               <div *ngIf="msg.accountUsername != username" class="bg-secondary rounded-pill p-2 pl-3 pr-3 text-white">
                 {{msg.message}}

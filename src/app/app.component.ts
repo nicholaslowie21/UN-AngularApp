@@ -68,7 +68,6 @@ export class AppComponent implements OnInit {
       await this.communicationService.checkNewNotifications().toPromise().then(
         res => this.hasNewNotif = res.data.gotNew
       );
-      console.log(this.hasNewNotif)
       await this.loadChat();
     }
   }
@@ -185,6 +184,8 @@ export class AppComponent implements OnInit {
   }
 
   closeChatRoom(): void {
+    if(this.selectedChatRoom.chatType == 'admin') this.chatStatus.selectedChatType = 'admin';
+    else  this.chatStatus.selectedChatType = 'user';
     this.tokenStorageService.setChatStatus({ status: "open", selectedChatType: this.chatStatus.selectedChatType });
     this.chatStatus = this.tokenStorageService.getChatStatus();
     this.loadChat();
