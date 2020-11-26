@@ -1,6 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { TokenStorageService } from '../../services/token-storage.service';
 import { PaidResourceService } from '../../services/paid-resource.service';
+import { UserService } from '../../services/user.service';
+import { InstitutionService } from '../../services/institution.service';
+import { ProjectService } from '../../services/project.service';
+import { MarketplaceService } from '../../services/marketplace.service';
 import { MessageService } from 'primeng/api';
 import { ActivatedRoute } from '@angular/router';
 import { saveAs } from 'file-saver';
@@ -39,9 +43,19 @@ export class PaidResourceDetailsComponent implements OnInit {
   resource: any;
   resourceImages = [];
 
+  form: any = {};
+  myProjects: any[];
+  selectedProjectId: any;
+  filterKeyProject = 'Select a Project';
+  isRequestSuccessful = false;
+
+  pendingReqs: any[];
+  acceptedReqs: any[];
+  confirmedReqs: any[];
 
   constructor(private route: ActivatedRoute, private tokenStorageService: TokenStorageService, private messageService: MessageService,
-    private paidResourceService: PaidResourceService) { }
+    private paidResourceService: PaidResourceService, private userService: UserService, private institutionService: InstitutionService,
+    private projectService: ProjectService, private marketplaceService: MarketplaceService) { }
 
   async ngOnInit() {
     this.route.queryParams.subscribe(
@@ -66,6 +80,22 @@ export class PaidResourceDetailsComponent implements OnInit {
     if(this.resource.ownerUsername == username) {
       this.isOwner = true;
     }
+
+    // retrieve current user's projects (for use later if user requests this resource)
+    await this.marketplaceService.getUserProjects({id: this.tokenStorageService.getUser().id, accountType: this.tokenStorageService.getAccountType()}).toPromise().then(
+      res => this.myProjects = res.data.theProjects
+    );
+
+    // retrieve pending incoming purchase requests
+    await this.paidResourceService.getPaidResIncomingRequest({status: 'pending', id: this.id}).toPromise().then(
+      res => this.pendingReqs = res.data.paidrequests
+    );
+    await this.paidResourceService.getPaidResIncomingRequest({status: 'accepted', id: this.id}).toPromise().then(
+      res => this.acceptedReqs = res.data.paidrequests
+    );
+    await this.paidResourceService.getPaidResIncomingRequest({status: 'paid', id: this.id}).toPromise().then(
+      res => this.confirmedReqs = res.data.paidrequests
+    );
   }
 
   handleChangeChecked(e) {
@@ -105,6 +135,78 @@ export class PaidResourceDetailsComponent implements OnInit {
   formatDate(date): any {
     let formattedDate = new Date(date).toUTCString();
     return formattedDate.substring(5, formattedDate.length-13);
+  }
+
+  closeModal(): void {
+    this.ngOnInit();
+    this.selectedProjectId = '';
+  }
+
+  async updateSelectedProject(event) {
+    this.selectedProjectId = event.target.value;
+    console.log(this.selectedProjectId);
+  }
+
+  onSubmit(): void {
+    this.paidResourceService.createPurchaseRequest({id: this.id, projectId: this.selectedProjectId}).subscribe(
+      response => {
+        this.isRequestSuccessful = true;
+      }, 
+      err => {
+        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+      }
+    );
+  }
+
+  acceptReq(reqId): void {
+    let r = confirm("Are you sure you want to accept this request?");
+    if (r == true) {
+      this.paidResourceService.updateSellerRequestStatus({id: reqId, status: 'accepted'}).subscribe(
+        response => {
+          this.messageService.add({key:'toastMsg', severity:'success', summary:'Success', detail:'Purchase request accepted!'});
+          window.location.reload();
+        }, 
+        err => {
+          this.messageService.add({key:'toastMsg', severity:'error', summary:'Error', detail:err.error.msg});
+        }
+      );
+    } else {
+      return;
+    }
+  }
+
+  declineReq(reqId): void {
+    let r = confirm("Are you sure you want to decline this request?");
+    if (r == true) {
+      this.paidResourceService.updateSellerRequestStatus({id: reqId, status: 'declined'}).subscribe(
+        response => {
+          this.messageService.add({key:'toastMsg', severity:'success', summary:'Success', detail:'Purchase request declined!'});
+          window.location.reload();
+        }, 
+        err => {
+          this.messageService.add({key:'toastMsg', severity:'error', summary:'Error', detail:err.error.msg});
+        }
+      );
+    } else {
+      return;
+    }
+  }
+
+  cancelReq(reqId): void {
+    let r = confirm("Are you sure you want to cancel this request?");
+    if (r == true) {
+      this.paidResourceService.updateSellerRequestStatus({id: reqId, status: 'cancelled'}).subscribe(
+        response => {
+          this.messageService.add({key:'toastMsg', severity:'success', summary:'Success', detail:'Purchase request cancelled!'});
+          window.location.reload();
+        }, 
+        err => {
+          this.messageService.add({key:'toastMsg', severity:'error', summary:'Error', detail:err.error.msg});
+        }
+      );
+    } else {
+      return;
+    }
   }
 
   // below is all code for venue images galleria

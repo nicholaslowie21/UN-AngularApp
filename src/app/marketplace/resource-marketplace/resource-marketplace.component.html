@@ -225,7 +225,8 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <button class="btn btn-primary btn-block">Request</button>
+                                <button *ngIf="myProjects.length != 0" class="btn btn-primary btn-block">Request</button>
+                                <button *ngIf="myProjects.length == 0" class="btn btn-primary btn-block" disabled>Request</button>
                             </div>
                         </form>
                     </div>
@@ -343,7 +344,8 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <button class="btn btn-primary btn-block">Submit</button>
+                                        <button *ngIf="myProjects.length != 0" class="btn btn-primary btn-block">Submit</button>
+                                        <button *ngIf="myProjects.length == 0" class="btn btn-primary btn-block" disabled>Request</button>
                                     </div>
                                 </form>
                             </div>
@@ -398,7 +400,7 @@
                                 <div class="product-description">US${{paid.price}}</div>
                             </div>
                             <div class="mt-md-3">
-                                <button *ngIf="paid.ownerUsername != loggedInUsername" (click)="setResourceId(paid.id); setResourceType('paid')" class="btn btn-primary"
+                                <button *ngIf="paid.ownerUsername != loggedInUsername" (click)="setResourceId(paid.id)" class="btn btn-primary"
                                     style="bottom: 3%; right: 3%; position: absolute;" data-toggle="modal" data-target="#requestPaidResModal">Request</button>
                             </div>
                         </div>
@@ -408,5 +410,53 @@
         </div>
     </div>
 
-    
+    <div class="modal fade" data-backdrop="static" id="requestPaidResModal" tabindex="-1" role="dialog" aria-labelledby="requestPaidResModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="requestPaidResModalLabel">Request Resource</h5>
+                    <button type="button" (click)="closeModal()" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div *ngIf="!isRequestSuccessful">
+                        Select the project that you would like to request this resource for.
+                        <br/>
+                        <br/>
+                        <form name="form" (ngSubmit)="fp.form.valid && onSubmitPaid()" #fp="ngForm" novalidate>
+                            <!-- show current user's projects and get them to choose one -->
+                            <div class="form-group row">
+                                <label for="project" class="col-sm-3 col-form-label">Project</label>
+                                <div class="col-sm-9" *ngIf="myProjects.length == 0">
+                                    You currently have no ongoing projects.
+                                </div>
+                                <div class="col-sm-9" *ngIf="myProjects.length != 0">
+                                    <select class="form-control" name="project" [(ngModel)]="selectedProjectId" required #project="ngModel" (click)="updateSelectedProject($event)">
+                                        <option *ngFor="let p of myProjects" value={{p.id}}>{{p.title}}</option>
+                                    </select>
+                                    <div class="alert-danger" *ngIf="fp.submitted && project.invalid">
+                                        <div *ngIf="project.errors.required">
+                                            No project selected. Please select a project!
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <button *ngIf="myProjects.length != 0" class="btn btn-primary btn-block">Request</button>
+                                <button *ngIf="myProjects.length == 0" class="btn btn-primary btn-block" disabled>Request</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div *ngIf="isRequestSuccessful">
+                        <div class="alert alert-success">
+                            Your request has been submitted successfully! <br>
+                            Check your request status on <a href="/myPurchases">My Purchases</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

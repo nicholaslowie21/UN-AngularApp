@@ -3,8 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { MarketplaceService } from '../../services/marketplace.service';
 import { MessageService } from 'primeng/api';
 import { ProjectService } from '../../services/project.service';
-import { TokenStorageService } from '../../services/token-storage.service';
 import { PaidResourceService } from '../../services/paid-resource.service';
+import { TokenStorageService } from '../../services/token-storage.service';
 
 @Component({
   selector: 'app-resource-marketplace',
@@ -361,12 +361,12 @@ export class ResourceMarketplaceComponent implements OnInit {
   }
 
   onSubmitPaid(): void {
-    console.log(this.selectedProjectId);
-    console.log(this.selectedResourceId);
-    this.paidResourceService.createPurchaseReq({id: this.selectedResourceId, projId: this.selectedProjectId}).subscribe(
+    this.paidResourceService.createPurchaseRequest({id: this.selectedResourceId, projectId: this.selectedProjectId}).subscribe(
       response => {
-        console.log(response);
         this.isRequestSuccessful = true;
+      }, 
+      err => {
+        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
       }
     );
   }
