@@ -5,6 +5,7 @@ import { MessageService } from 'primeng/api';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { InstitutionService } from '../../services/institution.service';
+import { PaidResourceService } from '../../services/paid-resource.service';
 
 @Component({
   selector: 'app-my-resources',
@@ -33,11 +34,13 @@ export class MyResourcesComponent implements OnInit {
   sortOrderMpw: number;
   sortOrderVen: number;
   sortOrderKno: number;
+  sortOrderPaid: number;
 
   sortField: string;
   sortFieldMpw: string;
   sortFieldVen: string;
   sortFieldKno: string;
+  sortFieldPaid: string;
 
   sortKeyItem = '';
   sortKeyMpw = '';
@@ -56,7 +59,8 @@ export class MyResourcesComponent implements OnInit {
   paids: any = [];
 
   constructor(private tokenStorageService: TokenStorageService, private resourceService: ResourceService,
-    private messageService: MessageService, private route: ActivatedRoute, private userService: UserService, private institutionService: InstitutionService) { }
+    private messageService: MessageService, private route: ActivatedRoute, private userService: UserService, 
+    private institutionService: InstitutionService, private paidResourceService: PaidResourceService) { }
 
   async ngOnInit() {
     this.route.queryParams.subscribe(
@@ -112,10 +116,12 @@ export class MyResourcesComponent implements OnInit {
         await this.resourceService.getInstitutionPrivateItem().toPromise().then(res => this.items = res.data.items);
         await this.resourceService.getInstitutionPrivateKnowledge().toPromise().then(res => this.knowledges = res.data.knowledges);
         await this.resourceService.getInstitutionPrivateVenue().toPromise().then(res => this.venues = res.data.venues);
+        await this.paidResourceService.getAllMyPaidResources().toPromise().then(res => this.paids = res.data.paidresource);
       } else {
         await this.resourceService.getInstitutionItem({id: this.user.id}).toPromise().then(res => this.items = res.data.items);
       await this.resourceService.getInstitutionKnowledge({id: this.user.id}).toPromise().then(res => this.knowledges = res.data.knowledges);
       await this.resourceService.getInstitutionVenue({id: this.user.id}).toPromise().then(res => this.venues = res.data.venues);
+      await this.paidResourceService.getAllOthersPaidResources({id: this.user.id, type: "institution"}).toPromise().then(res => this.paids = res.data.paidresource);
       }
     }
     console.log(this.items);
@@ -210,6 +216,18 @@ export class MyResourcesComponent implements OnInit {
     else {
         this.sortOrderKno = 1;
         this.sortFieldKno = value;
+    }
+  }
+
+  onSortChangePaid(event) {
+    let value = event.value;
+    if (value.indexOf('!') === 0) {
+        this.sortOrderPaid = -1;
+        this.sortFieldPaid = value.substring(1, value.length);
+    }
+    else {
+        this.sortOrderPaid = 1;
+        this.sortFieldPaid = value;
     }
   }
 
@@ -467,6 +485,7 @@ export class MyResourcesComponent implements OnInit {
   }
 
   async deactivatePaid(paid) {
+    console.log(paid.id);
     this.resourceService.updatePaidStatus({id: paid.id, status: "inactive"}).subscribe(
       response => {
         // alert("Item " + item.title + " deactivated!");
