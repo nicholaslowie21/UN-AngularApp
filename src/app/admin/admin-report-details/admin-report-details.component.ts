@@ -5,6 +5,7 @@ import { AdminService } from '../../services/admin.service';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { TokenStorageService } from '../../services/token-storage.service';
+import { CommunicationService } from '../../services/communication.service';
 
 @Component({
   selector: 'app-admin-report-details',
@@ -24,7 +25,8 @@ export class AdminReportDetailsComponent implements OnInit {
   loggedInUser: any;
 
   constructor(private route: ActivatedRoute, private messageService: MessageService, private reportService: ReportService, 
-    private adminService: AdminService, private router: Router, private tokenStorageService: TokenStorageService) { }
+    private adminService: AdminService, private router: Router, private tokenStorageService: TokenStorageService,
+    private communicationService: CommunicationService) { }
 
   async ngOnInit() {
     this.route.queryParams
@@ -208,5 +210,27 @@ export class AdminReportDetailsComponent implements OnInit {
     } else {
       return;
     }
+  }
+
+  chatUser(targetType, id): void {
+    if(id == this.loggedInUser.id) {
+      this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:'You cannot chat yourself'});
+      return;
+    }
+    const chatForm = {
+      chatType: 'admin',
+      targetId: id,
+      targetType: targetType
+    }
+    this.communicationService.chatAccount(chatForm).subscribe(
+      response => {
+        console.log(response)
+        let chatStatus = this.tokenStorageService.getChatStatus();
+        this.tokenStorageService.setChatStatus({status:"room", id:response.data.chatRoom.id, selectedChatType: chatStatus.selectedChatType });
+        window.location.reload();
+      }, err => {
+        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+      }
+    )
   }
 }

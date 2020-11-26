@@ -40,9 +40,19 @@
                 </button>
             </h5>
             <div *ngIf="type=='project'">
-                <a href="/project/projectDetails?id={{report.targetId}}">{{report.targetTitle}}</a>
+                <a style="font-size: large;" href="/project/projectDetails?id={{report.targetId}}">{{report.targetTitle}}</a>
                 <br>
                 Project Status: {{report.targetStatus}}
+                <br>
+                Project Host:
+                <span *ngIf="report.hostAccount.profilePic == 0">
+                    <img src="../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                </span>
+                <span *ngIf="report.hostAccount.profilePic != 0">
+                    <img src="{{report.hostAccount.profilePic}}" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
+                </span>
+                <a *ngIf="report.targetHostType == 'user'" href="/profile?username={{report.hostAccount.username}}&userType=individual">{{report.hostAccount.name}}</a>
+                <a *ngIf="report.targetHostType == 'institution'" href="/profile?username={{report.hostAccount.username}}&userType=institution">{{report.hostAccount.name}}</a>
             </div>
             <div *ngIf="type=='user'">
                 <span *ngIf="report.targetImg.length == 0">
@@ -51,7 +61,7 @@
                 <span *ngIf="report.targetImg.length != 0">
                     <img src="https://localhost:8080{{report.targetImg}}" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
                 </span>
-                <a href="/profile?username={{report.targetUsername}}&userType=individual">{{report.targetName}}</a>
+                <a style="font-size: large;" href="/profile?username={{report.targetUsername}}&userType=individual">{{report.targetName}}</a>
                 <br>
                 Account Status: {{report.targetStatus}}
             </div>
@@ -62,7 +72,7 @@
                 <span *ngIf="report.targetImg.length != 0">
                     <img src="https://localhost:8080{{report.targetImg}}" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
                 </span>
-                <a href="/profile?username={{report.targetUsername}}&userType=institution">{{report.targetName}}</a>
+                <a style="font-size: large;" href="/profile?username={{report.targetUsername}}&userType=institution">{{report.targetName}}</a>
                 <br>
                 Account Status: {{report.targetStatus}}
             </div>
@@ -80,10 +90,10 @@
                 <img src="https://localhost:8080{{report.reporterImgPath}}" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
             </span>
             <span *ngIf="report.reporterType == 'user'">
-                <a href="/profile?username={{report.reporterUsername}}&userType=individual">{{report.reporterName}}</a>
+                <a style="font-size: large;" href="/profile?username={{report.reporterUsername}}&userType=individual">{{report.reporterName}}</a>
             </span>
             <span *ngIf="report.reporterType == 'institution'">
-                <a href="/profile?username={{report.reporterUsername}}&userType=institution">{{report.reporterName}}</a>
+                <a style="font-size: large;" href="/profile?username={{report.reporterUsername}}&userType=institution">{{report.reporterName}}</a>
             </span>
         </div>
     </div>
@@ -139,6 +149,10 @@
                         <i class="pi pi-times-circle"></i>&nbsp;Suspend
                     </button>
                     <hr>
+                    <button class="btn btn-block text-primary" (click)="chatUser(report.targetHostType,report.targetHost)">
+                        <i class="pi pi-comment"></i>&nbsp;Chat Project Host
+                    </button>
+                    <hr>
                     <a href="/admin/user-management/profile?type={{type}}&id={{report.targetId}}" class="btn btn-block text-primary">View Audit</a>
                 </div>
                 <div *ngIf="type=='user'">
@@ -151,6 +165,10 @@
                             <i class="pi pi-times-circle"></i>&nbsp;Suspend
                         </button>
                         <hr>
+                        <button class="btn btn-block text-primary" (click)="chatUser('user',report.targetId)">
+                            <i class="pi pi-comment"></i>&nbsp;Chat
+                        </button>
+                        <hr>
                     </div>
                     <a href="/admin/user-management/profile?username={{report.targetUsername}}&type=individual&id={{report.targetId}}" class="btn btn-block text-primary">View Audit</a>
                 </div>
@@ -161,6 +179,10 @@
                     <hr>
                     <button class="btn btn-block text-danger" (click)="suspendInstitution(report.targetId)">
                         <i class="pi pi-times-circle"></i>&nbsp;Suspend
+                    </button>
+                    <hr>
+                    <button class="btn btn-block text-primary" (click)="chatUser('institution',report.targetId)">
+                        <i class="pi pi-comment"></i>&nbsp;Chat
                     </button>
                     <hr>
                     <a href="/admin/user-management/profile?username={{report.targetUsername}}&type=institution&id={{report.targetId}}" class="btn btn-block text-primary">View Audit</a>
@@ -177,6 +199,12 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-body">
+                <div *ngIf="report.reporterUsername != loggedInUser.username">
+                    <button class="btn btn-block text-primary" (click)="chatUser(report.reporterType,report.reporterId)">
+                        <i class="pi pi-comment"></i>&nbsp;Chat
+                    </button>
+                    <hr>
+                </div>
                 <a *ngIf="report.reporterType == 'user'" href="/admin/user-management/profile?username={{report.reporterUsername}}&type=individual&id={{report.reporterId}}" class="btn btn-block text-primary">View Audit</a>
                 <a *ngIf="report.reporterType == 'institution'" href="/admin/user-management/profile?username={{report.reporterUsername}}&type=institution&id={{report.reporterId}}" class="btn btn-block text-primary">View Audit</a>                
                 <hr>
