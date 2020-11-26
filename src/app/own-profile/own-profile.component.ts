@@ -142,7 +142,9 @@ export class OwnProfileComponent implements OnInit {
     this.copyIFrameLink = "<iframe src=" + this.iFrameLink + " title=\"User Profile\" width=\"500\" height=\"500\"></iframe>";
 
     this.userId = this.user.id;
-    console.log(JSON.stringify(this.userId));
+    let tempType = '';
+    if(this.isIndividual) tempType = 'user';
+    else  tempType = 'institution';
 
     if (this.isIndividual) {
       await this.userService.getBadges({ id: this.userId }).toPromise().then(
@@ -210,7 +212,7 @@ export class OwnProfileComponent implements OnInit {
         }
       );
 
-      await this.paidResourceService.getAllMyPaidResources().toPromise().then(
+      await this.paidResourceService.getAllOthersPaidResources({id: this.userId, type: tempType}).toPromise().then(
         response => {
           this.paid = response.data.paidresource;
           for (var i = 0; i < response.data.paidresource.length; i++) {
@@ -284,7 +286,7 @@ export class OwnProfileComponent implements OnInit {
         }
       );
 
-      await this.paidResourceService.getAllMyPaidResources().toPromise().then(
+      await this.paidResourceService.getAllOthersPaidResources({id: this.userId, type: tempType}).toPromise().then(
         response => {
           this.paid = response.data.paidresource;
           for (var i = 0; i < response.data.paidresource.length; i++) {
@@ -303,9 +305,7 @@ export class OwnProfileComponent implements OnInit {
       );
     }
 
-    let tempType = '';
-    if(this.isIndividual) tempType = 'user';
-    else  tempType = 'institution'
+    
 
     await this.targetService.getAccountTargets({ id: this.userId, type: tempType }).toPromise().then(
       response => this.targets = response.data.targets
