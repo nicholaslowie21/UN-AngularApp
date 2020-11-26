@@ -88,6 +88,7 @@ import { PaidResourceDetailsComponent } from './resource/paid-resource-details/p
 import { DonateComponent } from './donate/donate.component';
 import { MyPurchasesComponent } from './my-purchases/my-purchases.component';
 import { EditTargetComponent } from './edit-target/edit-target.component';
+import { TermsConditionsComponent } from './terms-conditions/terms-conditions.component';
 
 @NgModule({
   declarations: [
@@ -147,7 +148,8 @@ import { EditTargetComponent } from './edit-target/edit-target.component';
     PaidResourceDetailsComponent,
     DonateComponent,
     MyPurchasesComponent,
-    EditTargetComponent
+    EditTargetComponent,
+    TermsConditionsComponent
   ],
   imports: [
     BrowserModule,

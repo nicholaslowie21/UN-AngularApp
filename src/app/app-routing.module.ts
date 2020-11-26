@@ -57,6 +57,7 @@ import { DonateComponent } from './donate/donate.component';
 import { MyPurchasesComponent } from './my-purchases/my-purchases.component';
 import { EditTargetComponent } from './edit-target/edit-target.component';
 import { OthersProfileComponent } from './others-profile/others-profile.component';
+import { TermsConditionsComponent } from './terms-conditions/terms-conditions.component';
 
 const routes: Routes = [
   { path: 'landing', component: LandingComponent},
@@ -134,6 +135,7 @@ const routes: Routes = [
   { path: 'view-Profile', component: OthersProfileComponent},
   { path: 'myPurchases', component: MyPurchasesComponent, canActivate: [AuthGuardService] },
   { path: 'edit-target', component: EditTargetComponent,  canActivate: [AuthGuardService]},
+  { path: 'terms-conditions', component: TermsConditionsComponent},
   { path: '', redirectTo: 'home', pathMatch: 'full'}
 ];
 
