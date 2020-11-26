@@ -26,7 +26,7 @@ export class DataDashboardComponent implements OnInit {
 
   constructor(private dataService: DataService) {
     this.year = new Date().getFullYear();
-    this.years = [2022, 2021, 2020, 2019];
+    this.years = [2020, 2019, 2018, 2017];
     this.noResourceBoolean = false;
     this.noContributionBoolean = false;
    }

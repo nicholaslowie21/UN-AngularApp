@@ -36,18 +36,18 @@ export class DataProjectComponent implements OnInit {
       'rgb(0, 174, 217, 0.99)', 'rgb(253, 183, 19, 0.99)', 'rgb(143, 24, 56, 0.99)', 'rgb(243, 109, 36, 0.99)', 'rgb(225, 20, 132, 0.99)',
       'rgb(249, 157, 38, 0.99)', 'rgb(207, 141, 42, 0.99)', 'rgb(72, 119, 62, 0.99)', ' rgb(0, 125, 188, 0.99)', 'rgb(62, 176, 73, 0.99)',
       'rgb(2, 85, 139, 0.99)', 'rgb(24, 54, 104, 0.99)'];
-    // this.min = 0;
-    // this.max = 0;
    }
 
   async ngOnInit() {
     // Set as date of the app creation
-    this.firstYear = 2019;
-    this.thisYear = 2022;
+    this.firstYear = 2017;
     this.minDateValue = new Date();
     this.minDateValue.setFullYear(this.firstYear);
     this.minDateValue.setMonth(0);
+    this.minDateValue.setDate(1);
     this.maxDateValue = new Date();
+    this.thisYear = this.maxDateValue.getFullYear();
+    console.log(this.thisYear);
     this.initAll();
   }
 
