@@ -1,10 +1,10 @@
 <h3>Search Account</h3>
 <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item">
-        <a class="nav-link active" id="personal-tab" data-toggle="tab" href="#personal" role="tab" aria-controls="personal" aria-selected="true">User</a>
+        <a class="nav-link active" id="personal-tab" data-toggle="tab" href="#personal" role="tab" aria-controls="personal" aria-selected="true">Individual</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" id="knowledge-tab" data-toggle="tab" href="#knowledge" role="tab" aria-controls="knowledge" aria-selected="false">Institutions</a>
+        <a class="nav-link" id="knowledge-tab" data-toggle="tab" href="#knowledge" role="tab" aria-controls="knowledge" aria-selected="false">Institution</a>
     </li>
 </ul>
 <div class="tab-content">
@@ -17,6 +17,8 @@
                             <i class="pi pi-search"></i>
                             <input type="search" pInputText placeholder="Search by Name" (input)="dv.filter($event.target.value)">
                         </span>
+                        <p-dropdown [options]="countryOptions" [(ngModel)]="filterKeyCountryUser" placeholder="Filter By Country" (onChange)="filterByCountry($event, [(userKey)])"
+                            styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
                     </div>
                 </ng-template>
                 <ng-template let-product pTemplate="listItem">
@@ -32,21 +34,16 @@
                                         alt="Profile picture">
                                 </div>
                             </div>
-                            <div class="col-8">
-                                <div *ngIf="product.username.length != 0">
+                            <div class="col-8 mt-2">
+                                <div *ngIf="product.status != 'unclaimed'">
                                     <a class="product-name" href="/profile?username={{product.username}}&userType=individual">{{product.name}}</a>
                                 </div>
-                                <div *ngIf="product.username.length == 0">
+                                <div *ngIf="product.status == 'unclaimed'">
                                     <a class="product-name" href="/view-Profile?id={{product.id}}&userType=individual">{{product.name}}</a>
+                                    <span class="rounded-pill bg-info pl-2 pr-2 ml-2 text-white"><small>{{product.status}}</small></span>
                                 </div>
                                 <div class="product-description p-text-nowrap p-text-truncate" style="width: 90%">{{product.country}}</div>
                             </div>
-                            <!-- <div class="col-3">
-                        <div class="float-right role{{checkRole(product)}} rounded-sm">
-                            <i class="pi pi-user"></i>&nbsp;{{checkRole(product)}}&nbsp;</div>
-                        <br/>
-                        <a class="mt-md-1 btn btn-primary float-right" href="/project/projectDetails?id={{product.id}}" role="button">View Project</a>
-                    </div> -->
                         </div>
                     </div>
                 </ng-template>
@@ -62,6 +59,8 @@
                             <i class="pi pi-search"></i>
                             <input type="search" pInputText placeholder="Search by Name" (input)="pi.filter($event.target.value)">
                         </span>
+                        <p-dropdown [options]="countryOptions" [(ngModel)]="filterKeyCountryInst" placeholder="Filter By Country" (onChange)="filterByCountry($event, [(instKey)])"
+                            styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
                     </div>
                 </ng-template>
                 <ng-template let-product pTemplate="listItem">
@@ -77,12 +76,13 @@
                                         alt="Profile picture">
                                 </div>
                             </div>
-                            <div class="col-8">
-                                <div *ngIf="product.username.length != 0">
+                            <div class="col-8 mt-2">
+                                <div *ngIf="product.status != 'unclaimed'">
                                     <a class="product-name" href="/profile?username={{product.username}}&userType=institution">{{product.name}}</a>
                                 </div>
-                                <div *ngIf="product.username.length == 0">
+                                <div *ngIf="product.status == 'unclaimed'">
                                     <a class="product-name" href="/view-Profile?id={{product.id}}&userType=institution">{{product.name}}</a>
+                                    <span class="rounded-pill bg-info pl-2 pr-2 ml-2 text-white"><small>{{product.status}}</small></span>
                                 </div>
                                 <div class="product-description p-text-nowrap p-text-truncate" style="width: 90%">{{product.country}}</div>
                             </div>
