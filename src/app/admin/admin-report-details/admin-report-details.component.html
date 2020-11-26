@@ -44,7 +44,7 @@
                 <br>
                 Project Status: {{report.targetStatus}}
                 <br>
-                Project Host:
+                Project Founder:
                 <span *ngIf="report.hostAccount.profilePic == 0">
                     <img src="../../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle mr-2" style="width: 40px;height: 40px;object-fit: cover;">
                 </span>
@@ -150,7 +150,7 @@
                     </button>
                     <hr>
                     <button class="btn btn-block text-primary" (click)="chatUser(report.targetHostType,report.targetHost)">
-                        <i class="pi pi-comment"></i>&nbsp;Chat Project Host
+                        <i class="pi pi-comment"></i>&nbsp;Chat Project Founder
                     </button>
                     <hr>
                     <a href="/admin/user-management/profile?type={{type}}&id={{report.targetId}}" class="btn btn-block text-primary">View Audit</a>

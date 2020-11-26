@@ -214,7 +214,7 @@ export class AdminReportDetailsComponent implements OnInit {
 
   chatUser(targetType, id): void {
     if(id == this.loggedInUser.id) {
-      this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:'You cannot chat yourself'});
+      this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:'You are the project founder'});
       return;
     }
     const chatForm = {
