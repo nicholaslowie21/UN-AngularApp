@@ -1,5 +1,6 @@
 import { Component, OnInit, AfterViewChecked  } from '@angular/core';
 import { MessageService } from 'primeng/api';
+import * as moment from 'moment';
 
 declare let paypal
 
@@ -46,37 +47,6 @@ export class DonateComponent implements AfterViewChecked {
         console.log(payment);
         this.isSuccess = true;
         this.paymentDeets = payment;
-        //payment is:
-        /*cart: "1A376087TB2369446"
-            create_time: "2020-11-18T07:41:14Z"
-            id: "PAYID-L62NAGY2WF15707DS6764427"
-            intent: "sale"
-            payer: {
-              payer_info: {
-                country_code: "SG"
-            email: "sb-15efg3748187@personal.example.com"
-            first_name: "John"
-            last_name: "Doe"
-            middle_name: "John"
-            payer_id: "GJ8ZDJXX375ZW"
-            shipping_address: {
-              city: "Singapore"
-            country_code: "SG"
-            line1: "123 Thomson Rd."
-            postal_code: "308123"
-            recipient_name: "Doe John"
-            state: "SG_zip = 308123"
-            }
-            __proto__: Object
-          __proto__: Object
-          }
-            payment_method: "paypal"
-            status: "VERIFIED"
-            __proto__: Object
-            }
-            state: "approved"
-            transactions: [{…}]
-            __proto__: Object*/
       })
     }
   };
@@ -98,6 +68,11 @@ export class DonateComponent implements AfterViewChecked {
       scripttagElement.onload = resolve;
       document.body.appendChild(scripttagElement);
     })
+  }
+
+  formatDateTime(date): any {
+    let formattedDateTime = moment(date).format("MMMM Do YYYY, h:mm:ss a");
+    return formattedDateTime;
   }
 
 }

@@ -165,13 +165,15 @@ export class ProjectResourcesComponent implements OnInit {
       res => this.contributions = res.data.contributions
     )
 
-    await this.paidResourceService.getProjectPurchase({ id: this.projectId}).toPromise().then(
+    await this.paidResourceService.getProjectPurchases({ projectId: this.projectId}).toPromise().then(
       res => this.purchases = res.data.paidrequests
+      
     );
+    console.log(this.purchases)
 
     this.calculateProgress();
     console.log(this.resourceNeeds);
-    console.log(JSON.stringify(this.contributions));
+    // console.log(JSON.stringify(this.contributions));
 
     this.isContributeSuccessful = false;
     this.isDonateSuccessful = false;
