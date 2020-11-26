@@ -7,6 +7,7 @@ import { ResourceService } from '../../services/resource.service';
 import { MarketplaceService } from '../../services/marketplace.service';
 import { JsonpClientBackend } from '@angular/common/http';
 import { constants } from 'buffer';
+import { PaidResourceService } from '../../services/paid-resource.service';
 
 @Component({
   selector: 'app-project-resources',
@@ -43,6 +44,8 @@ export class ProjectResourcesComponent implements OnInit {
   filterKeyCb = '';
   filterKeyNeedType = '';
   filterKeyCbType = '';
+  sortOrderPaid: number;
+  sortFieldPaid: string;
 
   form: any = {};
   updateForm: any = {};
@@ -78,9 +81,12 @@ export class ProjectResourcesComponent implements OnInit {
   isDonateSuccessful = false;
   isURated = false;
 
+  purchases: any = [];
+
   constructor(private route: ActivatedRoute, private projectService: ProjectService,
     private tokenStorageService: TokenStorageService, private messageService: MessageService,
-    private resourceService: ResourceService, private marketplaceService: MarketplaceService) { }
+    private resourceService: ResourceService, private marketplaceService: MarketplaceService,
+    private paidResourceService: PaidResourceService) { }
 
   async ngOnInit() {
     this.route.queryParams
@@ -158,6 +164,10 @@ export class ProjectResourcesComponent implements OnInit {
     await this.projectService.getProjectContributions({ id: this.projectId }).toPromise().then(
       res => this.contributions = res.data.contributions
     )
+
+    await this.paidResourceService.getProjectPurchase({ id: this.projectId}).toPromise().then(
+      res => this.purchases = res.data.paidrequests
+    );
 
     this.calculateProgress();
     console.log(this.resourceNeeds);

@@ -60,4 +60,15 @@ export class PaidResourceService {
   getAllOthersPaidResources(data): Observable<any> {
     return this.http.get(API_URL + '/all/others?accountId=' + data.id + '&accountType=' + data.type);
   }
+
+  createPurchaseReq(data): Observable<any> {
+    return this.http.post(API_URL + '/purchase/request', {
+      paidResourceId: data.id,
+      projectId: data.projId
+    }, httpOptions);
+  }
+
+  getProjectPurchase(data): Observable<any> {
+    return this.http.get(API_URL + '/project/purchase?projectId=' + data.id);
+  }
 }

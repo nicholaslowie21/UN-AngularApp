@@ -506,7 +506,7 @@
                         </div>
                     </div>
                     <div class="tab-pane fade" id="offer" role="tabpanel" aria-labelledby="offer-tab">
-                        <div *ngIf="item.length == 0 && manpower.length == 0 && venue.length == 0" class="mt-md-3">
+                        <div *ngIf="item.length == 0 && manpower.length == 0 && venue.length == 0 && paid.length == 0" class="mt-md-3">
                             No resource found.
                         </div>
                         <div *ngIf="resourceOffers.length > 0">
@@ -516,7 +516,7 @@
                                 <li class="list-group-item">
                                     <div class="row">
                                         <div class="card border-0" style="width:20%">
-                                            <div *ngIf="ro.type == 'item'">
+                                            <div *ngIf="ro.type == 'item' || ro.type == 'paid'">
                                                 <div *ngIf="ro.imgPath == '' ">
                                                     <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src="../../assets/img/item.png" style="margin:15px; width: 50px; height: 50px; object-fit: cover;"
                                                         alt="Item picture">
@@ -548,13 +548,24 @@
                                             </div>
                                         </div>
                                         <div class="card border-0" style="width:80%">
-                                            <h5 class="card-title text-left mt-md-3" style="margin-left: 5%;"><a href="/resource/resourceDetails?id={{ro.id}}&type={{ro.type}}">{{ro.title}}</a>
-                                                <div class="float-right">
+                                            <h5 class="card-title text-left mt-md-3" style="margin-left: 5%;">
+                                                <a *ngIf="ro.type != 'paid'" href="/resource/resourceDetails?id={{ro.id}}&type={{ro.type}}">{{ro.title}}</a>
+                                                <a *ngIf="ro.type == 'paid'" href="/resource/paid/details?id={{ro.id}}">{{ro.title}}</a>
+                                                <div *ngIf="ro.type != 'paid'" class="float-right">
                                                     <i class="pi pi-tag"></i>
                                                     <span class="ml-md-1 mr-md-2 {{ro.type}}type text-white rounded-sm" style="font-size: small;">&nbsp;{{ro.type}}&nbsp;</span>
-                                                </div>    
+                                                </div>
+                                                <div *ngIf="ro.type == 'paid'" class="float-right">
+                                                        <i class="pi pi-tag"></i>
+                                                        <span class="ml-md-1 mr-md-2 {{ro.type}}type text-white rounded-sm" style="font-size: small;">&nbsp;{{ro.category}}&nbsp;</span>
+                                                    </div>    
                                             </h5>
-                                            <h6 class="card-title text-left text-secondary mt-md-1 p-text-nowrap p-text-truncate" style="width: 90%; margin-left: 5%;">{{ro.desc}} </h6>
+                                            <h6 class="card-title text-left text-secondary mt-1 p-text-nowrap p-text-truncate" style="width: 90%; margin-left: 5%;" *ngIf="ro.type =='paid'">
+                                                    Price: US${{ro.price}}
+                                            </h6>
+                                            <h6 class="card-title text-left text-secondary mt-md-1 p-text-nowrap p-text-truncate" style="width: 90%; margin-left: 5%;">
+                                                {{ro.desc}}
+                                            </h6>
                                         </div>
                                     </div>
                                 </li>

@@ -17,6 +17,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { TestimonialService } from '../services/testimonial.service';
 import { TargetService } from '../services/target.service';
+import { PaidResourceService } from '../services/paid-resource.service';
 
 @Component({
   selector: 'app-own-profile',
@@ -56,6 +57,7 @@ export class OwnProfileComponent implements OnInit {
   manpower: any = [];
   item: any = [];
   venue: any = [];
+  paid: any = [];
   indAffiliations = [];
   institutionAffiliations = [];
   testimonials: any = [];
@@ -80,7 +82,8 @@ export class OwnProfileComponent implements OnInit {
   constructor(private tokenStorageService: TokenStorageService, private userService: UserService,
     private resourceService: ResourceService, private institutionService: InstitutionService, 
     private route: ActivatedRoute, private reportService: ReportService, private messageService: MessageService,
-    private testimonialService: TestimonialService, private targetService: TargetService, private router: Router) { }
+    private testimonialService: TestimonialService, private targetService: TargetService, private router: Router, 
+    private paidResourceService: PaidResourceService) { }
 
   async ngOnInit() {
     this.route.queryParams.subscribe(
@@ -200,6 +203,16 @@ export class OwnProfileComponent implements OnInit {
         }
       );
 
+      await this.paidResourceService.getAllMyPaidResources().toPromise().then(
+        response => {
+          this.paid = response.data.paidresource;
+          for (var i = 0; i < response.data.paidresource.length; i++) {
+            response.data.paidresource[i].type = 'paid';
+          }
+          this.resourceOffers = this.resourceOffers.concat(response.data.paidresource);
+        }
+      );
+
       await this.userService.getUserAffiliations({ id: this.userId }).toPromise().then(
         response => {
           this.indAffiliations = response.data.affiliations;
@@ -261,6 +274,16 @@ export class OwnProfileComponent implements OnInit {
             response.data.venues[i].type = 'venue';
           }
           this.resourceOffers = this.resourceOffers.concat(response.data.venues);
+        }
+      );
+
+      await this.paidResourceService.getAllMyPaidResources().toPromise().then(
+        response => {
+          this.paid = response.data.paidresource;
+          for (var i = 0; i < response.data.paidresource.length; i++) {
+            response.data.paidresource[i].type = 'paid';
+          }
+          this.resourceOffers = this.resourceOffers.concat(response.data.paidresource);
         }
       );
 

@@ -362,17 +362,17 @@
 
     <div class="tab-pane fade" id="paid" role="tabpanel" aria-labelledby="paid-tab">
         <div class="card">
-            <p-dataView #pv [value]="paids" [paginator]="true" [rows]="9" filterBy="title" [sortField]="sortField" [sortOrder]="sortOrder"
+            <p-dataView #pv [value]="paids" [paginator]="true" [rows]="9" filterBy="title,category" [sortField]="sortFieldPaid" [sortOrder]="sortOrderPaid"
                 layout="grid">
                 <ng-template pTemplate="header">
                     <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
-                        <!-- <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyItem" placeholder="Sort By Date" (onChange)="onSortChangeItem($event)"
-                            styleClass="p-mb-2 p-mb-md-0"></p-dropdown> -->
+                        <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyPaid" placeholder="Sort By Date" (onChange)="onSortChangePaid($event)"
+                            styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
                         <p-dropdown [options]="countryOptions" [(ngModel)]="filterKeyCountryPaid" placeholder="Filter By Country" (onChange)="filterCountryPaids($event)"
                             styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
                         <span class="p-input-icon-left p-mb-2 p-mb-md-0">
                             <i class="pi pi-search"></i>
-                            <input type="search" pInputText placeholder="Search by Title" (input)="pv.filter($event.target.value)">
+                            <input type="search" pInputText placeholder="Search by Title or Category" style="width: 250px" (input)="pv.filter($event.target.value)">
                         </span>
                     </div>
                 </ng-template>
@@ -382,29 +382,83 @@
                             <div class="mb-md-2">
                                 <span>
                                     <i class="pi pi-tag product-category-icon"></i>
-                                    <span class="product-category paidtype rounded-sm text-white"> Paid&nbsp;</span>
+                                    <span class="product-category paidtype rounded-sm text-white"> {{paid.category}}&nbsp;</span>
                                 </span>
-                                <!-- <div class="float-right">{{formatDate(item.updatedAt)}}</div> -->
+                                <div class="float-right">{{formatDate(paid.updatedAt)}}</div>
                             </div>
                             <div class="product-grid-item-content">
-                                <img *ngIf="paid.imgPaths.length == 0" src="../../../assets/img/item.png" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;"
+                                <img *ngIf="paid.imgPath.length == 0" src="../../../assets/img/item.png" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;"
                                     [alt]="paid.title" />
-                                <img *ngIf="paid.imgPaths.length != 0" src="https://localhost:8080{{paid.imgPaths[0]}}" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;"
+                                <img *ngIf="paid.imgPath.length != 0" src="https://localhost:8080{{paid.imgPath[0]}}" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;"
                                     [alt]="paid.title" />
                                 <div class="product-name">
-                                    {{paid.title}}
-                                    <!-- <a href="/resource/resourceDetails?id={{item.id}}&type=item">{{item.title}}</a> -->
+                                    <a href="/resource/paid/details?id={{paid.id}}">{{paid.title}}</a>
                                 </div>
                                 <div class="product-description">{{paid.country}}</div>
+                                <div class="product-description">US${{paid.price}}</div>
                             </div>
-                            <!-- <div class="mt-md-3">
-                                <button *ngIf="item.ownerUsername != loggedInUsername" (click)="setResourceId(item.id); setResourceType('item')" class="btn btn-primary"
-                                    style="bottom: 3%; right: 3%; position: absolute;" data-toggle="modal" data-target="#requestModal">Request</button>
-                            </div> -->
+                            <div class="mt-md-3">
+                                <button *ngIf="paid.ownerUsername != loggedInUsername" (click)="setResourceId(paid.id); setResourceType('paid')" class="btn btn-primary"
+                                    style="bottom: 3%; right: 3%; position: absolute;" data-toggle="modal" data-target="#requestPaidModal">Request</button>
+                            </div>
                         </div>
                     </div>
                 </ng-template>
             </p-dataView>
+        </div>
+    </div>
+
+    <div class="modal fade" data-backdrop="static" id="requestPaidModal" tabindex="-1" role="dialog" aria-labelledby="requestPaidModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="requestPaidModalLabel">Request to Purchase Resource</h5>
+                    <button type="button" (click)="closeModal()" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div *ngIf="myProjects.length == 0">
+                        <div class="alert alert-info">
+                            You currently have no ongoing projects. Create one now!
+                        </div>
+                    </div>
+                    <div *ngIf="myProjects.length != 0 && !isRequestSuccessful">
+                        Select the project that you would like to purchase this resource for.
+                        <br/>
+                        <br/>
+                        <form name="form" (ngSubmit)="fa.form.valid && onSubmitPaid()" #fa="ngForm" novalidate>
+                            <!-- show current user's projects and get them to choose one -->
+                            <div class="form-group row">
+                                <label for="project" class="col-sm-3 col-form-label">Select Project</label>
+                                <div class="col-sm-9" *ngIf="myProjects.length == 0">
+                                    You currently have no ongoing projects.
+                                </div>
+                                <div class="col-sm-9" *ngIf="myProjects.length != 0">
+                                    <select class="form-control" name="project" [(ngModel)]="selectedProjectId" required #project="ngModel" (click)="updateSelectedProject($event)">
+                                        <option *ngFor="let p of myProjects" value={{p.id}}>{{p.title}}</option>
+                                    </select>
+                                    <div class="alert-danger" *ngIf="fa.submitted && project.invalid">
+                                        <div *ngIf="project.errors.required">
+                                            No project selected. Please select a project!
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-primary btn-block">Request</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div *ngIf="myProjects.length != 0 && isRequestSuccessful">
+                        <div class="alert alert-success">
+                            Your purchase request has been submitted successfully!
+                            <br> Check your request status at My Activity > My Purchases
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

@@ -4,6 +4,7 @@ import { MarketplaceService } from '../../services/marketplace.service';
 import { MessageService } from 'primeng/api';
 import { ProjectService } from '../../services/project.service';
 import { TokenStorageService } from '../../services/token-storage.service';
+import { PaidResourceService } from '../../services/paid-resource.service';
 
 @Component({
   selector: 'app-resource-marketplace',
@@ -24,11 +25,13 @@ export class ResourceMarketplaceComponent implements OnInit {
   sortOrderMpw: number;
   sortOrderVen: number;
   sortOrderKno: number;
+  sortOrderPaid: number;
 
   sortField: string;
   sortFieldMpw: string;
   sortFieldVen: string;
   sortFieldKno: string;
+  sortFieldPaid: string;
 
   sortKeyItem = '';
   sortKeyMpw = '';
@@ -58,7 +61,7 @@ export class ResourceMarketplaceComponent implements OnInit {
 
   loggedInUsername: any;
 
-  constructor(private route: ActivatedRoute, private marketplaceService: MarketplaceService, private messageService: MessageService, private projectService: ProjectService, private tokenStorageService: TokenStorageService) { }
+  constructor(private route: ActivatedRoute, private marketplaceService: MarketplaceService, private messageService: MessageService, private projectService: ProjectService, private tokenStorageService: TokenStorageService, private paidResourceService: PaidResourceService) { }
 
   async ngOnInit() {
     await this.marketplaceService.getItemOffers().toPromise().then(res => this.items = res.data.items);
@@ -137,6 +140,18 @@ export class ResourceMarketplaceComponent implements OnInit {
     else {
         this.sortOrderKno = 1;
         this.sortFieldKno = value;
+    }
+  }
+
+  onSortChangePaid(event) {
+    let value = event.value;
+    if (value.indexOf('!') === 0) {
+        this.sortOrderPaid = -1;
+        this.sortFieldPaid = value.substring(1, value.length);
+    }
+    else {
+        this.sortOrderPaid = 1;
+        this.sortFieldPaid = value;
     }
   }
 
@@ -343,6 +358,17 @@ export class ResourceMarketplaceComponent implements OnInit {
     
     this.paids = arr;
     this.sortKeyPaid = '';
+  }
+
+  onSubmitPaid(): void {
+    console.log(this.selectedProjectId);
+    console.log(this.selectedResourceId);
+    this.paidResourceService.createPurchaseReq({id: this.selectedResourceId, projId: this.selectedProjectId}).subscribe(
+      response => {
+        console.log(response);
+        this.isRequestSuccessful = true;
+      }
+    );
   }
 
 }
