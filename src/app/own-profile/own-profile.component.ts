@@ -303,7 +303,11 @@ export class OwnProfileComponent implements OnInit {
       );
     }
 
-    await this.targetService.getAccountTargets({ id: this.userId, type: this.accType }).toPromise().then(
+    let tempType = '';
+    if(this.isIndividual) tempType = 'user';
+    else  tempType = 'institution'
+
+    await this.targetService.getAccountTargets({ id: this.userId, type: tempType }).toPromise().then(
       response => this.targets = response.data.targets
     );
 
@@ -313,18 +317,18 @@ export class OwnProfileComponent implements OnInit {
     this.isReport = false;
     this.isReportSuccessful = false;
 
-    console.log("BADGES: " + this.badges);
-    console.log("CURR PROJ: " + JSON.stringify(this.currentProj));
-    console.log("PAST PROJ: " + this.pastProj);
-    console.log("KNO: " + this.knowledge);
-    console.log("MPW: " + this.manpower);
-    console.log("ITEM: " + this.item);
-    console.log("VENUE: " + this.venue);
+    // console.log("BADGES: " + this.badges);
+    // console.log("CURR PROJ: " + JSON.stringify(this.currentProj));
+    // console.log("PAST PROJ: " + this.pastProj);
+    // console.log("KNO: " + this.knowledge);
+    // console.log("MPW: " + this.manpower);
+    // console.log("ITEM: " + this.item);
+    // console.log("VENUE: " + this.venue);
+    console.log(this.resourceOffers);
   }
 
   sortFunction(a, b) {
     var dateA = new Date(a.updatedAt).getTime();
-    console.log("DATE A" + dateA);
     var dateB = new Date(b.updatedAt).getTime();
     return dateA > dateB ? -1 : 1;
   }
