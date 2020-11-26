@@ -248,7 +248,7 @@ Overall Need Progress:
             <a class="nav-link" id="obtained-tab" data-toggle="tab" href="#obtained" role="tab" aria-controls="obtained" aria-selected="false">Resources Obtained</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="paid-tab" data-toggle="tab" href="#paid" role="tab" aria-controls="paid" aria-selected="false">Paid Resources</a>
+            <a class="nav-link" id="paid-tab" data-toggle="tab" href="#paid" role="tab" aria-controls="paid" aria-selected="false">Resources Purchased</a>
         </li>
     </ul>
 
@@ -601,13 +601,13 @@ Overall Need Progress:
             <div class="row">
                 <div class="col-8">
                     <div class="card">
-                        <p-dataView #pd [value]="purchases" [paginator]="true" [rows]="9" filterBy="" [sortField]="sortFieldPaid"
+                        <p-dataView #pd [value]="purchases" [paginator]="true" [rows]="9" filterBy="paidresource.title,paidresource.category" [sortField]="sortFieldPaid"
                             [sortOrder]="sortOrderPaid" layout="list">
                             <ng-template pTemplate="header">
                                 <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
                                     <span class="p-input-icon-left p-mb-2 p-mb-md-0">
                                         <i class="pi pi-search"></i>
-                                        <input type="search" pInputText placeholder="Search by Title" (input)="pd.filter($event.target.value)">
+                                        <input type="search" pInputText placeholder="Search by Title or Category" style="width: 250px;" (input)="pd.filter($event.target.value)">
                                     </span>
                                 </div>
                             </ng-template>
@@ -615,8 +615,9 @@ Overall Need Progress:
                                 <div class="p-col-12">
                                     <div class="row p-3">
                                         <div class="col-8">
-                                            <div class="product-name">{{pd.paidresource.title}}</div>
+                                            <div class="product-name"><a href="/resource/paid/details?id={{pd.paidresource.id}}">{{pd.paidresource.title}}</a></div>
                                             <div>{{pd.paidresource.desc}}</div>
+                                            <div><b>USD{{pd.paidresource.price}}</b></div>
                                             <div *ngIf="pd.buyerType == 'user'">
                                                 <div>
                                                     Purchased by: 
