@@ -178,17 +178,6 @@ export class AdminUserManagementProfileComponent implements OnInit {
     }
   }
 
-  viewUser(user): string {
-    let userType = '';
-    if (user.role) {
-      userType = 'individual';
-    } else {
-      userType = 'institution';
-    }
-    return "http://localhost:4200/profile?username=" + user.username + '&userType=' + userType;
-
-  }
-
   activateUser(): void {
     let r = confirm("Are you sure you want to activate this account?");
     if (r == true) {

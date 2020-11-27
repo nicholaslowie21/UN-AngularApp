@@ -37,7 +37,12 @@
     <div [ngClass]="{'col-6': isUser || isProject, 'col-10': isReward}">
         <div *ngIf="isUser">
             <h4 class="card-title text-left mt-md-3 mb-md-0">
-                <a [href]="viewUser(user)">{{ user.name }}</a>
+                <span *ngIf="user.status != 'unclaimed'">
+                    <a href="/profile?username={{user.username}}&userType={{userType}}">{{ user.name }}</a>
+                </span>
+                <span *ngIf="user.status == 'unclaimed'">
+                    <a href="view-Profile?id={{user.id}}&userType={{userType}}">{{user.name}}</a>
+                </span>
             </h4>
             <div><b>Username:</b> {{ user.username }}</div>
             <span><b>Country:</b> {{user.country}}</span> 
