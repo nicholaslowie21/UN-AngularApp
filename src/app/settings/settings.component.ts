@@ -41,7 +41,7 @@ export class SettingsComponent implements OnInit {
       this.user = this.tokenStorage.getUser();
       if (this.tokenStorage.getAccountType() == "user") {
         this.isIndividual = true;
-        if (this.user.isVerified == "false") {
+        if (this.user.isVerified == "false" || this.user.isVerified == false) {
           this.notVerified = true;
         } else if (this.user.isVerified == "pending") {
           this.pendingVerified = true;
