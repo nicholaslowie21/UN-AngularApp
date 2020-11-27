@@ -196,14 +196,23 @@
             <div *ngIf="selectedChatRoom.chatType == 'admin'" class="text-center bg-warning rounded-sm">
               <small>This is an administrative chat</small>
             </div>
-            <div *ngFor="let msg of chatMsgs" class="p-2">
-              <div *ngIf="msg.accountUsername != username" class="bg-secondary rounded-pill p-2 pl-3 pr-3 text-white">
-                {{msg.message}}
+            <div *ngFor="let msg of chatMsgs" class="pr-2 pt-2 pb-2">
+              <div *ngIf="msg.accountUsername != username">
+                <div class="received_msg">
+                  <div class="received_withd_msg">
+                    <p>{{msg.message}}</p>
+                    <span class="time_date"> {{formatTime(msg.updatedAt)}} </span>
+                  </div>
+                </div>
               </div>
-              <div *ngIf="msg.accountUsername == username" class="bg-primary rounded-pill p-2 pl-3 pr-3 text-white">
-                {{msg.message}}
+              <div *ngIf="msg.accountUsername == username">
+                <div class="outgoing_msg">
+                  <div class="sent_msg">
+                    <p>{{msg.message}}</p>
+                    <span class="time_date"> {{formatTime(msg.updatedAt)}} </span>
+                  </div>
+                </div>
               </div>
-              <small>{{formatTime(msg.updatedAt)}}</small>
             </div>
           </div>
         </div>
@@ -215,7 +224,7 @@
               <input type="text" class="form-control col-9" name="message" [(ngModel)]="chatForm.message" required
                 #message="ngModel" placeholder="Type a message..." />
               <div class="col-3">
-                <button class="btn btn-primary float-right ml-1"><i class="pi pi-chevron-circle-right"></i></button>
+                <button class="btn btn-primary float-right ml-1"><i class="pi pi-angle-right"></i></button>
               </div>
             </div>
           </form>
