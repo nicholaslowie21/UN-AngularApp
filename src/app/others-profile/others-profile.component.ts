@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../services/user.service';
 import { InstitutionService } from '../services/institution.service';
-import { TokenStorageService } from '../services/token-storage.service';
 import { MessageService } from 'primeng/api/';
 
 @Component({
@@ -19,17 +18,13 @@ export class OthersProfileComponent implements OnInit {
   isIndividual = false;
   isVerified = false;
   id: any;
-  isLoggedIn = false;
-  indAffiliations: any;
-  status: any;
-  isUnclaimed = false;
   form: any = {};
   file: any;
   type: any;
   claimSuccess = false;
 
   constructor(private route: ActivatedRoute, private userService: UserService, private institutionService: InstitutionService,
-     private tokenStorageService: TokenStorageService, private messageService: MessageService) { }
+    private messageService: MessageService) { }
 
   async ngOnInit() {
     this.route.queryParams.subscribe(
@@ -37,47 +32,29 @@ export class OthersProfileComponent implements OnInit {
         this.userType = params.userType;
         this.id = params.id;
       }
-    )
-
-    if(this.tokenStorageService.getToken()) {
-      this.isLoggedIn = true;
-    }
+    );
     
     if(this.userType == "individual") {
       this.isIndividual = true;
-      this.userService.viewUserById({id: this.id}).subscribe(
+      await this.userService.viewUserById({id: this.id}).toPromise().then(
         response => {
           this.user = response.data.targetUser;
-          this.status = this.user.status;
-          if(this.status == "unclaimed") {
-            this.isUnclaimed = true;
-          }
-          if(this.user.isVerified == "true") {
-            this.isVerified = true;
-          }
-        }
-      )
-      await this.userService.getUserAffiliations({id: this.id}).toPromise().then(
-        response => {
-          this.indAffiliations = response.data.affiliations;
         }
       );
+      if(this.user.isVerified == "true" || this.user.isVerified == true) {
+        this.isVerified = true;
+      }
     } else {
       this.isIndividual = false;
-      this.institutionService.viewInstitutionById({id: this.id}).subscribe(
+      await this.institutionService.viewInstitutionById({id: this.id}).toPromise().then(
         response => {
           this.user = response.data.targetInstitution;
-          this.status = this.user.status;
-          if(this.status == "unclaimed") {
-            this.isUnclaimed = true;
-          }
-          if(this.user.isVerified) {
-            this.isVerified = true;
-          }
         }
-      )
+      );
+      if(this.user.isVerified) {
+        this.isVerified = true;
+      }
     }
-    console.log("others profile: "+this.user);
   }
 
   selectImage(event) {

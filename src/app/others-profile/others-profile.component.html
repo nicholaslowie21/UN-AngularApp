@@ -1,6 +1,13 @@
 <p-toast key="toastMsg" [baseZIndex]="100"></p-toast>
 
-<div class="container p-3 bg-light">
+<div class="alert alert-info p-3">
+    <b *ngIf="isIndividual">Are you {{user.name}}?</b> 
+    <b *ngIf="!isIndividual">Is {{user.name}} your institution?</b>
+    Claim this profile to have access to KoCoSD platform.
+    <button class="btn btn-primary ml-2" data-toggle="modal" data-target="#claim">Claim this profile</button>
+</div>
+
+<div class="container p-3 bg-light mt-2">
     <div class="row">
         <div class="col-3">
             <div *ngIf="user.profilePic.length == 0">
@@ -23,16 +30,10 @@
             <div *ngIf="user.website" class="mt-md-1">
                 <i class="pi pi-globe"></i>&nbsp;<a [href]="user.website">{{ user.website }}</a>
             </div>
-            <h6 *ngIf="isUnclaimed" class="card-title text-left mt-md-1">Status:
-                <i>unclaimed</i>
-            </h6>
-            <h6 *ngIf="!isUnclaimed" class="card-title text-left mt-md-1">Status:
-                <i>{{user.status}}</i>
-            </h6>
         </div>
-        <div class="col-2">
+        <!-- <div class="col-2">
             <button *ngIf="isUnclaimed" class="btn btn-primary" data-toggle="modal" data-target="#claim">Claim</button>
-        </div>
+        </div> -->
 
         <!-- Modal -->
         <div class="modal fade" id="claim" tabindex="-1" role="dialog" aria-labelledby="claimTitle" aria-hidden="true">
@@ -48,7 +49,7 @@
                         <div *ngIf="!claimSuccess">
                             <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
                                 <div class="form-group row">
-                                    <label for="username" class="col-sm-4 col-form-label">Username</label>
+                                    <label for="username" class="col-sm-4 col-form-label">Create a username</label>
                                     <div class="col-sm-8">
                                         <input type="text" class="form-control" name="username" [(ngModel)]="form.username" required minlength="3" maxlength="20"
                                             #username="ngModel" />
@@ -125,25 +126,26 @@
 </div>
 
 <div *ngIf="user.bio" class="bg-light mt-2 p-3">
-    <h4>Bio</h4>
+    <h5>Bio</h5>
     {{user.bio}}
 </div>
 
 <div class="bg-light mt-2 p-3">
-    <h6 class="card-title text-left mt-md-3" style="margin: 15px">SDGs:
-    <div *ngIf="user.SDGs.length == 0" style="display:inline-block;">
+    <h5>SDGs</h5>
+    <div *ngIf="user.SDGs.length == 0">
         -
     </div>
-    <div *ngFor="let sdg of user.SDGs" style="display:inline-block;">
+    <span *ngFor="let sdg of user.SDGs">
         <button class="sdg sdg{{sdg}} mr-md-1">{{sdg}}</button>
-    </div>
-    </h6>
-    <h6 *ngIf=isIndividual class="card-title text-left mt-md-3" style="margin: 15px">Skills:
-    <div *ngIf="user.skills.length == 0" style="display:inline-block;">
+    </span>
+</div>
+
+<div *ngIf=isIndividual class="bg-light mt-2 p-3">
+    <h5 class="mt-2">Skills</h5>
+    <div *ngIf="user.skills.length == 0">
         -
     </div>
-    <div *ngFor="let s of user.skills" style="display: inline-block;">
+    <span *ngFor="let s of user.skills">
         <button class="btn btn-secondary mr-md-1 rounded-pill">{{s}}</button>
-    </div>
-    </h6>
+    </span>
 </div>
