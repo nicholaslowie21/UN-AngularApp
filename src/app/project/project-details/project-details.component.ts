@@ -224,33 +224,38 @@ export class ProjectDetailsComponent implements OnInit {
   }
     
   deleteProj(title: string): void {
-    this.projectService.deleteProject({ id: this.projectId }).subscribe(
-      response => {
-        console.log(JSON.stringify(response));
-        //this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Project '+ title +' has been deleted'});
-        //this.ngOnInit();
-        // alert("Project " + title + " has been deleted");
-        window.location.reload();
-      },
-      err => {
-        alert("Error: " + err.error.msg);
-        console.log(JSON.stringify(err.error.msg));
-      }
-    );
+    let r = confirm("Are you sure you want to delete this project?");
+    if(r == true) {
+      this.projectService.deleteProject({ id: this.projectId }).subscribe(
+        response => {
+          this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Project '+ title +' has been deleted'});
+          //this.ngOnInit();
+          window.location.reload();
+        },
+        err => {
+          alert("Error: " + err.error.msg);
+        }
+      );
+    } else {
+      return;
+    }
   }
 
   completeProj(title: string): void {
-    this.projectService.completeProject({ id: this.projectId }).subscribe(
-      response => {
-        console.log(JSON.stringify(response));
-        // alert("Project " + title + " has been completed!");
-        window.location.reload();
-      },
-      err => {
-        alert("Error: " + err.error.msg);
-        console.log(JSON.stringify(err.error.msg));
-      }
-    );
+    let r = confirm("Are you sure you want to complete this project?");
+    if(r == true) {
+      this.projectService.completeProject({ id: this.projectId }).subscribe(
+        response => {
+          this.messageService.add({key:'toastMsg',severity:'success',summary:'Success',detail:'Project ' + title + ' completed successfully!'});
+          window.location.reload();
+        },
+        err => {
+          alert("Error: " + err.error.msg);
+        }
+      );
+    } else {
+      return;
+    }
   }
 
   onSubmit(): void {
