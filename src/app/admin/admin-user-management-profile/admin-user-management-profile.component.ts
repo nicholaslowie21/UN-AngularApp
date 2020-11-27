@@ -48,6 +48,8 @@ export class AdminUserManagementProfileComponent implements OnInit {
 
   rangeDates: any;
 
+  isLoading = true;
+
   constructor(private route: ActivatedRoute, private userService: UserService,
     private institutionService: InstitutionService, private adminService: AdminService,
     private tokenStorageService: TokenStorageService, private projectService: ProjectService,
@@ -144,6 +146,8 @@ export class AdminUserManagementProfileComponent implements OnInit {
       await this.generateExportLink('reward');
       await this.loadAudit('reward');
     }
+
+    this.isLoading = false;
   }
 
   async generateExportLink(type) {
@@ -168,6 +172,18 @@ export class AdminUserManagementProfileComponent implements OnInit {
         alert(err.error.message);
       }
     );
+  }
+
+  checkLoading() {
+    if(this.isAdminLead && this.checkAdmin) {
+      if(this.auditType == null) {
+        return false;
+      } else {
+        return this.isLoading;
+      }
+    } else {
+      return this.isLoading;
+    }
   }
 
   checkAccess() {
