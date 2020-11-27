@@ -343,24 +343,6 @@ export class ProjectDetailsComponent implements OnInit {
     );
   }
 
-  deleteProject(title: string): void {
-    let r = confirm("Are you sure you want to delete this project?");
-    if (r == true) {
-      this.deleteProj(title);
-    } else {
-      return;
-    }
-  }
-
-  completeProject(title: string): void {
-    let r = confirm("Are you sure you want to mark this project as complete?");
-    if (r == true) {
-      this.completeProj(title);
-    } else {
-      return;
-    }
-  }
-
   confirmDeleteKPI(id: string): void {
     let r = confirm("Are you sure you want to delete this KPI?");
     if (r == true) {

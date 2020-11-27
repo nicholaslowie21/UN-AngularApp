@@ -1,11 +1,11 @@
 <p-toast key="toastMsg" [baseZIndex]="100"></p-toast>
-<div *ngIf="project.status == 'closed'" class="alert alert-danger">
+<div *ngIf="project.status == 'closed'" class="alert alert-danger row">
     This project has been deleted
 </div>
-<div *ngIf="project.status == 'completed'" class="alert alert-info">
+<div *ngIf="project.status == 'completed'" class="alert alert-info row">
     This project has been completed
 </div>
-<div *ngIf="project.status == 'suspended'" class="alert alert-danger">
+<div *ngIf="project.status == 'suspended'" class="alert alert-danger row">
     This project is currently suspended
 </div>
 <div class="row">
@@ -123,14 +123,14 @@
                                             <hr>
                                         </div>
                                         <div *ngIf="isCreator">
-                                            <button *ngIf=isOngoing class="btn btn-block" style="color: green;" (click)="completeProject(project.title)">
+                                            <button *ngIf=isOngoing class="btn btn-block" style="color: green;" (click)="completeProj(project.title)">
                                                 <i class="pi pi-check"></i>&nbsp;Mark Complete
                                             </button>
                                             <button *ngIf=!isOngoing class="btn btn-block disabled">
                                                 <i class="pi pi-check"></i>&nbsp;Mark Complete
                                             </button>
                                             <hr>
-                                            <button *ngIf=isOngoing class="btn btn-block" style="color: red;" (click)="deleteProject(project.title)">
+                                            <button *ngIf=isOngoing class="btn btn-block" style="color: red;" (click)="deleteProj(project.title)">
                                                 <i class="pi pi-trash"></i>&nbsp;Delete Project
                                             </button>
                                             <button *ngIf=!isOngoing class="btn btn-block disabled">
