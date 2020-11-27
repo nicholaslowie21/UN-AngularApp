@@ -9,6 +9,7 @@ import { faShareAlt } from '@fortawesome/free-solid-svg-icons/faShareAlt';
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons/faPencilAlt';
 import { faCopy } from '@fortawesome/free-solid-svg-icons/faCopy';
 import { faClipboard } from '@fortawesome/free-solid-svg-icons/faClipboard';
+import { faPhoneAlt } from '@fortawesome/free-solid-svg-icons/faPhoneAlt';
 import { UserService } from '../services/user.service';
 import { ResourceService } from '../services/resource.service';
 import { InstitutionService } from '../services/institution.service';
@@ -46,6 +47,7 @@ export class OwnProfileComponent implements OnInit {
   faPencilAlt = faPencilAlt;
   faCopy = faCopy;
   faClipboard = faClipboard;
+  faPhoneAlt = faPhoneAlt;
   iFrameLink = '';
   copyIFrameLink = '';
   userId: any;
