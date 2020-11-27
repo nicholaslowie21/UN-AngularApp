@@ -147,7 +147,7 @@ export class OwnProfileComponent implements OnInit {
     else  tempType = 'institution';
 
     if (this.isIndividual) {
-      await this.userService.getBadges({ id: this.userId }).toPromise().then(
+      await this.userService.getBadges({ id: this.userId, type: tempType }).toPromise().then(
         response => {
           this.badges = response.data.badges;
         }

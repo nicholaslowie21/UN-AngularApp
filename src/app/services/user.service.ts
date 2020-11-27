@@ -58,7 +58,7 @@ export class UserService {
   }
 
   getBadges(data): Observable<any> {
-    return this.http.get(API_URL + '/badges?userId=' + data.id);
+    return this.http.get(API_URL + '/badges?accountId=' + data.id + '&accountType=' + data.type);
   }
 
   generateShareProfilePic(): Observable<any> {
