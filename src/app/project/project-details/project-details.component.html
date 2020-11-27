@@ -184,12 +184,14 @@
 
         </div>
 
-        <div class="row mt-1 bg-info text-white">
-            <h6 class="card-title text-left text-justify" style="margin: 20px">Description: {{project.desc}}</h6>
-        </div>
+            <div class="row p-3 mt-1 bg-light">
+                <h5 class="col-12">Description</h5>
+                <div class="col-12 text-justify">{{project.desc}}</div>
+            </div>
 
         <div *ngIf="calendarOn" class="row mt-3">
             <div class="bg-secondary text-center p-2 text-white rounded-sm" style="width: 100%">Project Calendar
+                <button pButton *ngIf="project.status == 'suspended'" icon="pi pi-plus" disabled="true" class="p-button-rounded float-right"></button>
                 <button pButton *ngIf="isOngoing&&(isCreator||isAdmin)" type="button" icon="pi pi-plus" class="p-button-rounded float-right"
                     data-toggle="modal" data-target="#createEventModal">
                 </button>
@@ -406,6 +408,7 @@
                 <div class="container-fluid">
                     <div *ngIf="!calendarOn">
                         <div *ngIf="!isCreator && !isAdmin" class="card bg-secondary text-center p-2 text-white rounded-sm">Project Posts</div>
+                        <button *ngIf="project.status == 'suspended'" disabled class="btn btn-primary btn-block">Create Post</button>
                         <button *ngIf=isOngoing&&(isCreator||isAdmin) class="btn btn-primary btn-block" data-toggle="modal" data-target="#createPostModal">Create Post</button>
                     </div>
                     <br>
@@ -655,6 +658,7 @@
             <div class="card-header" [ngClass]="{'bg-secondary text-white': project.status == 'ongoing','bg-light': project.status != 'ongoing'}">
                 <i class="pi pi-chart-bar"></i>
                 <h5 style="display: inline-block;" class="mt-md-1 mb-md-0 ml-md-2">KPIs</h5>
+                <button pButton *ngIf="project.status == 'suspended'" icon="pi pi-plus" disabled="true" class="p-button-rounded float-right"></button>
                 <button pButton *ngIf="(isCreator||isAdmin)&&isOngoing" icon="pi pi-plus" class="p-button-sm p-button-rounded float-right"
                     data-toggle="modal" data-target="#kpiModal" title="Add KPI">
                 </button>

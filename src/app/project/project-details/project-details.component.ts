@@ -130,7 +130,7 @@ export class ProjectDetailsComponent implements OnInit {
       this.isCompleted = true;
     } else if (this.status == "closed") {
       this.isDeleted = true;
-    } else {
+    } else if(this.status == 'ongoing') {
       this.isOngoing = true;
     }
 
