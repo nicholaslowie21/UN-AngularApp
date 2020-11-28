@@ -7,7 +7,7 @@
     <button class="btn btn-primary ml-2" data-toggle="modal" data-target="#claim">Claim this profile</button>
 </div>
 
-<div class="container p-3 bg-light mt-2">
+<div class="container p-3 bg-secondary text-white mt-2">
     <div class="row">
         <div class="col-3">
             <div *ngIf="user.profilePic.length == 0">
@@ -129,12 +129,12 @@
     </div>
 </div>
 
-<div *ngIf="user.bio" class="bg-light mt-2 p-3">
+<div *ngIf="user.bio" class="bg-secondary text-white mt-2 p-3">
     <h5>Bio</h5>
     {{user.bio}}
 </div>
 
-<div class="bg-light mt-2 p-3">
+<div class="bg-secondary text-white mt-2 p-3">
     <h5>SDGs</h5>
     <div *ngIf="user.SDGs.length == 0">
         -
@@ -144,12 +144,12 @@
     </span>
 </div>
 
-<div *ngIf=isIndividual class="bg-light mt-2 p-3">
+<div *ngIf=isIndividual class="bg-secondary text-white mt-2 p-3">
     <h5 class="mt-2">Skills</h5>
     <div *ngIf="user.skills.length == 0">
         -
     </div>
     <span *ngFor="let s of user.skills">
-        <button class="btn btn-secondary mr-md-1 rounded-pill">{{s}}</button>
+        <button class="btn btn-light mr-md-1 rounded-pill">{{s}}</button>
     </span>
 </div>
