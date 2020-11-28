@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
+import { DatePipe } from '@angular/common';
 
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule } from '@angular/forms';
@@ -61,6 +62,7 @@ import {GalleriaModule} from 'primeng/galleria';
 import {MultiSelectModule} from 'primeng/multiselect';
 import {CalendarModule} from 'primeng/calendar';
 import {FullCalendarModule} from 'primeng/fullcalendar';
+import {ChartModule} from 'primeng/chart';
 import {TableModule} from 'primeng/table';
 
 import { ProjectMarketplaceComponent } from './marketplace/project-marketplace/project-marketplace.component';
@@ -80,10 +82,11 @@ import { AnnouncementComponent } from './announcement/announcement.component';
 import { ReportSubmittedComponent } from './report-submitted/report-submitted.component';
 import { AdminReportDetailsComponent } from './admin/admin-report-details/admin-report-details.component';
 import { ChatComponent } from './chat/chat.component';
-import { DataDashboardComponent } from './data-dashboard/data-dashboard.component';
+import { DataDashboardComponent } from './data-overview/data-dashboard/data-dashboard.component';
 import { SearchAccountsComponent } from './search-accounts/search-accounts.component';
 import { AdminDataManagementComponent } from './admin/admin-data-management/admin-data-management.component';
 import { TestimonialComponent } from './testimonial/testimonial.component';
+import { DataProjectComponent } from './data-overview/data-project/data-project.component';
 import { PaidResourceDetailsComponent } from './resource/paid-resource-details/paid-resource-details.component';
 import { DonateComponent } from './donate/donate.component';
 import { MyPurchasesComponent } from './my-purchases/my-purchases.component';
@@ -145,6 +148,7 @@ import { TermsConditionsComponent } from './terms-conditions/terms-conditions.co
     SearchAccountsComponent,
     AdminDataManagementComponent,
     TestimonialComponent,
+    DataProjectComponent,
     PaidResourceDetailsComponent,
     DonateComponent,
     MyPurchasesComponent,
@@ -174,9 +178,10 @@ import { TermsConditionsComponent } from './terms-conditions/terms-conditions.co
     MultiSelectModule,
     CalendarModule,
     FullCalendarModule,
+    ChartModule,
     TableModule
   ],
-  providers: [authInterceptorProviders, AuthGuardService],
+  providers: [authInterceptorProviders, AuthGuardService, DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

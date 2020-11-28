@@ -1,0 +1,153 @@
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            <h2>Data Dashboard</h2>
+        </div>
+        <div class="col-6" style="float: right;">
+            <a href="/dashboard/project" style="float: right;">
+                View Data By SDG and Country >>
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <h5>A Glance of Overall Numbers</h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            <div class="card">
+            <div class="card-title">
+                <h6 class="card-title text-center mt-md-3">
+                    Number of active accounts
+                </h6>
+                <h3 style="text-align: center">{{activeAccNum}}</h3>
+            </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="card">
+            <div class="card-title">
+                <h6 class="card-title text-center mt-md-3">
+                    Number of ongoing projects
+                </h6>
+                <h3 style="text-align: center">{{projectsOngoingNum}}</h3>
+            </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="card">
+                <div class="card-title">
+                    <h6 class="card-title text-center mt-md-3">
+                        Number of completed projects
+                    </h6>
+                    <h3 style="text-align: center">{{projectsCompletedNum}}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-3">
+            <div class="card">
+            <div class="card-title">
+                <h6 class="card-title text-center mt-md-3">
+                    Number of paid resource listings created
+                </h6>
+                <h3 style="text-align: center">{{paidResourcesNum}}</h3>
+            </div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="card">
+            <div class="card-title">
+                <h6 class="card-title text-center mt-md-3">
+                    Number of free resource listings created
+                </h6>
+                <h3 style="text-align: center">{{resourcesNum}}</h3>
+            </div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="card">
+            <div class="card-title">
+                <h6 class="card-title text-center mt-md-3">
+                    Numbers of successful free contributions
+                </h6>
+                <h3 style="text-align: center">{{contributionsNum}}</h3>
+            </div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="card">
+            <div class="card-title">
+                <h6 class="card-title text-center mt-md-3">
+                    Amount of funding raised for projects
+                </h6>
+                <h3 style="text-align: center">${{fundingNum}}</h3>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <div class="row">
+        <div class="col-6">
+            <h5>Data Visualization in a Year</h5>
+        </div>
+        <div class="col-6" style="float: right;">
+            <div style="float: right">Filter based on &nbsp;
+                <select name="year" [(ngModel)]="year" (change)="update($event)" style="float: right;">
+                    <option *ngFor="let y of years" value={{y}}>{{y}}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <div class="card">
+            <div class="card-body">
+                <h6 class="card-title text-center mt-md-3">
+                    Resource listings based on Resource Type
+                </h6>
+                <p *ngIf="noResourceBoolean == true" style="color: red; text-align: center;">No resource listings are created in the year</p>
+                <p-chart *ngIf="noResourceBoolean == false" type="doughnut" [data]="resources"></p-chart>
+            </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="card">
+            <div class="card-body">
+                <h6 class="card-title text-center mt-md-3">
+                    Successful Resource Contribution based on Resource Type
+                </h6>
+                <p *ngIf="noContributionBoolean == true" style="color: red; text-align: center;">No successful contributions done in the year</p>
+                <p-chart *ngIf="noContributionBoolean == false" type="doughnut" [data]="contributions"></p-chart>
+            </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-6">
+            <div class="card">
+            <div class="card-body">
+                <h6 class="card-title text-center mt-md-3">
+                    Number of new accounts created
+                </h6>
+                <p-chart type="bar" [data]="accBar"></p-chart>
+            </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="card">
+            <div class="card-body">
+                <h6 class="card-title text-center mt-md-3">
+                    Cumulative number of projects
+                </h6>
+                <p-chart type="line" [data]="projectsLine"></p-chart>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
