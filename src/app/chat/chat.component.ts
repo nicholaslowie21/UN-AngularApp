@@ -129,7 +129,9 @@ export class ChatComponent implements OnInit {
   }
 
   async searchChat() {
-    console.log("SEARCH CHAT")
+    if (this.subscribe) {
+      this.subscribe.unsubscribe();
+    }
     await this.loadRooms();
     if(this.searchForm.keyword.length == 0) {
       return;
@@ -150,6 +152,7 @@ export class ChatComponent implements OnInit {
   clearSearch(): void {
     this.searchForm.keyword = '';
     this.loadRooms();
+    this.startTimer(this.selectedChatRoom.id);
   }
 
   scrollToLastMessage() {
