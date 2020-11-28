@@ -10,7 +10,7 @@
 </div>
 <div class="row">
     <div class="col-9">
-        <div class="row p-3" [ngClass]="{'bg-secondary text-white': project.status == 'ongoing','bg-light': project.status != 'ongoing'}">
+        <div class="row p-3" [ngClass]="{'bg-secondary text-white': project.status != 'ongoing','bg-light border': project.status == 'ongoing'}">
             <div class="col-3">
                 <div *ngIf="project.imgPath.length != 0">
                     <img class="img-fluid mx-auto d-block" src={{imgString}} style="width: 150px; height: 150px; object-fit: cover;"
@@ -181,21 +181,21 @@
 
         </div>
 
-            <div class="row p-3 mt-1" [ngClass]="{'border': project.status == 'ongoing', 'bg-light': project.status != 'ongoing'}">
+            <div class="row p-3 mt-1" [ngClass]="{'bg-secondary text-white': project.status != 'ongoing', 'bg-light border': project.status == 'ongoing'}">
                 <h5 class="col-12">Description</h5>
                 <div class="col-12 text-justify">{{project.desc}}</div>
             </div>
 
         <div *ngIf="calendarOn" class="row mt-3">
-            <div class="bg-secondary text-center p-2 text-white rounded-sm" style="width: 100%">Project Calendar
+            <div class="text-center p-2 rounded-sm" [ngClass]="{'bg-secondary text-white': project.status != 'ongoing', 'bg-light border': project.status == 'ongoing'}" style="width: 100%">Project Calendar
                 <button pButton *ngIf="project.status == 'suspended'" icon="pi pi-plus" disabled="true" class="p-button-rounded float-right"></button>
                 <button pButton *ngIf="isOngoing&&(isCreator||isAdmin)" type="button" icon="pi pi-plus" class="p-button-rounded float-right"
-                    data-toggle="modal" data-target="#createEventModal">
+                    title="Add New Milestone" data-toggle="modal" data-target="#createEventModal">
                 </button>
             </div>
 
-            <div class="card" style="width: 100%">
-
+            <div class="" style="width: 100%">
+                
                 <p-fullCalendar [events]="events" [options]="options"></p-fullCalendar>
             </div>
         </div>
@@ -354,7 +354,7 @@
                 <div *ngIf="!calendarOn" class="card">
                     <div class="card-header">
                         <div class="row">
-                            <div class="col-9 mt-md-1">Project Team:</div>
+                            <div class="col-9 mt-md-1">Project Team</div>
                             <div class="col-3">
                                 <a *ngIf=isOngoing&&isCreator href="/project/editAdmin?id={{project.id}}" role="button">
                                     <button pButton class="p-button-rounded" icon="pi pi-user-edit"></button>
@@ -404,8 +404,9 @@
             <div class="col-8">
                 <div class="container-fluid">
                     <div *ngIf="!calendarOn">
-                        <div *ngIf="!isCreator && !isAdmin" class="card bg-secondary text-center p-2 text-white rounded-sm">Project Posts</div>
-                        <button *ngIf="project.status == 'suspended'" disabled class="btn btn-primary btn-block">Create Post</button>
+                        <div *ngIf="!isCreator && !isAdmin" class="card text-center p-2 rounded-sm" 
+                            [ngClass]="{'bg-secondary text-white':project.status!='ongoing', 'bg-primary text-white':project.status=='ongoing'}">Project Posts</div>
+                        <button *ngIf="project.status == 'suspended' && (isCreator||isAdmin)" disabled class="btn btn-primary btn-block">Create Post</button>
                         <button *ngIf=isOngoing&&(isCreator||isAdmin) class="btn btn-primary btn-block" data-toggle="modal" data-target="#createPostModal">Create Post</button>
                     </div>
                     <br>
@@ -599,12 +600,12 @@
     </div>
 
     <div class="col-3">
-        <a href="/project/resources?id={{projectId}}" class="btn text-left p-2 mb-2" [ngClass]="{'bg-secondary text-white': project.status == 'ongoing','bg-light': project.status != 'ongoing'}" style="width: 100%;">
+        <a href="/project/resources?id={{projectId}}" class="btn text-left p-2 mb-2" [ngClass]="{'bg-secondary text-white': project.status != 'ongoing','bg-light border': project.status == 'ongoing'}" style="width: 100%;">
             See project resources
             <i class="pi pi-arrow-circle-right float-right" style="font-size: 1.5em;"></i>
         </a>
 
-        <a *ngIf="isCreator||isAdmin" href="/project/requests?id={{projectId}}" class="btn text-left p-2 mb-2" [ngClass]="{'bg-secondary text-white': project.status == 'ongoing','bg-light': project.status != 'ongoing'}" style="width: 100%;">
+        <a *ngIf="isCreator||isAdmin" href="/project/requests?id={{projectId}}" class="btn text-left p-2 mb-2" [ngClass]="{'bg-secondary text-white': project.status != 'ongoing','bg-light border': project.status == 'ongoing'}" style="width: 100%;">
             See project requests
             <i class="pi pi-arrow-circle-right float-right" style="font-size: 1.5em;"></i>
         </a>
@@ -652,7 +653,7 @@
             </div>
         </div>
         <div *ngIf="!calendarOn">
-            <div class="card-header" [ngClass]="{'bg-secondary text-white': project.status == 'ongoing','bg-light': project.status != 'ongoing'}">
+            <div class="card-header" [ngClass]="{'bg-secondary text-white': project.status != 'ongoing','bg-light border': project.status == 'ongoing'}">
                 <i class="pi pi-chart-bar"></i>
                 <h5 style="display: inline-block;" class="mt-md-1 mb-md-0 ml-md-2">KPIs</h5>
                 <button pButton *ngIf="project.status == 'suspended'" icon="pi pi-plus" disabled="true" class="p-button-rounded float-right"></button>
