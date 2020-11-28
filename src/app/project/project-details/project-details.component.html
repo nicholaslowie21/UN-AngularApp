@@ -10,79 +10,77 @@
 </div>
 <div class="row">
     <div class="col-9">
-        <div class="row" [ngClass]="{'bg-secondary text-white': project.status == 'ongoing','bg-light': project.status != 'ongoing'}">
+        <div class="row p-3" [ngClass]="{'bg-secondary text-white': project.status == 'ongoing','bg-light': project.status != 'ongoing'}">
             <div class="col-3">
                 <div *ngIf="project.imgPath.length != 0">
-                    <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src={{imgString}} style="margin: 25px; width: 150px; height: 150px; object-fit: cover;"
+                    <img class="img-fluid mx-auto d-block" src={{imgString}} style="width: 150px; height: 150px; object-fit: cover;"
                         alt="Project picture">
                 </div>
                 <div *ngIf="project.imgPath.length == 0">
-                    <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src="../../../assets/img/team.jpg" style="margin: 25px; width: 150px; height: 150px; object-fit: cover;"
+                    <img class="img-fluid mx-auto d-block" src="../../../assets/img/team.jpg" style="width: 150px; height: 150px; object-fit: cover;"
                         alt="Project picture">
                 </div>
-
             </div>
-            <div class="col-5">
-                <h3 class="card-title text-left mt-md-4 mb-md-0">{{ project.title }}</h3>
-                <h6 class="card-title text-left">Country: {{project.country}}</h6>
-                <h6 class="card-title text-left">Level of difficulty: {{project.rating}}</h6>
-                <h6 class="card-title text-left">SDGs:
+            <div class="col-6">
+                <h3>{{ project.title }}</h3>
+                <div>Country: {{project.country}}</div>
+                <div>Level of difficulty: {{project.rating}}</div>
+                <div>SDGs:
                     <div *ngIf="project.SDGs.length == 0" style="display:inline-block;">
                         -
                     </div>
                     <div *ngFor="let sdg of project.SDGs" style="display:inline-block;">
                         <button class="sdg sdg{{sdg}} mr-md-1">{{sdg}}</button>
                     </div>
-                </h6>
-            </div>
+                </div>
+                <div data-toggle="modal" data-target="#SDGtargets" style="cursor: pointer">
+                    <span><u>See SDG Targets</u></span>
+                </div>
 
-            <div class="col-4">
-                <div>
-                    <button class="btn btn-primary float-right mt-md-4" data-toggle="modal" data-target="#ReportModal">
-                        <i class="pi pi-ellipsis-h"></i>
-                    </button>
-
-                    <!--button class="btn btn-primary float-right mt-md-4" (click)="viewTarget()" style="margin-right: 5%">
-                        <i class="pi pi-map-marker"></i>
-                    </button-->
-
-                    <button class="btn btn-primary float-right mt-md-4" data-toggle="modal" data-target="#SDGtargets" style="margin-right: 5%">
-                        <i class="pi pi-map-marker"></i>
-                    </button>
-
-                    <!-- Modal -->
-                    <div class="modal fade" id="SDGtargets" tabindex="-1" role="dialog" aria-labelledby="SDGtargetsTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title text-dark" id="exampleModalLongTitle">Project SDG Targets</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
+                <!-- Modal See SDG Targets -->
+                <div class="modal fade" id="SDGtargets" tabindex="-1" role="dialog" aria-labelledby="SDGtargetsTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title text-dark" id="exampleModalLongTitle">{{project.title}}'s SDG Targets</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body text-dark">
+                                <div *ngIf="targets.length == 0">
+                                    No SDG targets.
                                 </div>
-                                <div class="modal-body text-dark">
-                                    <div *ngIf="targets.length == 0">
-                                        No SDG targets.
-                                    </div>
-                                    <div *ngFor="let t of targets">
-                                        <div class="card">
-                                            <div class="row p-2">
-                                                <div class="col-1">
-                                                    <button class="sdg sdg{{t.SDG}} mr-md-1">{{t.SDG}}.{{t.targetCode}}</button>
-                                                </div>
-                                                <div class="col-11 mt-md-2">
-                                                    <h6>{{t.desc}}</h6>
-                                                </div>
+                                <div *ngFor="let t of targets">
+                                    <div class="card">
+                                        <div class="row p-2">
+                                            <div class="col-1">
+                                                <button class="sdg sdg{{t.SDG}} mr-md-1">{{t.SDG}}.{{t.targetCode}}</button>
+                                            </div>
+                                            <div class="col-11 mt-md-2">
+                                                <h6>{{t.desc}}</h6>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <!-- <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                </div> -->
+                            </div>
+                            <div class="modal-footer" *ngIf="isAdmin || isCreator">
+                                <a href="/edit-target?type=project&id={{project.id}}" *ngIf=isOngoing class="btn btn-primary">
+                                    <i class="pi pi-pencil"></i>&nbsp;Edit SDG Targets
+                                </a>
+                                <button *ngIf=!isOngoing class="btn btn-primary disabled">
+                                    <i class="pi pi-pencil"></i>&nbsp;Edit SDG Targets
+                                </button>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <div class="col-3">
+                    <button class="btn btn-primary float-right" data-toggle="modal" data-target="#ReportModal">
+                        <i class="pi pi-ellipsis-h"></i>
+                    </button>
 
                     <div class="modal fade text-dark" data-backdrop="static" id="ReportModal" tabindex="-1" role="dialog" aria-labelledby="ReportModal"
                         aria-hidden="true">
@@ -179,12 +177,11 @@
                             </div>
                         </div>
                     </div>
-                </div>
             </div>
 
         </div>
 
-            <div class="row p-3 mt-1 bg-light">
+            <div class="row p-3 mt-1" [ngClass]="{'border': project.status == 'ongoing', 'bg-light': project.status != 'ongoing'}">
                 <h5 class="col-12">Description</h5>
                 <div class="col-12 text-justify">{{project.desc}}</div>
             </div>
