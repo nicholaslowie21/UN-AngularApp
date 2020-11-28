@@ -75,14 +75,14 @@
                   <div class="col-10">
                     <h5><a href="/project/projectDetails?id={{n.id}}">{{n.title}}</a>
                       <span class="ml-md-2 text-secondary" style="font-size: small;">{{formatDate(n.createdAt)}}</span>
-                    <div class="float-right">
-                      <span style="font-size: small;">SDGs:&nbsp;</span>
-                      <div *ngFor="let s of n.SDGs" style="display:inline-block;">
-                        <span class="sdg sdg{{s}}" style="font-size: small;">{{s}}</span>
+                      <div class="float-right">
+                        <span style="font-size: small;">SDGs:&nbsp;</span>
+                        <div *ngFor="let s of n.SDGs" style="display:inline-block;">
+                          <span class="sdg sdg{{s}}" style="font-size: small;">{{s}}</span>
+                        </div>
                       </div>
-                    </div>
-                  </h5>
-                    <h6 class="p-text-nowrap p-text-truncate text-secondary" style="width: 90%;">{{n.desc}}</h6>
+                    </h5>
+                    <div class="p-text-nowrap p-text-truncate text-secondary" style="width: 90%;">{{n.desc}}</div>
                   </div>
                 </div>
                 
@@ -98,7 +98,7 @@
           </div>
           <div *ngIf="announcements.length == 0">
             <div class="dropdown-divider"></div>
-            <div class="card-body">
+            <div class="card-body text-center">
               No announcement found.
             </div>
           </div>
