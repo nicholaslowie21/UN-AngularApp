@@ -110,8 +110,9 @@ export class AppComponent implements OnInit {
   }
 
   formatDate(date): any {
-    let formattedDate = new Date(date).toUTCString();
-    return formattedDate.substring(5, formattedDate.length-13);
+    let formattedDate = moment(date).format("DD MMM YYYY");
+    let formattedTime = moment(date).format("h:mm a");
+    return formattedDate + " | " + formattedTime;
   }
 
   logout(): void {
