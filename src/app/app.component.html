@@ -114,7 +114,7 @@
         <div class="card-header p-2"
           [ngClass]="{'bg-warning': chatStatus.status == 'room' && selectedChatRoom.chatType == 'admin'}">
           <div *ngIf="chatStatus.status == 'open'">
-            <h5 class="mt-2" style="display: inline-block;">Filter type </h5>
+            <h6 class="mt-2" style="display: inline-block;">Filter type </h6>
             <select class="form-control ml-2" [(ngModel)]="chatStatus.selectedChatType"
               (change)="onChangeChatType()" style="display: inline-block; width: fit-content;">
               <option selected value="user">User</option>
@@ -196,6 +196,7 @@
             <div *ngIf="selectedChatRoom.chatType == 'admin'" class="text-center bg-warning rounded-sm">
               <small>This is an administrative chat</small>
             </div>
+            <div #messageArea>
             <div *ngFor="let msg of chatMsgs" class="pr-2 pt-2 pb-2">
               <div *ngIf="msg.accountUsername != username">
                 <div class="received_msg">
@@ -214,6 +215,7 @@
                 </div>
               </div>
             </div>
+            </div>
           </div>
         </div>
 
@@ -222,7 +224,7 @@
           <form name="form" (ngSubmit)="f.form.valid && sendMsg()" #f="ngForm" novalidate>
             <div class="row">
               <input type="text" class="form-control col-9" name="message" [(ngModel)]="chatForm.message" required
-                #message="ngModel" placeholder="Type a message..." />
+                #message="ngModel" placeholder="Type a message..." style="font-size: 15px;" />
               <div class="col-3">
                 <button class="btn btn-primary float-right ml-1"><i class="pi pi-angle-right"></i></button>
               </div>
