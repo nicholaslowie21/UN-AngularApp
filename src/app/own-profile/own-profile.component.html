@@ -1,6 +1,6 @@
 <p-toast key="toastMsg" [baseZIndex]="100"></p-toast>
 
-<div class="container p-3 my-3 bg-dark text-white">
+<div class="container p-3 my-3 bg-light border">
     <div class="row">
         <div class="col-3">
             <div *ngIf="user.profilePic.length == 0">
@@ -259,7 +259,7 @@
     </div>
 </div>
 
-<div *ngIf="user.bio" class="card mt-2">
+<div *ngIf="user.bio" class="card bg-light mt-2">
     <div class="card-body">
         <h5>Bio</h5>
         <div class="text-justify">
@@ -268,7 +268,7 @@
     </div>
 </div>
 
-<div class="card mt-2">
+<div class="card bg-light mt-2">
     <div class="card-body">
                 <h5>SDGs
                     <button class="btn btn-primary float-right" data-toggle="modal" data-target="#SDGtargets">
@@ -299,19 +299,19 @@
 
 <div *ngIf="isOwner && isIndividual" class="row mt-2">
     <div class="col-4">
-        <div class="card p-3">
+        <div class="card bg-light p-3">
             <h5>My Points</h5>
             <div>{{user.points}}</div>
         </div>
     </div>
     <div class="col-4">
-        <div class="card p-3">
+        <div class="card bg-light p-3">
             <h5>My Wallet</h5>
             <div>{{user.wallet}}</div>
         </div>
     </div>
     <div class="col-4">
-        <div class="card p-3">
+        <div class="card bg-light p-3">
             <h5>Tier</h5>
             <span *ngIf="user.tier.length == 0">-</span>
             <span class="rounded-pill pl-2 pr-2 {{user.tier}}" style="width: fit-content;">{{ user.tier }}</span>
@@ -441,7 +441,7 @@ aria-hidden="true">
     </div>
 </div> -->
 
-<div class="mt-2" style="height: 100%;">
+<div class="mt-2 mb-4" style="height: 100%;">
     <div class="row">
         <div class="card" style="width: 50%; float: left;">
             <!-- <div class="card"> -->
