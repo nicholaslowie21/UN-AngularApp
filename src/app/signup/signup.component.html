@@ -21,6 +21,7 @@
             required
             minlength="3"
             #name="ngModel"
+            placeholder="e.g. John Doe"
           />
         </div>
         <div class="alert-danger" *ngIf="f.submitted && name.invalid">
@@ -42,6 +43,7 @@
             minlength="3"
             maxlength="20"
             #username="ngModel"
+            placeholder="e.g. johndoe"
           />
         </div>
         <div class="alert-danger" *ngIf="f.submitted && username.invalid">
@@ -65,6 +67,7 @@
             required
             email
             #email="ngModel"
+            placeholder="e.g. example@email.com"
           />
         </div>
         <div class="alert-danger" *ngIf="f.submitted && email.invalid">
@@ -118,6 +121,7 @@
         <label for="country" class="col-sm-3 col-form-label">Country</label>
         <div class="col-sm-9">
             <select class="form-control" name="country" [(ngModel)]="form.country" required #country="ngModel">
+              <option value="undefined" disabled selected hidden>Choose...</option>
               <option *ngFor="let c of countries" value={{c}}>{{c}}</option>
             </select>
         </div>
@@ -129,7 +133,7 @@
         <label for="salutation" class="col-sm-3 col-form-label">Salutation</label>
         <div class="col-sm-9">
           <select class="form-control" name="salutation" [(ngModel)]="form.salutation" required #salutation="ngModel">
-            <option value="" selected hidden>Choose...</option>
+            <option value="undefined" disabled selected hidden>Choose...</option>
             <option value="Mr.">Mr.</option>
             <option value="Mrs.">Mrs.</option>
             <option value="Ms.">Ms.</option>
@@ -144,7 +148,7 @@
       <div class="form-group row">
         <div class="col-12">
           <input type="checkbox" name="tnc" [(ngModel)]="form.tnc" required #tnc="ngModel">
-          <label for="tnc" class="ml-md-2" style="display: inline;">I have read and agree to <a href=#>KoCoSD's Terms and Conditions</a></label>
+          <label for="tnc" class="ml-md-2" style="display: inline;">I have read and agree to <a href="/terms-conditions">KoCoSD's Terms and Conditions</a></label>
         </div>
         <div class="alert-danger" *ngIf="f.submitted && tnc.invalid">
           <div *ngIf="tnc.errors.required">Please indicate that you have read and agree</div>

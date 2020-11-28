@@ -73,16 +73,16 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="requestModalLabel">Request Resource</h5>
+                    <h5 class="modal-title" id="requestModalLabel">Request to Purchase Resource</h5>
                     <button type="button" (click)="closeModal()" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div *ngIf="!isRequestSuccessful">
-                        Please select a project that you would like to purchase this resource for.
+                        <p>Select a project to purchase this resource for.</p>
                         <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
-                            <!-- show current user's projects and get them to choose one -->
+                            <!-- show current user's ongoing projects and get them to choose one -->
                             <div class="form-group row">
                                 <label for="project" class="col-sm-3 col-form-label">Project</label>
                                 <div class="col-sm-9" *ngIf="myProjects.length == 0">
@@ -100,14 +100,14 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <button *ngIf="myProjects.length != 0" class="btn btn-primary btn-block">Request</button>
-                                <button *ngIf="myProjects.length == 0" class="btn btn-primary btn-block" disabled>Request</button>
+                                <button *ngIf="myProjects.length != 0" class="btn btn-primary btn-block">Request to Purchase</button>
+                                <button *ngIf="myProjects.length == 0" class="btn btn-primary btn-block" disabled>Request to Purchase</button>
                             </div>
                         </form>
                     </div>
                     <div *ngIf="isRequestSuccessful">
                         <div class="alert alert-success">
-                            Your request has been submitted successfully! <br>
+                            Your purchase request has been submitted successfully! <br>
                             Check your request status on <a href="/myPurchases">My Purchases</a>
                         </div>
                     </div>
@@ -118,15 +118,20 @@
 
     <div *ngIf="isOwner">
         <h3>Incoming requests</h3>
-        <div class="row">
-            <div class="col-4">
-                <h5>Pending Purchase Requests</h5>
+        <div class="card-deck">
+            <div class="card p-2">
+                <h5 class="card-title">Pending Purchase Requests</h5>
                 <div *ngIf="pendingReqs.length == 0">You have no pending purchase requests.</div>
                 <div *ngIf="pendingReqs.length != 0">You have {{pendingReqs.length}} pending purchase request(s).</div>
                 <div *ngFor="let req of pendingReqs">
                     <div class="card bg-light">
                         <div class="card-body">
-                            <h6 class="card-title">Project: <a href="/project/projectDetails?id={{req.projectId}}">{{req.projectTitle}}</a></h6>
+                            <h6 class="card-title">
+                                Project: <a href="/project/projectDetails?id={{req.projectId}}">{{req.projectTitle}}</a><br/><br/>
+                                Buyer:
+                                <span *ngIf="req.buyerType == 'user'"><a href="/profile?username={{req.buyerUsername}}&userType=individual">{{req.buyerName}}</a></span>
+                                <span *ngIf="req.buyerType == 'institution'"><a href="/profile?username={{req.buyerUsername}}&userType=institution">{{req.buyerName}}</a></span>
+                            </h6>
                             Request received at: {{formatDate(req.createdAt)}}<br/>
                             <button class="btn btn-danger float-right ml-2" type="button" (click)="declineReq(req.id)">
                                 Decline
@@ -138,14 +143,19 @@
                     </div>
                 </div>
             </div>
-            <div class="col-4">
-                <h5>Accepted Purchase Requests</h5>
+            <div class="card p-2">
+                <h5 class="card-title">Accepted Purchase Requests</h5>
                 <div *ngIf="acceptedReqs.length == 0">You have no accepted purchase requests.</div>
                 <div *ngIf="acceptedReqs.length != 0">You have {{acceptedReqs.length}} accepted purchase request(s).</div>
                 <div *ngFor="let req of acceptedReqs">
                     <div class="card bg-light">
                         <div class="card-body">
-                            <h6 class="card-title">Project: <a href="/project/projectDetails?id={{req.projectId}}">{{req.projectTitle}}</a></h6>
+                            <h6 class="card-title">
+                                Project: <a href="/project/projectDetails?id={{req.projectId}}">{{req.projectTitle}}</a><br/><br/>
+                                Buyer:
+                                <span *ngIf="req.buyerType == 'user'"><a href="/profile?username={{req.buyerUsername}}&userType=individual">{{req.buyerName}}</a></span>
+                                <span *ngIf="req.buyerType == 'institution'"><a href="/profile?username={{req.buyerUsername}}&userType=institution">{{req.buyerName}}</a></span>
+                            </h6>
                             Request accepted at: {{formatDate(req.updatedAt)}}<br/>
                             <button class="btn btn-danger float-right ml-2" type="button" (click)="cancelReq(req.id)">
                                 Cancel
@@ -154,20 +164,91 @@
                     </div>
                 </div>
             </div>
-            <div class="col-4">
-                <h5>Confirmed Purchase Requests</h5>
+            <div class="card p-2">
+                <h5 class="card-title">Confirmed Purchase Requests</h5>
                 <div *ngIf="confirmedReqs.length == 0">You have no confirmed purchase requests.</div>
                 <div *ngIf="confirmedReqs.length != 0">You have {{confirmedReqs.length}} confirmed purchase request(s). Please proceed to arrange with the buyer to deliver the resource to them.</div>
                 <div *ngFor="let req of confirmedReqs">
                     <div class="card bg-light">
                         <div class="card-body">
-                            <h6 class="card-title">Project: <a href="/project/projectDetails?id={{req.projectId}}">{{req.projectTitle}}</a></h6>
+                            <h6 class="card-title">
+                                Project: <a href="/project/projectDetails?id={{req.projectId}}">{{req.projectTitle}}</a><br/><br/>
+                                Buyer:
+                                <span *ngIf="req.buyerType == 'user'"><a href="/profile?username={{req.buyerUsername}}&userType=individual">{{req.buyerName}}</a></span>
+                                <span *ngIf="req.buyerType == 'institution'"><a href="/profile?username={{req.buyerUsername}}&userType=institution">{{req.buyerName}}</a></span>
+                            </h6>
                             Payment was made by buyer at:<br/>{{formatDate(req.updatedAt)}}<br/>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- <div class="row">
+            <div class="col-3 bg-light p-2">
+                <h5>Pending Purchase Requests</h5>
+                <div *ngIf="pendingReqs.length == 0">You have no pending purchase requests.</div>
+                <div *ngIf="pendingReqs.length != 0">You have {{pendingReqs.length}} pending purchase request(s).</div>
+                <div *ngFor="let req of pendingReqs">
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <h6 class="card-title">
+                                Project: <a href="/project/projectDetails?id={{req.projectId}}">{{req.projectTitle}}</a><br/><br/>
+                                Buyer:
+                                <span *ngIf="req.buyerType == 'user'"><a href="/profile?username={{req.buyerUsername}}&userType=individual">{{req.buyerName}}</a></span>
+                                <span *ngIf="req.buyerType == 'institution'"><a href="/profile?username={{req.buyerUsername}}&userType=institution">{{req.buyerName}}</a></span>
+                            </h6>
+                            Request received at: {{formatDate(req.createdAt)}}<br/>
+                            <button class="btn btn-danger float-right ml-2" type="button" (click)="declineReq(req.id)">
+                                Decline
+                            </button>
+                            <button class="btn btn-success float-right" type="button" (click)="acceptReq(req.id)">
+                                Accept
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3 bg-light p-2 ml-md-2">
+                <h5>Accepted Purchase Requests</h5>
+                <div *ngIf="acceptedReqs.length == 0">You have no accepted purchase requests.</div>
+                <div *ngIf="acceptedReqs.length != 0">You have {{acceptedReqs.length}} accepted purchase request(s).</div>
+                <div *ngFor="let req of acceptedReqs">
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <h6 class="card-title">
+                                Project: <a href="/project/projectDetails?id={{req.projectId}}">{{req.projectTitle}}</a><br/><br/>
+                                Buyer:
+                                <span *ngIf="req.buyerType == 'user'"><a href="/profile?username={{req.buyerUsername}}&userType=individual">{{req.buyerName}}</a></span>
+                                <span *ngIf="req.buyerType == 'institution'"><a href="/profile?username={{req.buyerUsername}}&userType=institution">{{req.buyerName}}</a></span>
+                            </h6>
+                            Request accepted at: {{formatDate(req.updatedAt)}}<br/>
+                            <button class="btn btn-danger float-right ml-2" type="button" (click)="cancelReq(req.id)">
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3 bg-light p-2 ml-md-2">
+                <h5>Confirmed Purchase Requests</h5>
+                <div *ngIf="confirmedReqs.length == 0">You have no confirmed purchase requests.</div>
+                <div *ngIf="confirmedReqs.length != 0">You have {{confirmedReqs.length}} confirmed purchase request(s). Please proceed to arrange with the buyer to deliver the resource to them.</div>
+                <div *ngFor="let req of confirmedReqs">
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <h6 class="card-title">
+                                Project: <a href="/project/projectDetails?id={{req.projectId}}">{{req.projectTitle}}</a><br/><br/>
+                                Buyer:
+                                <span *ngIf="req.buyerType == 'user'"><a href="/profile?username={{req.buyerUsername}}&userType=individual">{{req.buyerName}}</a></span>
+                                <span *ngIf="req.buyerType == 'institution'"><a href="/profile?username={{req.buyerUsername}}&userType=institution">{{req.buyerName}}</a></span>
+                            </h6>
+                            Payment was made by buyer at:<br/>{{formatDate(req.updatedAt)}}<br/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
     </div>
 </div>
 

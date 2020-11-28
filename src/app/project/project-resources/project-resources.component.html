@@ -190,6 +190,7 @@ Overall Need Progress:
                         <label for="type" class="col-sm-3 col-form-label">Resource Type</label>
                         <div class="col-sm-8">
                             <select class="form-control" name="type" [(ngModel)]="form.resourceType" required #resourceType="ngModel">
+                                <option value="undefined" disabled selected hidden>Choose...</option>
                                 <option value="item">Item</option>
                                 <option value="manpower">Manpower</option>
                                 <option value="venue">Venue</option>

@@ -18,6 +18,7 @@ export class MyPurchasesComponent implements OnInit, AfterViewChecked {
   acceptedReqs: any[];
   declinedReqs: any[];
   cancelledReqs: any[];
+  paidReqs: any[]; // those that have already been paid for
 
   myProjectsLink = '';
 
@@ -47,6 +48,10 @@ export class MyPurchasesComponent implements OnInit, AfterViewChecked {
 
     await this.paidResourceService.getMyPurchases({status: 'cancelled'}).toPromise().then(
       res => {this.cancelledReqs = res.data.paidrequests}
+    );
+
+    await this.paidResourceService.getMyPurchases({status: 'paid'}).toPromise().then(
+      res => {this.paidReqs = res.data.paidrequests}
     );
 
     let username = this.tokenStorageService.getUser().username;
