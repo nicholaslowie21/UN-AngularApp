@@ -106,7 +106,7 @@
                                             </button>
                                             <hr>
                                         </div>
-                                        <div *ngIf="isAdmin || isCreator">
+                                        <!-- <div *ngIf="isAdmin || isCreator">
                                             <button *ngIf=isOngoing class="btn btn-block" style="color: rgb(162, 0, 255);">
                                                 <a href="/edit-target?type=project&id={{project.id}}">
                                                     <i class="pi pi-map-marker"></i>&nbsp;Edit SDG Targets
@@ -116,7 +116,7 @@
                                                 <i class="pi pi-map-marker"></i>&nbsp;Edit SDG Targets
                                             </button>
                                             <hr>
-                                        </div>
+                                        </div> -->
                                         <div *ngIf="!isCreator">
                                             <button class="btn btn-block" style="color: red;" (click)="clickReport()">Report Project</button>
                                             <hr>
