@@ -326,7 +326,6 @@ export class OwnProfileComponent implements OnInit {
     // console.log("MPW: " + this.manpower);
     // console.log("ITEM: " + this.item);
     // console.log("VENUE: " + this.venue);
-    console.log(this.resourceOffers);
   }
 
   sortFunction(a, b) {
