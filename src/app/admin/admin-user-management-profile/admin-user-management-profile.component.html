@@ -136,7 +136,7 @@
         <i class="pi pi-spin pi-spinner mx-auto" style="font-size: 3em"></i>
     </div>
 
-    <div *ngIf="!checkLoading()">
+    <div *ngIf="!checkLoading()" class="row">
         <div *ngIf="auditType=='user'">
             <h4>User Audit Log
                 <a *ngIf="userAudit.length > 0" href="https://localhost:8080{{userAuditFile}}" class="btn btn-primary float-right" target="_blank">
