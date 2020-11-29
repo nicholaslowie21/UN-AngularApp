@@ -20,18 +20,20 @@ Access your projects under <a [href]="myProjectsLink">My Projects</a>.
     <li class="nav-item">
       <a class="nav-link" id="cancelled-tab" data-toggle="tab" href="#cancelled" role="tab" aria-controls="cancelled" aria-selected="false">Cancelled</a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link" id="paid-tab" data-toggle="tab" href="#paid" role="tab" aria-controls="paid" aria-selected="false">Paid</a>
+      </li>
 </ul>
 <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="pending" role="tabpanel" aria-labelledby="pending-tab">
         <div class="card">
-            <p-dataView #dv [value]="pendingReqs" [paginator]="true" [rows]="9" filterBy="title" layout="list">
+            <p-dataView #dv [value]="pendingReqs" [paginator]="true" [rows]="9" filterBy="paidresource.title" layout="list">
             <ng-template pTemplate="header">
                 <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
-                    Search bar
-                    <!-- <span class="p-input-icon-left p-mb-2 p-mb-md-0">
+                    <span class="p-input-icon-left p-mb-2 p-mb-md-0">
                         <i class="pi pi-search"></i>
-                        <input type="search" pInputText placeholder="Search by Resource Title" (input)="dv.filter($event.target.value)">
-                    </span> -->
+                        <input type="search" pInputText placeholder="Search by Resource" (input)="dv.filter($event.target.value)">
+                    </span>
                 </div>
             </ng-template>
             <ng-template let-req pTemplate="listItem">
@@ -60,10 +62,13 @@ Access your projects under <a [href]="myProjectsLink">My Projects</a>.
     </div>
     <div class="tab-pane fade" id="accepted" role="tabpanel" aria-labelledby="accepted-tab">
         <div class="card">
-            <p-dataView #dv [value]="acceptedReqs" [paginator]="true" [rows]="9" filterBy="title" layout="list">
+            <p-dataView #dv [value]="acceptedReqs" [paginator]="true" [rows]="9" filterBy="paidresource.title" layout="list">
                 <ng-template pTemplate="header">
                     <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
-                        Search bar
+                        <span class="p-input-icon-left p-mb-2 p-mb-md-0">
+                            <i class="pi pi-search"></i>
+                            <input type="search" pInputText placeholder="Search by Resource Title" (input)="dv.filter($event.target.value)">
+                        </span>
                     </div>
                 </ng-template>
                 <ng-template let-req pTemplate="listItem">
@@ -93,10 +98,13 @@ Access your projects under <a [href]="myProjectsLink">My Projects</a>.
     </div>
     <div class="tab-pane fade" id="declined" role="tabpanel" aria-labelledby="declined-tab">
         <div class="card">
-            <p-dataView #dv [value]="declinedReqs" [paginator]="true" [rows]="9" filterBy="title" layout="list">
+            <p-dataView #dv [value]="declinedReqs" [paginator]="true" [rows]="9" filterBy="paidresource.title" layout="list">
                 <ng-template pTemplate="header">
                     <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
-                        Search bar
+                        <span class="p-input-icon-left p-mb-2 p-mb-md-0">
+                            <i class="pi pi-search"></i>
+                            <input type="search" pInputText placeholder="Search by Resource Title" (input)="dv.filter($event.target.value)">
+                        </span>
                     </div>
                 </ng-template>
                 <ng-template let-req pTemplate="listItem">
@@ -119,10 +127,13 @@ Access your projects under <a [href]="myProjectsLink">My Projects</a>.
     </div>
     <div class="tab-pane fade" id="cancelled" role="tabpanel" aria-labelledby="cancelled-tab">
         <div class="card">
-            <p-dataView #dv [value]="cancelledReqs" [paginator]="true" [rows]="9" filterBy="title" layout="list">
+            <p-dataView #dv [value]="cancelledReqs" [paginator]="true" [rows]="9" filterBy="paidresource.title" layout="list">
                 <ng-template pTemplate="header">
                     <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
-                        Search bar
+                        <span class="p-input-icon-left p-mb-2 p-mb-md-0">
+                            <i class="pi pi-search"></i>
+                            <input type="search" pInputText placeholder="Search by Resource Title" (input)="dv.filter($event.target.value)">
+                        </span>
                     </div>
                 </ng-template>
                 <ng-template let-req pTemplate="listItem">
@@ -142,6 +153,35 @@ Access your projects under <a [href]="myProjectsLink">My Projects</a>.
                                 <p *ngIf="req.cancelType == 'buyer'">
                                     Cancelled by: you
                                 </p>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-dataView>
+        </div>
+    </div>
+    <div class="tab-pane fade" id="paid" role="tabpanel" aria-labelledby="paid-tab">
+        <div class="card">
+            <p-dataView #dv [value]="paidReqs" [paginator]="true" [rows]="9" filterBy="paidresource.title" layout="list">
+                <ng-template pTemplate="header">
+                    <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                        <span class="p-input-icon-left p-mb-2 p-mb-md-0">
+                            <i class="pi pi-search"></i>
+                            <input type="search" pInputText placeholder="Search by Resource Title" (input)="dv.filter($event.target.value)">
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template let-req pTemplate="listItem">
+                    <div class="p-col-12">
+                        <div class="row p-2">
+                            <div class="col-4">
+                                <div class="req-name">You purchased: <a href="/resource/paid/details?id={{req.paidResourceId}}">{{req.paidresource.title}}</a></div>
+                            </div>
+                            <div class="col-4">
+                                <div class="req-name">For project: <a href="/project/projectDetails?id={{req.projectId}}">{{req.projectTitle}}</a></div>
+                            </div>
+                            <div class="col-4">
+                                Payment made at: {{formatDate(req.updatedAt)}}<br/><br/>
                             </div>
                         </div>
                     </div>

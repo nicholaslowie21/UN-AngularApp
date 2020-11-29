@@ -361,14 +361,19 @@ export class ResourceMarketplaceComponent implements OnInit {
   }
 
   onSubmitPaid(): void {
-    this.paidResourceService.createPurchaseRequest({id: this.selectedResourceId, projectId: this.selectedProjectId}).subscribe(
-      response => {
-        this.isRequestSuccessful = true;
-      }, 
-      err => {
-        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
-      }
-    );
+    let r = confirm("You will be directed to make payment when the resource owner accepts this purchase request. Confirm this request to purchase?");
+    if (r == true) {
+      this.paidResourceService.createPurchaseRequest({id: this.selectedResourceId, projectId: this.selectedProjectId}).subscribe(
+        response => {
+          this.isRequestSuccessful = true;
+        }, 
+        err => {
+          this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+        }
+      );
+    } else {
+      return;
+    }
   }
 
 }

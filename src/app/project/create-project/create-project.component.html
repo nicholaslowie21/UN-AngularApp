@@ -68,7 +68,7 @@
             <label for="rating" class="col-sm-3 col-form-label">Level of Difficulty</label>
             <div class="col-sm-9">
               <select class="form-control" name="rating" [(ngModel)]="form.rating" required #rating="ngModel">
-                <option value="" selected hidden>Choose...</option>
+                <option value="undefined" disabled selected hidden>Choose...</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -98,7 +98,7 @@
           <div class="form-group row">
             <div class="col-12">
               <input type="checkbox" name="tnc" [(ngModel)]="form.tnc" required #tnc="ngModel">
-              <label for="tnc" class="ml-md-2" style="display: inline;">I have read and agree to <a href=#>KoCoSD's Terms and Conditions</a></label>
+              <label for="tnc" class="ml-md-2" style="display: inline;">I have read and agree to <a href="/terms-conditions">KoCoSD's Terms and Conditions</a></label>
             </div>
             <div class="alert-danger" *ngIf="f.submitted && tnc.invalid">
               <div *ngIf="tnc.errors.required">Please indicate that you have read and agree</div>

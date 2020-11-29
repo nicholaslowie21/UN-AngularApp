@@ -1,4 +1,8 @@
-<h2>Resource Marketplace</h2>
+<h2>
+    Resource Marketplace
+    <a href="/marketplace/funding" class="btn btn-primary ml-md-2 float-right">Funding Marketplace</a>
+    <a href="/marketplace/project" class="btn btn-primary float-right">Project Marketplace</a>
+</h2>
 
 <p-toast key="toastMsg" [baseZIndex]="100"></p-toast>
 
@@ -174,11 +178,9 @@
                 </div>
                 <div class="modal-body">
                     <div *ngIf="!isRequestSuccessful">
-                        Select the project and specific resource need that you would like to request this resource for.
-                        <br/>
-                        <br/>
+                        <p>Select the project and specific resource need that you would like to request this resource for.</p>
                         <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
-                            <!-- show current user's projects and get them to choose one -->
+                            <!-- show current user's ongoing projects and get them to choose one -->
                             <div class="form-group row">
                                 <label for="project" class="col-sm-3 col-form-label">Select Project</label>
                                 <div class="col-sm-9" *ngIf="myProjects.length == 0">
@@ -186,6 +188,7 @@
                                 </div>
                                 <div class="col-sm-9" *ngIf="myProjects.length != 0">
                                     <select class="form-control" name="project" [(ngModel)]="selectedProjectId" required #project="ngModel" (click)="updateSelectedProject($event)">
+                                        <option value="undefined" disabled selected hidden>Choose...</option>
                                         <option *ngFor="let p of myProjects" value={{p.id}}>{{p.title}}</option>
                                     </select>
                                     <div class="alert-danger" *ngIf="f.submitted && project.invalid">
@@ -207,9 +210,10 @@
                             <div class="form-group row" *ngIf="!autogenerateYes">
                                 <label for="resourceNeed" class="col-sm-3 col-form-label">Select Resource Need</label>
                                 <div class="col-sm-9">
-                                    <p *ngIf="projectSelected && resourceNeeds.length == 0">There are no {{type}} resource needs for this project.</p>
+                                    <p *ngIf="projectSelected && resourceNeeds.length == 0">There are no {{selectedResourceType}} resource needs for this project.</p>
                                     <select *ngIf="projectSelected && resourceNeeds.length != 0" class="form-control" name="resourceNeed" [(ngModel)]="selectedResourceNeedId"
                                         required #resourceNeed="ngModel" (click)="updateSelectedResourceNeed($event)">
+                                        <option value="undefined" disabled selected hidden>Choose...</option>
                                         <option *ngFor="let r of resourceNeeds" value={{r.id}}>{{r.title}}</option>
                                     </select>
                                 </div>
@@ -299,10 +303,9 @@
                         <div class="modal-body">
                             <div *ngIf="!isUseKnowledgeSuccessful">
                                 <form name="form" (ngSubmit)="fs.form.valid && onSubmitKnowledge()" #fs="ngForm" novalidate>
-                                    This will notify the owner(s) of the knowledge resource that you have used their knowledge in your project.
-                                    <br/>
-                                    <br/>
-                                    <!-- show current user's projects and get them to choose one -->
+                                    <p>This will notify the owner(s) of the knowledge resource that you have used their knowledge in your project.<br/>
+                                    Select the project and specific resource need that you would like to use this knowledge resource for.</p>
+                                    <!-- show current user's ongoing projects and get them to choose one -->
                                     <div class="form-group row">
                                         <label for="project" class="col-sm-3 col-form-label">Select Project</label>
                                         <div class="col-sm-9" *ngIf="myProjects.length == 0">
@@ -310,6 +313,7 @@
                                         </div>
                                         <div class="col-sm-9" *ngIf="myProjects.length != 0">
                                             <select class="form-control" name="project" [(ngModel)]="selectedProjectId" required #project="ngModel" (click)="updateSelectedProject($event)">
+                                                <option value="undefined" disabled selected hidden>Choose...</option>
                                                 <option *ngFor="let p of myProjects" value={{p.id}}>{{p.title}}</option>
                                             </select>
                                             <div class="alert-danger" *ngIf="fs.submitted && project.invalid">
@@ -331,7 +335,8 @@
                                     <div class="form-group row" *ngIf="!autogenerateYes">
                                         <label for="resourceNeed" class="col-sm-3 col-form-label">Select Resource Need:</label>
                                         <div class="col-sm-9">
-                                            <select class="form-control" name="resourceNeed" [(ngModel)]="selectedResourceNeedId" required #resourceNeed="ngModel" (click)="updateSelectedResourceNeed($event)">
+                                            <p *ngIf="projectSelected && resourceNeeds.length == 0">There are no {{selectedResourceType}} resource needs for this project.</p>
+                                            <select *ngIf="projectSelected && resourceNeeds.length != 0" class="form-control" name="resourceNeed" [(ngModel)]="selectedResourceNeedId" required #resourceNeed="ngModel" (click)="updateSelectedResourceNeed($event)">
                                                 <option *ngFor="let r of resourceNeeds" value={{r.id}}>{{r.title}}</option>
                                             </select>
                                         </div>
@@ -415,18 +420,18 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="requestPaidResModalLabel">Request Resource</h5>
+                    <h5 class="modal-title" id="requestPaidResModalLabel">Request to Purchase Resource</h5>
                     <button type="button" (click)="closeModal()" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div *ngIf="!isRequestSuccessful">
-                        Select the project that you would like to request this resource for.
+                        Select a project to purchase this resource for.
                         <br/>
                         <br/>
                         <form name="form" (ngSubmit)="fp.form.valid && onSubmitPaid()" #fp="ngForm" novalidate>
-                            <!-- show current user's projects and get them to choose one -->
+                            <!-- show current user's ongoing projects and get them to choose one -->
                             <div class="form-group row">
                                 <label for="project" class="col-sm-3 col-form-label">Project</label>
                                 <div class="col-sm-9" *ngIf="myProjects.length == 0">
@@ -434,6 +439,7 @@
                                 </div>
                                 <div class="col-sm-9" *ngIf="myProjects.length != 0">
                                     <select class="form-control" name="project" [(ngModel)]="selectedProjectId" required #project="ngModel" (click)="updateSelectedProject($event)">
+                                        <option value="undefined" disabled selected hidden>Choose...</option>
                                         <option *ngFor="let p of myProjects" value={{p.id}}>{{p.title}}</option>
                                     </select>
                                     <div class="alert-danger" *ngIf="fp.submitted && project.invalid">
@@ -444,14 +450,14 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <button *ngIf="myProjects.length != 0" class="btn btn-primary btn-block">Request</button>
-                                <button *ngIf="myProjects.length == 0" class="btn btn-primary btn-block" disabled>Request</button>
+                                <button *ngIf="myProjects.length != 0" class="btn btn-primary btn-block">Request to Purchase</button>
+                                <button *ngIf="myProjects.length == 0" class="btn btn-primary btn-block" disabled>Request to Purchase</button>
                             </div>
                         </form>
                     </div>
                     <div *ngIf="isRequestSuccessful">
                         <div class="alert alert-success">
-                            Your request has been submitted successfully! <br>
+                            Your purchase request has been submitted successfully! <br>
                             Check your request status on <a href="/myPurchases">My Purchases</a>
                         </div>
                     </div>
