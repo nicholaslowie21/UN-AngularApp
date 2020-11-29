@@ -739,33 +739,38 @@ aria-hidden="true">
                             </div>
                             <div *ngIf="pastContributorProj.length > 0">
                                 <div *ngFor="let project of pastContributorProj; let p = index">
-                                <div *ngIf="p<3">
-                                    <ul class="list-group">
-                                        <li class="list-group-item">
-                                            <div class="row">
-                                                <div class="card border-0" style="width:20%">
-                                                    <div *ngIf="project.imgPath == '' ">
-                                                        <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src="../../assets/img/team.jpg" style="margin:15px; width: 50px; height: 50px; object-fit: cover;"
-                                                            alt="Project picture">
+                                    <div *ngIf="p<3">
+                                        <ul class="list-group">
+                                            <li class="list-group-item">
+                                                <div class="row">
+                                                    <div class="card border-0" style="width:20%">
+                                                        <div *ngIf="project.imgPath == '' ">
+                                                            <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src="../../assets/img/team.jpg" style="margin:15px; width: 50px; height: 50px; object-fit: cover;"
+                                                                alt="Project picture">
+                                                        </div>
+                                                        <div *ngIf="project.imgPath.length != 0">
+                                                            <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src="https://localhost:8080{{project.imgPath}}" style="margin:15px; width: 50px; height: 50px; object-fit: cover;"
+                                                                alt="Project picture">
+                                                        </div>
                                                     </div>
-                                                    <div *ngIf="project.imgPath.length != 0">
-                                                        <img class="card-img-top rounded-circle img-fluid mx-auto d-block" src="https://localhost:8080{{project.imgPath}}" style="margin:15px; width: 50px; height: 50px; object-fit: cover;"
-                                                            alt="Project picture">
+                                                    <div class="card border-0" style="width:80%">
+                                                        <h5 class="card-title text-left mt-md-3" style="margin-left: 5%;"><a href="/project/projectDetails?id={{project.id}}">{{project.title}}</a></h5>
+                                                        <h6 class="card-title text-left text-secondary mt-md-1 p-text-nowrap p-text-truncate" style="width: 90%; margin-left: 5%;">{{project.desc}} </h6>
+                                                        <div class="text-secondary" style="margin-left: 5%;">Rating:
+                                                            <div *ngFor="let starIcon of [].constructor(project.rating)" style="display: inline-block;">
+                                                                <i class="pi pi-star" style="color: #FD4;"></i>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="card border-0" style="width:80%">
-                                                    <h5 class="card-title text-left mt-md-3" style="margin-left: 5%;"><a href="/project/projectDetails?id={{project.id}}">{{project.title}}</a></h5>
-                                                    <h6 class="card-title text-left text-secondary mt-md-1 p-text-nowrap p-text-truncate" style="width: 90%; margin-left: 5%;">{{project.desc}} </h6>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                                 <a *ngIf="pastContributorProj.length != 0" href="/project/myProjects?username={{user.username}}&type={{userType}}">See all</a>
                             </div>
                         </div>
                     </div>
-                </div>
 
                 <br><br>
                 <!-- <div class="card-body"> -->

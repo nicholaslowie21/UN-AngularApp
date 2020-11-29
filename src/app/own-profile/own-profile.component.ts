@@ -257,8 +257,6 @@ export class OwnProfileComponent implements OnInit {
               }
             }
           }
-          console.log(this.pastAdminProj.length);
-          console.log(this.pastContributorProj.length);
         }
       );
 
@@ -326,6 +324,7 @@ export class OwnProfileComponent implements OnInit {
     // console.log("MPW: " + this.manpower);
     // console.log("ITEM: " + this.item);
     // console.log("VENUE: " + this.venue);
+    console.log(this.pastContributorProj);
   }
 
   sortFunction(a, b) {
