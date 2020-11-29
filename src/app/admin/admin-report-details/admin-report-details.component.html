@@ -12,7 +12,7 @@
                 </span>
             </div>
         </div>
-        <div class="col-6">
+        <div class="col-6" *ngIf="report.targetUsername != loggedInUser.username && report.reporterUsername != loggedInUser.username">
             <div *ngIf="report.status == 'pending'">
                 <button class="btn btn-danger float-right" (click)="updateReport(report.id, 'declined')">
                     <i class="pi pi-times"></i>&nbsp;Decline</button>
