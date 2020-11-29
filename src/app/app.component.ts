@@ -75,14 +75,18 @@ export class AppComponent implements OnInit {
         this.showAdmin = true;
       }
 
-      this.communicationService.checkNewNotifications().toPromise().then(
-        res => this.hasNewNotif = res.data.gotNew
-      );
-
       this.username = user.username;
       await this.loadChat();
+      await this.checkNotification();
+      console.log(this.hasNewNotif);
     }
     console.log(this.showChatButton)
+  }
+
+  async checkNotification() {
+    await this.communicationService.checkNewNotifications().toPromise().then(
+      res => this.hasNewNotif = res.data.gotNew
+    );
   }
 
   onActivate(event: any): void {
