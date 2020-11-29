@@ -228,40 +228,79 @@
             </div> -->
         </div>
         <div *ngIf="(auditType==null)&&(isNullUser)">
-            <h4>User Audit Log
-                <a *ngIf="userAudit.length > 0" href="https://localhost:8080{{userAuditFile}}" class="btn btn-primary float-right" target="_blank">
-                    <i class="pi pi-upload"></i>&nbsp;Export
-                </a>
-            </h4>
-            <div *ngIf="userAudit.length==0">
-                There are no user audit logs for now.
+            <div *ngIf="isIndividual">
+                <h4>User Audit Log
+                    <a *ngIf="userAudit.length > 0" href="https://localhost:8080{{userAuditFile}}" class="btn btn-primary float-right" target="_blank">
+                        <i class="pi pi-upload"></i>&nbsp;Export
+                    </a>
+                </h4>
+                <div *ngIf="userAudit.length==0">
+                    There are no user audit logs for now.
+                </div>
+                <p-table #dt3 [value]="userAudit" [rowHover]="true" [rows]="10" [rowsPerPageOptions]="[10,25,50]" [paginator]="true"
+                    [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Action</th>
+                            <th pSortableColumn="createdAt">Created at
+                                <p-sortIcon field="createdAt"></p-sortIcon>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <input pInputText type="text" (input)="dt3.filter($event.target.value, 'action', 'contains')" [value]="dt3.filters['action']?.value" placeholder="Search by Action" class="p-column-filter">
+                            </th>
+                            <th>
+                                <p-calendar [baseZIndex]="90" [(ngModel)]="rangeDates" [style]="{'width':'60%'}" placeholder="Filter by date range" (onSelect)="filterByDateRange('user')" selectionMode="range" 
+                                    [readonlyInput]="true" inputId="range" [showIcon]="true" [monthNavigator]="true" [yearNavigator]="true" yearRange="2015:2020" showButtonBar="true" (onClearClick)="loadAudit('user')"></p-calendar>
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-a>
+                        <tr>
+                            <td>{{a.action}}</td>
+                            <td>{{formatDate(a.createdAt)}}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
             </div>
-            <p-table #dt3 [value]="userAudit" [rowHover]="true" [rows]="10" [rowsPerPageOptions]="[10,25,50]" [paginator]="true"
-                [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th>Action</th>
-                        <th pSortableColumn="createdAt">Created at
-                            <p-sortIcon field="createdAt"></p-sortIcon>
-                        </th>
-                    </tr>
-                    <tr>
-                        <th>
-                            <input pInputText type="text" (input)="dt3.filter($event.target.value, 'action', 'contains')" [value]="dt3.filters['action']?.value" placeholder="Search by Action" class="p-column-filter">
-                        </th>
-                        <th>
-                            <p-calendar [baseZIndex]="90" [(ngModel)]="rangeDates" [style]="{'width':'60%'}" placeholder="Filter by date range" (onSelect)="filterByDateRange('institution')" selectionMode="range" 
-                                [readonlyInput]="true" inputId="range" [showIcon]="true" [monthNavigator]="true" [yearNavigator]="true" yearRange="2015:2020" showButtonBar="true" (onClearClick)="loadAudit('institution')"></p-calendar>
-                        </th>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-a>
-                    <tr>
-                        <td>{{a.action}}</td>
-                        <td>{{formatDate(a.createdAt)}}</td>
-                    </tr>
-                </ng-template>
-            </p-table>
+            <div *ngIf="!isIndividual">
+                <h4>User Audit Log
+                    <a *ngIf="userAudit.length > 0" href="https://localhost:8080{{userAuditFile}}" class="btn btn-primary float-right" target="_blank">
+                        <i class="pi pi-upload"></i>&nbsp;Export
+                    </a>
+                </h4>
+                <div *ngIf="userAudit.length==0">
+                    There are no user audit logs for now.
+                </div>
+                <p-table #dt3 [value]="userAudit" [rowHover]="true" [rows]="10" [rowsPerPageOptions]="[10,25,50]" [paginator]="true"
+                    [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Action</th>
+                            <th pSortableColumn="createdAt">Created at
+                                <p-sortIcon field="createdAt"></p-sortIcon>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <input pInputText type="text" (input)="dt3.filter($event.target.value, 'action', 'contains')" [value]="dt3.filters['action']?.value" placeholder="Search by Action" class="p-column-filter">
+                            </th>
+                            <th>
+                                <p-calendar [baseZIndex]="90" [(ngModel)]="rangeDates" [style]="{'width':'60%'}" placeholder="Filter by date range" (onSelect)="filterByDateRange('institution')" selectionMode="range" 
+                                    [readonlyInput]="true" inputId="range" [showIcon]="true" [monthNavigator]="true" [yearNavigator]="true" yearRange="2015:2020" showButtonBar="true" (onClearClick)="loadAudit('institution')"></p-calendar>
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-a>
+                        <tr>
+                            <td>{{a.action}}</td>
+                            <td>{{formatDate(a.createdAt)}}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+            
         </div>
         <div *ngIf="(auditType==null)&&(isNullProj)">
             <h4>Project Audit Log

@@ -45,6 +45,7 @@ export class AdminUserManagementProfileComponent implements OnInit {
   isNullUser = false;
   isNullProj = false;
   isNullReward = false;
+  isIndividual = false;
 
   rangeDates: any;
 
@@ -71,6 +72,7 @@ export class AdminUserManagementProfileComponent implements OnInit {
 
     //for individuals and institutions
     if (this.userType == 'individual') {
+      this.isIndividual = true;
       await this.userService.viewUserById({ id: this.id }).toPromise().then(
         response => {
           this.user = response.data.targetUser;
