@@ -80,7 +80,7 @@ export class ProjectDetailsComponent implements OnInit {
 
   calendarOn = false;
   minimumDate = new Date();
-  events: any[];
+  events = [];
   //options: any;
   //header: any;
   eventTitle: any;
@@ -95,6 +95,9 @@ export class ProjectDetailsComponent implements OnInit {
   tempType: any;
 
   targets: any;
+  tempEv: any = [];
+  privateEv: any = [];
+  publicEv: any = [];
 
   constructor(private route: ActivatedRoute, private projectService: ProjectService, private userService: UserService,
     private tokenStorageService: TokenStorageService, private messageService: MessageService, private reportService: ReportService, 
@@ -204,7 +207,19 @@ export class ProjectDetailsComponent implements OnInit {
       await this.projectService.getAllProjectEvents({ id: this.projectId }).toPromise().then(
         response => {
           console.log(JSON.stringify(response));
-          this.events = response.data.projectEvents;
+          this.tempEv = response.data.projectEvents;
+          for(var x = 0; x < this.tempEv.length; x++) {
+            if(this.tempEv[x].eventType == "public") {
+              this.tempEv[x].color = "rgb(49, 173, 0)";
+              this.publicEv.push(this.tempEv[x]);
+            } else {
+              this.tempEv[x].color =  "rgb(168, 0, 0)";
+              this.privateEv.push(this.tempEv[x]);
+            }
+          }
+          this.events = this.events.concat(this.publicEv);
+          this.events = this.events.concat(this.privateEv);
+          //this.events = response.data.projectEvents;
         }
       );
       console.log(this.events);
@@ -212,7 +227,11 @@ export class ProjectDetailsComponent implements OnInit {
       await this.projectService.getPublicProjectEvents({ id: this.projectId }).toPromise().then(
         response => {
           console.log(JSON.stringify(response));
-          this.events = response.data.projectEvents;
+          this.tempEv = response.data.projectEvents;
+          for(var x = 0; x < this.tempEv.length; x++) {
+            this.tempEv[x].color = "rgb(49, 173, 0)";
+          }
+          this.events = this.tempEv;
         }
       );
       console.log(this.events);
@@ -555,7 +574,9 @@ export class ProjectDetailsComponent implements OnInit {
           //this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Event Added!' });
           //this.ngOnInit();
           this.cEventNotif = true;
-          
+          this.events = [];
+          this.privateEv = [];
+          this.publicEv = [];
           //window.location.reload();
         },
         err => {
@@ -689,6 +710,9 @@ export class ProjectDetailsComponent implements OnInit {
         console.log(JSON.stringify(response));
         this.messageService.add({ key: 'toastMsg', severity: 'success', summary: 'Success', detail: 'Event Deleted!' });
         this.eventOn = false;
+        this.events = [];
+        this.privateEv = [];
+        this.publicEv = [];
         this.ngOnInit();
         //window.location.reload();
       }
@@ -729,6 +753,9 @@ export class ProjectDetailsComponent implements OnInit {
     this.cEventNotif = false;
     this.uEventNotif = false;
     this.form = {};
+    this.events = [];
+    this.publicEv = [];
+    this.privateEv = [];
     this.ngOnInit();
   }
 
