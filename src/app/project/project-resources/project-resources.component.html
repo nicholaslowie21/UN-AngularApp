@@ -382,7 +382,7 @@ Overall Need Progress:
                                                     <i class="pi pi-trash"></i>
                                                 </button>
                                             </div>
-                                            <div class="row">
+                                            <div class="row" *ngIf="project.status=='ongoing'">
                                                 <button *ngIf="need.type == 'money'&&checkCompletion(need.completion)" style="width: 130px" class="btn btn-dark" data-toggle="modal"
                                                     data-target="#donateModal" (click)=getDonateForm(need)>
                                                     Donate
@@ -406,7 +406,7 @@ Overall Need Progress:
                 </div>
                 <div class="col-4" *ngIf="isOwnerAdmin">
                     <div class="sticky">
-                        <div *ngIf=!checkClick class="alert alert-info">Click on the 'Suggest' button on a resource need to see suggested resources!</div>
+                        <div *ngIf="!checkClick && project.status == 'ongoing'" class="alert alert-info">Click on the 'Suggest' button on a resource need to see suggested resources!</div>
                         <h5 *ngIf=checkClick> Suggested Resources: </h5>
                         <div *ngFor="let r of resNeedSuggestion">
                             <ul class="list-group">
