@@ -1,6 +1,25 @@
 <p-toast key="toastMsg" [baseZIndex]="100"></p-toast>
 <h2>{{title}}'s SDG Targets
 </h2>
+
+<div *ngIf="SDGs.length > 0">
+    Select the SDG to see targets and check the targets
+    <span *ngIf="type == 'user'"> you </span>
+    <span *ngIf="type == 'project'"> this project </span>
+    focuses on.
+</div>
+
+<div *ngIf="SDGs.length == 0">
+    <div *ngIf="type == 'user'">
+        You have not selected any SDG yet. <br>
+        Select your SDG in <a href="/editProfile">Edit Profile</a>.
+    </div>
+    <div *ngIf="type == 'project'">
+        {{title}} has no SDG selected. <br>
+        Select SDG in <a href="/project/editDetails?id={{project.id}}">Edit Project</a>.
+    </div>
+</div>
+
 <!--div class="row">
     <div *ngFor="let sdg of SDGs" style="display:inline-block;">
         <button class="sdg sdg{{sdg}} mr-md-1">{{sdg}}</button>
