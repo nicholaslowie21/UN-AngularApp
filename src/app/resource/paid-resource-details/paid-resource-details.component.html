@@ -53,12 +53,12 @@
                     <img src="https://localhost:8080{{resource.ownerImg}}" class="img-fluid rounded-circle" style="height: 50px; width: 50px; object-fit: cover;"> 
                 </span>
 
-                <span *ngIf="resource.ownerType == 'user'"><a href="/profile?username={{resource.ownerUsername}}&userType=individual">{{resource.ownerName}}</a></span>
-                <span *ngIf="resource.ownerType == 'institution'"><a href="/profile?username={{resource.ownerUsername}}&userType=institution">{{resource.ownerName}}</a></span>
+                <span class="ml-2" *ngIf="resource.ownerType == 'user'"><a href="/profile?username={{resource.ownerUsername}}&userType=individual">{{resource.ownerName}}</a></span>
+                <span class="ml-2" *ngIf="resource.ownerType == 'institution'"><a href="/profile?username={{resource.ownerUsername}}&userType=institution">{{resource.ownerName}}</a></span>
             </div>
             <div class="bg-light p-2">
                 <div style="font-size: x-large;">Price</div>
-                <div style="font-size: xx-large;">${{resource.price}}</div>
+                <div style="font-size: xx-large;">USD{{resource.price}}</div>
             </div>
             <br>
             <div>
