@@ -120,13 +120,15 @@ export class TestimonialComponent implements OnInit {
   }
 
   updateOutgoing(id, status): void {
-    let r = confirm("Are you sure you want to" + status + "this testimonial?");
+    let r = confirm("Are you sure you want to " + status + " this testimonial?");
     let tempStatus;
     if(status == 'dismiss') {
       tempStatus = 'dismissed';
     } else if(status == 'delete') {
       tempStatus = 'close';
-    } 
+    } else if(status == 'cancel') {
+      tempStatus = 'close';
+    }
     if(r == true) {
       this.testimonialService.updateMyOutgoingTestimonial({id: id, status: tempStatus, desc: ''}).subscribe(
         res => {
@@ -135,6 +137,8 @@ export class TestimonialComponent implements OnInit {
             this.messageService.add({key:'toastMsg', severity:'success', summary:'Success', detail:'Testimonial has been dismissed successfully!'});
           } else if(status == 'delete') {
             this.messageService.add({key:'toastMsg', severity:'success', summary:'Success', detail:'Testimonial has been deleted successfully!'});
+          } else if(status == 'cancel') {
+            this.messageService.add({key:'toastMsg', severity:'success', summary:'Success', detail:'Testimonial has been cancelled successfully!'});
           }
         },
         err => {

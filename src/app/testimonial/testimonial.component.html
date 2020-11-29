@@ -296,6 +296,10 @@
                                 <div class="text-justify">
                                     {{t.desc}}
                                 </div>
+                                <br>
+                                <div>
+                                    <button class="btn btn-danger mr-2 mb-1 float-right" (click)="updateOutgoing(t.id, 'cancel')"><i class="pi pi-times"></i>&nbsp;Cancel</button>
+                                </div>
                             </div>
                         </ng-template>
                     </p-dataView>
