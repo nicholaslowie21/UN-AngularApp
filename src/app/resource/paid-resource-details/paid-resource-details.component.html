@@ -116,7 +116,7 @@
         </div>
     </div>
 
-    <div *ngIf="isOwner" class="mt-4">
+    <div *ngIf="isOwner" class="mt-4 mb-4">
         <h3>Incoming requests</h3>
 
         <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -134,7 +134,7 @@
             </li>
         </ul>
 
-        <div class="tab-content" id="myTabContent">
+        <div class="tab-content" id="myTabContent" style="height: 400px; overflow-y: auto;">
             <div class="tab-pane fade show active" id="pending" role="tabpanel" aria-labelledby="pending-tab">
                 <div class="card p-2">
                     <h5 class="card-title">Pending Purchase Requests</h5>
