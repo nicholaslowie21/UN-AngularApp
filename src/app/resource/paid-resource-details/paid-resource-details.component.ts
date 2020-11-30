@@ -52,6 +52,7 @@ export class PaidResourceDetailsComponent implements OnInit {
   pendingReqs: any[];
   acceptedReqs: any[];
   confirmedReqs: any[];
+  cancelledReqs: any[];
 
   constructor(private route: ActivatedRoute, private tokenStorageService: TokenStorageService, private messageService: MessageService,
     private paidResourceService: PaidResourceService, private userService: UserService, private institutionService: InstitutionService,
@@ -96,6 +97,10 @@ export class PaidResourceDetailsComponent implements OnInit {
     await this.paidResourceService.getPaidResIncomingRequest({status: 'paid', id: this.id}).toPromise().then(
       res => this.confirmedReqs = res.data.paidrequests
     );
+    await this.paidResourceService.getPaidResIncomingRequest({status: 'cancelled', id: this.id}).toPromise().then(
+      res => this.cancelledReqs = res.data.paidrequests
+    );
+    console.log(this.cancelledReqs)
   }
 
   handleChangeChecked(e) {
