@@ -25,14 +25,14 @@
               <a class="nav-link" id="claimed-tab" data-toggle="tab" href="#claimed" role="tab" aria-controls="claimed" aria-selected="false">Claimed</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" id="cancelled-tab" data-toggle="tab" href="#cancelled" role="tab" aria-controls="cancelled" aria-selected="false">Cancelled</a>
+              <a class="nav-link" id="cancelled-tab" data-toggle="tab" href="#cancelled" role="tab" aria-controls="cancelled" aria-selected="false">Expired</a>
             </li>
         </ul>
 
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="active" role="tabpanel" aria-labelledby="active-tab">
                 <div class="card">
-                    <p-dataView #re [value]="activeVouchers" [paginator]="true" [rows]="9" filterBy="title" [sortField]="sortField" [sortOrder]="sortOrder" layout="grid">
+                    <p-dataView #ac [value]="activeVouchers" [paginator]="true" [rows]="9" filterBy="title" [sortField]="sortField" [sortOrder]="sortOrder" layout="grid">
                         <ng-template pTemplate="header">
                             <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
                                 <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyActive" placeholder="Sort By End Date" (onChange)="onSortChange($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
@@ -40,7 +40,7 @@
                                     styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
                                 <span class="p-input-icon-left p-mb-2 p-mb-md-0">
                                     <i class="pi pi-search"></i>
-                                    <input type="search" pInputText placeholder="Search by Title" (input)="re.filter($event.target.value)">
+                                    <input type="search" pInputText placeholder="Search by Title" (input)="ac.filter($event.target.value)">
                                 </span>
                             </div>
                         </ng-template>
@@ -246,7 +246,12 @@
                             <br/>
                             <div class="row">
                                 <div class="col-6">
-                                    Claimed at: {{formatDate(currentVoucher.claimedAt)}}
+                                    <div *ngIf="currentVoucher.status == 'claimed'">
+                                        Claimed at: {{formatDate(currentVoucher.claimedAt)}}
+                                    </div>
+                                    <div *ngIf="currentVoucher.status == 'close'">
+                                        Redeemed at: {{formatDate(currentVoucher.createdAt)}}
+                                    </div>
                                 </div>
                                 <div class="col-6 text-right">
                                     End Date: {{formatDate(currentVoucher.endDate)}}
@@ -259,7 +264,42 @@
             
             <div class="tab-pane fade" id="cancelled" role="tabpanel" aria-labelledby="cancelled-tab">
                 <div class="card">
-                    Cancelled rewards: for active (i.e. unclaimed vouchers) that were later removed by the reward offerer. I.e. the user who redeemed didn't get to claim the voucher.
+                    <p-dataView #ex [value]="expiredVouchers" [paginator]="true" [rows]="9" filterBy="title" [sortField]="sortField" [sortOrder]="sortOrder" layout="grid">
+                        <ng-template pTemplate="header">
+                            <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                                <p-dropdown [options]="sortOptions" [(ngModel)]="sortKeyClaimed" placeholder="Sort By End Date" (onChange)="onSortChange($event)" styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                                <p-dropdown [options]="countryOptions" [(ngModel)]="filterKeyCountryClaimed" placeholder="Filter By Country" (onChange)="filterCountryClaimed($event)"
+                                    styleClass="p-mb-2 p-mb-md-0"></p-dropdown>
+                                <span class="p-input-icon-left p-mb-2 p-mb-md-0">
+                                    <i class="pi pi-search"></i>
+                                    <input type="search" pInputText placeholder="Search by Title" (input)="ex.filter($event.target.value)">
+                                </span>
+                            </div>
+                        </ng-template>
+                        <ng-template let-voucher pTemplate="gridItem">
+                            <div class="p-col-12 p-md-4">
+                                <div class="product-grid-item card p-2">
+                                    <div class="product-grid-item-content mt-1 mr-1">
+                                        <!-- <span class="rounded-pill pl-2 pr-2 {{reward.minTier}} float-left">{{reward.minTier}}</span> -->
+                                        <div class="small mb-md-1 float-right">Redeemed at: {{formatDate(voucher.createdAt)}}</div>
+                                        <img *ngIf="voucher.rewardImgPath.length == 0" src="../../../assets/img/rewardPlaceholder.png"
+                                            class="img-fluid" style="width: 150px; height: 150px; object-fit: cover;" alt="Reward pic" />
+                                        <img *ngIf="voucher.rewardImgPath.length != 0" src="https://localhost:8080{{voucher.rewardImgPath}}"
+                                            class="img-fluid" style="width: 150px; height: 150px; object-fit: cover;" alt="Reward pic" />
+                                        <div class="product-name">
+                                            <button class="btn" data-toggle="modal" data-target="#ViewModalClaimed" (click)=setCurrentVoucher(voucher)>
+                                                {{voucher.rewardTitle}}
+                                            </button>
+                                        </div>
+                                        <div class="small mb-md-1">
+                                            Country: {{voucher.rewardCountry}}<br/>
+                                            End Date: {{formatDate(voucher.endDate)}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </p-dataView>
                 </div>
             </div>
         </div>

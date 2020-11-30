@@ -15,6 +15,7 @@ export class MyRewardsComponent implements OnInit {
 
   activeVouchers: any[];
   claimedVouchers: any[];
+  expiredVouchers: any[];
   currentVoucher: any = {rewardImgPath: ''};
 
   userType: any;
@@ -52,7 +53,9 @@ export class MyRewardsComponent implements OnInit {
     await this.rewardService.getVouchers({status: 'claimed'}).toPromise().then(
       res => this.claimedVouchers = res.data.vouchers
     );
-    console.log(this.activeVouchers[0]);
+    await this.rewardService.getVouchers({status: 'close'}).toPromise().then(
+      res => this.expiredVouchers = res.data.vouchers
+    );
     
     this.userType = this.tokenStorageService.getAccountType();
     if (this.userType == 'user') {
