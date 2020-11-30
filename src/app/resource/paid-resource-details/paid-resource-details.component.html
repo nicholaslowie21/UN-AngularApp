@@ -116,7 +116,7 @@
         </div>
     </div>
 
-    <div *ngIf="isOwner">
+    <div *ngIf="isOwner" class="mt-4">
         <h3>Incoming requests</h3>
 
         <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -198,7 +198,7 @@
                                     <span *ngIf="req.buyerType == 'user'"><a href="/profile?username={{req.buyerUsername}}&userType=individual">{{req.buyerName}}</a></span>
                                     <span *ngIf="req.buyerType == 'institution'"><a href="/profile?username={{req.buyerUsername}}&userType=institution">{{req.buyerName}}</a></span>
                                 </h6>
-                                Payment was made by buyer at:<br/>{{formatDate(req.updatedAt)}}<br/>
+                                Payment was made by buyer at: {{formatDate(req.updatedAt)}}
                             </div>
                         </div>
                     </div>
@@ -208,6 +208,7 @@
                 <div class="card p-2">
                     <h5 class="card-title">Cancelled Purchase Requests</h5>
                     <div *ngIf="cancelledReqs.length == 0">You have no cancelled purchase requests.</div>
+                    <div *ngIf="cancelledReqs.length != 0">You have {{cancelledReqs.length}} cancelled purchase request(s).</div>
                     <div *ngFor="let req of cancelledReqs">
                         <div class="card bg-light">
                             <div class="card-body">
