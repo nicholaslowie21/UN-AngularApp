@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TokenStorageService } from '../services/token-storage.service';
 import { CommunicationService } from '../services/communication.service';
 import { MessageService } from 'primeng/api';
@@ -12,9 +12,6 @@ import * as moment from 'moment';
   providers: [MessageService]
 })
 export class ChatComponent implements OnInit {
-
-  @ViewChild('messageArea')
-  messageArea: ElementRef<HTMLElement>;
 
   isChatPage = true;
   isAdmin = false;
@@ -58,8 +55,6 @@ export class ChatComponent implements OnInit {
       this.subscribe.unsubscribe();
     }
 
-    // this.scrollToLastMessage();
-
     this.subscribe = await this.source.subscribe(async () => {
       console.log("timer is running");
       await this.getMessages(id);
@@ -90,27 +85,17 @@ export class ChatComponent implements OnInit {
     // await this.getMessages(roomId);
     this.loadRooms();
     this.startTimer(roomId);
-    this.scrollToLastMessage();
   }
 
   async getMessages(roomId) {
-    let oldMsgsLength = this.chatMsgs.length;
-    console.log("OLD "+oldMsgsLength);
     await this.communicationService.getChatMsgs({ id: roomId }).toPromise().then(
       res => {
         this.selectedChatImg = res.data.targetImg;
         this.selectedChatRoom = res.data.chatRoom;
         this.chatMsgs = res.data.chats;
         this.loadRooms();
-        console.log("NEW "+this.chatMsgs.length);
-        if(oldMsgsLength < this.chatMsgs.length) {
-          console.log("SCROLL INSIDE TIMER")
-          this.scrollToLastMessage();
-        }
       }
     );
-    
-    // this.scrollToLastMessage();
   }
 
   sendMsg() {
@@ -121,7 +106,6 @@ export class ChatComponent implements OnInit {
       async response => {
         this.chatForm.message = "";
         await this.getMessages(this.selectedChatRoom.id);
-        this.scrollToLastMessage();
       }, err => {
         this.messageService.add({ key: 'toastMsg', severity: 'error', summary: 'Error', detail: err.error.msg });
       }
@@ -153,16 +137,6 @@ export class ChatComponent implements OnInit {
     this.searchForm.keyword = '';
     this.loadRooms();
     this.startTimer(this.selectedChatRoom.id);
-  }
-
-  scrollToLastMessage() {
-    console.log("SCROLL");
-    if (this.messageArea) {
-      console.log(this.messageArea)
-      console.log(this.messageArea.nativeElement.scrollTop);
-      console.log(this.messageArea.nativeElement.scrollHeight);
-      this.messageArea.nativeElement.scrollTop = this.messageArea.nativeElement.scrollHeight + 500;
-    }
   }
 
   onChangeChatType(): void {

@@ -94,10 +94,11 @@
                             </span>
                         </span>
                     </div>
-                    <div *ngIf="selectedChatRoom.chatType == 'admin'"
-                        class="text-center admin-chat"><small>This is an administrative chat</small></div>
+                    <div *ngIf="selectedChatRoom.chatType == 'admin'" class="text-center admin-chat">
+                        <small>This is an administrative chat</small>
+                    </div>
                     
-                    <div class="msg_history" #messageArea >
+                    <div class="msg_history" #messageArea [scrollTop]="messageArea.scrollHeight" >
                         <div *ngFor="let msg of chatMsgs">
                             <div *ngIf="msg.accountUsername != username" class="incoming_msg">
                                 <div class="incoming_msg_img">
@@ -125,6 +126,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div *ngIf="selectedChatRoom" class="type_msg p-2">
                         <div class="input_msg_write">
                             <form name="form" (ngSubmit)="f.form.valid && sendMsg()" #f="ngForm" novalidate>
