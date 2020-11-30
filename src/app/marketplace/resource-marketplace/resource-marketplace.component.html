@@ -403,7 +403,7 @@
                                     <a href="/resource/paid/details?id={{paid.id}}">{{paid.title}}</a>
                                 </div>
                                 <div class="product-description">{{paid.country}}</div>
-                                <div class="product-description">US${{paid.price}}</div>
+                                <div class="product-description">USD{{paid.price}}</div>
                             </div>
                             <div class="mt-md-3">
                                 <button *ngIf="paid.ownerUsername != loggedInUsername" (click)="setResourceId(paid.id)" class="btn btn-primary"
