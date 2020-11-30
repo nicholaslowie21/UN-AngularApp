@@ -113,7 +113,7 @@
       <div class="chatPopUp card rounded-sm">
         <!-- Card HEADER -->
         <div class="card-header p-2"
-          [ngClass]="{'bg-warning': chatStatus.status == 'room' && selectedChatRoom.chatType == 'admin'}">
+          [ngClass]="{'bg-secondary': chatStatus.status == 'room' && selectedChatRoom.chatType == 'admin'}">
           <div *ngIf="chatStatus.status == 'open'">
             <h6 class="mt-2" style="display: inline-block;">Filter type </h6>
             <select class="form-control ml-2" [(ngModel)]="chatStatus.selectedChatType"
@@ -126,7 +126,7 @@
           </div>
 
           <div *ngIf="chatStatus.status == 'room'">
-            <button (click)="closeChatRoom()" class="btn mt-1"><i class="pi pi-chevron-left"></i></button>
+            <button (click)="closeChatRoom()" class="btn mt-1" [ngClass]="{'text-white': selectedChatRoom.chatType == 'admin'}"><i class="pi pi-chevron-left"></i></button>
             <span *ngIf="selectedChatImg.length == 0">
               <img src="../assets/img/profilePic_Placeholder.png" class="img-fluid rounded-circle"
                 style="height: 40px; width: 40px; object-fit: cover;">
@@ -137,25 +137,25 @@
             </span>
             <span *ngIf="selectedChatRoom.user1username != username" class="ml-2 mt-2">
               <span *ngIf="selectedChatRoom.user1type == 'user'">
-                <a class="text-dark"
+                <a [ngClass]="{'text-dark': selectedChatRoom.chatType=='normal', 'text-white': selectedChatRoom.chatType == 'admin'}"
                   href="/profile?username={{selectedChatRoom.user1username}}&userType=individual">{{selectedChatRoom.user1username}}</a>
               </span>
               <span *ngIf="selectedChatRoom.user1type == 'institution'">
-                <a class="text-dark"
+                <a [ngClass]="{'text-dark': selectedChatRoom.chatType=='normal', 'text-white': selectedChatRoom.chatType == 'admin'}"
                   href="/profile?username={{selectedChatRoom.user1username}}&userType=institution">{{selectedChatRoom.user1username}}</a>
               </span>
             </span>
             <span *ngIf="selectedChatRoom.user2username != username" class="ml-2 mt-2">
               <span *ngIf="selectedChatRoom.user2type == 'user'">
-                <a class="text-dark"
+                <a [ngClass]="{'text-dark': selectedChatRoom.chatType=='normal', 'text-white': selectedChatRoom.chatType == 'admin'}"
                   href="/profile?username={{selectedChatRoom.user2username}}&userType=individual">{{selectedChatRoom.user2username}}</a>
               </span>
               <span *ngIf="selectedChatRoom.user2type == 'institution'">
-                <a class="text-dark"
+                <a [ngClass]="{'text-dark': selectedChatRoom.chatType=='normal', 'text-white': selectedChatRoom.chatType == 'admin'}"
                   href="/profile?username={{selectedChatRoom.user2username}}&userType=institution">{{selectedChatRoom.user2username}}</a>
               </span>
             </span>
-            <button (click)="closeChatPopUp()" class="btn float-right"><i class="pi pi-times"></i></button>
+            <button (click)="closeChatPopUp()" class="btn float-right" [ngClass]="{'text-white': selectedChatRoom.chatType == 'admin'}"><i class="pi pi-times"></i></button>
           </div>
         </div>
 
@@ -164,7 +164,7 @@
           <!-- Chat ROOMS -->
           <div *ngIf="chatStatus.status != 'room'">
             <div *ngFor="let cr of displayChatRooms">
-              <div class="card p-2" [ngClass]="{'bg-warning': cr.chatType == 'admin'}" (click)="openChatRoom(cr.id)"
+              <div class="card p-2" [ngClass]="{'bg-secondary text-white': cr.chatType == 'admin'}" (click)="openChatRoom(cr.id)"
                 style="cursor: pointer;">
                 <div class="row">
                   <div class="col-3">
@@ -180,7 +180,7 @@
                   <div class="col-7">
                     <span *ngIf="cr.user1username != username">{{cr.user1username}}</span>
                     <span *ngIf="cr.user2username != username">{{cr.user2username}}</span>
-                    <div class="text-secondary p-text-nowrap p-text-truncate" style="width: 90%;">{{cr.lastMessage}}
+                    <div class="p-text-nowrap p-text-truncate" [ngClass]="{'text-secondary':cr.chatType=='normal'}" style="width: 90%;">{{cr.lastMessage}}
                     </div>
                   </div>
                   <div class="col-2">
@@ -194,7 +194,7 @@
 
           <!-- Open a Chat Room -->
           <div *ngIf="chatStatus.status == 'room'" class="">
-            <div *ngIf="selectedChatRoom.chatType == 'admin'" class="text-center bg-warning rounded-sm">
+            <div *ngIf="selectedChatRoom.chatType == 'admin'" class="text-center bg-secondary text-white rounded-sm">
               <small>This is an administrative chat</small>
             </div>
             <div #messageArea>
