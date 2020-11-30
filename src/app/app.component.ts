@@ -235,7 +235,7 @@ export class AppComponent implements OnInit {
     this.chatStatus = this.tokenStorageService.getChatStatus();
     // this.loadChat();
     await this.startTimer();
-    this.scrollToLastMessage();
+    // this.scrollToLastMessage();
   }
 
   closeChatRoom(): void {
@@ -263,7 +263,7 @@ export class AppComponent implements OnInit {
       response => {
         this.chatForm.message = "";
         this.loadChat();
-        this.scrollToLastMessage();
+        // this.scrollToLastMessage();
       }, err => {
         this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
       }

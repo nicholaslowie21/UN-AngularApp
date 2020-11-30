@@ -193,29 +193,29 @@
           </div>
 
           <!-- Open a Chat Room -->
-          <div *ngIf="chatStatus.status == 'room'" class="">
+          <div *ngIf="chatStatus.status == 'room'">
             <div *ngIf="selectedChatRoom.chatType == 'admin'" class="text-center bg-secondary text-white rounded-sm">
               <small>This is an administrative chat</small>
             </div>
-            <div #messageArea>
-            <div *ngFor="let msg of chatMsgs" class="pr-2 pt-2 pb-2">
-              <div *ngIf="msg.accountUsername != username">
-                <div class="received_msg">
-                  <div class="received_withd_msg">
-                    <p>{{msg.message}}</p>
-                    <span class="time_date"> {{formatTime(msg.updatedAt)}} </span>
+            <div #messageArea [scrollTop]="messageArea.scrollHeight">
+              <div *ngFor="let msg of chatMsgs" class="pr-2 pt-2 pb-2">
+                <div *ngIf="msg.accountUsername != username">
+                  <div class="received_msg">
+                    <div class="received_withd_msg">
+                      <p>{{msg.message}}</p>
+                      <span class="time_date"> {{formatTime(msg.updatedAt)}} </span>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="msg.accountUsername == username">
+                  <div class="outgoing_msg">
+                    <div class="sent_msg">
+                      <p>{{msg.message}}</p>
+                      <span class="time_date"> {{formatTime(msg.updatedAt)}} </span>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div *ngIf="msg.accountUsername == username">
-                <div class="outgoing_msg">
-                  <div class="sent_msg">
-                    <p>{{msg.message}}</p>
-                    <span class="time_date"> {{formatTime(msg.updatedAt)}} </span>
-                  </div>
-                </div>
-              </div>
-            </div>
             </div>
           </div>
         </div>
