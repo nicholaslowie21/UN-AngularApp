@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TokenStorageService } from './services/token-storage.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { CommunicationService } from './services/communication.service';
 import { MessageService } from 'primeng/api';
 import * as moment from 'moment';
@@ -44,11 +44,8 @@ export class AppComponent implements OnInit {
   sourceRoom: any;
   subscribeRoom: any;
 
-  @ViewChild('messageArea')
-  messageArea: ElementRef<HTMLElement>;
-
-  constructor(private tokenStorageService: TokenStorageService, private route: ActivatedRoute,
-    private router: Router, private communicationService: CommunicationService, private messageService: MessageService) {
+  constructor(private tokenStorageService: TokenStorageService, private route: ActivatedRoute, 
+    private communicationService: CommunicationService, private messageService: MessageService) {
     this.source = interval(1000);
     this.sourceRoom = interval(1000);
   }
@@ -235,7 +232,6 @@ export class AppComponent implements OnInit {
     this.chatStatus = this.tokenStorageService.getChatStatus();
     // this.loadChat();
     await this.startTimer();
-    // this.scrollToLastMessage();
   }
 
   closeChatRoom(): void {
@@ -263,7 +259,6 @@ export class AppComponent implements OnInit {
       response => {
         this.chatForm.message = "";
         this.loadChat();
-        // this.scrollToLastMessage();
       }, err => {
         this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
       }
@@ -274,13 +269,6 @@ export class AppComponent implements OnInit {
     let formattedDate = moment(date).format("MMM DD");
     let formattedTime = moment(date).format("h:mm a");
     return formattedTime + ' | ' + formattedDate;
-  }
-
-  scrollToLastMessage() {
-    console.log("SCROLL");
-    if (this.messageArea) {
-      this.messageArea.nativeElement.scrollTop = this.messageArea.nativeElement.scrollHeight + 500;
-    }
   }
 
   sortFunction(a, b) {
