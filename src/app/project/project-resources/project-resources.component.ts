@@ -5,8 +5,6 @@ import { TokenStorageService } from '../../services/token-storage.service';
 import { MessageService } from 'primeng/api';
 import { ResourceService } from '../../services/resource.service';
 import { MarketplaceService } from '../../services/marketplace.service';
-import { JsonpClientBackend } from '@angular/common/http';
-import { constants } from 'buffer';
 import { PaidResourceService } from '../../services/paid-resource.service';
 
 @Component({
