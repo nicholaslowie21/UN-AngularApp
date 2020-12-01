@@ -132,7 +132,7 @@
                             <form name="form" (ngSubmit)="f.form.valid && sendMsg()" #f="ngForm" novalidate>
                                 <input type="text" class="write_msg" name="message" [(ngModel)]="chatForm.message" required
                                     #message="ngModel" placeholder="Type a message..." />
-                                <button class="msg_send_btn" type="button"><i class="pi pi-angle-right"
+                                <button class="msg_send_btn" type="button" (click)="sendMsg()"><i class="pi pi-angle-right"
                                     aria-hidden="true"></i></button>
                             </form>
                         </div>
