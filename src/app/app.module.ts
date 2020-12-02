@@ -83,7 +83,6 @@ import { AdminReportDetailsComponent } from './admin/admin-report-details/admin-
 import { ChatComponent } from './chat/chat.component';
 import { DataDashboardComponent } from './data-overview/data-dashboard/data-dashboard.component';
 import { SearchAccountsComponent } from './search-accounts/search-accounts.component';
-import { AdminDataManagementComponent } from './admin/admin-data-management/admin-data-management.component';
 import { TestimonialComponent } from './testimonial/testimonial.component';
 import { DataProjectComponent } from './data-overview/data-project/data-project.component';
 import { PaidResourceDetailsComponent } from './resource/paid-resource-details/paid-resource-details.component';
@@ -144,7 +143,6 @@ import { TermsConditionsComponent } from './terms-conditions/terms-conditions.co
     ChatComponent,
     DataDashboardComponent,
     SearchAccountsComponent,
-    AdminDataManagementComponent,
     TestimonialComponent,
     DataProjectComponent,
     PaidResourceDetailsComponent,

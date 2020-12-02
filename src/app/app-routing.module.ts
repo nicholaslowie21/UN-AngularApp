@@ -22,7 +22,6 @@ import { AdminVerificationComponent } from './admin/admin-verification/admin-ver
 import { AdminRewardManagementComponent } from './admin/admin-reward-management/admin-reward-management.component';
 import { AdminCreateRewardComponent } from './admin/admin-create-reward/admin-create-reward.component';
 import { AdminAnnouncementComponent } from './admin/admin-announcement/admin-announcement.component';
-import { AdminDataManagementComponent } from './admin/admin-data-management/admin-data-management.component';
 import { ShareProfilePageComponent } from './share-profile-page/share-profile-page.component';
 import { CreateProjectComponent } from './project/create-project/create-project.component';
 import { EditProjectAdminComponent } from './project/edit-project-admin/edit-project-admin.component';
@@ -81,8 +80,7 @@ const routes: Routes = [
       { path: 'verification', component: AdminVerificationComponent },
       { path: 'reward', component: AdminRewardManagementComponent },
       { path: 'create-reward', component: AdminCreateRewardComponent},
-      { path: 'announcement', component: AdminAnnouncementComponent},
-      { path: 'data-management', component: AdminDataManagementComponent}
+      { path: 'announcement', component: AdminAnnouncementComponent}
     ] 
   },
   { path: 'project', canActivate: [AuthGuardService],
