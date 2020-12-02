@@ -16,7 +16,6 @@ import { HomeComponent } from './home/home.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 
 import { authInterceptorProviders } from './_helpers/auth.interceptor';
-import { AdminHomeComponent } from './admin/admin-home/admin-home.component';
 import { LandingComponent } from './landing/landing.component';
 import { SignupInstitutionComponent } from './signup-institution/signup-institution.component';
 import { AboutComponent } from './about/about.component';
@@ -100,7 +99,6 @@ import { TermsConditionsComponent } from './terms-conditions/terms-conditions.co
     SignupComponent,
     HomeComponent,
     EditProfileComponent,
-    AdminHomeComponent,
     LandingComponent,
     SignupInstitutionComponent,
     AboutComponent,

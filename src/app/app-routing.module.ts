@@ -13,7 +13,6 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { SettingsComponent } from './settings/settings.component';
 import { OwnProfileComponent } from './own-profile/own-profile.component';
 import { AffiliationPageComponent } from './affiliation-page/affiliation-page.component';
-import { AdminHomeComponent } from './admin/admin-home/admin-home.component';
 import { AdminManagementComponent } from './admin/admin-management/admin-management.component';
 import { AdminReportComponent } from './admin/admin-report/admin-report.component';
 import { AdminReportDetailsComponent } from './admin/admin-report-details/admin-report-details.component';
@@ -83,8 +82,7 @@ const routes: Routes = [
       { path: 'reward', component: AdminRewardManagementComponent },
       { path: 'create-reward', component: AdminCreateRewardComponent},
       { path: 'announcement', component: AdminAnnouncementComponent},
-      { path: 'data-management', component: AdminDataManagementComponent},
-      { path: '', component: AdminHomeComponent, pathMatch: 'full'}
+      { path: 'data-management', component: AdminDataManagementComponent}
     ] 
   },
   { path: 'project', canActivate: [AuthGuardService],
