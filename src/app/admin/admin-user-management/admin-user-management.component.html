@@ -58,15 +58,21 @@
             <ng-template pTemplate="body" let-a>
                 <tr>
                     <td>
-                        <span *ngIf="a.profilePic.length > 0">
-                            <img src={{a.profilePic}} class="rounded-circle img-fluid" style="width: 50px; height: 50px; object-fit: cover;" alt="Profile picture"
-                            />
-                        </span>
-                        <span *ngIf="a.profilePic.length == 0">
-                            <img src="../../assets/img/profilePic_Placeholder.png" class="rounded-circle img-fluid" style="width: 50px; height: 50px; object-fit: cover;"
-                                alt="Profile picture" />
-                        </span>
-                        <a href="/admin/user-management/profile?type=individual&id={{a.id}}" class="ml-1">{{a.name}}</a>
+                        <div class="row">
+                            <div class="col-5">
+                                <span *ngIf="a.profilePic.length > 0">
+                                    <img src={{a.profilePic}} class="rounded-circle img-fluid" style="width: 50px; height: 50px; object-fit: cover;" alt="Profile picture"
+                                    />
+                                </span>
+                                <span *ngIf="a.profilePic.length == 0">
+                                    <img src="../../assets/img/profilePic_Placeholder.png" class="rounded-circle img-fluid" style="width: 50px; height: 50px; object-fit: cover;"
+                                        alt="Profile picture" />
+                                </span>
+                            </div>
+                            <div class="col-7">
+                                <a href="/admin/user-management/profile?type=individual&id={{a.id}}">{{a.name}}</a>
+                            </div>
+                        </div>
                     </td>
                     <td>{{a.country}}</td>
                     <td>{{a.role}}</td>
@@ -115,15 +121,21 @@
             <ng-template pTemplate="body" let-a>
                 <tr>
                     <td>
-                        <span *ngIf="a.profilePic.length > 0">
-                            <img src={{a.profilePic}} class="rounded-circle img-fluid" style="width: 50px; height: 50px; object-fit: cover;" alt="Profile picture"
-                            />
-                        </span>
-                        <span *ngIf="a.profilePic.length == 0">
-                            <img src="../../assets/img/profilePic_Placeholder.png" class="rounded-circle img-fluid" style="width: 50px; height: 50px; object-fit: cover;"
-                                alt="Profile picture" />
-                        </span>
-                        <a href="/admin/user-management/profile?type=institution&id={{a.id}}" class="ml-1">{{a.name}}</a>
+                        <div class="row">
+                            <div class="col-4">
+                                <span *ngIf="a.profilePic.length > 0">
+                                    <img src={{a.profilePic}} class="rounded-circle img-fluid" style="width: 50px; height: 50px; object-fit: cover;" alt="Profile picture"
+                                    />
+                                </span>
+                                <span *ngIf="a.profilePic.length == 0">
+                                    <img src="../../assets/img/profilePic_Placeholder.png" class="rounded-circle img-fluid" style="width: 50px; height: 50px; object-fit: cover;"
+                                        alt="Profile picture" />
+                                </span>
+                            </div>
+                            <div class="col-8">
+                                <a href="/admin/user-management/profile?type=institution&id={{a.id}}">{{a.name}}</a>
+                            </div>
+                        </div>
                     </td>
                     <td>{{a.country}}</td>
                     <td>{{a.status}}</td>
