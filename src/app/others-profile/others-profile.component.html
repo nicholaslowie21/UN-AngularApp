@@ -143,13 +143,3 @@
         <button class="sdg sdg{{sdg}} mr-md-1">{{sdg}}</button>
     </span>
 </div>
-
-<div *ngIf=isIndividual class="bg-secondary text-white mt-2 p-3">
-    <h5 class="mt-2">Skills</h5>
-    <div *ngIf="user.skills.length == 0">
-        -
-    </div>
-    <span *ngFor="let s of user.skills">
-        <button class="btn btn-light mr-md-1 rounded-pill">{{s}}</button>
-    </span>
-</div>
