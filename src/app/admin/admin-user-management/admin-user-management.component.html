@@ -273,7 +273,8 @@
                     <td>{{formatDate(a.createdAt)}}</td>
                     <td>
                         <div>
-                            <button pButton class="p-button-rounded" title="Download verification file" icon="pi pi-download" (click)="downloadAttachment(a.verificationFile)"></button>
+                            <a href="https://localhost:8080/public/uploads/verifyClaim/{{a.verificationFile}}" target="_blank" pButton class="p-button-rounded" icon="pi pi-eye" title="View verification file"></a>
+                            <button pButton class="p-button-rounded ml-2" title="Download verification file" icon="pi pi-download" (click)="downloadAttachment(a.verificationFile)"></button>
                             <button pButton class="p-button-rounded p-button-success ml-2" title="Accept" icon="pi pi-check" (click)="updateClaim(a.id, 'accepted')"></button>
                             <button pButton class="p-button-rounded p-button-danger ml-2" title="Decline" icon="pi pi-times" (click)="updateClaim(a.id, 'declined')"></button>
                         </div>

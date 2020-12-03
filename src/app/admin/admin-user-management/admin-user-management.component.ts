@@ -317,7 +317,7 @@ export class AdminUserManagementComponent implements OnInit {
     }
   }
 
-  // for Manage
+  // for Mapping and Claims
   selectFileUser(event) {
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
