@@ -69,14 +69,19 @@ export class AdminAnnouncementComponent implements OnInit {
   }
 
   deleteAnnouncement(): void {
-    this.communicationService.deleteAnnouncement({id: this.viewForm.id}).subscribe(
-      res => {
-        this.isDelSuccessful = true;
-      },
-      err => {
-        this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
-      }
-    )
+    let r = confirm("Are you sure you want to delete this announcement?");
+    if(r == true) {
+      this.communicationService.deleteAnnouncement({id: this.viewForm.id}).subscribe(
+        res => {
+          this.isDelSuccessful = true;
+        },
+        err => {
+          this.messageService.add({key:'toastMsg',severity:'error',summary:'Error',detail:err.error.msg});
+        }
+      );
+    } else {
+      return;
+    }
   }
 
   getAnnouncement(a): void {
